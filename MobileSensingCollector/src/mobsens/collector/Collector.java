@@ -35,7 +35,7 @@ public class Collector extends ConnectedService
 		{
 			IntentLog.sendBroadcast(Collector.this, new Date(), "Collector", "Starting collection", null);
 
-			fileConsumer.setLocation(item.title + new Date().getTime() + ".ssf");
+			fileConsumer.setLocation("ssf/" + item.title + new Date().getTime() + ".ssf");
 
 			for (SensorDriver sensorDriver : sensorDrivers)
 			{
@@ -68,7 +68,7 @@ public class Collector extends ConnectedService
 
 			annotationDriver.stop();
 
-			for (File file : fileConsumer.streamed())
+			for (File file : new File(Collector.this.getFilesDir(), "ssf").listFiles())
 			{
 				IntentUpload.startService(Collector.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de:3000/recordings", file, "text/csv", "*/*", true);
 			}
@@ -123,7 +123,7 @@ public class Collector extends ConnectedService
 
 		annotationDriver = new AnnotationDriver(this);
 
-		fileConsumer = new SSFStreamingConsumer(this, "ssf", ID);
+		fileConsumer = new SSFStreamingConsumer(this, ID);
 
 		for (SensorDriver sensorDriver : sensorDrivers)
 		{
