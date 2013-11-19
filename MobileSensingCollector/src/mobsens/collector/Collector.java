@@ -1,0 +1,178 @@
+package mobsens.collector;
+
+import java.io.File;
+import java.util.Date;
+
+import android.content.Intent;
+import android.hardware.Sensor;
+import android.util.Log;
+import mobsens.collector.communications.ConnectedService;
+import mobsens.collector.consumers.FileStreamingConsumer;
+import mobsens.collector.consumers.SSFStreamingConsumer;
+import mobsens.collector.drivers.annotations.AnnotationDriver;
+import mobsens.collector.drivers.connectivity.ConnectivityDriver;
+import mobsens.collector.drivers.locations.LocationDriver;
+import mobsens.collector.drivers.messaging.QuitCollectorDriver;
+import mobsens.collector.drivers.messaging.QuitCollectorOutput;
+import mobsens.collector.drivers.messaging.StartCollectorDriver;
+import mobsens.collector.drivers.messaging.StartCollectorOutput;
+import mobsens.collector.drivers.messaging.StopCollectorDriver;
+import mobsens.collector.drivers.messaging.StopCollectorOutput;
+import mobsens.collector.drivers.sensors.SensorDriver;
+import mobsens.collector.intents.IntentLog;
+import mobsens.collector.intents.IntentUpload;
+import mobsens.collector.pipeline.Consumer;
+
+public class Collector extends ConnectedService
+{
+	@Deprecated
+	public static final String ID = "TUID" + Double.doubleToLongBits(Math.random());
+
+	public final Consumer<StartCollectorOutput> START_COLLECTOR_ENDPOINT = new Consumer<StartCollectorOutput>()
+	{
+		@Override
+		public void consume(StartCollectorOutput item)
+		{
+			IntentLog.sendBroadcast(Collector.this, new Date(), "Collector", "Starting collection", null);
+
+			fileConsumer.setLocation(item.title + new Date().getTime() + ".ssf");
+
+			for (SensorDriver sensorDriver : sensorDrivers)
+			{
+				sensorDriver.start();
+			}
+
+			locationDriver.start();
+
+			connectivityDriver.start();
+
+			annotationDriver.start();
+		}
+	};
+
+	public final Consumer<StopCollectorOutput> STOP_COLLECTOR_ENDPOINT = new Consumer<StopCollectorOutput>()
+	{
+		@Override
+		public void consume(StopCollectorOutput item)
+		{
+			IntentLog.sendBroadcast(Collector.this, new Date(), "Collector", "Stopping collection", null);
+
+			for (SensorDriver sensorDriver : sensorDrivers)
+			{
+				sensorDriver.stop();
+			}
+
+			locationDriver.stop();
+
+			connectivityDriver.stop();
+
+			annotationDriver.stop();
+
+			for (File file : fileConsumer.streamed())
+			{
+				IntentUpload.startService(Collector.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de:3000/recordings", file, "text/csv", "*/*", true);
+			}
+		}
+	};
+
+	public final Consumer<QuitCollectorOutput> QUIT_COLLECTOR_ENDPOINT = new Consumer<QuitCollectorOutput>()
+	{
+		@Override
+		public void consume(QuitCollectorOutput item)
+		{
+			IntentLog.sendBroadcast(Collector.this, new Date(), "Collector", "Qutting", null);
+
+			stopSelf();
+		}
+	};
+
+	private final StartCollectorDriver startCollectorDriver;
+
+	private final StopCollectorDriver stopCollectorDriver;
+
+	private final QuitCollectorDriver quitCollectorDriver;
+
+	private final SensorDriver[] sensorDrivers;
+
+	private final LocationDriver locationDriver;
+
+	private final ConnectivityDriver connectivityDriver;
+
+	private final AnnotationDriver annotationDriver;
+
+	private final FileStreamingConsumer<Object> fileConsumer;
+
+	public Collector()
+	{
+		startCollectorDriver = new StartCollectorDriver(this);
+		startCollectorDriver.setConsumer(START_COLLECTOR_ENDPOINT);
+
+		stopCollectorDriver = new StopCollectorDriver(this);
+		stopCollectorDriver.setConsumer(STOP_COLLECTOR_ENDPOINT);
+
+		quitCollectorDriver = new QuitCollectorDriver(this);
+		quitCollectorDriver.setConsumer(QUIT_COLLECTOR_ENDPOINT);
+
+		sensorDrivers = new SensorDriver[] { new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, 1000 * 50), new SensorDriver(this, Sensor.TYPE_GYROSCOPE, 1000 * 50),
+				new SensorDriver(this, Sensor.TYPE_MAGNETIC_FIELD, 1000 * 50), new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, 1000 * 50),
+				new SensorDriver(this, Sensor.TYPE_GRAVITY, 1000 * 50) };
+
+		locationDriver = new LocationDriver(this, 3000, 0, true, true, true);
+
+		connectivityDriver = new ConnectivityDriver(this);
+
+		annotationDriver = new AnnotationDriver(this);
+
+		fileConsumer = new SSFStreamingConsumer(this, "ssf", ID);
+
+		for (SensorDriver sensorDriver : sensorDrivers)
+		{
+			sensorDriver.setConsumer(fileConsumer);
+		}
+
+		locationDriver.setConsumer(fileConsumer);
+
+		connectivityDriver.setConsumer(fileConsumer);
+
+		annotationDriver.setConsumer(fileConsumer);
+	}
+
+	@Override
+	public void onCreate()
+	{
+		super.onCreate();
+
+		startCollectorDriver.start();
+		stopCollectorDriver.start();
+		quitCollectorDriver.start();
+	}
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId)
+	{
+		return START_STICKY;
+	}
+
+	@Override
+	public void onDestroy()
+	{
+		startCollectorDriver.stop();
+		stopCollectorDriver.stop();
+		quitCollectorDriver.stop();
+
+		super.onDestroy();
+	}
+
+	@Override
+	protected void onConnected()
+	{
+		Log.i("Collector", "onConnected()");
+	}
+
+	@Override
+	protected void onDisconnected()
+	{
+		Log.i("Collector", "onDisconnected()");
+	}
+
+}
