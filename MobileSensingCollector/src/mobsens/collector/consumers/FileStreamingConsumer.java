@@ -3,21 +3,17 @@ package mobsens.collector.consumers;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
-
+import java.io.OutputStream;
 import android.content.ContextWrapper;
 import mobsens.collector.pipeline.Consumer;
 
-public class FileStreamingConsumer<Item> implements Consumer<Item>
+public abstract class FileStreamingConsumer<Item> implements Consumer<Item>
 {
 	public final ContextWrapper contextWrapper;
 
-	public final String folder;
-
-	public FileStreamingConsumer(ContextWrapper contextWrapper, String folder)
+	public FileStreamingConsumer(ContextWrapper contextWrapper)
 	{
 		this.contextWrapper = contextWrapper;
-		this.folder = folder;
 	}
 
 	private String location;
@@ -32,24 +28,23 @@ public class FileStreamingConsumer<Item> implements Consumer<Item>
 		this.location = location;
 	}
 
-	public File[] streamed()
-	{
-		return new File(contextWrapper.getFilesDir(), folder).listFiles();
-	}
-
 	@Override
 	public void consume(Item item)
 	{
 		try
 		{
-			final File file = new File(contextWrapper.getFilesDir(), folder + "/" + location);
+			final File file = new File(contextWrapper.getFilesDir(), location);
 
 			final FileOutputStream fileOutputStream = new FileOutputStream(file, true);
-			final PrintStream printStream = new PrintStream(fileOutputStream);
+			redirect(fileOutputStream);
 
-			printOneItem(printStream, item);
+			if (file.length() == 0)
+			{
+				init(item);
+			}
 
-			printStream.close();
+			write(item);
+
 			fileOutputStream.close();
 		}
 		catch (IOException e)
@@ -58,8 +53,19 @@ public class FileStreamingConsumer<Item> implements Consumer<Item>
 		}
 	}
 
-	protected void printOneItem(PrintStream printStream, Item item)
+	protected abstract void redirect(OutputStream stream);
+
+	/**
+	 * Wird aufgerufen, wenn die Datei vor dem Schreiben des angegebenen Items
+	 * leer war
+	 * 
+	 * @param itemAfter
+	 *            Das folgende Item
+	 */
+	protected void init(Item itemAfter)
 	{
-		printStream.println(item);
+		// Nichts tun
 	}
+
+	protected abstract void write(Item item);
 }
