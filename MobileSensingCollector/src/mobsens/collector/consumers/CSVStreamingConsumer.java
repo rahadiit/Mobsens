@@ -4,44 +4,152 @@ import java.io.PrintStream;
 
 import android.content.ContextWrapper;
 
-public class CSVStreamingConsumer<Item> extends FileStreamingConsumer<Item>
+public abstract class CSVStreamingConsumer<Item> extends PrintStreamingConsumer<Item>
 {
-	public final char separator;
+	public final String fieldSeparator;
 
-	public CSVStreamingConsumer(ContextWrapper contextWrapper, String folder, char separator)
+	public final String rowSeparator;
+
+	private PrintStream printStream;
+
+	private boolean freshRow;
+
+	public CSVStreamingConsumer(ContextWrapper contextWrapper, String fieldSeparator, String rowSeparator)
 	{
-		super(contextWrapper, folder);
+		super(contextWrapper);
 
-		this.separator = separator;
+		this.fieldSeparator = fieldSeparator;
+		this.rowSeparator = rowSeparator;
+
+		printStream = null;
+		freshRow = true;
 	}
 
 	@Override
-	protected void printOneItem(PrintStream printStream, Item item)
+	protected void redirectPrint(PrintStream printStream)
 	{
-		final Object[] fieldsOf = fieldsOf(item);
-
-		if (fieldsOf != null)
-		{
-			boolean separate = false;
-			for (Object field : fieldsOf)
-			{
-				if (separate)
-				{
-					printStream.print(separator);
-				}
-
-				printStream.print(field);
-
-				separate = true;
-			}
-
-			printStream.println();
-		}
+		this.printStream = printStream;
 	}
 
-	protected Object[] fieldsOf(Item item)
+	protected final void rowStart()
 	{
-		return new Object[0];
+		assert freshRow : "nonfinalized row";
+	
+		freshRow = true;
+	}
+
+	protected final void field(boolean value)
+	{
+		if (!freshRow)
+		{
+			printStream.print(fieldSeparator);
+		}
+
+		printStream.print(value);
+
+		freshRow = false;
+	}
+
+	protected final void field(char value)
+	{
+		if (!freshRow)
+		{
+			printStream.print(fieldSeparator);
+		}
+
+		printStream.print(value);
+
+		freshRow = false;
+	}
+
+	protected final void field(char[] value)
+	{
+		if (!freshRow)
+		{
+			printStream.print(fieldSeparator);
+		}
+
+		printStream.print(value);
+
+		freshRow = false;
+	}
+
+	protected final void field(double value)
+	{
+		if (!freshRow)
+		{
+			printStream.print(fieldSeparator);
+		}
+
+		printStream.print(value);
+
+		freshRow = false;
+	}
+
+	protected final void field(float value)
+	{
+		if (!freshRow)
+		{
+			printStream.print(fieldSeparator);
+		}
+
+		printStream.print(value);
+
+		freshRow = false;
+	}
+
+	protected final void field(int value)
+	{
+		if (!freshRow)
+		{
+			printStream.print(fieldSeparator);
+		}
+
+		printStream.print(value);
+
+		freshRow = false;
+	}
+
+	protected final void field(long value)
+	{
+		if (!freshRow)
+		{
+			printStream.print(fieldSeparator);
+		}
+
+		printStream.print(value);
+
+		freshRow = false;
+	}
+
+	protected final void field(Object value)
+	{
+		if (!freshRow)
+		{
+			printStream.print(fieldSeparator);
+		}
+
+		printStream.print(value);
+
+		freshRow = false;
+	}
+
+	protected final void field(String value)
+	{
+		if (!freshRow)
+		{
+			printStream.print(fieldSeparator);
+		}
+
+		printStream.print(value);
+
+		freshRow = false;
+	}
+
+	protected final void rowEnd()
+	{
+		printStream.print(rowSeparator);
+		freshRow = true;
 	}
 
 }
