@@ -8,33 +8,34 @@ import mobsens.collector.drivers.locations.LocationOutput;
 import mobsens.collector.drivers.sensors.SensorOutput;
 import android.content.ContextWrapper;
 import android.hardware.Sensor;
-import android.util.Log;
 
 public class SSFStreamingConsumer extends CSVStreamingConsumer<Object>
 {
-	public final String deviceId;
+	public final String identifier;
 
-	public SSFStreamingConsumer(ContextWrapper contextWrapper, String folder, String deviceId)
+	public SSFStreamingConsumer(ContextWrapper contextWrapper, String identifier)
 	{
-		super(contextWrapper, folder, ',');
+		super(contextWrapper, ",", System.getProperty("line.separator"));
 
-		this.deviceId = deviceId;
-	}
-
-	protected String escapeString(String s)
-	{
-		// TODO: Vielleicht nicht so ganz korrekt
-		return JSONObject.quote(s);
+		this.identifier = identifier;
 	}
 
 	@Override
-	protected Object[] fieldsOf(Object item)
+	protected void write(Object item)
 	{
 		if (item instanceof AnnotationOutput)
 		{
 			final AnnotationOutput annotationOutput = (AnnotationOutput) item;
 
-			return new Object[] { "TAG", annotationOutput.time.getTime(), deviceId, escapeString(annotationOutput.value) };
+			rowStart();
+			field("TAG");
+			field(annotationOutput.time.getTime());
+			field(identifier);
+			field(JSONObject.quote(annotationOutput.value));
+			rowEnd();
+
+			// return new Object[] { "TAG", annotationOutput.time.getTime(),
+			// deviceId, escapeString(annotationOutput.value) };
 		}
 		else if (item instanceof ConnectivityOutput)
 		{
@@ -42,59 +43,53 @@ public class SSFStreamingConsumer extends CSVStreamingConsumer<Object>
 			// (ConnectivityOutput) item;
 
 			// TODO Implement
-			return null;
+			// return null;
 		}
 		else if (item instanceof LocationOutput)
 		{
 			final LocationOutput locationOutput = (LocationOutput) item;
 
-			return new Object[] {
-					"GPS",
-					locationOutput.time.getTime(),
-					deviceId,
-					Double.toString(locationOutput.latitude) + " " + Double.toString(locationOutput.longitude) + " "
-							+ (locationOutput.altitude != null ? Double.toString(locationOutput.altitude) : "0.0") };
-
+			rowStart();
+			field("GPS");
+			field(locationOutput.time.getTime());
+			field(identifier);
+			field(locationOutput.latitude + " " + locationOutput.longitude + (locationOutput.altitude == null ? " 0.0" : " " + locationOutput.altitude));
+			rowEnd();
 		}
 		else if (item instanceof SensorOutput)
 		{
 			final SensorOutput sensorOutput = (SensorOutput) item;
 
-			final String sid;
+			rowStart();
 			switch (sensorOutput.sensor)
 			{
 			case Sensor.TYPE_ACCELEROMETER:
-				sid = "ACC";
+				field("ACC");
 				break;
 
 			case Sensor.TYPE_GYROSCOPE:
-				sid = "GYR";
+				field("GYR");
 				break;
 
 			case Sensor.TYPE_MAGNETIC_FIELD:
-				sid = "MAG";
+				field("MAG");
 				break;
 
 			case Sensor.TYPE_LINEAR_ACCELERATION:
-				sid = "LAC";
+				field("LAC");
 				break;
 
 			case Sensor.TYPE_GRAVITY:
-				sid = "GRA";
+				field("GRA");
 				break;
-
-			default:
-				return null;
 			}
 
-			return new Object[] { sid, sensorOutput.time.getTime(), deviceId,
-					Double.toString(sensorOutput.values[0]) + " " + Double.toString(sensorOutput.values[1]) + " " + Double.toString(sensorOutput.values[2]) };
-		}
-		else
-		{
-			Log.d("SSF Streaming", "Unhandled item type of " + item);
-
-			return null;
+			field(sensorOutput.time.getTime());
+			field(identifier);
+			field(sensorOutput.values[0]);
+			field(sensorOutput.values[1]);
+			field(sensorOutput.values[2]);
+			rowEnd();
 		}
 	}
 }
