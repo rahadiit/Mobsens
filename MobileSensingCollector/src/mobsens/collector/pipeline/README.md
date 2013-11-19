@@ -1,0 +1,3 @@
+Pipeline
+===================
+Abstraktion der Pipeline
