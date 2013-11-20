@@ -90,7 +90,7 @@ public class Uploader extends IntentService
 
 				// Endzeit und gesendete Größe markieren
 				final Date endTimeMarker = new Date();
-				final long transmissionMarker = 0;
+				final long transmissionMarker = file.length();
 
 				Log.d("Uploader", "<" + handle + "> done");
 
