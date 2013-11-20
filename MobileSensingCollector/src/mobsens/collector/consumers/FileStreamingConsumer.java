@@ -35,6 +35,9 @@ public abstract class FileStreamingConsumer<Item> implements Consumer<Item>
 		{
 			final File file = new File(contextWrapper.getFilesDir(), location);
 
+			// Parent erstellen
+			file.getParentFile().mkdirs();
+			
 			final FileOutputStream fileOutputStream = new FileOutputStream(file, true);
 			redirect(fileOutputStream);
 
