@@ -70,11 +70,11 @@ public class Collector extends ConnectedService
 			connectivityDriver.stop();
 
 			annotationDriver.stop();
-//
-//			for (File file : new File(Collector.this.getFilesDir(), "wfj").listFiles())
-//			{
-//				IntentUpload.startService(Collector.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de:3000/recordings", file, "text/csv", "*/*", true);
-//			}
+
+			for (File file : new File(Collector.this.getFilesDir(), "wfj").listFiles())
+			{
+				IntentUpload.startService(Collector.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de:3000/recordings", file, "application/json", "*/*", true);
+			}
 		}
 	};
 
