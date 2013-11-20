@@ -33,7 +33,7 @@ public abstract class FileStreamingConsumer<Item> implements Consumer<Item>
 	{
 		try
 		{
-			final File file = new File(contextWrapper.getExternalFilesDir(null), location);
+			final File file = new File(contextWrapper.getFilesDir(), location);
 
 			// Parent erstellen
 			file.getParentFile().mkdirs();
