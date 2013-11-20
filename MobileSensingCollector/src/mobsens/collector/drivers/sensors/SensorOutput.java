@@ -3,13 +3,18 @@ package mobsens.collector.drivers.sensors;
 import java.util.Arrays;
 import java.util.Date;
 
+import org.json.JSONException;
+import org.json.JSONStringer;
+
+import mobsens.collector.wfj.basics.BasicWFJ;
+
 /**
  * Verkapselung der Sensordaten
  * 
  * @author Pizza
  * 
  */
-public class SensorOutput
+public class SensorOutput extends BasicWFJ
 {
 	/**
 	 * Zeit
@@ -67,6 +72,31 @@ public class SensorOutput
 		else if (!time.equals(other.time)) return false;
 		if (!Arrays.equals(values, other.values)) return false;
 		return true;
+	}
+
+	@Override
+	protected void generateTo(JSONStringer jsonStringer) throws JSONException
+	{
+		jsonStringer.object();
+		jsonStringer.key("sensor");
+		jsonStringer.object();
+
+		jsonStringer.key("time");
+		jsonStringer.value(time.getTime());
+
+		jsonStringer.key("sensor");
+		jsonStringer.value(sensor);
+
+		jsonStringer.key("values");
+		jsonStringer.array();
+		for (float value : values)
+		{
+			jsonStringer.value(value);
+		}
+		jsonStringer.endArray();
+
+		jsonStringer.endObject();
+		jsonStringer.endObject();
 	}
 
 	@Override

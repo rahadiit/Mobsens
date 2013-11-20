@@ -2,7 +2,12 @@ package mobsens.collector.drivers.locations;
 
 import java.util.Date;
 
-public class LocationOutput
+import org.json.JSONException;
+import org.json.JSONStringer;
+
+import mobsens.collector.wfj.basics.BasicWFJ;
+
+public class LocationOutput extends BasicWFJ
 {
 	/**
 	 * Zeit
@@ -103,6 +108,50 @@ public class LocationOutput
 		}
 		else if (!time.equals(other.time)) return false;
 		return true;
+	}
+
+	@Override
+	protected void generateTo(JSONStringer jsonStringer) throws JSONException
+	{
+		jsonStringer.object();
+		jsonStringer.key("location");
+		jsonStringer.object();
+
+		jsonStringer.key("time");
+		jsonStringer.value(time.getTime());
+
+		jsonStringer.key("latitude");
+		jsonStringer.value(latitude);
+
+		jsonStringer.key("longitude");
+		jsonStringer.value(longitude);
+
+		if (accuracy != null)
+		{
+			jsonStringer.key("accuracy");
+			jsonStringer.value(accuracy);
+		}
+
+		if (altitude != null)
+		{
+			jsonStringer.key("altitude");
+			jsonStringer.value(altitude);
+		}
+
+		if (bearing != null)
+		{
+			jsonStringer.key("bearing");
+			jsonStringer.value(bearing);
+		}
+
+		if (speed != null)
+		{
+			jsonStringer.key("speed");
+			jsonStringer.value(speed);
+		}
+
+		jsonStringer.endObject();
+		jsonStringer.endObject();
 	}
 
 	@Override
