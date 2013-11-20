@@ -9,6 +9,7 @@ import android.util.Log;
 import mobsens.collector.communications.ConnectedService;
 import mobsens.collector.consumers.FileStreamingConsumer;
 import mobsens.collector.consumers.SSFStreamingConsumer;
+import mobsens.collector.consumers.WFJStreamingConsumer;
 import mobsens.collector.drivers.annotations.AnnotationDriver;
 import mobsens.collector.drivers.connectivity.ConnectivityDriver;
 import mobsens.collector.drivers.locations.LocationDriver;
@@ -22,6 +23,8 @@ import mobsens.collector.drivers.sensors.SensorDriver;
 import mobsens.collector.intents.IntentLog;
 import mobsens.collector.intents.IntentUpload;
 import mobsens.collector.pipeline.Consumer;
+import mobsens.collector.pipeline.basics.Filter;
+import mobsens.collector.wfj.WFJ;
 
 public class Collector extends ConnectedService
 {
@@ -35,7 +38,7 @@ public class Collector extends ConnectedService
 		{
 			IntentLog.sendBroadcast(Collector.this, new Date(), "Collector", "Starting collection", null);
 
-			fileConsumer.setLocation("ssf/" + item.title + new Date().getTime() + ".ssf");
+			wfjStreamer.setLocation("wfj/" + item.title + new Date().getTime() + ".wfj");
 
 			for (SensorDriver sensorDriver : sensorDrivers)
 			{
@@ -67,11 +70,11 @@ public class Collector extends ConnectedService
 			connectivityDriver.stop();
 
 			annotationDriver.stop();
-
-			for (File file : new File(Collector.this.getFilesDir(), "ssf").listFiles())
-			{
-				IntentUpload.startService(Collector.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de:3000/recordings", file, "text/csv", "*/*", true);
-			}
+//
+//			for (File file : new File(Collector.this.getFilesDir(), "wfj").listFiles())
+//			{
+//				IntentUpload.startService(Collector.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de:3000/recordings", file, "text/csv", "*/*", true);
+//			}
 		}
 	};
 
@@ -100,7 +103,9 @@ public class Collector extends ConnectedService
 
 	private final AnnotationDriver annotationDriver;
 
-	private final FileStreamingConsumer<Object> fileConsumer;
+	private final WFJStreamingConsumer wfjStreamer;
+
+	private final Filter<WFJ> wfjFilter;
 
 	public Collector()
 	{
@@ -123,18 +128,21 @@ public class Collector extends ConnectedService
 
 		annotationDriver = new AnnotationDriver(this);
 
-		fileConsumer = new SSFStreamingConsumer(this, ID);
+		wfjStreamer = new WFJStreamingConsumer(this);
+
+		wfjFilter = new Filter<WFJ>(WFJ.class);
+		wfjFilter.setConsumer(wfjStreamer);
 
 		for (SensorDriver sensorDriver : sensorDrivers)
 		{
-			sensorDriver.setConsumer(fileConsumer);
+			sensorDriver.setConsumer(wfjFilter);
 		}
 
-		locationDriver.setConsumer(fileConsumer);
+		locationDriver.setConsumer(wfjFilter);
 
-		connectivityDriver.setConsumer(fileConsumer);
+		connectivityDriver.setConsumer(wfjFilter);
 
-		annotationDriver.setConsumer(fileConsumer);
+		annotationDriver.setConsumer(wfjFilter);
 	}
 
 	@Override
