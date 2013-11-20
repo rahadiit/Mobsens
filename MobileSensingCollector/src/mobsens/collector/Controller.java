@@ -1,5 +1,10 @@
 package mobsens.collector;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+
 import mobsens.collector.communications.ConnectingActivity;
 import mobsens.collector.drivers.messaging.LogDriver;
 import mobsens.collector.drivers.messaging.LogOutput;
@@ -37,7 +42,27 @@ public class Controller extends ConnectingActivity
 		@Override
 		public void consume(UploadResponseOutput item)
 		{
-			Log.i(item.handle, "Uploaded " + item.transmitted + " bytes at " + item.endTime + " with response " + item.response);
+			try
+			{
+				File file = new File(getExternalFilesDir(null), "responses/" + item.handle);
+
+				file.getParentFile().mkdirs();
+
+				FileOutputStream fileOutputStream = new FileOutputStream(file, true);
+				PrintStream printStream = new PrintStream(fileOutputStream);
+
+				printStream.println(item.response);
+
+				printStream.close();
+				fileOutputStream.close();
+
+				Log.i(item.handle, "Uploaded " + item.transmitted + " bytes at " + item.endTime + ", responsefile written");
+			}
+			catch (IOException e)
+			{
+				Log.e("File error", e.getLocalizedMessage(), e);
+			}
+
 		}
 	};
 
