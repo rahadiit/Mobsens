@@ -2,7 +2,12 @@ package mobsens.collector.drivers.annotations;
 
 import java.util.Date;
 
-public class AnnotationOutput
+import mobsens.collector.wfj.basics.BasicWFJ;
+
+import org.json.JSONException;
+import org.json.JSONStringer;
+
+public class AnnotationOutput extends BasicWFJ
 {
 	/**
 	 * Zeit
@@ -48,6 +53,23 @@ public class AnnotationOutput
 		}
 		else if (!value.equals(other.value)) return false;
 		return true;
+	}
+
+	@Override
+	protected void generateTo(JSONStringer jsonStringer) throws JSONException
+	{
+		jsonStringer.object();
+		jsonStringer.key("annotation");
+		jsonStringer.object();
+		
+		jsonStringer.key("time");
+		jsonStringer.value(time.getTime());
+		
+		jsonStringer.key("value");
+		jsonStringer.value(value);
+		
+		jsonStringer.endObject();
+		jsonStringer.endObject();
 	}
 
 	@Override

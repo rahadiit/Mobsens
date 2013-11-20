@@ -2,9 +2,13 @@ package mobsens.collector.drivers.connectivity;
 
 import java.util.Date;
 
+import org.json.JSONException;
+import org.json.JSONStringer;
+
+import mobsens.collector.wfj.basics.BasicWFJ;
 import android.net.NetworkInfo.State;
 
-public class ConnectivityOutput
+public class ConnectivityOutput extends BasicWFJ
 {
 	/**
 	 * Zeit
@@ -62,6 +66,29 @@ public class ConnectivityOutput
 		else if (!time.equals(other.time)) return false;
 		if (type != other.type) return false;
 		return true;
+	}
+
+	@Override
+	protected void generateTo(JSONStringer jsonStringer) throws JSONException
+	{
+		jsonStringer.object();
+		jsonStringer.key("connectivity");
+		jsonStringer.object();
+
+		jsonStringer.key("time");
+		jsonStringer.value(time.getTime());
+
+		jsonStringer.key("type");
+		jsonStringer.value(type);
+
+		jsonStringer.key("subtype");
+		jsonStringer.value(subtype);
+
+		jsonStringer.key("state");
+		jsonStringer.value(state.toString());
+
+		jsonStringer.endObject();
+		jsonStringer.endObject();
 	}
 
 	@Override
