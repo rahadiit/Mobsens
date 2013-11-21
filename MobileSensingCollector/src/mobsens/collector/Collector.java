@@ -1,14 +1,15 @@
 package mobsens.collector;
 
-import java.io.File;
 import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONStringer;
 
 import android.content.Intent;
 import android.hardware.Sensor;
+import android.provider.Settings.Secure;
 import android.util.Log;
 import mobsens.collector.communications.ConnectedService;
-import mobsens.collector.consumers.FileStreamingConsumer;
-import mobsens.collector.consumers.SSFStreamingConsumer;
 import mobsens.collector.consumers.WFJStreamingConsumer;
 import mobsens.collector.drivers.annotations.AnnotationDriver;
 import mobsens.collector.drivers.connectivity.ConnectivityDriver;
@@ -21,24 +22,35 @@ import mobsens.collector.drivers.messaging.StopCollectorDriver;
 import mobsens.collector.drivers.messaging.StopCollectorOutput;
 import mobsens.collector.drivers.sensors.SensorDriver;
 import mobsens.collector.intents.IntentLog;
-import mobsens.collector.intents.IntentUpload;
 import mobsens.collector.pipeline.Consumer;
 import mobsens.collector.pipeline.basics.Filter;
 import mobsens.collector.wfj.WFJ;
+import mobsens.collector.wfj.basics.BasicWFJ;
 
 public class Collector extends ConnectedService
 {
-	@Deprecated
-	public static final String ID = "TUID" + Double.doubleToLongBits(Math.random());
+	// public static final String
+
+	private String did;
 
 	public final Consumer<StartCollectorOutput> START_COLLECTOR_ENDPOINT = new Consumer<StartCollectorOutput>()
 	{
 		@Override
-		public void consume(StartCollectorOutput item)
+		public void consume(final StartCollectorOutput item)
 		{
 			IntentLog.sendBroadcast(Collector.this, new Date(), "Collector", "Starting collection", null);
 
 			wfjStreamer.setLocation("wfj/" + item.title + new Date().getTime() + ".wfj");
+
+			// Rec-Token schreiben
+			wfjStreamer.consume(new BasicWFJ()
+			{
+				@Override
+				public void generateTo(JSONStringer stringer) throws JSONException
+				{
+					stringer.object().key("rec").object().key("title").value(item.title).key("did").value(did).endObject().endObject();
+				}
+			});
 
 			for (SensorDriver sensorDriver : sensorDrivers)
 			{
@@ -104,6 +116,8 @@ public class Collector extends ConnectedService
 
 	public Collector()
 	{
+		did = "DEV" + Integer.toHexString((Secure.getString(getContentResolver(), Secure.ANDROID_ID)).hashCode());
+
 		startCollectorDriver = new StartCollectorDriver(this);
 		startCollectorDriver.setConsumer(START_COLLECTOR_ENDPOINT);
 
@@ -170,7 +184,7 @@ public class Collector extends ConnectedService
 	protected void onConnected()
 	{
 		Log.i("Collector", "onConnected()");
-		
+
 		IntentLog.sendBroadcast(this, new Date(), "Collector servcie", "Connected", null);
 	}
 
@@ -178,7 +192,7 @@ public class Collector extends ConnectedService
 	protected void onDisconnected()
 	{
 		Log.i("Collector", "onDisconnected()");
-		
+
 		IntentLog.sendBroadcast(this, new Date(), "Collector servcie", "Disconnected", null);
 	}
 
