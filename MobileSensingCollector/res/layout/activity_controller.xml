@@ -41,7 +41,7 @@
         android:id="@+id/controller_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/controller_quit"
+        android:layout_alignLeft="@id/controller_quit"
         android:layout_alignRight="@id/controller_quit"
         android:layout_below="@+id/controller_quit"
         android:layout_marginTop="15dp"
@@ -51,24 +51,33 @@
         <requestFocus />
     </EditText>
 
+    <CheckBox
+        android:id="@+id/controller_keeplocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/controller_title"
+        android:layout_below="@id/controller_title"
+        android:layout_marginTop="15dp"
+        android:text="Make local copy" />
+
     <Button
         android:id="@+id/controller_upload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/controller_title"
         android:layout_alignRight="@id/controller_title"
         android:layout_below="@id/controller_title"
         android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/controller_keeplocal"
         android:text="Upload" />
 
     <TextView
         android:id="@+id/controller_log"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/controller_upload"
+        android:layout_alignLeft="@id/controller_keeplocal"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@id/controller_upload"
-        android:layout_below="@+id/controller_upload"
+        android:layout_below="@id/controller_keeplocal"
         android:layout_marginTop="15dp"
         android:typeface="monospace" />
 
