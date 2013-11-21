@@ -33,8 +33,43 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/controller_stop"
         android:layout_alignRight="@+id/controller_stop"
-        android:layout_below="@+id/controller_start"
-        android:layout_marginTop="80dp"
+        android:layout_below="@id/controller_stop"
+        android:layout_marginTop="15dp"
         android:text="Quit collector" />
+
+    <EditText
+        android:id="@+id/controller_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/controller_quit"
+        android:layout_alignRight="@id/controller_quit"
+        android:layout_below="@+id/controller_quit"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:text="Titel" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/controller_upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/controller_title"
+        android:layout_alignRight="@id/controller_title"
+        android:layout_below="@id/controller_title"
+        android:layout_marginTop="15dp"
+        android:text="Upload" />
+
+    <TextView
+        android:id="@+id/controller_log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/controller_upload"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@id/controller_upload"
+        android:layout_below="@+id/controller_upload"
+        android:layout_marginTop="15dp"
+        android:typeface="monospace" />
 
 </RelativeLayout>
