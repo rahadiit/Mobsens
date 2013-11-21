@@ -141,7 +141,6 @@ public class Controller extends ConnectingActivity
 			{
 				// Raute äußerst Hacky
 				final boolean klc = ((CheckBox) findViewById(R.id.controller_keeplocal)).isChecked();
-				final String sep = System.getProperty("file.separator");
 				final byte[] cache;
 
 				if (klc)
