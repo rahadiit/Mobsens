@@ -4,15 +4,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Date;
+import java.util.regex.Pattern;
 
 import mobsens.collector.communications.ConnectingActivity;
 import mobsens.collector.drivers.messaging.LogDriver;
 import mobsens.collector.drivers.messaging.LogOutput;
 import mobsens.collector.drivers.messaging.UploadResponseDriver;
 import mobsens.collector.drivers.messaging.UploadResponseOutput;
+import mobsens.collector.intents.IntentLog;
 import mobsens.collector.intents.IntentQuitCollector;
 import mobsens.collector.intents.IntentStartCollector;
 import mobsens.collector.intents.IntentStopCollector;
+import mobsens.collector.intents.IntentUpload;
 import mobsens.collector.pipeline.Consumer;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -21,6 +25,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class Controller extends ConnectingActivity
 {
@@ -29,6 +34,17 @@ public class Controller extends ConnectingActivity
 		@Override
 		public void consume(LogOutput item)
 		{
+			String text = item.title + "\r\n  " + item.subtitle;
+
+			if (item.description != null)
+			{
+				text += "\r\n" + item.description.replaceAll("(?m)^", "> ");
+			}
+
+			TextView tv = (TextView) findViewById(R.id.controller_log);
+
+			tv.setText(text + "\r\n\r\n" + tv.getText());
+
 			Log.i(item.title, item.subtitle);
 
 			if (item.description != null)
@@ -56,6 +72,7 @@ public class Controller extends ConnectingActivity
 				printStream.close();
 				fileOutputStream.close();
 
+				IntentLog.sendBroadcast(Controller.this, item.endTime, "Upload complete", item.handle, item.transmitted + " bytes transmitted\r\nresponsefile written");
 				Log.i(item.handle, "Uploaded " + item.transmitted + " bytes at " + item.endTime + ", responsefile written");
 			}
 			catch (IOException e)
@@ -95,7 +112,7 @@ public class Controller extends ConnectingActivity
 			@Override
 			public void onClick(View v)
 			{
-				IntentStartCollector.sendBroadcast(Controller.this, "Title");
+				IntentStartCollector.sendBroadcast(Controller.this, ((TextView) findViewById(R.id.controller_title)).getText().toString());
 			}
 		});
 
@@ -114,6 +131,20 @@ public class Controller extends ConnectingActivity
 			public void onClick(View v)
 			{
 				IntentQuitCollector.sendBroadcast(Controller.this);
+			}
+		});
+
+		((Button) findViewById(R.id.controller_upload)).setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				for (File file : new File(Controller.this.getFilesDir(), "wfj").listFiles())
+				{
+					IntentLog.sendBroadcast(Controller.this, new Date(), "Uploading", file.getName(), null);
+
+					IntentUpload.startService(Controller.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de:3000/recordings", file, "application/json", "*/*", true);
+				}
 			}
 		});
 	}
