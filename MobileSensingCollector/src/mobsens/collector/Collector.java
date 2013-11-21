@@ -116,8 +116,6 @@ public class Collector extends ConnectedService
 
 	public Collector()
 	{
-		did = "DEV" + Integer.toHexString((Secure.getString(getContentResolver(), Secure.ANDROID_ID)).hashCode());
-
 		startCollectorDriver = new StartCollectorDriver(this);
 		startCollectorDriver.setConsumer(START_COLLECTOR_ENDPOINT);
 
@@ -158,6 +156,8 @@ public class Collector extends ConnectedService
 	public void onCreate()
 	{
 		super.onCreate();
+
+		did = "DEV" + Integer.toHexString((Secure.getString(getContentResolver(), Secure.ANDROID_ID)).hashCode());
 
 		startCollectorDriver.start();
 		stopCollectorDriver.start();
