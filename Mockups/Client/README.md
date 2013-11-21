@@ -1,1 +1,1 @@
-Ordner für Mockups
+Ordner für Mockups des Clients
