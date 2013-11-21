@@ -1,12 +1,11 @@
 package mobsens.collector;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Date;
-import java.util.regex.Pattern;
-
 import mobsens.collector.communications.ConnectingActivity;
 import mobsens.collector.drivers.messaging.LogDriver;
 import mobsens.collector.drivers.messaging.LogOutput;
@@ -25,6 +24,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 public class Controller extends ConnectingActivity
@@ -60,7 +60,7 @@ public class Controller extends ConnectingActivity
 		{
 			try
 			{
-				File file = new File(getExternalFilesDir(null), "responses/" + item.handle);
+				File file = new File(getExternalFilesDir(null), "responses/" + item.handle+".response");
 
 				file.getParentFile().mkdirs();
 
@@ -139,8 +139,48 @@ public class Controller extends ConnectingActivity
 			@Override
 			public void onClick(View v)
 			{
+				// Raute äußerst Hacky
+				final boolean klc = ((CheckBox) findViewById(R.id.controller_keeplocal)).isChecked();
+				final String sep = System.getProperty("file.separator");
+				final byte[] cache;
+
+				if (klc)
+				{
+					cache = new byte[512];
+				}
+				else
+				{
+					cache = null;
+				}
+
 				for (File file : new File(Controller.this.getFilesDir(), "wfj").listFiles())
 				{
+					if (klc)
+					{
+						File copy = new File(Controller.this.getExternalFilesDir(null), "wfj/" + file.getName());
+
+						copy.getParentFile().mkdirs();
+
+						try
+						{
+							FileOutputStream fileOutputStream = new FileOutputStream(copy);
+							FileInputStream fileInputStream = new FileInputStream(file);
+
+							int read;
+							while ((read = fileInputStream.read(cache)) > 0)
+							{
+								fileOutputStream.write(cache, 0, read);
+							}
+
+							fileInputStream.close();
+							fileOutputStream.close();
+						}
+						catch (IOException e)
+						{
+							IntentLog.sendBroadcast(Controller.this, new Date(), "Could not create local copy of " + file.getName(), e.getMessage(), null);
+						}
+					}
+
 					IntentLog.sendBroadcast(Controller.this, new Date(), "Uploading", file.getName(), null);
 
 					IntentUpload.startService(Controller.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de:3000/recordings", file, "application/json", "*/*", true);
