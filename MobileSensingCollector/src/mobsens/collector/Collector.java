@@ -170,12 +170,16 @@ public class Collector extends ConnectedService
 	protected void onConnected()
 	{
 		Log.i("Collector", "onConnected()");
+		
+		IntentLog.sendBroadcast(this, new Date(), "Collector servcie", "Connected", null);
 	}
 
 	@Override
 	protected void onDisconnected()
 	{
 		Log.i("Collector", "onDisconnected()");
+		
+		IntentLog.sendBroadcast(this, new Date(), "Collector servcie", "Disconnected", null);
 	}
 
 }
