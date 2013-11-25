@@ -6,6 +6,7 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONStringer;
 
+import android.hardware.Sensor;
 import mobsens.collector.wfj.basics.BasicWFJ;
 
 /**
@@ -27,7 +28,7 @@ public class SensorOutput extends BasicWFJ
 	public final int accuracy;
 
 	/**
-	 * Quellsensor
+	 * Quellsensor, Werte korrespondieren zu den in {@link Sensor} definierten Types
 	 */
 	public final int sensor;
 
