@@ -182,7 +182,8 @@ public class Controller extends ConnectingActivity
 
 					IntentLog.sendBroadcast(Controller.this, new Date(), "Uploading", file.getName(), null);
 
-					IntentUpload.startService(Controller.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de:3000/recordings", file, "application/json", "*/*", true);
+//					IntentUpload.startService(Controller.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de:3000/recordings", file, "application/json", "*/*", true);
+					IntentUpload.startService(Controller.this, file.getName(), "http://userpages.uni-koblenz.de/~lukashaertel/apps/direct/direct.php", file, "application/json", "*/*", true);
 				}
 			}
 		});
