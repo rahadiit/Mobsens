@@ -1,0 +1,22 @@
+\section{Zu klassifizierende Ereignisse}
+Zunächst werden die Ereignisse/Klassen genauer umrissen, welche hoffentlich anhand der Sensordaten unterscheidbar sind.
+
+\subsection{Nicht-Ereigis/Grundrauschen}
+Um Ereignisse als Abweichung eines Normalzustandes erkennen zu können, muss dieser zuerst klassifiziert werden.
+Eine Strecke wird physikalisch gesehen nie hundertprozentig ereignisfrei sein, da immer minimale Erschütterungen oder minimale Beschleunigungs- bzw. Bremsvorgänge auftreten.
+Diese sind allerdings nicht so signifikant, dass sie eine Fahrtbeeintrechtigung darstellen.
+Genauso gehört ein sanftes Abbiegen in einer Kurve zum normalen Fahrverhalten.
+Solche Messungen können daher als eine Art Grundrauschen betrachtet werden.
+
+\subsection{Abruptes Bremsen/Beschleunigen}
+Ein abruptes Bremsen oder gar Anhalten aufgrund von Hindernissen bzw. hoher Verkehrsdichte ist eine offensichtliche Beeinträchtigung einer Fahrt.
+Folgen auf solche Bremsvorgänge direkt eine ebenso abrupte Beschleunigungen (\textit{Stop-and-Go}), indiziert dies, dass das Bremens ungewollt war, also eine Beeinträchtigung der Fahrt.
+
+\subsection{Ausweichen}
+Ausweichbewegungen deuten meist auch auf Hindernisse hin und sind somit auch ein Indikator für den Verkehrsfluss. 
+Zusätzlich zu diesen Events können weitere Berechnungen auf den Daten getätigt werden um noch mehr Informationsgehalt für eine Streckenklassifizierung zu tätigen. Beispielsweise wäre dies die Durchschnittsgeschwindigkeit.
+Der Hauptaspekt für das Projekt liegt jedoch darin die oben genannten Events in einer Aufzeichnung zu erkennen und dem Benutzer darzustellen. Die Gesamtklassifikation eine Strecke und das Hinzufügen von weiteren Events bietet eine optionale Erweiterung. Weitere optionale Informationen wären beispielsweise Straßenbelag oder Temperatur/Wetter.
+
+\subsection{Erschütterung durch Hindernis}
+Eine Erschütterung stellt für einen Fahrradfahrer eine Behinderung, bzw. eine Störung des Verkehrsflusses dar. 
+Erschütterungen werden meist durch kleine Hindernisse verursacht, denen nicht ausgewichen wird, z.B.: Borsteine, Schlaglöcher, Kopfsteinpflaster, etc.
