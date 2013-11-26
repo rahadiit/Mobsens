@@ -6,14 +6,18 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.FileEntity;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONStringer;
 
 import mobsens.collector.intents.IntentUpload;
 import mobsens.collector.intents.IntentUploadResponse;
@@ -33,6 +37,9 @@ public class Uploader extends IntentService
 	{
 		// Extras auslesen
 		final String extra_handle = request.getStringExtra(IntentUpload.EXTRA_HANDLE);
+		final String extra_login = request.getStringExtra(IntentUpload.EXTRA_LOGIN);
+		final String extra_login_user = request.getStringExtra(IntentUpload.EXTRA_LOGIN_USER);
+		final String extra_login_pass = request.getStringExtra(IntentUpload.EXTRA_LOGIN_PASS);
 		final String extra_destination = request.getStringExtra(IntentUpload.EXTRA_DESTINATION);
 		final Serializable extra_file = request.getSerializableExtra(IntentUpload.EXTRA_FILE);
 		final String extra_contentType = request.getStringExtra(IntentUpload.EXTRA_CONTENT_TYPE);
@@ -41,6 +48,9 @@ public class Uploader extends IntentService
 
 		// Parameter erstellen
 		final String handle = extra_handle;
+		final String login = extra_login;
+		final String login_user = extra_login_user;
+		final String login_pass = extra_login_pass;
 		final String destination = extra_destination;
 		final File file = (File) extra_file;
 		final String contentType = extra_contentType;
@@ -68,8 +78,28 @@ public class Uploader extends IntentService
 			else
 			{
 				// Client erstellen und konfigurieren
-				final HttpClient httpClient = new DefaultHttpClient();
+				final DefaultHttpClient httpClient = new DefaultHttpClient();
 				httpClient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+
+				final HttpPost loginPost = new HttpPost(login);
+
+				try
+				{
+					final StringEntity loginEntity = new StringEntity(new JSONStringer().object().key("user").object().key("email").value(login_user).key("password").value(login_pass)
+							.endObject().endObject().toString());
+					loginEntity.setContentType("application/json");
+					loginPost.setEntity(loginEntity);
+
+					final HttpResponse loginResponse = httpClient.execute(loginPost);
+
+					final String loginResponseString = EntityUtils.toString(loginResponse.getEntity());
+
+					Log.d("Login", loginResponseString);
+				}
+				catch (JSONException e)
+				{
+					throw new RuntimeException(e);
+				}
 
 				// Post erstellen und konfigurieren
 				final HttpPost httpPost = new HttpPost(destination);

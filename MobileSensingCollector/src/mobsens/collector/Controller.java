@@ -60,7 +60,7 @@ public class Controller extends ConnectingActivity
 		{
 			try
 			{
-				File file = new File(getExternalFilesDir(null), "responses/" + item.handle+".response");
+				File file = new File(getExternalFilesDir(null), "responses/" + item.handle + ".response");
 
 				file.getParentFile().mkdirs();
 
@@ -182,7 +182,8 @@ public class Controller extends ConnectingActivity
 
 					IntentLog.sendBroadcast(Controller.this, new Date(), "Uploading", file.getName(), null);
 
-					IntentUpload.startService(Controller.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de:3000/recordings", file, "application/json", "*/*", true);
+					IntentUpload.startService(Controller.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de/users/sign_in.json", "mlukas@gmx.net", "12345678",
+							"http://mobilesensing.west.uni-koblenz.de/recordings/upload", file, "application/text", "*/*", true);
 				}
 			}
 		});
