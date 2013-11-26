@@ -1,0 +1,57 @@
+\documentclass[a4paper]{scrreprt}
+ 
+\usepackage{enumitem}
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage[bookmarks,bookmarksnumbered]{hyperref}
+
+\title{Mobile Sensors\\Klassifikation}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\input{./tex/Einleitung.tex}
+
+\chapter{Ereignis Klassifikation}
+\input{./tex/EreignisKlassifikation.tex}
+\input{./tex/ZuKlassifizierendeEreignisse.tex}
+\input{./tex/SammelnVonTrainingsdaten.tex}
+
+
+\section{Auswertung}
+\subsection{Auswertung der Traingsdaten}
+\subsubsection{Nicht-Ereigis/Grundrauschen}
+
+
+\subsubsection{Abruptes Bremsen/Beschleunigen}
+\textbf{Vermutung:}
+Accelerometerdaten zeigen starke Ausschläge und lassen sich mittels Thresholds transformieren.
+\newline
+\textbf{Sensoren:}
+Accelerometer / Linear Acceleration
+\subsubsection{Ausweichen}
+\textbf{Vermutung:}
+Nach einem Ausschlag in eine Richtung muss ein negativer Ausschlag in Gegenrichtung vorkommen.
+\newline
+\textbf{Sensoren:}
+Accelerometer / Gyroskop
+
+\subsubsection{Erschütterung durch Hindernis}
+\textbf{Vermutung:}
+Hoher Bordstein
+Starker Ausschlag in eine Richtung
+\newline
+\textbf{Sensoren:}
+Accelerometer / Gravity
+
+\subsection{Auswahl geeigneter Klassifikationstechniken}
+
+\chapter{Strecken Klassifikation}
+
+
+\end{document}

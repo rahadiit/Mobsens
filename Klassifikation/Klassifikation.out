@@ -1,0 +1,15 @@
+\BOOKMARK [0][-]{chapter.1}{1 Einleitung}{}% 1
+\BOOKMARK [0][-]{chapter.2}{2 Ereignis Klassifikation}{}% 2
+\BOOKMARK [1][-]{section.2.1}{2.1 Zu klassifizierende Ereignisse}{chapter.2}% 3
+\BOOKMARK [2][-]{subsection.2.1.1}{2.1.1 Nicht-Ereigis/Grundrauschen}{section.2.1}% 4
+\BOOKMARK [2][-]{subsection.2.1.2}{2.1.2 Abruptes Bremsen/Beschleunigen}{section.2.1}% 5
+\BOOKMARK [2][-]{subsection.2.1.3}{2.1.3 Ausweichen}{section.2.1}% 6
+\BOOKMARK [2][-]{subsection.2.1.4}{2.1.4 Ersch\374tterung durch Hindernis}{section.2.1}% 7
+\BOOKMARK [1][-]{section.2.2}{2.2 Sammeln von Trainingsdaten}{chapter.2}% 8
+\BOOKMARK [2][-]{subsection.2.2.1}{2.2.1 Lagerung des Smartphones}{section.2.2}% 9
+\BOOKMARK [2][-]{subsection.2.2.2}{2.2.2 Untergrund}{section.2.2}% 10
+\BOOKMARK [2][-]{subsection.2.2.3}{2.2.3 Ereigniss Auspr\344gung}{section.2.2}% 11
+\BOOKMARK [1][-]{section.2.3}{2.3 Auswertung}{chapter.2}% 12
+\BOOKMARK [2][-]{subsection.2.3.1}{2.3.1 Auswertung der Traingsdaten}{section.2.3}% 13
+\BOOKMARK [2][-]{subsection.2.3.2}{2.3.2 Auswahl geeigneter Klassifikationstechniken}{section.2.3}% 14
+\BOOKMARK [0][-]{chapter.3}{3 Strecken Klassifikation}{}% 15
