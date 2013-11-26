@@ -21,7 +21,7 @@ public class SensorDriver extends BasicGenerator<SensorOutput> implements Driver
 			if (consumer != null)
 			{
 				// Felder erstellen
-				final Date time = new Date(new Date().getTime() + (event.timestamp - System.nanoTime()) / 1000000L);
+				final Date time = new Date(System.currentTimeMillis() + (event.timestamp - System.nanoTime()) / 1000000L);
 				final int accuracy = event.accuracy;
 				final float[] values = event.values;
 
