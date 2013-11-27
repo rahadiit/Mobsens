@@ -153,11 +153,4 @@ public class LocationOutput extends BasicWFJ
 		jsonStringer.endObject();
 		jsonStringer.endObject();
 	}
-
-	@Override
-	public String toString()
-	{
-		return "LocationOutput [time=" + time + ", latitude=" + latitude + ", longitude=" + longitude + ", accuracy=" + accuracy + ", altitude=" + altitude + ", bearing=" + bearing
-				+ ", speed=" + speed + "]";
-	}
 }
