@@ -6,11 +6,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Date;
+
 import mobsens.collector.communications.ConnectingActivity;
 import mobsens.collector.drivers.messaging.LogDriver;
 import mobsens.collector.drivers.messaging.LogOutput;
 import mobsens.collector.drivers.messaging.UploadResponseDriver;
 import mobsens.collector.drivers.messaging.UploadResponseOutput;
+import mobsens.collector.intents.IntentAnnotation;
 import mobsens.collector.intents.IntentLog;
 import mobsens.collector.intents.IntentQuitCollector;
 import mobsens.collector.intents.IntentStartCollector;
@@ -185,6 +187,15 @@ public class Controller extends ConnectingActivity
 					IntentUpload.startService(Controller.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de/users/sign_in.json", "mlukas@gmx.net", "12345678",
 							"http://mobilesensing.west.uni-koblenz.de/recordings/upload", file, "application/text", "*/*", true);
 				}
+			}
+		});
+
+		((Button) findViewById(R.id.henny_boop)).setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				IntentAnnotation.sendBroadcast(Controller.this, new Date(), "boop");
 			}
 		});
 	}

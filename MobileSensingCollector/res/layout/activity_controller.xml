@@ -76,9 +76,19 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/controller_keeplocal"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@id/controller_upload"
+        android:layout_alignRight="@+id/controller_keeplocal"
         android:layout_below="@id/controller_keeplocal"
         android:layout_marginTop="15dp"
         android:typeface="monospace" />
+
+    <Button
+        android:id="@+id/henny_boop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/controller_log"
+        android:layout_alignLeft="@+id/controller_upload"
+        android:layout_alignRight="@+id/controller_title"
+        android:layout_alignTop="@+id/controller_log"
+        android:text="Boop" />
 
 </RelativeLayout>
