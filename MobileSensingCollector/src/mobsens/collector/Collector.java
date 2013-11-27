@@ -12,6 +12,7 @@ import android.util.Log;
 import mobsens.collector.communications.ConnectedService;
 import mobsens.collector.consumers.WFJStreamingConsumer;
 import mobsens.collector.drivers.annotations.AnnotationDriver;
+import mobsens.collector.drivers.annotations.AnnotationOutput;
 import mobsens.collector.drivers.connectivity.ConnectivityDriver;
 import mobsens.collector.drivers.locations.LocationDriver;
 import mobsens.collector.drivers.messaging.QuitCollectorDriver;
@@ -51,6 +52,7 @@ public class Collector extends ConnectedService
 					stringer.object().key("rec").object().key("title").value(item.title).key("did").value(did).endObject().endObject();
 				}
 			});
+			wfjStreamer.consume(new AnnotationOutput(new Date(), "Title: " + item.title));
 
 			for (SensorDriver sensorDriver : sensorDrivers)
 			{
