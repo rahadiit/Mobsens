@@ -1,6 +1,7 @@
 package mobsens.collector.wfj.basics;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.json.JSONStringer;
 
 import mobsens.collector.wfj.WFJ;
@@ -50,4 +51,21 @@ public abstract class BasicWFJ implements WFJ
 	}
 
 	protected abstract void generateTo(JSONStringer jsonStringer) throws JSONException;
+
+	@Override
+	public String toString()
+	{
+		JSONStringer stringer = new JSONStringer();
+		
+		try
+		{
+			generateTo(stringer);
+		}
+		catch (JSONException e)
+		{
+			return "{\"error\":" + JSONObject.quote(e.getMessage()) + "}";
+		}
+
+		return stringer.toString();
+	}
 }

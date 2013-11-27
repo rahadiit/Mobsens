@@ -90,11 +90,4 @@ public class ConnectivityOutput extends BasicWFJ
 		jsonStringer.endObject();
 		jsonStringer.endObject();
 	}
-
-	@Override
-	public String toString()
-	{
-		return "ConnectivityOutput [time=" + time + ", type=" + type + ", subtype=" + subtype + ", state=" + state + "]";
-	}
-
 }

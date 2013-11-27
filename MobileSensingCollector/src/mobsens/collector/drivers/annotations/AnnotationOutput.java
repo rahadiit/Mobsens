@@ -71,10 +71,4 @@ public class AnnotationOutput extends BasicWFJ
 		jsonStringer.endObject();
 		jsonStringer.endObject();
 	}
-
-	@Override
-	public String toString()
-	{
-		return "AnnotationOutput [time=" + time + ", value=" + value + "]";
-	}
 }
