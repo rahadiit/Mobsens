@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Recording:</strong>
+  <%= @rotation_vector.recording %>
+</p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @rotation_vector.time %>
+</p>
+
+<p>
+  <strong>Xsintheta:</strong>
+  <%= @rotation_vector.xSinTheta %>
+</p>
+
+<p>
+  <strong>Ysintheta:</strong>
+  <%= @rotation_vector.ySinTheta %>
+</p>
+
+<p>
+  <strong>Zsintheta:</strong>
+  <%= @rotation_vector.zSinTheta %>
+</p>
+
+<%= link_to 'Edit', edit_rotation_vector_path(@rotation_vector) %> |
+<%= link_to 'Back', rotation_vectors_path %>

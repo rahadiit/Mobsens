@@ -1,0 +1,35 @@
+<h1>Listing rotation_vectors</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Recording</th>
+      <th>Time</th>
+      <th>Xsintheta</th>
+      <th>Ysintheta</th>
+      <th>Zsintheta</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @rotation_vectors.each do |rotation_vector| %>
+      <tr>
+        <td><%= rotation_vector.recording %></td>
+        <td><%= rotation_vector.time %></td>
+        <td><%= rotation_vector.xSinTheta %></td>
+        <td><%= rotation_vector.ySinTheta %></td>
+        <td><%= rotation_vector.zSinTheta %></td>
+        <td><%= link_to 'Show', rotation_vector %></td>
+        <td><%= link_to 'Edit', edit_rotation_vector_path(rotation_vector) %></td>
+        <td><%= link_to 'Destroy', rotation_vector, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Rotation vector', new_rotation_vector_path %>

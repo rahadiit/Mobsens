@@ -1,0 +1,5 @@
+time,longitude,latitude,speed,bearing,accuracy
+<% @locations.each do |b|%>
+<%= b.get_milliseconds %>,<%= b.longitude %>,<%= b.latitude %>,<%= b.speed %>,<%= b.bearing %>,<%= b.accuracy %>
+<% end %>
+

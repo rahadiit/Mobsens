@@ -1,0 +1,21 @@
+<h1>Devices</h1>
+
+<table class="table table-striped">
+
+		<tr>
+			<th>Identifier</th>
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+
+		<% @devices.each do |device| %>
+		<tr>
+			<td><%= device.identifier %></td>
+			<td><%= render :partial => "shared/link_button", :locals => { link: device_path(device), caption:'Overview', icon:'list'} %></td>
+			<td><%= render :partial => "shared/link_button", :locals => { link: edit_device_path(device), caption:'Edit', icon:'edit'} %></td>
+			<td><%= render :partial => "shared/link_button", :locals => { link: device_path(device), caption:'Delete', icon:'trash', confirm: true, method:'delete'} %></td>
+		</tr>
+		<% end %>
+
+</table>

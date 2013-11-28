@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Recording:</strong>
+  <%= @battery.recording %>
+</p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @battery.time %>
+</p>
+
+<p>
+  <strong>Level:</strong>
+  <%= @battery.level %>
+</p>
+
+<p>
+  <strong>Scale:</strong>
+  <%= @battery.scale %>
+</p>
+
+<%= link_to 'Edit', edit_battery_path(@battery) %> |
+<%= link_to 'Back', batteries_path %>

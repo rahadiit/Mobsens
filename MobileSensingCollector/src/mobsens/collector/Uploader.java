@@ -108,7 +108,10 @@ public class Uploader extends IntentService
 
 				// Zu sendendes Entity erstellen und konfigurieren
 				final FileEntity requestEntity = new FileEntity(file, contentType);
-
+				
+				// MIME-Type für Upload
+				requestEntity.setContentType("application/text");
+				
 				// POST mit Entity befüllen
 				httpPost.setEntity(requestEntity);
 

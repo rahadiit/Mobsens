@@ -1,0 +1,35 @@
+<h1>Listing accelerometers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Recording</th>
+      <th>Time</th>
+      <th>X</th>
+      <th>Y</th>
+      <th>Z</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @accelerometers.each do |accelerometer| %>
+      <tr>
+        <td><%= accelerometer.recording %></td>
+        <td><%= accelerometer.time %></td>
+        <td><%= accelerometer.x %></td>
+        <td><%= accelerometer.y %></td>
+        <td><%= accelerometer.z %></td>
+        <td><%= link_to 'Show', accelerometer %></td>
+        <td><%= link_to 'Edit', edit_accelerometer_path(accelerometer) %></td>
+        <td><%= link_to 'Destroy', accelerometer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Accelerometer', new_accelerometer_path %>

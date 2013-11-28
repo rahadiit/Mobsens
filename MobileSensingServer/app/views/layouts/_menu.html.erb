@@ -1,0 +1,52 @@
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container" style="width:90%">
+		
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>	
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#">Mobile Sensors</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<% if user_signed_in? %>
+				<li <% if controller_name == 'recordings' %>class="active"<% end %>>
+					<%= link_to 'Recordings', recordings_path %>
+				</li>
+				<li <% if controller_name == 'devices' %>class="active"<% end %>>
+					<%= link_to 'Devices', devices_path %>
+				</li>
+				<% end %>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Client<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="#">Help</a>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<a href="https://github.com/MobileSensors/MobSens/blob/master/APK/27.11.2013/MobileSensingCollector.apk?raw=true">Download</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<% if user_signed_in? %>
+				<li>
+					<%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
+				</li>
+				<% else %>
+				<li>
+					<%= link_to "Sign in", '/users/sign_in' %>
+				</li>
+				<% end %>
+			</ul>
+		 	<% if user_signed_in? %>
+				<p class="navbar-text navbar-right">Signed in: <b><%= current_user.email %></b></p>	
+			<% end %>
+		</div>
+	</div>
+</div>

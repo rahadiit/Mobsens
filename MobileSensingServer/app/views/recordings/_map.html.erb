@@ -1,0 +1,5 @@
+<% if (recording.locations.count > 0)%>
+<%= render :partial => 'locations/map', :locals => {:locations => recording.locations} %>
+<% else %>
+No locations were recorded.
+<% end %>

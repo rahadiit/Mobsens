@@ -1,0 +1,35 @@
+<h1>Listing gyroscopes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Recording</th>
+      <th>Time</th>
+      <th>Rx</th>
+      <th>Ry</th>
+      <th>Rz</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @gyroscopes.each do |gyroscope| %>
+      <tr>
+        <td><%= gyroscope.recording %></td>
+        <td><%= gyroscope.time %></td>
+        <td><%= gyroscope.rX %></td>
+        <td><%= gyroscope.rY %></td>
+        <td><%= gyroscope.rZ %></td>
+        <td><%= link_to 'Show', gyroscope %></td>
+        <td><%= link_to 'Edit', edit_gyroscope_path(gyroscope) %></td>
+        <td><%= link_to 'Destroy', gyroscope, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Gyroscope', new_gyroscope_path %>
