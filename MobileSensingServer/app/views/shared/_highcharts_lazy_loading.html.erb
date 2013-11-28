@@ -24,7 +24,7 @@ $(function() {
 			xAxis : {
 				type: 'datetime',
 				events : {
-					afterSetExtremes : afterSetExtremes,
+					afterSetExtremes : afterSetExtremes_<%= caption %>,
 				},
 
 			},
@@ -46,10 +46,8 @@ $(function() {
 	<% attributes.each do |attr| %>
 });
 	<% end %>
-	
 
-
-function afterSetExtremes(e) {
+function afterSetExtremes_<%= caption %>(e) {
 
 	console.log(e.max);
 
