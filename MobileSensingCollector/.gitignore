@@ -1,7 +1,3 @@
-# built application files
-*.apk
-*.ap_
-
 # files for the dex VM
 *.dex
 
@@ -11,6 +7,10 @@
 # generated files
 bin/
 gen/
+
+# APK für Tacking wieder eintragen
+!bin/*.apk
+!bin/*.ap_
 
 # Ignore gradle files
 .gradle/
