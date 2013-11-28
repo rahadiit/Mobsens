@@ -1,28 +1,34 @@
-== README
+= README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+== Database
+The application is developed for PostgreSQL.
+For development there is a preconfigured sqlite3 database.
 
-Things you may want to cover:
+== Libraries
+* Google Maps https://developers.google.com/maps
+* HighChartsJS http://www.highcharts.com
+* Bootstrap http://getbootstrap.com
 
-* Ruby version
+== Running Development Server
+  $ bundle install
+  $ rake db:migrate
+  $ rails server
 
-* System dependencies
+== Uploading Data
+data.txt:
+  {"sensor":{"time":1385061600380,"sensor":1,"values":[0.2587866187095642,-0.19068486988544464,9.806650161743164]}}
+  {"sensor":{"time":1385061600380,"sensor":2,"values":[1.3587866187095642,0.12068486988544464,1.006650161743164]}}
+  {"sensor":{"time":1385061600382,"sensor":4,"values":[0.358786618795642,-0.12068486988544464,3.006650161743164]}}
+  {"sensor":{"time":1385061600382,"sensor":5,"values":[0.358786618795642]}}
+  {"sensor":{"time":1385061600382,"sensor":6,"values":[0.358786618795642]}}
+  {"sensor":{"time":1385061600382,"sensor":8,"values":[0.358786618795642]}}
+  {"sensor":{"time":1385061600382,"sensor":9,"values":[0.358786618795642,-0.12068486988544464,3.006650161743164]}}
+  {"sensor":{"time":1385061600382,"sensor":10,"values":[0.358786618795642,-0.12068486988544464,3.006650161743164]}}
+  {"sensor":{"time":1385061600382,"sensor":11,"values":[0.358786618795642,-0.12068486988544464,3.006650161743164]}}
+  {"annotation": {"time": 1385061600380, "value": "Some Annotation"}}
+  {"location": {"time": 1385061600380, "longitude": 10.2, "latitude": 11.3, "speed": 10.3, "bearing": 12, "accuracy": 2}}
+  {"rec": {"did": "someID", "title": "Some Title"}}
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+run curl:
+  $ curl -v -H "Accept: application/json" -H "Content-type: application/json" -c cookies.txt -X POST --data '{"user":{"email":"your@ema.il","password":"yourpassword"}}' 'http://localhost:3000/users/sign_in.json'
+  $ curl -v -H "Accept: application/text" -H "Content-type: application/text" -c cookies.txt -X POST --data @data.txt 'http://localhost:3000/recordings/upload'
