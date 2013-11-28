@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Recording:</strong>
+  <%= @accelerometer.recording %>
+</p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @accelerometer.time %>
+</p>
+
+<p>
+  <strong>X:</strong>
+  <%= @accelerometer.x %>
+</p>
+
+<p>
+  <strong>Y:</strong>
+  <%= @accelerometer.y %>
+</p>
+
+<p>
+  <strong>Z:</strong>
+  <%= @accelerometer.z %>
+</p>
+
+<%= link_to 'Edit', edit_accelerometer_path(@accelerometer) %> |
+<%= link_to 'Back', accelerometers_path %>

@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Recording:</strong>
+  <%= @light.recording %>
+</p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @light.time %>
+</p>
+
+<p>
+  <strong>Ambientlight:</strong>
+  <%= @light.ambientLight %>
+</p>
+
+<%= link_to 'Edit', edit_light_path(@light) %> |
+<%= link_to 'Back', lights_path %>

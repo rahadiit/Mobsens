@@ -1,0 +1,8 @@
+<%= @callback %>([
+<% @sensors.each do |s| %>
+[Date.UTC(<%=
+	 s.time.strftime('%Y') + ',' +
+	 (s.time.strftime('%m').to_i-1).to_s + ',' +
+	 s.time.strftime('%d,%H,%M,%S,%L') %>), <%= eval('s.' + @attr) %>],
+<% end %>
+]);

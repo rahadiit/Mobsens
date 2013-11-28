@@ -1,0 +1,68 @@
+<div id="<%= caption %>_container" style="height: 400px; margin: 0 auto"></div>
+<script>
+
+$(function() {
+	
+	<% attributes.each do |attr| %>
+		$.getJSON('/<%= caption %>/recording/<%= sensors.first.recording.id %>.js?attr=<%= attr %>&callback=?', function(data_<%=attr%>) {
+	<% end %>	
+		
+		// create the chart
+		$('#<%= caption %>_container').highcharts({
+			chart : {
+				zoomType: 'x'
+			},
+
+			scrollbar: {
+				liveRedraw: false
+			},
+			
+			title: {
+				text: '<%= caption %>'
+			},
+			
+			xAxis : {
+				type: 'datetime',
+				events : {
+					afterSetExtremes : afterSetExtremes,
+				},
+
+			},
+
+            series: [
+            
+	<% attributes.each do |attr| %>
+	{
+                name: '<%= attr %>',
+                data: data_<%= attr %>
+   },
+	<% end %>	
+           ]
+		});
+	});
+
+
+	
+	<% attributes.each do |attr| %>
+});
+	<% end %>
+	
+
+
+function afterSetExtremes(e) {
+
+	console.log(e.max);
+
+	var chart = $('#<%= caption %>_container').highcharts();
+
+	chart.showLoading('Loading');
+
+	<% i = 0 %>	
+	<% attributes.each do |attr| %>
+	$.getJSON('/<%= caption %>/recording/<%= sensors.first.recording.id %>.js?attr=<%= attr %>&begin=' + e.min + '&end=' + e.max + '&callback=?', function(data) {
+		chart.series[<%= i %>].setData(data);		chart.hideLoading();
+	});
+	<% i = i + 1 %>
+	<% end %>
+}
+</script>

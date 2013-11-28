@@ -1,0 +1,31 @@
+<h1>Listing pressures</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Recording</th>
+      <th>Time</th>
+      <th>Pressure</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @pressures.each do |pressure| %>
+      <tr>
+        <td><%= pressure.recording %></td>
+        <td><%= pressure.time %></td>
+        <td><%= pressure.pressure %></td>
+        <td><%= link_to 'Show', pressure %></td>
+        <td><%= link_to 'Edit', edit_pressure_path(pressure) %></td>
+        <td><%= link_to 'Destroy', pressure, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Pressure', new_pressure_path %>

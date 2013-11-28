@@ -1,0 +1,5 @@
+time,proximity
+<% @proximities.each do |b|%>
+<%= b.get_milliseconds %>,<%= b.proximity %>
+<% end %>
+

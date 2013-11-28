@@ -1,0 +1,4 @@
+time,value
+<% @annotations.each do |a|%>
+<%= a.get_milliseconds %>,<%= a.value %>
+<% end %>

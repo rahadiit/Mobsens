@@ -1,0 +1,33 @@
+<h1>Listing batteries</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Recording</th>
+      <th>Time</th>
+      <th>Level</th>
+      <th>Scale</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @batteries.each do |battery| %>
+      <tr>
+        <td><%= battery.recording %></td>
+        <td><%= battery.time %></td>
+        <td><%= battery.level %></td>
+        <td><%= battery.scale %></td>
+        <td><%= link_to 'Show', battery %></td>
+        <td><%= link_to 'Edit', edit_battery_path(battery) %></td>
+        <td><%= link_to 'Destroy', battery, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Battery', new_battery_path %>
