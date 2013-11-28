@@ -1,0 +1,4 @@
+time,xSinTheta,ySinTheta,zSinTheta
+<% @rotation_vectors.each do |b|%>
+<%= b.get_milliseconds %>,<%= b.xSinTheta%>,<%= b.ySinTheta%>,<%= b.zSinTheta%>
+<% end %>

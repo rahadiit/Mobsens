@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MobileSensors</title>
+		<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+		<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+		<%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" %>
+		<%= javascript_include_tag "http://code.highcharts.com/highcharts.js" %>
+		<%= csrf_meta_tags %>
+	</head>
+
+	<body>
+		<%= render :partial => 'layouts/menu' %>
+		
+		<%= render :partial => 'layouts/notice' %>
+		
+		<div class="container" style="width:90%">
+				<%= yield %>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,35 @@
+<h1>Listing magnetic_fields</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Recording</th>
+      <th>Time</th>
+      <th>X</th>
+      <th>Y</th>
+      <th>Z</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @magnetic_fields.each do |magnetic_field| %>
+      <tr>
+        <td><%= magnetic_field.recording %></td>
+        <td><%= magnetic_field.time %></td>
+        <td><%= magnetic_field.x %></td>
+        <td><%= magnetic_field.y %></td>
+        <td><%= magnetic_field.z %></td>
+        <td><%= link_to 'Show', magnetic_field %></td>
+        <td><%= link_to 'Edit', edit_magnetic_field_path(magnetic_field) %></td>
+        <td><%= link_to 'Destroy', magnetic_field, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Magnetic field', new_magnetic_field_path %>

@@ -1,0 +1,4 @@
+time,level,scale
+<% @batteries.each do |b|%>
+<%= b.get_milliseconds%>,<%= b.level %>,<%= b.scale %>
+<% end %>

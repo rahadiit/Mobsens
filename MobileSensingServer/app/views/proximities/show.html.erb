@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Recording:</strong>
+  <%= @proximity.recording %>
+</p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @proximity.time %>
+</p>
+
+<p>
+  <strong>Proximity:</strong>
+  <%= @proximity.proximity %>
+</p>
+
+<%= link_to 'Edit', edit_proximity_path(@proximity) %> |
+<%= link_to 'Back', proximities_path %>

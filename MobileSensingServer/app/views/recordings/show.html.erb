@@ -1,0 +1,66 @@
+<h1>Recording <small><%= link_to 'Edit', edit_recording_path(@recording) %></small></h1>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h4 class="panel-title">Details</h4>
+	</div>
+		<div class="panel-body">
+			<%= render :partial => 'overview', :locals => {:recording => @recording} %>
+		</div>
+</div>
+
+<br />
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+			<span class="glyphicon glyphicon-chevron-down"></span>
+			Annotations
+			<span class="badge pull-right"><%= @recording.annotations.count%></span>	
+			</h4>
+			</a>
+	</div>
+	<div id="collapseTwo" class="panel-collapse collapse">
+		<div class="panel-body">
+			<%= render :partial => 'annotations', :locals => {:recording => @recording} %>
+		</div>
+	</div>
+</div>
+
+<br />
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+			<span class="glyphicon glyphicon-chevron-down"></span>
+			Sensors</h4>
+			</a>
+	</div>
+	<div id="collapseOne" class="panel-collapse collapse">
+		<div class="panel-body">
+			<%= render :partial => 'sensors', :locals => {:recording => @recording} %>
+		</div>
+	</div>
+</div >
+
+<br />
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h4 class="panel-title">Locations</h4>
+	</div>
+		<div class="panel-body">
+			<%= render :partial => 'map', :locals => {:recording => @recording} %>
+		</div>
+</div>
+
+<br />
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h4 class="panel-title">Charts</h4>
+	</div>
+		<div class="panel-body">
+			<%= render :partial => 'charts', :locals => {:recording => @recording} %>
+		</div>
+</div>

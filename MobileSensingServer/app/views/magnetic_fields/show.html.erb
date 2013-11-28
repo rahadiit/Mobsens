@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Recording:</strong>
+  <%= @magnetic_field.recording %>
+</p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @magnetic_field.time %>
+</p>
+
+<p>
+  <strong>X:</strong>
+  <%= @magnetic_field.x %>
+</p>
+
+<p>
+  <strong>Y:</strong>
+  <%= @magnetic_field.y %>
+</p>
+
+<p>
+  <strong>Z:</strong>
+  <%= @magnetic_field.z %>
+</p>
+
+<%= link_to 'Edit', edit_magnetic_field_path(@magnetic_field) %> |
+<%= link_to 'Back', magnetic_fields_path %>

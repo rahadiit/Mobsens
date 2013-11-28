@@ -1,0 +1,4 @@
+time,rX,rY,rZ
+<% @gyroscopes.each do |b|%>
+<%= b.get_milliseconds %>,<%= b.rX %>,<%= b.rY %>,<%= b.rZ %>
+<% end %>

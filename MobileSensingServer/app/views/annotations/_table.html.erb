@@ -1,0 +1,19 @@
+<table class="table table-striped">
+    <tr>
+      <th>Time</th>
+      <th>Value</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+
+    <% annotations.each do |annotation| %>
+      <tr>
+        <td><%= annotation.time.strftime("%Y-%m-%d %H:%M")  %></td>
+        <td><%= annotation.value %></td>
+        <td><%= link_to 'Show', annotation %></td>
+        <td><%= link_to 'Edit', edit_annotation_path(annotation) %></td>
+        <td><%= link_to 'Destroy', annotation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+</table>

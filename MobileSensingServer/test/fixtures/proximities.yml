@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  recording_id: 
+  time: 2013-10-31 02:29:05
+  proximity: 1.5
+
+two:
+  recording_id: 
+  time: 2013-10-31 02:29:05
+  proximity: 1.5

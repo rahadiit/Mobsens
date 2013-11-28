@@ -1,0 +1,35 @@
+<h1>Listing gravities</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Recording</th>
+      <th>Time</th>
+      <th>X</th>
+      <th>Y</th>
+      <th>Z</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @gravities.each do |gravity| %>
+      <tr>
+        <td><%= gravity.recording %></td>
+        <td><%= gravity.time %></td>
+        <td><%= gravity.x %></td>
+        <td><%= gravity.y %></td>
+        <td><%= gravity.z %></td>
+        <td><%= link_to 'Show', gravity %></td>
+        <td><%= link_to 'Edit', edit_gravity_path(gravity) %></td>
+        <td><%= link_to 'Destroy', gravity, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Gravity', new_gravity_path %>

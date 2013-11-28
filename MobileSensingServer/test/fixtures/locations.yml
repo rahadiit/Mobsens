@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  recording_id: 
+  time: 2013-10-31 02:28:58
+  longitude: 1.5
+  latitude: 1.5
+  speed: 1.5
+  bearing: 1.5
+  accuracy: 1.5
+
+two:
+  recording_id: 
+  time: 2013-10-31 02:28:58
+  longitude: 1.5
+  latitude: 1.5
+  speed: 1.5
+  bearing: 1.5
+  accuracy: 1.5
