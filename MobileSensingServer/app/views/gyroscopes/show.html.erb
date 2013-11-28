@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Recording:</strong>
+  <%= @gyroscope.recording %>
+</p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @gyroscope.time %>
+</p>
+
+<p>
+  <strong>Rx:</strong>
+  <%= @gyroscope.rX %>
+</p>
+
+<p>
+  <strong>Ry:</strong>
+  <%= @gyroscope.rY %>
+</p>
+
+<p>
+  <strong>Rz:</strong>
+  <%= @gyroscope.rZ %>
+</p>
+
+<%= link_to 'Edit', edit_gyroscope_path(@gyroscope) %> |
+<%= link_to 'Back', gyroscopes_path %>

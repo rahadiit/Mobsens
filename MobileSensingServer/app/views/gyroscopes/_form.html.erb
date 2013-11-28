@@ -1,0 +1,37 @@
+<%= form_for(@gyroscope) do |f| %>
+  <% if @gyroscope.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@gyroscope.errors.count, "error") %> prohibited this gyroscope from being saved:</h2>
+
+      <ul>
+      <% @gyroscope.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :recording %><br>
+    <%= f.text_field :recording %>
+  </div>
+  <div class="field">
+    <%= f.label :time %><br>
+    <%= f.datetime_select :time %>
+  </div>
+  <div class="field">
+    <%= f.label :rX %><br>
+    <%= f.text_field :rX %>
+  </div>
+  <div class="field">
+    <%= f.label :rY %><br>
+    <%= f.text_field :rY %>
+  </div>
+  <div class="field">
+    <%= f.label :rZ %><br>
+    <%= f.text_field :rZ %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

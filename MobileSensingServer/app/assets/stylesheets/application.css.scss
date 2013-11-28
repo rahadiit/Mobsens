@@ -1,0 +1,8 @@
+// customize bootstrap
+$link-color: blue;
+//$navbar-default-link-color: #EEE;
+//$navbar-default-bg: #23A;
+
+// import original bootstrap
+@import "twitter/bootstrap";
+body { padding-top: 60px; }

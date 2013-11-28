@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  recording_id: 
+  time: 2013-10-31 02:29:00
+  x: 1.5
+  'y': 1.5
+  z: 1.5
+
+two:
+  recording_id: 
+  time: 2013-10-31 02:29:00
+  x: 1.5
+  'y': 1.5
+  z: 1.5

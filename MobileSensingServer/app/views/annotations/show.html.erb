@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Recording:</strong>
+  <%= @annotation.recording %>
+</p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @annotation.time %>
+</p>
+
+<p>
+  <strong>Value:</strong>
+  <%= @annotation.value %>
+</p>
+
+<%= link_to 'Edit', edit_annotation_path(@annotation) %> |
+<%= link_to 'Back', annotations_path %>

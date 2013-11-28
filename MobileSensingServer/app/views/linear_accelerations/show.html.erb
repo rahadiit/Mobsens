@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Recording:</strong>
+  <%= @linear_acceleration.recording %>
+</p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @linear_acceleration.time %>
+</p>
+
+<p>
+  <strong>X:</strong>
+  <%= @linear_acceleration.x %>
+</p>
+
+<p>
+  <strong>Y:</strong>
+  <%= @linear_acceleration.y %>
+</p>
+
+<p>
+  <strong>Z:</strong>
+  <%= @linear_acceleration.z %>
+</p>
+
+<%= link_to 'Edit', edit_linear_acceleration_path(@linear_acceleration) %> |
+<%= link_to 'Back', linear_accelerations_path %>

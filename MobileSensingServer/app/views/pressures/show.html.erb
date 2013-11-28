@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Recording:</strong>
+  <%= @pressure.recording %>
+</p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @pressure.time %>
+</p>
+
+<p>
+  <strong>Pressure:</strong>
+  <%= @pressure.pressure %>
+</p>
+
+<%= link_to 'Edit', edit_pressure_path(@pressure) %> |
+<%= link_to 'Back', pressures_path %>

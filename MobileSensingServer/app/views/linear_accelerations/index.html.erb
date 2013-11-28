@@ -1,0 +1,35 @@
+<h1>Listing linear_accelerations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Recording</th>
+      <th>Time</th>
+      <th>X</th>
+      <th>Y</th>
+      <th>Z</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @linear_accelerations.each do |linear_acceleration| %>
+      <tr>
+        <td><%= linear_acceleration.recording %></td>
+        <td><%= linear_acceleration.time %></td>
+        <td><%= linear_acceleration.x %></td>
+        <td><%= linear_acceleration.y %></td>
+        <td><%= linear_acceleration.z %></td>
+        <td><%= link_to 'Show', linear_acceleration %></td>
+        <td><%= link_to 'Edit', edit_linear_acceleration_path(linear_acceleration) %></td>
+        <td><%= link_to 'Destroy', linear_acceleration, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Linear acceleration', new_linear_acceleration_path %>

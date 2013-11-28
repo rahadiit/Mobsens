@@ -1,0 +1,8 @@
+Uploaded: <b><%= recording.created_at.strftime("%Y-%m-%d %H:%M") %></b>
+<br />
+User: <b><%= recording.user.email unless recording.user.nil? %></b>
+<br />
+Title: <b><%= recording.title %></b>
+<br />
+Device: <%= link_to(recording.device.identifier, device_path(recording.device)) unless recording.device.nil? %>
+<br />

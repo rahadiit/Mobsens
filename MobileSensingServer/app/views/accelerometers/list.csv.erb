@@ -1,0 +1,4 @@
+time,x,y,z
+<%@accelerometers.each do |acc|%>
+<%= acc.get_milliseconds %>,<%= acc.x %>,<%= acc.y %>,<%= acc.z %>
+<% end %>

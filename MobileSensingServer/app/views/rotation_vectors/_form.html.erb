@@ -1,0 +1,37 @@
+<%= form_for(@rotation_vector) do |f| %>
+  <% if @rotation_vector.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@rotation_vector.errors.count, "error") %> prohibited this rotation_vector from being saved:</h2>
+
+      <ul>
+      <% @rotation_vector.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :recording %><br>
+    <%= f.text_field :recording %>
+  </div>
+  <div class="field">
+    <%= f.label :time %><br>
+    <%= f.datetime_select :time %>
+  </div>
+  <div class="field">
+    <%= f.label :xSinTheta %><br>
+    <%= f.text_field :xSinTheta %>
+  </div>
+  <div class="field">
+    <%= f.label :ySinTheta %><br>
+    <%= f.text_field :ySinTheta %>
+  </div>
+  <div class="field">
+    <%= f.label :zSinTheta %><br>
+    <%= f.text_field :zSinTheta %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

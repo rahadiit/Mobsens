@@ -1,0 +1,31 @@
+<h1>Listing lights</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Recording</th>
+      <th>Time</th>
+      <th>Ambientlight</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @lights.each do |light| %>
+      <tr>
+        <td><%= light.recording %></td>
+        <td><%= light.time %></td>
+        <td><%= light.ambientLight %></td>
+        <td><%= link_to 'Show', light %></td>
+        <td><%= link_to 'Edit', edit_light_path(light) %></td>
+        <td><%= link_to 'Destroy', light, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Light', new_light_path %>

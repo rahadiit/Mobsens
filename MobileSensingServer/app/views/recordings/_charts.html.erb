@@ -1,0 +1,7 @@
+<% ['accelerometers', 'batteries', 'gravities', 'gyroscopes', 'lights', 'linear_accelerations', 'locations', 'magnetic_fields', 'pressures', 'proximities', 'rotation_vectors'].each do |sensor|%>
+	<% if (eval('recording.' + sensor).count > 0)%>
+<hr />
+		<h2><%= sensor %></h2>
+		<%= eval("render :partial =>'" + sensor + "/chart' , :locals => {:" + sensor + " => recording." + sensor + "}") %>
+	<% end %>
+<% end %>

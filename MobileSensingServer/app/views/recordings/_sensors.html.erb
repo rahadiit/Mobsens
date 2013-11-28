@@ -1,0 +1,14 @@
+<table class="table table-striped">
+	<tr>
+		<th>Sensor</th>
+		<th>Samples</th>
+		<th>CSV</th>
+	</tr>
+	<% ['accelerometers', 'annotations', 'batteries', 'gravities', 'gyroscopes', 'lights', 'linear_accelerations', 'locations', 'magnetic_fields', 'pressures', 'proximities', 'rotation_vectors'].each do |sensor|%>
+	<tr>
+		<td><%= sensor %></td>
+		<td><%= eval('recording.' + sensor).count %></td>
+		<td><%= render :partial => "shared/link_button", :locals => { link: '/recording/' + recording.id.to_s + '/' + sensor + '.csv', caption:'download', icon:'download'} %></td>
+	</tr>
+	<% end %>
+</table>

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Recording:</strong>
+  <%= @gravity.recording %>
+</p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @gravity.time %>
+</p>
+
+<p>
+  <strong>X:</strong>
+  <%= @gravity.x %>
+</p>
+
+<p>
+  <strong>Y:</strong>
+  <%= @gravity.y %>
+</p>
+
+<p>
+  <strong>Z:</strong>
+  <%= @gravity.z %>
+</p>
+
+<%= link_to 'Edit', edit_gravity_path(@gravity) %> |
+<%= link_to 'Back', gravities_path %>
