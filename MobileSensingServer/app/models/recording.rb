@@ -92,6 +92,5 @@ class Recording < ActiveRecord::Base
        r.upload(entry['sensor']['time'], entry['sensor']['values'])
       end
   end 
-  
 
 end
