@@ -14,7 +14,13 @@ For development there is a preconfigured sqlite3 database.
   $ rake db:migrate
   $ rails server
 
-== Uploading Data
+== Webservice
+
+=== Sign in
+You need to be signed in to talk with the server
+  $ curl -v -H "Accept: application/json" -H "Content-type: application/json" -c cookies.txt -X POST --data '{"user":{"email":"your@ema.il","password":"yourpassword"}}' 'http://localhost:3000/users/sign_in.json'
+
+=== Upload Recording
 data.txt:
   {"sensor":{"time":1385061600380,"sensor":1,"values":[0.2587866187095642,-0.19068486988544464,9.806650161743164]}}
   {"sensor":{"time":1385061600380,"sensor":2,"values":[1.3587866187095642,0.12068486988544464,1.006650161743164]}}
@@ -29,6 +35,29 @@ data.txt:
   {"location": {"time": 1385061600380, "longitude": 10.2, "latitude": 11.3, "speed": 10.3, "bearing": 12, "accuracy": 2}}
   {"rec": {"did": "someID", "title": "Some Title"}}
 
-run curl:
-  $ curl -v -H "Accept: application/json" -H "Content-type: application/json" -c cookies.txt -X POST --data '{"user":{"email":"your@ema.il","password":"yourpassword"}}' 'http://localhost:3000/users/sign_in.json'
+Send data.txt
   $ curl -v -H "Accept: application/text" -H "Content-type: application/text" -c cookies.txt -X POST --data @data.txt 'http://localhost:3000/recordings/upload'
+
+=== List Recordings
+  $ curl -v -H "Accept: application/json" -b cookies.txt -X GET http://localhost:3000/recordings.json
+
+=== Show Recording
+Show Recording with ID 1
+  $ curl -v -H "Accept: application/json" -b cookies.txt -X GET http://localhost:3000/recordings/1.json
+
+=== Get CSV
+Get accelerometer data with Recording ID 1
+  $ curl -v -H "Accept: application/csv" -b cookies.txt -X GET http://localhost:3000/recording/1/accelerometers.csv
+In case of accelerometers you can use also one of the following:
+
+* annotations
+* batteries
+* gravities
+* gyroscopes
+* lights
+* linear_accelerations
+* locations
+* magnetic_fields
+* pressures
+* proximities
+* rotation_vectors
