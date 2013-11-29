@@ -24,7 +24,7 @@ module Sensor
       samples = self.order('time')
       time = samples.last.get_milliseconds - samples.first.get_milliseconds
       return 0 if time == 0
-      (samples.count.to_f / time.to_f).round(2)
+      ((samples.count.to_f / time.to_f) * 1000).round(2)
     end
 
   end
