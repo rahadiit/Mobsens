@@ -2,11 +2,11 @@
 
 == Database
 The application is developed for PostgreSQL.
-For development there is a preconfigured sqlite3 database.
+For development there is a preconfigured SQLite3 database.
 
 == Libraries
 * Google Maps https://developers.google.com/maps
-* HighChartsJS http://www.highcharts.com
+* Highcharts JS http://www.highcharts.com
 * Bootstrap http://getbootstrap.com
 
 == Running Development Server
@@ -14,7 +14,7 @@ For development there is a preconfigured sqlite3 database.
   $ rake db:migrate
   $ rails server
 
-== Webservice
+== RESTful Web service
 
 === Sign in
 You need to be signed in to talk with the server
@@ -48,7 +48,7 @@ Show Recording with ID 1
 === Get CSV
 Get accelerometer data with Recording ID 1
   $ curl -v -H "Accept: application/csv" -b cookies.txt -X GET http://localhost:3000/recording/1/accelerometers.csv
-In case of accelerometers you can use also one of the following:
+Instead of accelerometers you can use one of the following:
 
 * annotations
 * batteries
