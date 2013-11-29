@@ -1,1 +1,1 @@
-json.extract! @recording, :device_id, :created_at, :updated_at
+json.extract! @recording, :user_id, :device_id, :title, :created_at, :updated_at
