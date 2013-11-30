@@ -4,8 +4,11 @@ import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONStringer;
+
 import android.content.Intent;
 import android.hardware.Sensor;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.provider.Settings.Secure;
 import android.util.Log;
 import mobsens.collector.communications.ConnectedService;
@@ -33,11 +36,22 @@ public class Collector extends ConnectedService
 
 	private String did;
 
+	public final CollectorIPC IPC_ENDPOINT = new CollectorIPC.Stub()
+	{
+		@Override
+		public boolean isCollecting() throws RemoteException
+		{
+			return collecting;
+		}
+	};
+
 	public final Consumer<StartCollectorOutput> START_COLLECTOR_ENDPOINT = new Consumer<StartCollectorOutput>()
 	{
 		@Override
 		public void consume(final StartCollectorOutput item)
 		{
+			collecting = true;
+
 			IntentLog.sendBroadcast(Collector.this, new Date(), "Collector", "Starting collection", null);
 
 			wfjStreamer.setLocation("wfj/" + item.title + new Date().getTime() + ".wfj");
@@ -83,6 +97,8 @@ public class Collector extends ConnectedService
 			connectivityDriver.stop();
 
 			annotationDriver.stop();
+
+			collecting = false;
 		}
 	};
 
@@ -115,6 +131,8 @@ public class Collector extends ConnectedService
 
 	private final Filter<WFJ> wfjFilter;
 
+	private boolean collecting;
+
 	public Collector()
 	{
 		startCollectorDriver = new StartCollectorDriver(this);
@@ -126,12 +144,8 @@ public class Collector extends ConnectedService
 		quitCollectorDriver = new QuitCollectorDriver(this);
 		quitCollectorDriver.setConsumer(QUIT_COLLECTOR_ENDPOINT);
 
-		sensorDrivers = new SensorDriver[] 
-				{ 
-				new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, 1000 / 50), 
-				new SensorDriver(this, Sensor.TYPE_GYROSCOPE, 1000 / 50),
-				new SensorDriver(this, Sensor.TYPE_MAGNETIC_FIELD, 1000 / 50),
-				new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, 1000 / 50),
+		sensorDrivers = new SensorDriver[] { new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, 1000 / 50), new SensorDriver(this, Sensor.TYPE_GYROSCOPE, 1000 / 50),
+				new SensorDriver(this, Sensor.TYPE_MAGNETIC_FIELD, 1000 / 50), new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, 1000 / 50),
 				new SensorDriver(this, Sensor.TYPE_GRAVITY, 1000 / 50) };
 
 		locationDriver = new LocationDriver(this, 500, 0, true, true, true);
@@ -155,6 +169,8 @@ public class Collector extends ConnectedService
 		connectivityDriver.setConsumer(wfjFilter);
 
 		annotationDriver.setConsumer(wfjFilter);
+
+		collecting = false;
 	}
 
 	@Override
@@ -201,4 +217,9 @@ public class Collector extends ConnectedService
 		IntentLog.sendBroadcast(this, new Date(), "Collector servcie", "Disconnected", null);
 	}
 
+	@Override
+	protected IBinder getBinder()
+	{
+		return IPC_ENDPOINT.asBinder();
+	}
 }
