@@ -9,86 +9,78 @@
     tools:context=".Controller" >
 
     <Button
-        android:id="@+id/controller_start"
+        android:id="@+id/controller_start_stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="Start" />
-
-    <Button
-        android:id="@+id/controller_stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/controller_start"
-        android:layout_alignRight="@+id/controller_start"
-        android:layout_below="@+id/controller_start"
-        android:layout_marginTop="15dp"
-        android:text="Stop" />
-
-    <Button
-        android:id="@+id/controller_quit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/controller_stop"
-        android:layout_alignRight="@+id/controller_stop"
-        android:layout_below="@id/controller_stop"
-        android:layout_marginTop="15dp"
-        android:text="Quit collector" />
+        android:text="Start/Stop" />
 
     <EditText
         android:id="@+id/controller_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/controller_quit"
-        android:layout_alignRight="@id/controller_quit"
-        android:layout_below="@+id/controller_quit"
-        android:layout_marginTop="15dp"
+        android:layout_alignBottom="@+id/controller_start_stop"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/controller_start_stop"
         android:ems="10"
-        android:text="Titel" >
-
-        <requestFocus />
-    </EditText>
+        android:text="Titel" />
 
     <CheckBox
-        android:id="@+id/controller_keeplocal"
+        android:id="@+id/controller_web"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/controller_title"
-        android:layout_below="@id/controller_title"
-        android:layout_marginTop="15dp"
-        android:text="Make local copy" />
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/controller_title"
+        android:layout_toRightOf="@+id/controller_upload"
+        android:text="... to web" />
+
+    <CheckBox
+        android:id="@+id/controller_local"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/controller_web"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/controller_web"
+        android:text="... to local" />
 
     <Button
         android:id="@+id/controller_upload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@id/controller_title"
-        android:layout_below="@id/controller_title"
-        android:layout_marginTop="15dp"
-        android:layout_toRightOf="@id/controller_keeplocal"
-        android:text="Upload" />
-
-    <TextView
-        android:id="@+id/controller_log"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/controller_keeplocal"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/controller_keeplocal"
-        android:layout_below="@id/controller_keeplocal"
-        android:layout_marginTop="15dp"
-        android:typeface="monospace" />
+        android:layout_alignBottom="@+id/controller_local"
+        android:layout_alignLeft="@+id/controller_title"
+        android:layout_alignTop="@+id/controller_web"
+        android:text="Send" />
 
     <Button
         android:id="@+id/henny_boop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/controller_log"
-        android:layout_alignLeft="@+id/controller_upload"
-        android:layout_alignRight="@+id/controller_title"
-        android:layout_alignTop="@+id/controller_log"
+        android:layout_alignBottom="@+id/controller_upload"
+        android:layout_alignLeft="@+id/controller_start_stop"
+        android:layout_alignRight="@+id/controller_start_stop"
+        android:layout_alignTop="@+id/controller_web"
         android:text="Boop" />
+
+    <ScrollView
+        android:id="@+id/controller_logscroller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/controller_local"
+        android:fillViewport="true"
+        android:scrollbars="vertical" >
+
+        <TextView
+            android:id="@+id/controller_log"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:typeface="monospace" />
+    </ScrollView>
 
 </RelativeLayout>
