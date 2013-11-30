@@ -64,11 +64,11 @@ class RecordingsController < ApplicationController
 
   def upload
     rec = Recording.new
+    rec.user = current_user;
+    rec.save
     request.raw_post.each_line do |line|
       rec.upload(line)  
     end
-    rec.user = current_user;
-    rec.save
     render :nothing => true
   end
   
