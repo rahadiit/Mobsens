@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/controller_title"
-        android:layout_toRightOf="@+id/controller_upload"
+        android:layout_toRightOf="@+id/controller_send"
         android:text="... to web" />
 
     <CheckBox
@@ -46,7 +46,7 @@
         android:text="... to local" />
 
     <Button
-        android:id="@+id/controller_upload"
+        android:id="@+id/controller_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/controller_local"
@@ -55,14 +55,14 @@
         android:text="Send" />
 
     <Button
-        android:id="@+id/henny_boop"
+        android:id="@+id/controller_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/controller_upload"
+        android:layout_alignBottom="@+id/controller_send"
         android:layout_alignLeft="@+id/controller_start_stop"
         android:layout_alignRight="@+id/controller_start_stop"
         android:layout_alignTop="@+id/controller_web"
-        android:text="Boop" />
+        android:text="Tag" />
 
     <ScrollView
         android:id="@+id/controller_logscroller"
