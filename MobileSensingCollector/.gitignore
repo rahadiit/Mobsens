@@ -8,10 +8,6 @@
 bin/
 gen/
 
-# APK für Tacking wieder eintragen
-!bin/*.apk
-!bin/*.ap_
-
 # Ignore gradle files
 .gradle/
 build/
