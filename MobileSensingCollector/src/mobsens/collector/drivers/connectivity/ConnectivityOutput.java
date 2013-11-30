@@ -2,10 +2,11 @@ package mobsens.collector.drivers.connectivity;
 
 import java.util.Date;
 
+import mobsens.collector.wfj.basics.BasicWFJ;
+
 import org.json.JSONException;
 import org.json.JSONStringer;
 
-import mobsens.collector.wfj.basics.BasicWFJ;
 import android.net.NetworkInfo.State;
 
 public class ConnectivityOutput extends BasicWFJ

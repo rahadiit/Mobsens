@@ -61,13 +61,13 @@ public class AnnotationOutput extends BasicWFJ
 		jsonStringer.object();
 		jsonStringer.key("annotation");
 		jsonStringer.object();
-		
+
 		jsonStringer.key("time");
 		jsonStringer.value(time.getTime());
-		
+
 		jsonStringer.key("value");
 		jsonStringer.value(value);
-		
+
 		jsonStringer.endObject();
 		jsonStringer.endObject();
 	}

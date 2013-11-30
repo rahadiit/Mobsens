@@ -34,7 +34,7 @@ public abstract class CSVStreamingConsumer<Item> extends PrintStreamingConsumer<
 	protected final void rowStart()
 	{
 		assert freshRow : "nonfinalized row";
-	
+
 		freshRow = true;
 	}
 

@@ -1,11 +1,12 @@
 package mobsens.collector.consumers;
 
-import org.json.JSONObject;
-
 import mobsens.collector.drivers.annotations.AnnotationOutput;
 import mobsens.collector.drivers.connectivity.ConnectivityOutput;
 import mobsens.collector.drivers.locations.LocationOutput;
 import mobsens.collector.drivers.sensors.SensorOutput;
+
+import org.json.JSONObject;
+
 import android.content.ContextWrapper;
 import android.hardware.Sensor;
 

@@ -12,7 +12,7 @@ public class WFJStreamingConsumer extends PrintStreamingConsumer<WFJ>
 	public WFJStreamingConsumer(ContextWrapper contextWrapper)
 	{
 		super(contextWrapper);
-		
+
 		printStream = null;
 	}
 
