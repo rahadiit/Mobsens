@@ -99,10 +99,4 @@ public class SensorOutput extends BasicWFJ
 		jsonStringer.endObject();
 		jsonStringer.endObject();
 	}
-
-	@Override
-	public String toString()
-	{
-		return "SensorOutput [time=" + time + ", accuracy=" + accuracy + ", sensor=" + sensor + ", values=" + Arrays.toString(values) + "]";
-	}
 }
