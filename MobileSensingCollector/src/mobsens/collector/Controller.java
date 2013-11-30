@@ -35,6 +35,7 @@ public class Controller extends ConnectingActivity
 {
 	public final Consumer<LogOutput> LOG_ENDPOINT = new Consumer<LogOutput>()
 	{
+
 		@Override
 		public void consume(LogOutput item)
 		{
@@ -44,10 +45,7 @@ public class Controller extends ConnectingActivity
 			{
 				text += "\r\n" + item.description.replaceAll("(?m)^", "> ");
 			}
-
-			TextView tv = (TextView) findViewById(R.id.controller_log);
-
-			tv.setText(text + "\r\n\r\n" + tv.getText());
+			textViewControllerLog.setText(text + "\r\n\r\n" + textViewControllerLog.getText());
 		}
 	};
 
@@ -87,11 +85,11 @@ public class Controller extends ConnectingActivity
 		{
 			if (item.status)
 			{
-				((Button) findViewById(R.id.controller_start_stop)).setText("Stop");
+				buttonControllerStartStop.setText("Stop");
 			}
 			else
 			{
-				((Button) findViewById(R.id.controller_start_stop)).setText("Start");
+				buttonControllerStartStop.setText("Start");
 			}
 		}
 	};
@@ -99,10 +97,18 @@ public class Controller extends ConnectingActivity
 	private final LogDriver logDriver;
 
 	private final UploadResponseDriver uploadResponseDriver;
-	
+
 	private final CollectorStatusDriver collectorStatusDriver;
 
 	private CollectorIPC collectorIPC;
+
+	private TextView textViewControllerLog;
+	private TextView textViewControllerTitle;
+	private Button buttonControllerSend;
+	private Button buttonControllerStartStop;
+	private Button buttonControllerTag;
+	private CheckBox checkBoxControllerLocal;
+	private CheckBox checkBoxControllerWeb;
 
 	public Controller()
 	{
@@ -113,7 +119,7 @@ public class Controller extends ConnectingActivity
 
 		uploadResponseDriver = new UploadResponseDriver(this);
 		uploadResponseDriver.setConsumer(UPLOAD_RESPONSE_ENDPOINT);
-		
+
 		collectorStatusDriver = new CollectorStatusDriver(this);
 		collectorStatusDriver.setConsumer(COLLECTOR_STATUS_ENDPOINT);
 
@@ -129,10 +135,18 @@ public class Controller extends ConnectingActivity
 		logDriver.start();
 
 		uploadResponseDriver.start();
-		
+
 		collectorStatusDriver.start();
 
-		((Button) findViewById(R.id.controller_start_stop)).setOnClickListener(new OnClickListener()
+		textViewControllerLog = (TextView) findViewById(R.id.controller_log);
+		textViewControllerTitle = (TextView) findViewById(R.id.controller_title);
+		checkBoxControllerLocal = (CheckBox) findViewById(R.id.controller_local);
+		checkBoxControllerWeb = (CheckBox) findViewById(R.id.controller_web);
+		buttonControllerStartStop = (Button) findViewById(R.id.controller_start_stop);
+		buttonControllerSend = (Button) findViewById(R.id.controller_send);
+		buttonControllerTag = (Button) findViewById(R.id.controller_tag);
+
+		buttonControllerStartStop.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
@@ -147,7 +161,7 @@ public class Controller extends ConnectingActivity
 						}
 						else
 						{
-							IntentStartCollector.sendBroadcast(Controller.this, ((TextView) findViewById(R.id.controller_title)).getText().toString());
+							IntentStartCollector.sendBroadcast(Controller.this, textViewControllerTitle.getText().toString());
 						}
 					}
 					catch (RemoteException e)
@@ -158,14 +172,14 @@ public class Controller extends ConnectingActivity
 			}
 		});
 
-		((Button) findViewById(R.id.controller_upload)).setOnClickListener(new OnClickListener()
+		buttonControllerSend.setOnClickListener(new OnClickListener()
 		{
+
 			@Override
 			public void onClick(View v)
 			{
-				// Raute äußerst Hacky
-				final boolean toLocal = ((CheckBox) findViewById(R.id.controller_local)).isChecked();
-				final boolean toWeb = ((CheckBox) findViewById(R.id.controller_web)).isChecked();
+				final boolean toLocal = checkBoxControllerLocal.isChecked();
+				final boolean toWeb = checkBoxControllerWeb.isChecked();
 				final byte[] cache;
 
 				if (toLocal)
@@ -220,12 +234,12 @@ public class Controller extends ConnectingActivity
 			}
 		});
 
-		((Button) findViewById(R.id.henny_boop)).setOnClickListener(new OnClickListener()
+		buttonControllerTag.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
-				IntentAnnotation.sendBroadcast(Controller.this, new Date(), "boop");
+				IntentAnnotation.sendBroadcast(Controller.this, new Date(), "TAG");
 			}
 		});
 	}
@@ -234,9 +248,9 @@ public class Controller extends ConnectingActivity
 	protected void onDestroy()
 	{
 		logDriver.stop();
-		
+
 		uploadResponseDriver.stop();
-		
+
 		collectorStatusDriver.stop();
 
 		if (collectorIPC != null)
@@ -264,11 +278,11 @@ public class Controller extends ConnectingActivity
 		{
 			if (collectorIPC.isCollecting())
 			{
-				((Button) findViewById(R.id.controller_start_stop)).setText("Stop");
+				buttonControllerStartStop.setText("Stop");
 			}
 			else
 			{
-				((Button) findViewById(R.id.controller_start_stop)).setText("Start");
+				buttonControllerStartStop.setText("Start");
 			}
 		}
 		catch (RemoteException e)
@@ -285,5 +299,27 @@ public class Controller extends ConnectingActivity
 		collectorIPC = null;
 
 		Logging.log(this, "Controller", "Disconnected", null);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+
+		outState.putString(R.id.controller_log + "text", textViewControllerLog.getText().toString());
+		outState.putString(R.id.controller_title + "text", textViewControllerTitle.getText().toString());
+		outState.putBoolean(R.id.controller_local + "checked", checkBoxControllerLocal.isChecked());
+		outState.putBoolean(R.id.controller_web + "checked", checkBoxControllerWeb.isChecked());
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState)
+	{
+		super.onRestoreInstanceState(savedInstanceState);
+
+		textViewControllerLog.setText(savedInstanceState.getString(R.id.controller_log + "text"));
+		textViewControllerTitle.setText(savedInstanceState.getString(R.id.controller_title + "text"));
+		checkBoxControllerLocal.setChecked(savedInstanceState.getBoolean(R.id.controller_local + "checked"));
+		checkBoxControllerWeb.setChecked(savedInstanceState.getBoolean(R.id.controller_web + "checked"));
 	}
 }

@@ -32,6 +32,8 @@ import android.provider.Settings.Secure;
 
 public class Collector extends ConnectedService
 {
+	private final int sid = Float.floatToIntBits((float) Math.random()) % 10000;
+
 	private String did;
 
 	public final CollectorIPC IPC_ENDPOINT = new CollectorIPC.Stub()
@@ -54,7 +56,7 @@ public class Collector extends ConnectedService
 			startTime = new Date();
 			title = item.title;
 
-			Logging.log(Collector.this, "Collector", "Starting collection", null);
+			Logging.log(Collector.this, "Collector:" + sid, "Starting collection", null);
 
 			wfjStreamer.setLocation("wfj/" + item.title + new Date().getTime() + ".wfj");
 
@@ -113,7 +115,7 @@ public class Collector extends ConnectedService
 		@Override
 		public void consume(QuitCollectorOutput item)
 		{
-			Logging.log(Collector.this, "Collector", "Qutting", null);
+			Logging.log(Collector.this, "Collector:" + sid, "Qutting", null);
 
 			stopSelf();
 		}
@@ -214,13 +216,13 @@ public class Collector extends ConnectedService
 	@Override
 	protected void onConnected()
 	{
-		Logging.log(this, "Collector servcie", "Connected", null);
+		Logging.log(this, "Collector:" + sid, "Connected", null);
 	}
 
 	@Override
 	protected void onDisconnected()
 	{
-		Logging.log(this, "Collector servcie", "Disconnected", null);
+		Logging.log(this, "Collector:" + sid, "Disconnected", null);
 	}
 
 	@Override
