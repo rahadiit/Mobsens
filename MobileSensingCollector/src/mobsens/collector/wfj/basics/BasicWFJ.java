@@ -1,10 +1,10 @@
 package mobsens.collector.wfj.basics;
 
+import mobsens.collector.wfj.WFJ;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONStringer;
-
-import mobsens.collector.wfj.WFJ;
 
 public abstract class BasicWFJ implements WFJ
 {
@@ -56,7 +56,7 @@ public abstract class BasicWFJ implements WFJ
 	public String toString()
 	{
 		JSONStringer stringer = new JSONStringer();
-		
+
 		try
 		{
 			generateTo(stringer);
