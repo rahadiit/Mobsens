@@ -2,10 +2,10 @@ package mobsens.collector.drivers.locations;
 
 import java.util.Date;
 
+import mobsens.collector.wfj.basics.BasicWFJ;
+
 import org.json.JSONException;
 import org.json.JSONStringer;
-
-import mobsens.collector.wfj.basics.BasicWFJ;
 
 public class LocationOutput extends BasicWFJ
 {

@@ -3,11 +3,12 @@ package mobsens.collector.drivers.sensors;
 import java.util.Arrays;
 import java.util.Date;
 
+import mobsens.collector.wfj.basics.BasicWFJ;
+
 import org.json.JSONException;
 import org.json.JSONStringer;
 
 import android.hardware.Sensor;
-import mobsens.collector.wfj.basics.BasicWFJ;
 
 /**
  * Verkapselung der Sensordaten
@@ -28,7 +29,8 @@ public class SensorOutput extends BasicWFJ
 	public final int accuracy;
 
 	/**
-	 * Quellsensor, Werte korrespondieren zu den in {@link Sensor} definierten Types
+	 * Quellsensor, Werte korrespondieren zu den in {@link Sensor} definierten
+	 * Types
 	 */
 	public final int sensor;
 

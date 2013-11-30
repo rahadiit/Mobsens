@@ -4,8 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import android.content.ContextWrapper;
+
 import mobsens.collector.pipeline.Consumer;
+import android.content.ContextWrapper;
 
 public abstract class FileStreamingConsumer<Item> implements Consumer<Item>
 {
@@ -37,7 +38,7 @@ public abstract class FileStreamingConsumer<Item> implements Consumer<Item>
 
 			// Parent erstellen
 			file.getParentFile().mkdirs();
-			
+
 			final FileOutputStream fileOutputStream = new FileOutputStream(file, true);
 			redirect(fileOutputStream);
 
