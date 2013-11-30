@@ -13,15 +13,15 @@ import mobsens.collector.drivers.messaging.LogOutput;
 import mobsens.collector.drivers.messaging.UploadResponseDriver;
 import mobsens.collector.drivers.messaging.UploadResponseOutput;
 import mobsens.collector.intents.IntentAnnotation;
-import mobsens.collector.intents.IntentLog;
 import mobsens.collector.intents.IntentQuitCollector;
 import mobsens.collector.intents.IntentStartCollector;
 import mobsens.collector.intents.IntentStopCollector;
 import mobsens.collector.intents.IntentUpload;
 import mobsens.collector.pipeline.Consumer;
+import mobsens.collector.util.Logging;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
+import android.os.RemoteException;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,13 +46,6 @@ public class Controller extends ConnectingActivity
 			TextView tv = (TextView) findViewById(R.id.controller_log);
 
 			tv.setText(text + "\r\n\r\n" + tv.getText());
-
-			Log.i(item.title, item.subtitle);
-
-			if (item.description != null)
-			{
-				Log.d(item.title, item.description);
-			}
 		}
 	};
 	public final Consumer<UploadResponseOutput> UPLOAD_RESPONSE_ENDPOINT = new Consumer<UploadResponseOutput>()
@@ -74,12 +67,11 @@ public class Controller extends ConnectingActivity
 				printStream.close();
 				fileOutputStream.close();
 
-				IntentLog.sendBroadcast(Controller.this, item.endTime, "Upload complete", item.handle, item.transmitted + " bytes transmitted\r\nresponsefile written");
-				Log.i(item.handle, "Uploaded " + item.transmitted + " bytes at " + item.endTime + ", responsefile written");
+				Logging.log(Controller.this, item.endTime, "Upload complete", item.handle, item.transmitted + " bytes transmitted\r\nresponsefile written");
 			}
 			catch (IOException e)
 			{
-				Log.e("File error", e.getLocalizedMessage(), e);
+				Logging.log(Controller.this, e);
 			}
 
 		}
@@ -88,6 +80,8 @@ public class Controller extends ConnectingActivity
 	private final LogDriver logDriver;
 
 	private final UploadResponseDriver uploadResponseDriver;
+
+	private CollectorIPC collectorIPC;
 
 	public Controller()
 	{
@@ -98,6 +92,8 @@ public class Controller extends ConnectingActivity
 
 		uploadResponseDriver = new UploadResponseDriver(this);
 		uploadResponseDriver.setConsumer(UPLOAD_RESPONSE_ENDPOINT);
+
+		collectorIPC = null;
 	}
 
 	@Override
@@ -109,30 +105,29 @@ public class Controller extends ConnectingActivity
 		logDriver.start();
 		uploadResponseDriver.start();
 
-		((Button) findViewById(R.id.controller_start)).setOnClickListener(new OnClickListener()
+		((Button) findViewById(R.id.controller_start_stop)).setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
-				IntentStartCollector.sendBroadcast(Controller.this, ((TextView) findViewById(R.id.controller_title)).getText().toString());
-			}
-		});
-
-		((Button) findViewById(R.id.controller_stop)).setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				IntentStopCollector.sendBroadcast(Controller.this);
-			}
-		});
-
-		((Button) findViewById(R.id.controller_quit)).setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				IntentQuitCollector.sendBroadcast(Controller.this);
+				if (collectorIPC != null)
+				{
+					try
+					{
+						if (collectorIPC.isCollecting())
+						{
+							IntentStopCollector.sendBroadcast(Controller.this);
+						}
+						else
+						{
+							IntentStartCollector.sendBroadcast(Controller.this, ((TextView) findViewById(R.id.controller_title)).getText().toString());
+						}
+					}
+					catch (RemoteException e)
+					{
+						Logging.log(Controller.this, e);
+					}
+				}
 			}
 		});
 
@@ -142,12 +137,13 @@ public class Controller extends ConnectingActivity
 			public void onClick(View v)
 			{
 				// Raute äußerst Hacky
-				final boolean klc = ((CheckBox) findViewById(R.id.controller_keeplocal)).isChecked();
+				final boolean toLocal = ((CheckBox) findViewById(R.id.controller_local)).isChecked();
+				final boolean toWeb = ((CheckBox) findViewById(R.id.controller_web)).isChecked();
 				final byte[] cache;
 
-				if (klc)
+				if (toLocal)
 				{
-					cache = new byte[512];
+					cache = new byte[2048];
 				}
 				else
 				{
@@ -156,7 +152,7 @@ public class Controller extends ConnectingActivity
 
 				for (File file : new File(Controller.this.getFilesDir(), "wfj").listFiles())
 				{
-					if (klc)
+					if (toLocal)
 					{
 						File copy = new File(Controller.this.getExternalFilesDir(null), "wfj/" + file.getName());
 
@@ -178,14 +174,21 @@ public class Controller extends ConnectingActivity
 						}
 						catch (IOException e)
 						{
-							IntentLog.sendBroadcast(Controller.this, new Date(), "Could not create local copy of " + file.getName(), e.getMessage(), null);
+							Logging.log(Controller.this, "Could not create local copy of " + file.getName(), e.getMessage(), null);
 						}
 					}
 
-					IntentLog.sendBroadcast(Controller.this, new Date(), "Uploading", file.getName(), null);
+					Logging.log(Controller.this, "Uploading", file.getName(), null);
 
-					IntentUpload.startService(Controller.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de/users/sign_in.json", "mlukas@gmx.net", "12345678",
-							"http://mobilesensing.west.uni-koblenz.de/recordings/upload", file, "application/text", "*/*", true);
+					if (toWeb)
+					{
+						IntentUpload.startService(Controller.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de/users/sign_in.json", "mlukas@gmx.net", "12345678",
+								"http://mobilesensing.west.uni-koblenz.de/recordings/upload", file, "application/text", "*/*", true);
+					}
+					else
+					{
+						file.delete();
+					}
 				}
 			}
 		});
@@ -206,6 +209,11 @@ public class Controller extends ConnectingActivity
 		logDriver.stop();
 		uploadResponseDriver.stop();
 
+		if (collectorIPC != null)
+		{
+			IntentQuitCollector.sendBroadcast(this);
+		}
+
 		super.onDestroy();
 	}
 
@@ -220,13 +228,16 @@ public class Controller extends ConnectingActivity
 	@Override
 	protected void onConnected(IBinder service)
 	{
-		Log.i("Controller", "onConnected(" + service + ")");
+		collectorIPC = CollectorIPC.Stub.asInterface(service);
+
+		Logging.log(this, "Controller", "Connected", null);
 	}
 
 	@Override
 	protected void onDisconnected()
 	{
-		Log.i("Controller", "onDisconnected()");
-	}
+		collectorIPC = null;
 
+		Logging.log(this, "Controller", "Disconnected", null);
+	}
 }
