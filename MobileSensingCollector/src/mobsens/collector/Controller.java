@@ -8,6 +8,8 @@ import java.io.PrintStream;
 import java.util.Date;
 
 import mobsens.collector.communications.ConnectingActivity;
+import mobsens.collector.drivers.messaging.CollectorStatusDriver;
+import mobsens.collector.drivers.messaging.CollectorStatusOutput;
 import mobsens.collector.drivers.messaging.LogDriver;
 import mobsens.collector.drivers.messaging.LogOutput;
 import mobsens.collector.drivers.messaging.UploadResponseDriver;
@@ -48,6 +50,7 @@ public class Controller extends ConnectingActivity
 			tv.setText(text + "\r\n\r\n" + tv.getText());
 		}
 	};
+
 	public final Consumer<UploadResponseOutput> UPLOAD_RESPONSE_ENDPOINT = new Consumer<UploadResponseOutput>()
 	{
 		@Override
@@ -77,9 +80,27 @@ public class Controller extends ConnectingActivity
 		}
 	};
 
+	public final Consumer<CollectorStatusOutput> COLLECTOR_STATUS_ENDPOINT = new Consumer<CollectorStatusOutput>()
+	{
+		@Override
+		public void consume(CollectorStatusOutput item)
+		{
+			if (item.status)
+			{
+				((Button) findViewById(R.id.controller_start_stop)).setText("Stop");
+			}
+			else
+			{
+				((Button) findViewById(R.id.controller_start_stop)).setText("Start");
+			}
+		}
+	};
+
 	private final LogDriver logDriver;
 
 	private final UploadResponseDriver uploadResponseDriver;
+	
+	private final CollectorStatusDriver collectorStatusDriver;
 
 	private CollectorIPC collectorIPC;
 
@@ -92,6 +113,9 @@ public class Controller extends ConnectingActivity
 
 		uploadResponseDriver = new UploadResponseDriver(this);
 		uploadResponseDriver.setConsumer(UPLOAD_RESPONSE_ENDPOINT);
+		
+		collectorStatusDriver = new CollectorStatusDriver(this);
+		collectorStatusDriver.setConsumer(COLLECTOR_STATUS_ENDPOINT);
 
 		collectorIPC = null;
 	}
@@ -103,7 +127,10 @@ public class Controller extends ConnectingActivity
 		setContentView(R.layout.activity_controller);
 
 		logDriver.start();
+
 		uploadResponseDriver.start();
+		
+		collectorStatusDriver.start();
 
 		((Button) findViewById(R.id.controller_start_stop)).setOnClickListener(new OnClickListener()
 		{
@@ -207,7 +234,10 @@ public class Controller extends ConnectingActivity
 	protected void onDestroy()
 	{
 		logDriver.stop();
+		
 		uploadResponseDriver.stop();
+		
+		collectorStatusDriver.stop();
 
 		if (collectorIPC != null)
 		{
@@ -229,6 +259,22 @@ public class Controller extends ConnectingActivity
 	protected void onConnected(IBinder service)
 	{
 		collectorIPC = CollectorIPC.Stub.asInterface(service);
+
+		try
+		{
+			if (collectorIPC.isCollecting())
+			{
+				((Button) findViewById(R.id.controller_start_stop)).setText("Stop");
+			}
+			else
+			{
+				((Button) findViewById(R.id.controller_start_stop)).setText("Start");
+			}
+		}
+		catch (RemoteException e)
+		{
+			Logging.log(this, e);
+		}
 
 		Logging.log(this, "Controller", "Connected", null);
 	}

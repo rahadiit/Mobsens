@@ -5,7 +5,6 @@ import java.util.Date;
 import mobsens.collector.communications.ConnectedService;
 import mobsens.collector.consumers.WFJStreamingConsumer;
 import mobsens.collector.drivers.annotations.AnnotationDriver;
-import mobsens.collector.drivers.annotations.AnnotationOutput;
 import mobsens.collector.drivers.connectivity.ConnectivityDriver;
 import mobsens.collector.drivers.locations.LocationDriver;
 import mobsens.collector.drivers.messaging.QuitCollectorDriver;
@@ -15,7 +14,7 @@ import mobsens.collector.drivers.messaging.StartCollectorOutput;
 import mobsens.collector.drivers.messaging.StopCollectorDriver;
 import mobsens.collector.drivers.messaging.StopCollectorOutput;
 import mobsens.collector.drivers.sensors.SensorDriver;
-import mobsens.collector.intents.IntentLog;
+import mobsens.collector.intents.IntentCollectorStatus;
 import mobsens.collector.pipeline.Consumer;
 import mobsens.collector.pipeline.basics.Filter;
 import mobsens.collector.util.Logging;
@@ -33,8 +32,6 @@ import android.provider.Settings.Secure;
 
 public class Collector extends ConnectedService
 {
-	// public static final String
-
 	private String did;
 
 	public final CollectorIPC IPC_ENDPOINT = new CollectorIPC.Stub()
@@ -52,21 +49,14 @@ public class Collector extends ConnectedService
 		public void consume(final StartCollectorOutput item)
 		{
 			collecting = true;
+			IntentCollectorStatus.sendBroadcast(Collector.this, true);
+
+			startTime = new Date();
+			title = item.title;
 
 			Logging.log(Collector.this, "Collector", "Starting collection", null);
 
 			wfjStreamer.setLocation("wfj/" + item.title + new Date().getTime() + ".wfj");
-
-			// Rec-Token schreiben
-			wfjStreamer.consume(new BasicWFJ()
-			{
-				@Override
-				public void generateTo(JSONStringer stringer) throws JSONException
-				{
-					stringer.object().key("rec").object().key("title").value(item.title).key("did").value(did).endObject().endObject();
-				}
-			});
-			wfjStreamer.consume(new AnnotationOutput(new Date(), "Title: " + item.title));
 
 			for (SensorDriver sensorDriver : sensorDrivers)
 			{
@@ -78,6 +68,7 @@ public class Collector extends ConnectedService
 			connectivityDriver.start();
 
 			annotationDriver.start();
+
 		}
 	};
 
@@ -86,7 +77,23 @@ public class Collector extends ConnectedService
 		@Override
 		public void consume(StopCollectorOutput item)
 		{
+			collecting = false;
+			IntentCollectorStatus.sendBroadcast(Collector.this, false);
+
+			final Date endTime = new Date();
+
 			Logging.log(Collector.this, new Date(), "Collector", "Stopping collection", null);
+
+			// Rec-Token schreiben
+			wfjStreamer.consume(new BasicWFJ()
+			{
+				@Override
+				public void generateTo(JSONStringer stringer) throws JSONException
+				{
+					stringer.object().key("rec").object().key("title").value(title).key("did").value(did).key("time_start").value(startTime.getTime()).key("time_stop")
+							.value(endTime.getTime()).endObject().endObject();
+				}
+			});
 
 			for (SensorDriver sensorDriver : sensorDrivers)
 			{
@@ -98,8 +105,6 @@ public class Collector extends ConnectedService
 			connectivityDriver.stop();
 
 			annotationDriver.stop();
-
-			collecting = false;
 		}
 	};
 
@@ -133,6 +138,10 @@ public class Collector extends ConnectedService
 	private final Filter<WFJ> wfjFilter;
 
 	private boolean collecting;
+
+	private Date startTime;
+
+	private String title;
 
 	public Collector()
 	{
