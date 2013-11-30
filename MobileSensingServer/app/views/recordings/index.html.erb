@@ -3,22 +3,22 @@
 		<tr>
 			<th>Date</th>
 			<th></th>
+			<th></th>
+			<th></th>
 			<th>User</th>
 			<th>Device</th>
 			<th>Title</th>
-			<th></th>
-			<th></th>
 		</tr>
 
 		<% @recordings.each do |recording| %>
 		<tr>
 			<td><%= recording.created_at.strftime("%Y-%m-%d %H:%M") %></td>
 			<td><%= render :partial => "shared/link_button", :locals => { link: recording_path(recording), caption:'Overview', icon:'list'} %></td>
-			<td><%= recording.user.email unless recording.user.nil? %></td>
-			<td><%= link_to(recording.device.identifier, device_path(recording.device)) unless recording.device.nil? %></td>
-			<td><%= recording.title %></td>
 			<td><%= render :partial => "shared/link_button", :locals => { link: edit_recording_path(recording), caption:'Edit', icon:'edit'} %></td>
 			<td><%= render :partial => "shared/link_button", :locals => { link: recording_path(recording), caption:'Delete', icon:'trash', confirm: true, method:'delete'} %></td>
+			<td><span class="glyphicon glyphicon-user"></span> <%= recording.user.email unless recording.user.nil? %></td>
+			<td><span class="glyphicon glyphicon-phone"></span> <%= link_to(recording.device.identifier, device_path(recording.device)) unless recording.device.nil? %></td>
+			<td><span class="glyphicon glyphicon-comment"></span> <%= recording.title %></td>
 		</tr>
 		<% end %>
 </table>

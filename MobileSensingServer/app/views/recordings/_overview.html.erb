@@ -1,8 +1,7 @@
-Uploaded: <b><%= recording.created_at.strftime("%Y-%m-%d %H:%M") %></b>
+<span class="glyphicon glyphicon-time"></span> <b><%= recording.created_at.strftime("%Y-%m-%d %H:%M") %></b>
 <br />
-User: <b><%= recording.user.email unless recording.user.nil? %></b>
+<span class="glyphicon glyphicon-user"></span> <b><%= recording.user.email unless recording.user.nil? %></b>
 <br />
-Title: <b><%= recording.title %></b>
+<span class="glyphicon glyphicon-comment"></span> <b><%= recording.title %></b>
 <br />
-Device: <%= link_to(recording.device.identifier, device_path(recording.device)) unless recording.device.nil? %>
-<br />
+<span class="glyphicon glyphicon-phone"></span> <%= link_to(recording.device.identifier, device_path(recording.device)) unless recording.device.nil? %>
