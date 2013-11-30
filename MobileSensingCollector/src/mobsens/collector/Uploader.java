@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.apache.http.HttpEntity;
+import mobsens.collector.intents.IntentUpload;
+import mobsens.collector.intents.IntentUploadResponse;
+import mobsens.collector.util.Logging;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.StringEntity;
@@ -19,11 +21,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONStringer;
 
-import mobsens.collector.intents.IntentUpload;
-import mobsens.collector.intents.IntentUploadResponse;
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
 
 public class Uploader extends IntentService
 {
@@ -57,7 +56,7 @@ public class Uploader extends IntentService
 		final String acceptType = extra_acceptType;
 		final boolean consume = extra_consume;
 
-		Log.d("Uploader", "<" + handle + ">" + destination + " from " + file);
+		Logging.log(this, "Uploader", handle, destination + " <- " + file);
 
 		// Startzeit markieren
 		final Date startTimeMarker = new Date();
@@ -70,7 +69,7 @@ public class Uploader extends IntentService
 				final Date endTimeMarker = new Date();
 				final long transmissionMarker = 0;
 
-				Log.d("Uploader", "<" + handle + ">" + file + " not found");
+				Logging.log(this, "Uploader", handle, "Source not found");
 
 				// Wenn Datei nicht existiert, als Exception melden
 				IntentUploadResponse.sendBroadcast(this, handle, startTimeMarker, endTimeMarker, transmissionMarker, null, new FileNotFoundException(file + " not found"));
@@ -94,7 +93,7 @@ public class Uploader extends IntentService
 
 					final String loginResponseString = EntityUtils.toString(loginResponse.getEntity());
 
-					Log.d("Login", loginResponseString);
+					Logging.log(this, "Uploader", handle, "Login successful with: " + loginResponseString);
 				}
 				catch (JSONException e)
 				{
@@ -108,10 +107,10 @@ public class Uploader extends IntentService
 
 				// Zu sendendes Entity erstellen und konfigurieren
 				final FileEntity requestEntity = new FileEntity(file, contentType);
-				
+
 				// MIME-Type für Upload
 				requestEntity.setContentType("application/text");
-				
+
 				// POST mit Entity befüllen
 				httpPost.setEntity(requestEntity);
 
@@ -125,7 +124,7 @@ public class Uploader extends IntentService
 				final Date endTimeMarker = new Date();
 				final long transmissionMarker = file.length();
 
-				Log.d("Uploader", "<" + handle + "> done");
+				Logging.log(this, "Uploader", handle, "Done");
 
 				// Rückgabe weiterleiten
 				IntentUploadResponse.sendBroadcast(this, handle, startTimeMarker, endTimeMarker, transmissionMarker, responseString, null);
@@ -146,7 +145,8 @@ public class Uploader extends IntentService
 			final Date endTimeMarker = new Date();
 			final long transmissionMarker = 0;
 
-			Log.d("Uploader", "<" + handle + "> " + e.getMessage());
+			Logging.log(this, e);
+
 			IntentUploadResponse.sendBroadcast(this, handle, startTimeMarker, endTimeMarker, transmissionMarker, null, e);
 		}
 	}

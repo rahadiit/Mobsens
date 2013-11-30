@@ -2,15 +2,6 @@ package mobsens.collector;
 
 import java.util.Date;
 
-import org.json.JSONException;
-import org.json.JSONStringer;
-
-import android.content.Intent;
-import android.hardware.Sensor;
-import android.os.IBinder;
-import android.os.RemoteException;
-import android.provider.Settings.Secure;
-import android.util.Log;
 import mobsens.collector.communications.ConnectedService;
 import mobsens.collector.consumers.WFJStreamingConsumer;
 import mobsens.collector.drivers.annotations.AnnotationDriver;
@@ -27,8 +18,18 @@ import mobsens.collector.drivers.sensors.SensorDriver;
 import mobsens.collector.intents.IntentLog;
 import mobsens.collector.pipeline.Consumer;
 import mobsens.collector.pipeline.basics.Filter;
+import mobsens.collector.util.Logging;
 import mobsens.collector.wfj.WFJ;
 import mobsens.collector.wfj.basics.BasicWFJ;
+
+import org.json.JSONException;
+import org.json.JSONStringer;
+
+import android.content.Intent;
+import android.hardware.Sensor;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.provider.Settings.Secure;
 
 public class Collector extends ConnectedService
 {
@@ -52,7 +53,7 @@ public class Collector extends ConnectedService
 		{
 			collecting = true;
 
-			IntentLog.sendBroadcast(Collector.this, new Date(), "Collector", "Starting collection", null);
+			Logging.log(Collector.this, "Collector", "Starting collection", null);
 
 			wfjStreamer.setLocation("wfj/" + item.title + new Date().getTime() + ".wfj");
 
@@ -85,7 +86,7 @@ public class Collector extends ConnectedService
 		@Override
 		public void consume(StopCollectorOutput item)
 		{
-			IntentLog.sendBroadcast(Collector.this, new Date(), "Collector", "Stopping collection", null);
+			Logging.log(Collector.this, new Date(), "Collector", "Stopping collection", null);
 
 			for (SensorDriver sensorDriver : sensorDrivers)
 			{
@@ -107,7 +108,7 @@ public class Collector extends ConnectedService
 		@Override
 		public void consume(QuitCollectorOutput item)
 		{
-			IntentLog.sendBroadcast(Collector.this, new Date(), "Collector", "Qutting", null);
+			Logging.log(Collector.this, "Collector", "Qutting", null);
 
 			stopSelf();
 		}
@@ -204,17 +205,13 @@ public class Collector extends ConnectedService
 	@Override
 	protected void onConnected()
 	{
-		Log.i("Collector", "onConnected()");
-
-		IntentLog.sendBroadcast(this, new Date(), "Collector servcie", "Connected", null);
+		Logging.log(this, "Collector servcie", "Connected", null);
 	}
 
 	@Override
 	protected void onDisconnected()
 	{
-		Log.i("Collector", "onDisconnected()");
-
-		IntentLog.sendBroadcast(this, new Date(), "Collector servcie", "Disconnected", null);
+		Logging.log(this, "Collector servcie", "Disconnected", null);
 	}
 
 	@Override
