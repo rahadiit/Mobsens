@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONStringer;
-
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.provider.Settings.Secure;
@@ -127,11 +126,15 @@ public class Collector extends ConnectedService
 		quitCollectorDriver = new QuitCollectorDriver(this);
 		quitCollectorDriver.setConsumer(QUIT_COLLECTOR_ENDPOINT);
 
-		sensorDrivers = new SensorDriver[] { new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, 1000 * 50), new SensorDriver(this, Sensor.TYPE_GYROSCOPE, 1000 * 50),
-				new SensorDriver(this, Sensor.TYPE_MAGNETIC_FIELD, 1000 * 50), new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, 1000 * 50),
-				new SensorDriver(this, Sensor.TYPE_GRAVITY, 1000 * 50) };
+		sensorDrivers = new SensorDriver[] 
+				{ 
+				new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, 1000 / 50), 
+				new SensorDriver(this, Sensor.TYPE_GYROSCOPE, 1000 / 50),
+				new SensorDriver(this, Sensor.TYPE_MAGNETIC_FIELD, 1000 / 50),
+				new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, 1000 / 50),
+				new SensorDriver(this, Sensor.TYPE_GRAVITY, 1000 / 50) };
 
-		locationDriver = new LocationDriver(this, 3000, 0, true, true, true);
+		locationDriver = new LocationDriver(this, 500, 0, true, true, true);
 
 		connectivityDriver = new ConnectivityDriver(this);
 
