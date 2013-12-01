@@ -145,7 +145,7 @@ public class Collector extends ConnectedService
 				new SensorDriver(this, Sensor.TYPE_MAGNETIC_FIELD, 1000 / 50), new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, 1000 / 50),
 				new SensorDriver(this, Sensor.TYPE_GRAVITY, 1000 / 50) };
 
-		locationDriver = new LocationDriver(this, 500, 0, true, true, true);
+		locationDriver = new LocationDriver(this, 500, 0, true, false, false);
 
 		connectivityDriver = new ConnectivityDriver(this);
 
