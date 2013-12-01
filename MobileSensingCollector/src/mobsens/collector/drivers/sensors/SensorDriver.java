@@ -2,8 +2,8 @@ package mobsens.collector.drivers.sensors;
 
 import java.util.Date;
 
-import mobsens.collector.drivers.Driver;
 import mobsens.collector.pipeline.BasicGenerator;
+import mobsens.collector.pipeline.Driver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.hardware.Sensor;
