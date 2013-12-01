@@ -63,13 +63,15 @@ class RecordingsController < ApplicationController
   end
 
   def upload
-    rec = Recording.new
-    rec.user = current_user;
-    rec.save
-    request.raw_post.each_line do |line|
-      rec.upload(line)  
-    end
-    render :nothing => true
+    
+    upload = SensorUpload.new
+    upload.user = current_user
+    upload.data = request.raw_post
+    upload.save
+    
+    upload.delay.store_data
+    
+   render :nothing => true
   end
   
   private
