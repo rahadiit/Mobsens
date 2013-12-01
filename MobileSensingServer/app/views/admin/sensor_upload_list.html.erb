@@ -1,0 +1,16 @@
+<h1>Raw Upload Data</h1>
+<table class="table table-striped">
+		<tr>
+			<th>Date</th>
+			<th>User</th>
+			<th></th>
+		</tr>
+
+		<% @sensor_upload.each do |su| %>
+		<tr>
+			<td><%= su.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+			<td><span class="glyphicon glyphicon-user"></span> <%= su.user.email unless su.user.nil? %></td>
+			<td><div class="pull-right"><%= render :partial => "shared/link_button", :locals => { link: '/admin/sensor-upload/' + su.id.to_s + '/raw', caption:'download', icon:'download'} %></div></td>
+		</tr>
+		<% end %>
+</table>
