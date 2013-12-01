@@ -2,6 +2,8 @@ package mobsens.classification.util;
 
 import java.util.ArrayList;
 
+import mobsens.classification.data.Location;
+
 public class GPS {
 
 	/**
@@ -49,4 +51,12 @@ public class GPS {
 		return sum;
 	}
 	
+	public static double distanceKMSumLoc(ArrayList<Location> locations){
+		ArrayList<double[]> coordinates = new ArrayList<>();
+		for(Location location:locations){
+			coordinates.add(location.getCoordinates());
+		}
+		return GPS.distanceKMSum(coordinates);
+	}
+
 }
