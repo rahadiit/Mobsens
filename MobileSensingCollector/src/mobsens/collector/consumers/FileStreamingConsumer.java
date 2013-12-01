@@ -1,20 +1,24 @@
 package mobsens.collector.consumers;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
-import mobsens.collector.pipeline.Consumer;
+import mobsens.collector.pipeline.Receiver;
 import android.content.ContextWrapper;
 
-public abstract class FileStreamingConsumer<Item> implements Consumer<Item>
+public abstract class FileStreamingConsumer<Item> implements Receiver<Item>
 {
 	public final ContextWrapper contextWrapper;
+
+	private FileOutputStream fileOutputStream;
 
 	public FileStreamingConsumer(ContextWrapper contextWrapper)
 	{
 		this.contextWrapper = contextWrapper;
+
+		fileOutputStream = null;
 	}
 
 	private String location;
@@ -26,50 +30,53 @@ public abstract class FileStreamingConsumer<Item> implements Consumer<Item>
 
 	public void setLocation(String location)
 	{
-		this.location = location;
+		if (fileOutputStream != null)
+		{
+			stop();
+
+			this.location = location;
+
+			start();
+		}
+		else
+		{
+			this.location = location;
+		}
 	}
 
+	protected abstract void redirect(FileOutputStream fileOutputStream);
+
 	@Override
-	public void consume(Item item)
+	public void stop()
 	{
+		if (fileOutputStream == null) throw new IllegalStateException("Trying to stop a stopped receiver");
+
 		try
 		{
-			final File file = new File(contextWrapper.getFilesDir(), location);
-
-			// Parent erstellen
-			file.getParentFile().mkdirs();
-
-			final FileOutputStream fileOutputStream = new FileOutputStream(file, true);
-			redirect(fileOutputStream);
-
-			if (file.length() == 0)
-			{
-				init(item);
-			}
-
-			write(item);
-
 			fileOutputStream.close();
+
+			fileOutputStream = null;
 		}
 		catch (IOException e)
 		{
-			throw new RuntimeException(e);
+			throw new RuntimeException("Error stopping receiver", e);
 		}
 	}
 
-	protected abstract void redirect(OutputStream stream);
-
-	/**
-	 * Wird aufgerufen, wenn die Datei vor dem Schreiben des angegebenen Items
-	 * leer war
-	 * 
-	 * @param itemAfter
-	 *            Das folgende Item
-	 */
-	protected void init(Item itemAfter)
+	@Override
+	public void start()
 	{
-		// Nichts tun
-	}
+		if (fileOutputStream != null) throw new IllegalStateException("Trying to start a running receiver");
 
-	protected abstract void write(Item item);
+		try
+		{
+			fileOutputStream = new FileOutputStream(new File(contextWrapper.getFilesDir(), location), true);
+
+			redirect(fileOutputStream);
+		}
+		catch (FileNotFoundException e)
+		{
+			throw new RuntimeException("Error starting receiver", e);
+		}
+	}
 }

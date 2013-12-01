@@ -1,6 +1,6 @@
 package mobsens.collector.consumers;
 
-import java.io.OutputStream;
+import java.io.FileOutputStream;
 import java.io.PrintStream;
 
 import android.content.ContextWrapper;
@@ -13,11 +13,11 @@ public abstract class PrintStreamingConsumer<Item> extends FileStreamingConsumer
 	}
 
 	@Override
-	protected void redirect(OutputStream stream)
+	protected void redirect(FileOutputStream fileOutputStream)
 	{
-		redirectPrint(new PrintStream(stream));
+		redirect(new PrintStream(fileOutputStream));
 	}
 
-	protected abstract void redirectPrint(PrintStream printStream);
+	protected abstract void redirect(PrintStream printStream);
 
 }
