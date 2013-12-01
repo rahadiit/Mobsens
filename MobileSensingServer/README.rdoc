@@ -12,6 +12,7 @@ For development there is a preconfigured SQLite3 database.
 == Running Development Server
   $ bundle install
   $ rake db:migrate
+  $ rails runner bin/delayed_job start
   $ rails server
 
 == RESTful Web service
