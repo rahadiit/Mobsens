@@ -15,6 +15,10 @@ For development there is a preconfigured SQLite3 database.
   $ rails runner bin/delayed_job start
   $ rails server
 
+== Background Tasks
+For longer tasks (e.g. data upload) the application uses Delayed::Job.
+So they can be worked off in the background.
+
 == RESTful Web service
 
 === Sign in
