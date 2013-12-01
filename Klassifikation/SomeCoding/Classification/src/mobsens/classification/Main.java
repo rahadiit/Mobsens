@@ -7,18 +7,20 @@ import mobsens.classification.data.Location;
 import mobsens.classification.util.CSV;
 import mobsens.classification.util.GPS;
 import mobsens.classification.util.IO;
+import mobsens.classification.util.Time;
+import mobsens.classification.util.Calc;
 
 public class Main {
 	
 	public static void main (String[] args){
 		
-		ArrayList<double[]> coordinates = new ArrayList<>();
 		ArrayList<Location> locations = CSV.csvToLocation(new File("lo1.csv"));
-		for(Location location:locations){
-			coordinates.add(location.getCoordinates());
-		}
 		
-		System.out.println("Distance: "+GPS.distanceKMSum(coordinates));
-		
+		long time1=(long)locations.get(0).getTime();
+		long time2=(long)locations.get(locations.size()-1).getTime();
+		System.out.println("locations: "+locations.size());
+		System.out.println("Distance: "+GPS.distanceKMSumLoc(locations));
+		System.out.println("duration "+Time.duration(time1,time2, "HH:mm:ss"));
+		System.out.println("avg speed: "+Calc.getAverageSpeed((time1-time2), GPS.distanceKMSumLoc(locations)));
 	}
 }
