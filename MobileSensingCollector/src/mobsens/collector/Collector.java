@@ -7,8 +7,6 @@ import mobsens.collector.consumers.WFJStreamingConsumer;
 import mobsens.collector.drivers.annotations.AnnotationDriver;
 import mobsens.collector.drivers.connectivity.ConnectivityDriver;
 import mobsens.collector.drivers.locations.LocationDriver;
-import mobsens.collector.drivers.messaging.QuitCollectorDriver;
-import mobsens.collector.drivers.messaging.QuitCollectorOutput;
 import mobsens.collector.drivers.messaging.StartCollectorDriver;
 import mobsens.collector.drivers.messaging.StartCollectorOutput;
 import mobsens.collector.drivers.messaging.StopCollectorDriver;
@@ -60,6 +58,8 @@ public class Collector extends ConnectedService
 
 			wfjStreamer.setLocation("wfj/" + item.title + new Date().getTime() + ".wfj");
 
+			wfjStreamer.start();
+
 			for (SensorDriver sensorDriver : sensorDrivers)
 			{
 				sensorDriver.start();
@@ -70,7 +70,6 @@ public class Collector extends ConnectedService
 			connectivityDriver.start();
 
 			annotationDriver.start();
-
 		}
 	};
 
@@ -107,25 +106,14 @@ public class Collector extends ConnectedService
 			connectivityDriver.stop();
 
 			annotationDriver.stop();
-		}
-	};
 
-	public final Consumer<QuitCollectorOutput> QUIT_COLLECTOR_ENDPOINT = new Consumer<QuitCollectorOutput>()
-	{
-		@Override
-		public void consume(QuitCollectorOutput item)
-		{
-			Logging.log(Collector.this, "Collector:" + sid, "Qutting", null);
-
-			stopSelf();
+			wfjStreamer.stop();
 		}
 	};
 
 	private final StartCollectorDriver startCollectorDriver;
 
 	private final StopCollectorDriver stopCollectorDriver;
-
-	private final QuitCollectorDriver quitCollectorDriver;
 
 	private final SensorDriver[] sensorDrivers;
 
@@ -152,9 +140,6 @@ public class Collector extends ConnectedService
 
 		stopCollectorDriver = new StopCollectorDriver(this);
 		stopCollectorDriver.setConsumer(STOP_COLLECTOR_ENDPOINT);
-
-		quitCollectorDriver = new QuitCollectorDriver(this);
-		quitCollectorDriver.setConsumer(QUIT_COLLECTOR_ENDPOINT);
 
 		sensorDrivers = new SensorDriver[] { new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, 1000 / 50), new SensorDriver(this, Sensor.TYPE_GYROSCOPE, 1000 / 50),
 				new SensorDriver(this, Sensor.TYPE_MAGNETIC_FIELD, 1000 / 50), new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, 1000 / 50),
@@ -193,8 +178,10 @@ public class Collector extends ConnectedService
 		did = "DEV" + Integer.toHexString((Secure.getString(getContentResolver(), Secure.ANDROID_ID)).hashCode());
 
 		startCollectorDriver.start();
+
 		stopCollectorDriver.start();
-		quitCollectorDriver.start();
+
+		Logging.log(this, "Collector:" + sid, "Created", null);
 	}
 
 	@Override
@@ -207,8 +194,10 @@ public class Collector extends ConnectedService
 	public void onDestroy()
 	{
 		startCollectorDriver.stop();
+
 		stopCollectorDriver.stop();
-		quitCollectorDriver.stop();
+
+		Logging.log(this, "Collector:" + sid, "Destroyed", null);
 
 		super.onDestroy();
 	}
@@ -223,6 +212,11 @@ public class Collector extends ConnectedService
 	protected void onDisconnected()
 	{
 		Logging.log(this, "Collector:" + sid, "Disconnected", null);
+
+		if (!collecting)
+		{
+			stopSelf();
+		}
 	}
 
 	@Override

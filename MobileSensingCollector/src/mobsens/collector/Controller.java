@@ -15,7 +15,6 @@ import mobsens.collector.drivers.messaging.LogOutput;
 import mobsens.collector.drivers.messaging.UploadResponseDriver;
 import mobsens.collector.drivers.messaging.UploadResponseOutput;
 import mobsens.collector.intents.IntentAnnotation;
-import mobsens.collector.intents.IntentQuitCollector;
 import mobsens.collector.intents.IntentStartCollector;
 import mobsens.collector.intents.IntentStopCollector;
 import mobsens.collector.intents.IntentUpload;
@@ -252,12 +251,7 @@ public class Controller extends ConnectingActivity
 		uploadResponseDriver.stop();
 
 		collectorStatusDriver.stop();
-
-		if (collectorIPC != null)
-		{
-			IntentQuitCollector.sendBroadcast(this);
-		}
-
+		
 		super.onDestroy();
 	}
 
