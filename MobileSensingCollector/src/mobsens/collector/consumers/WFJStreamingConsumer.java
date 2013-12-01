@@ -17,13 +17,13 @@ public class WFJStreamingConsumer extends PrintStreamingConsumer<WFJ>
 	}
 
 	@Override
-	protected void redirectPrint(PrintStream printStream)
+	protected void redirect(PrintStream printStream)
 	{
 		this.printStream = printStream;
 	}
 
 	@Override
-	protected void write(WFJ item)
+	public void consume(WFJ item)
 	{
 		printStream.println(item.generate());
 	}
