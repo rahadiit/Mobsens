@@ -79,6 +79,5 @@ public class LogOutput
 	{
 		return "LogOutput [time=" + time + ", title=" + title + ", subtitle=" + subtitle + ", description=" + description + "]";
 	}
-	
-	
+
 }

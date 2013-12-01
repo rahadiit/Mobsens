@@ -38,6 +38,5 @@ public class CollectionCompleteOutput
 	{
 		return "CollectionCompleteOutput [location=" + location + "]";
 	}
-	
-	
+
 }
