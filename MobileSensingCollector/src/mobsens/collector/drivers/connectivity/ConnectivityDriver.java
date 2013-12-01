@@ -2,8 +2,8 @@ package mobsens.collector.drivers.connectivity;
 
 import java.util.Date;
 
-import mobsens.collector.drivers.Driver;
 import mobsens.collector.pipeline.BasicGenerator;
+import mobsens.collector.pipeline.Driver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContextWrapper;

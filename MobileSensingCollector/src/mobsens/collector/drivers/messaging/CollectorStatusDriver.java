@@ -1,8 +1,8 @@
 package mobsens.collector.drivers.messaging;
 
-import mobsens.collector.drivers.Driver;
 import mobsens.collector.intents.IntentCollectorStatus;
 import mobsens.collector.pipeline.BasicGenerator;
+import mobsens.collector.pipeline.Driver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContextWrapper;
