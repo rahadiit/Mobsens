@@ -92,7 +92,7 @@ class RecordingsController < ApplicationController
     :gyroscopes_attributes => [:recording_id, :time, :rX, :rY, :rZ],
     :lights_attributes => [:recording_id, :time, :ambientLight],
     :linear_accelerations_attributes => [:recording_id, :time, :x, :y, :z],
-    :locations_attributes => [:time, :longitude, :latitude, :speed, :bearing, :accuracy],
+    :locations_attributes => [:time, :longitude, :latitude, :altitude, :speed, :bearing, :accuracy],
     :magnetic_fields_attributes => [:recording_id, :time, :x, :y, :z],
     :pressures_attributes => [:recording_id, :time, :pressure],
     :proximities_attributes => [:recording_id, :time, :proximity],
