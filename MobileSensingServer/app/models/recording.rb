@@ -31,7 +31,7 @@ class Recording < ActiveRecord::Base
   def get_duration
     return nil if self.time_start.nil?
     return nil if self.time_stop.nil?
-    TimeDifference.between(self.time_start, self.time_stop).in_minutes
+    TimeDifference.between(self.time_start, self.time_stop).in_seconds.round(0)
   end
   
   def upload(line)
@@ -63,10 +63,10 @@ class Recording < ActiveRecord::Base
         self.title = entry['rec']['title']
       end 
       if entry['rec'].has_key?('time_start') then
-        self.time_start = Time.strptime(entry['rec']['time_start'], '%Q')
+        self.time_start = Time.strptime(entry['rec']['time_start'].to_s, '%Q')
       end 
       if entry['rec'].has_key?('time_stop') then
-        self.time_stop = Time.strptime(entry['rec']['time_stop'], '%Q')
+        self.time_stop = Time.strptime(entry['rec']['time_stop'].to_s, '%Q')
       end 
       self.save
       return
