@@ -3,24 +3,35 @@ package mobsens.classification;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.sun.jersey.api.client.Client;
+
 import mobsens.classification.data.Location;
-import mobsens.classification.util.CSV;
-import mobsens.classification.util.GPS;
-import mobsens.classification.util.IO;
-import mobsens.classification.util.Time;
-import mobsens.classification.util.Calc;
+import mobsens.classification.data.Recording;
+import mobsens.classification.data.Sensor;
+import mobsens.classification.data.URLS;
+import mobsens.classification.input.CSV;
+import mobsens.classification.input.RESTFul;
+import mobsens.classification.output.PrettyPrint;
 
 public class Main {
+
+	private static final String username = "mlukas@gmx.net";
+	private static final String password = "12345678";
 	
-	public static void main (String[] args){
+	public static void main(String[] args) {
+
+		ArrayList<Location> locations = CSV.csvToLocation(new File("locSpazieren.csv"));
+		PrettyPrint.print(locations);
+
+		Client client = RESTFul.login(URLS.LOGIN.getURL(), username, password);
+
+		ArrayList<Recording> recordings = RESTFul.recordingOutput(client, URLS.LIST_RECORDINGS.getURL());
 		
-		ArrayList<Location> locations = CSV.csvToLocation(new File("lo1.csv"));
+		for(Recording rec: recordings){
+			rec.prettyPrint();
+		}
 		
-		long time1=(long)locations.get(0).getTime();
-		long time2=(long)locations.get(locations.size()-1).getTime();
-		System.out.println("locations: "+locations.size());
-		System.out.println("Distance: "+GPS.distanceKMSumLoc(locations));
-		System.out.println("duration "+Time.duration(time1,time2, "HH:mm:ss"));
-		System.out.println("avg speed: "+Calc.getAverageSpeed((time1-time2), GPS.distanceKMSumLoc(locations)));
+		System.out.println(RESTFul.getCSV(client, 7,URLS.CSV.getURL(),Sensor.ACCELEROMETERS ));
+		
 	}
 }
