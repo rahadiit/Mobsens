@@ -28,6 +28,12 @@ class Recording < ActiveRecord::Base
   accepts_nested_attributes_for :proximities
   accepts_nested_attributes_for :rotation_vectors
   
+  def get_duration
+    return nil if self.time_start.nil?
+    return nil if self.time_stop.nil?
+    TimeDifference.between(self.time_start, self.time_stop).in_seconds.round(0)
+  end
+  
   def upload(line)
     entry = JSON.parse(line)
 
@@ -55,7 +61,13 @@ class Recording < ActiveRecord::Base
       end
       if entry['rec'].has_key?('title') then
         self.title = entry['rec']['title']
-      end     
+      end 
+      if entry['rec'].has_key?('time_start') then
+        self.time_start = Time.strptime(entry['rec']['time_start'].to_s, '%Q')
+      end 
+      if entry['rec'].has_key?('time_stop') then
+        self.time_stop = Time.strptime(entry['rec']['time_stop'].to_s, '%Q')
+      end 
       self.save
       return
     end 

@@ -1,12 +1,12 @@
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
 	<div class="container" style="width:90%">
-		
-	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>	
+
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
 		<div class="navbar-header">
 			<a class="navbar-brand" href="#">Mobile Sensors</a>
 		</div>
@@ -19,6 +19,17 @@
 				<li <% if controller_name == 'devices' %>class="active"<% end %>>
 					<%= link_to 'Devices', devices_path %>
 				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+					    <li>
+							<%= link_to 'User List', '/admin/user/list' %>
+						</li>
+						<li>
+							<%= link_to 'Raw Upload Data', '/admin/sensor-upload/list' %>
+						</li>
+					</ul>
+				</li>
 				<% end %>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Client<b class="caret"></b></a>
@@ -28,8 +39,11 @@
 						</li>
 						<li class="divider"></li>
 						<li>
-							<a href="https://github.com/MobileSensors/MobSens/blob/master/MobileSensingCollector/bin/MobileSensingCollector.apk?raw=true">Download</a>
+							<%= link_to 'Download (Stable)', 'https://github.com/MobileSensors/MobSens/blob/master/MobileSensingCollector/bin/MobileSensingCollector.apk?raw=true' %>
 						</li>
+						<li>
+							<%= link_to 'Download (Testing)', 'https://github.com/MobileSensors/MobSens/blob/dev-client/MobileSensingCollector/bin/MobileSensingCollector.apk?raw=true' %>
+						</li>					
 					</ul>
 				</li>
 			</ul>
@@ -44,8 +58,10 @@
 				</li>
 				<% end %>
 			</ul>
-		 	<% if user_signed_in? %>
-				<p class="navbar-text navbar-right">Signed in: <b><%= current_user.email %></b></p>	
+			<% if user_signed_in? %>
+			<p class="navbar-text navbar-right">
+				Signed in: <b><%= current_user.email %></b>
+			</p>
 			<% end %>
 		</div>
 	</div>

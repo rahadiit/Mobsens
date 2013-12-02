@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131201144510) do
+ActiveRecord::Schema.define(version: 20131201193005) do
 
   create_table "accelerometers", force: true do |t|
     t.integer  "recording_id"
@@ -124,6 +124,7 @@ ActiveRecord::Schema.define(version: 20131201144510) do
     t.float    "accuracy"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "altitude"
   end
 
   add_index "locations", ["recording_id"], name: "index_locations_on_recording_id"
@@ -166,6 +167,8 @@ ActiveRecord::Schema.define(version: 20131201144510) do
     t.datetime "updated_at"
     t.string   "title"
     t.integer  "user_id"
+    t.datetime "time_start"
+    t.datetime "time_stop"
   end
 
   add_index "recordings", ["device_id"], name: "index_recordings_on_device_id"

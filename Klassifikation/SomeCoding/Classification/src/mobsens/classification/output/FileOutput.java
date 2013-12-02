@@ -1,10 +1,10 @@
-package mobsens.classification.util;
+package mobsens.classification.output;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
-public class IO {
+public class FileOutput {
 	public static void writeFile(String path, ArrayList<String> content) {
 		
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
