@@ -3,7 +3,6 @@ package mobsens.classification.input;
 import java.util.ArrayList;
 
 import mobsens.classification.data.Recording;
-
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
@@ -18,7 +17,28 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
+import mobsens.classification.data.Sensor;
+
 public class RESTFul {
+
+	public static String postServerResponse(Client client, String URL,
+			String type, String message) {
+
+		WebResource webResource = client.resource(URL);
+		ClientResponse cResponse = null;
+		if (!message.equals("")) {
+			cResponse = webResource.type(type).post(ClientResponse.class,
+					message);
+		} else {
+			cResponse = webResource.type(type).get(ClientResponse.class);
+		}
+		return cResponse.getEntity(String.class);
+	}
+
+	public static String getServerResponse(Client client, String URL,
+			String type) {
+		return postServerResponse(client, URL, type, "");
+	}
 
 	public static Client login(String URL_LOGIN, String username,
 			String password) {
@@ -28,6 +48,7 @@ public class RESTFul {
 
 		Client client = Client.create(clientConfig);
 
+		// source:http://stackoverflow.com/questions/9676588/how-can-you-authenticate-using-the-jersey-client-against-a-jaas-enabled-web-serv
 		// add a filter to set cookies received from the server and to check if
 		// login has been triggered
 		client.addFilter(new ClientFilter() {
@@ -56,14 +77,10 @@ public class RESTFul {
 		String message = "{\"user\":{\"email\":\"" + username
 				+ "\",\"password\":\"" + password + "\"}}";
 
-		System.out.println(message);
+		// System.out.println(message);
 
-		// Login:
-		WebResource webResource = client.resource(URL_LOGIN);
-		// webResource.accept("application/json");
-		ClientResponse cResponse = webResource.type("application/json").post(
-				ClientResponse.class, message);
-		System.out.println("cR: " + cResponse.getEntity(String.class));
+		System.out.println(postServerResponse(client, URL_LOGIN,
+				"application/json", message));
 
 		return client;
 
@@ -71,21 +88,14 @@ public class RESTFul {
 
 	public static ArrayList<Recording> recordingOutput(Client client,
 			String recordingsURL) {
-
-		// Get the protected web page:
-		WebResource webResource = client.resource(recordingsURL);
-		ClientResponse cResponse = webResource.type("application/json").get(
-				ClientResponse.class);
-		String response = cResponse.getEntity(String.class);
-
-		// System.out.println(response);
-
 		ArrayList<Recording> recordings = new ArrayList<>();
+
+		String response = getServerResponse(client, recordingsURL,
+				"application/json");
 
 		try {
 			JsonFactory f = new JsonFactory();
 			JsonParser jp = f.createJsonParser(response);
-
 			jp.nextToken(); // will return JsonToken.START_OBJECT (verify?)
 
 			while (jp.nextToken() != JsonToken.END_ARRAY) {
@@ -116,7 +126,7 @@ public class RESTFul {
 				}
 				recordings.add(new Recording(user_id, device_id, title, url));
 			}
-			System.out.println(recordings.size());
+			// System.out.println(recordings.size());
 			jp.close();
 
 		} catch (Exception e) {
@@ -124,6 +134,13 @@ public class RESTFul {
 		}
 		return recordings;
 
+	}
+
+	public static String getCSV(Client client, int recordingID, String url,
+			Sensor sensor) {
+
+		url += recordingID + "/" + sensor.toString() + ".csv";
+		return getServerResponse(client, url, "application/csv");
 	}
 
 }
