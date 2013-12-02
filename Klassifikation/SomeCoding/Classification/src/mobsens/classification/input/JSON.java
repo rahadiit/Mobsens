@@ -1,4 +1,4 @@
-package mobsens.classification.util;
+package mobsens.classification.input;
 
 public class JSON {
 

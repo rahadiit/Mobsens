@@ -2,6 +2,9 @@ package mobsens.classification.output;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import mobsens.classification.data.Location;
 import mobsens.classification.input.CSV;
@@ -21,8 +24,11 @@ public class PrettyPrint {
 		System.out.println("Distance: "+GPS.distanceKMSumLoc(locations));
 		System.out.println("duration "+Time.duration(locations.get(0),locations.get(locations.size()-1), "HH:mm:ss"));
 		System.out.println("avg speed: "+Calc.getAverageSpeed(locations));
+		System.out.println("start: "+ DateFormatUtils.format(new Date(time1), "HH:mm:ss"));
+		System.out.println("stop: "+ DateFormatUtils.format(new Date(time2), "HH:mm:ss"));
 		
-		int steps=300;
+		
+		int steps=2000;
 		System.out.println("");
 		System.out.println("stats every "+steps+". meters");
 		
