@@ -34,10 +34,13 @@ MobileSensors::Application.routes.draw do
     get 'recording/:id/' + controller => controller + '#list'
   end
 
+  get 'admin/sensor-upload/list' => 'admin#sensor_upload_list'
+  get 'admin/sensor-upload/:id/raw' => 'admin#sensor_upload_data'
+  get 'admin/sensor-upload/:id/import' => 'admin#sensor_upload_import'
+  get 'admin/user/list' => 'admin#user_list'
+
   post 'recordings/upload' => 'recordings#upload'
-
   root 'recordings#index'
-
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

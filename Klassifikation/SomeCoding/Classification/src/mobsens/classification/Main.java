@@ -3,24 +3,49 @@ package mobsens.classification;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+
 import mobsens.classification.data.Location;
-import mobsens.classification.util.CSV;
-import mobsens.classification.util.GPS;
-import mobsens.classification.util.IO;
-import mobsens.classification.util.Time;
-import mobsens.classification.util.Calc;
+import mobsens.classification.data.Recording;
+import mobsens.classification.input.CSV;
+import mobsens.classification.input.RESTFul;
+import mobsens.classification.output.PrettyPrint;
 
 public class Main {
-	
-	public static void main (String[] args){
+
+	public static void main(String[] args) {
+
+		ArrayList<Location> locations = CSV.csvToLocation(new File(
+				"locSpazieren.csv"));
+		PrettyPrint.print(locations);
+
+		String URL_LOGIN = "http://mobilesensing.west.uni-koblenz.de/users/sign_in.json";
+		String URL_DATA = "http://mobilesensing.west.uni-koblenz.de/recordings.json";
 		
-		ArrayList<Location> locations = CSV.csvToLocation(new File("lo1.csv"));
+		String username = "mlukas@gmx.net";
+		String password = "12345678";
+
+		Client client = RESTFul.login(URL_LOGIN, username, password);
+
+		ArrayList<Recording> recordings = RESTFul.recordingOutput(client, URL_DATA);
 		
-		long time1=(long)locations.get(0).getTime();
-		long time2=(long)locations.get(locations.size()-1).getTime();
-		System.out.println("locations: "+locations.size());
-		System.out.println("Distance: "+GPS.distanceKMSumLoc(locations));
-		System.out.println("duration "+Time.duration(time1,time2, "HH:mm:ss"));
-		System.out.println("avg speed: "+Calc.getAverageSpeed((time1-time2), GPS.distanceKMSumLoc(locations)));
+		for(Recording rec: recordings){
+			rec.prettyPrint();
+		}
+		
 	}
 }
+
+// $ curl -v -H "Accept: application/json" -H "Content-type: application/json"
+// -c cookies.txt -X POST --data
+// '{"user":{"email":"your@ema.il","password":"yourpassword"}}'
+// 'http://localhost:3000/users/sign_in.json'
+//
+// IntentUpload.startService(Controller.this, file.getName(),
+// "http://mobilesensing.west.uni-koblenz.de/users/sign_in.json",
+// "mlukas@gmx.net", "12345678",
+// "http://mobilesensing.west.uni-koblenz.de/recordings/upload", file,
+// "application/text", "*/*", true);
+
