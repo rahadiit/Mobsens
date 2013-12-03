@@ -5,15 +5,17 @@ public class Location {
 	private double time;
 	private double lat;
 	private double lng;
+	private double alt;
 	private double speed;
 	private double bearing;
 	private double accuracy;
 	
-	public Location(double time, double lat, double lng, double speed,
+	public Location(double time, double lat, double lng, double alt, double speed,
 			double bearing, double accuracy) {
 		this.time = time;
 		this.lat = lat;
 		this.lng = lng;
+		this.alt = alt;
 		this.speed = speed;
 		this.bearing = bearing;
 		this.accuracy = accuracy;
@@ -33,6 +35,14 @@ public class Location {
 
 	public void setLat(double lat) {
 		this.lat = lat;
+	}
+	
+	public double getAlt() {
+		return alt;
+	}
+
+	public void setAlt(double alt) {
+		this.alt = alt;
 	}
 
 	public double getLng() {

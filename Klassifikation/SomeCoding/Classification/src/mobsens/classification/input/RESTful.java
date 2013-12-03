@@ -19,7 +19,7 @@ import com.sun.jersey.api.client.filter.ClientFilter;
 
 import mobsens.classification.data.Sensor;
 
-public class RESTFul {
+public class RESTful {
 
 	public static String postServerResponse(Client client, String URL,
 			String type, String message) {
@@ -32,7 +32,16 @@ public class RESTFul {
 		} else {
 			cResponse = webResource.type(type).get(ClientResponse.class);
 		}
-		return cResponse.getEntity(String.class);
+		if (cResponse.getStatus() == 200) {
+			return cResponse.getEntity(String.class);
+		} else {
+			System.out.println("url: " + URL + " type: " + type + " message: "
+					+ message);
+			System.out.println("Status-Code: " + cResponse.toString());
+
+			return null;
+		}
+
 	}
 
 	public static String getServerResponse(Client client, String URL,
@@ -79,8 +88,7 @@ public class RESTFul {
 
 		// System.out.println(message);
 
-		System.out.println(postServerResponse(client, URL_LOGIN,
-				"application/json", message));
+		postServerResponse(client, URL_LOGIN, "application/json", message);
 
 		return client;
 
@@ -99,16 +107,18 @@ public class RESTFul {
 			jp.nextToken(); // will return JsonToken.START_OBJECT (verify?)
 
 			while (jp.nextToken() != JsonToken.END_ARRAY) {
+				int id = -1;
 				int user_id = -1;
 				int device_id = -1;
 				String title = null;
 				String url = null;
 
 				while (jp.nextToken() != JsonToken.END_OBJECT) {
-
 					String fieldname = jp.getCurrentName();
-
-					if ("user_id".equals(fieldname)) { // contains an object
+					if ("id".equals(fieldname)) {
+						id = jp.nextIntValue(-1);
+					} else if ("user_id".equals(fieldname)) { // contains an
+																// object
 						user_id = jp.nextIntValue(-1);
 					} else if ("device_id".equals(fieldname)) {
 						device_id = jp.nextIntValue(-1);
@@ -124,7 +134,8 @@ public class RESTFul {
 								+ fieldname + "'!");
 					}
 				}
-				recordings.add(new Recording(user_id, device_id, title, url));
+				recordings
+						.add(new Recording(id, user_id, device_id, title, url));
 			}
 			// System.out.println(recordings.size());
 			jp.close();
