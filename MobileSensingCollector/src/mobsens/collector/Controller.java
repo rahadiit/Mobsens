@@ -26,8 +26,10 @@ import android.os.RemoteException;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class Controller extends ConnectingActivity
@@ -108,6 +110,7 @@ public class Controller extends ConnectingActivity
 	private Button buttonControllerTag;
 	private CheckBox checkBoxControllerLocal;
 	private CheckBox checkBoxControllerWeb;
+	private Spinner spinnerControllerTagselect;
 
 	public Controller()
 	{
@@ -144,6 +147,7 @@ public class Controller extends ConnectingActivity
 		buttonControllerStartStop = (Button) findViewById(R.id.controller_start_stop);
 		buttonControllerSend = (Button) findViewById(R.id.controller_send);
 		buttonControllerTag = (Button) findViewById(R.id.controller_tag);
+		spinnerControllerTagselect = (Spinner) findViewById(R.id.controller_tagselect);
 
 		buttonControllerStartStop.setOnClickListener(new OnClickListener()
 		{
@@ -238,9 +242,16 @@ public class Controller extends ConnectingActivity
 			@Override
 			public void onClick(View v)
 			{
-				IntentAnnotation.sendBroadcast(Controller.this, new Date(), "TAG");
+				CharSequence selection = (CharSequence) spinnerControllerTagselect.getSelectedItem();
+
+				IntentAnnotation.sendBroadcast(Controller.this, new Date(), selection.toString());
 			}
 		});
+
+		final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.controller_tagselect_items, android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		spinnerControllerTagselect.setAdapter(adapter);
 	}
 
 	@Override
@@ -251,7 +262,7 @@ public class Controller extends ConnectingActivity
 		uploadResponseDriver.stop();
 
 		collectorStatusDriver.stop();
-		
+
 		super.onDestroy();
 	}
 
@@ -304,6 +315,7 @@ public class Controller extends ConnectingActivity
 		outState.putString(R.id.controller_title + "text", textViewControllerTitle.getText().toString());
 		outState.putBoolean(R.id.controller_local + "checked", checkBoxControllerLocal.isChecked());
 		outState.putBoolean(R.id.controller_web + "checked", checkBoxControllerWeb.isChecked());
+		outState.putInt(R.id.controller_tagselect + "selected", spinnerControllerTagselect.getSelectedItemPosition());
 	}
 
 	@Override
@@ -315,5 +327,6 @@ public class Controller extends ConnectingActivity
 		textViewControllerTitle.setText(savedInstanceState.getString(R.id.controller_title + "text"));
 		checkBoxControllerLocal.setChecked(savedInstanceState.getBoolean(R.id.controller_local + "checked"));
 		checkBoxControllerWeb.setChecked(savedInstanceState.getBoolean(R.id.controller_web + "checked"));
+		spinnerControllerTagselect.setSelection(savedInstanceState.getInt(R.id.controller_tagselect + "selected"));
 	}
 }
