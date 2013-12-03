@@ -1,4 +1,6 @@
 class Recording < ActiveRecord::Base
+  default_scope :order => 'time_start DESC'
+  
   belongs_to :device
   belongs_to :user
 
