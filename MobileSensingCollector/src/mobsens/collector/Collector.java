@@ -16,6 +16,7 @@ import mobsens.collector.drivers.sensors.SensorDriver;
 import mobsens.collector.intents.IntentCollectorStatus;
 import mobsens.collector.pipeline.Consumer;
 import mobsens.collector.pipeline.basics.Filter;
+import mobsens.collector.pipeline.basics.WorkerCache;
 import mobsens.collector.util.Calculations;
 import mobsens.collector.util.Logging;
 import mobsens.collector.wfj.WFJ;
@@ -61,6 +62,8 @@ public class Collector extends ConnectedService
 			wfjStreamer.setLocation("wfj/" + item.title + new Date().getTime() + ".wfj");
 
 			wfjStreamer.start();
+
+			wfjDetacher.start();
 
 			for (SensorDriver sensorDriver : sensorDrivers)
 			{
@@ -110,6 +113,9 @@ public class Collector extends ConnectedService
 			annotationDriver.stop();
 
 			wfjStreamer.stop();
+
+			wfjDetacher.stop();
+			wfjDetacher.releaseAllItems();
 		}
 	};
 
@@ -126,6 +132,8 @@ public class Collector extends ConnectedService
 	private final AnnotationDriver annotationDriver;
 
 	private final WFJStreamingConsumer wfjStreamer;
+
+	private final WorkerCache<WFJ> wfjDetacher;
 
 	private final Filter<WFJ> wfjFilter;
 
@@ -157,8 +165,11 @@ public class Collector extends ConnectedService
 
 		wfjStreamer = new WFJStreamingConsumer(this);
 
+		wfjDetacher = new WorkerCache<WFJ>(true);
+		wfjDetacher.setConsumer(wfjStreamer);
+
 		wfjFilter = new Filter<WFJ>(WFJ.class);
-		wfjFilter.setConsumer(wfjStreamer);
+		wfjFilter.setConsumer(wfjDetacher);
 
 		for (SensorDriver sensorDriver : sensorDrivers)
 		{
