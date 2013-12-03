@@ -33,7 +33,7 @@ class Recording < ActiveRecord::Base
   def get_duration
     return nil if self.time_start.nil?
     return nil if self.time_stop.nil?
-    TimeDifference.between(self.time_start, self.time_stop).in_seconds.round(0)
+    time_difference = Time.diff(self.time_start, self.time_stop, '%y, %d and %h:%m:%s')[:diff]
   end
   
   def upload(line)

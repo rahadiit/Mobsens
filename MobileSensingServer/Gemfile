@@ -34,7 +34,7 @@ gem 'devise'
 gem 'jbuilder', '~> 1.2'
 
 # time difference
-gem 'time_difference'
+gem 'time_diff'
 
 # bootstrap css
 gem 'anjlab-bootstrap-rails', :require => 'bootstrap-rails'

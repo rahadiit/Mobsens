@@ -2,7 +2,7 @@
 <table class="table table-striped">
 		<tr>
 			<th>Start Time</th>
-			<th>Duration</th>
+			<th>Duration (hh:mm:ss)</th>
 			<th></th>
 			<th></th>
 			<th></th>
@@ -14,7 +14,7 @@
 		<% @recordings.each do |recording| %>
 		<tr>
 			<td><span class="glyphicon glyphicon-calendar"></span> <%= recording.time_start.strftime("%Y-%m-%d %H:%M") unless recording.time_start.nil? %></td>
-			<td><span class="glyphicon glyphicon-time"></span> <% if recording.get_duration.nil? then %>0<% else %><%= recording.get_duration %><% end %> sec</td>
+			<td><span class="glyphicon glyphicon-time"></span> <% if recording.get_duration.nil? then %>0<% else %><%= recording.get_duration %><% end %></td>
 			<td><%= render :partial => "shared/link_button", :locals => { link: recording_path(recording), caption:'Overview', icon:'list'} %></td>
 			<td><%= render :partial => "shared/link_button", :locals => { link: edit_recording_path(recording), caption:'Edit', icon:'edit'} %></td>
 			<td><%= render :partial => "shared/link_button", :locals => { link: recording_path(recording), caption:'Delete', icon:'trash', confirm: true, method:'delete'} %></td>
