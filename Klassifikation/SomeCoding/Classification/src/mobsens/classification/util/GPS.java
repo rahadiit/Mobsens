@@ -53,8 +53,8 @@ public class GPS {
 	public static double distanceKMSum(ArrayList<double[]> coordinates) {
 		double sum = 0;
 
-		for (int i = 0; i < coordinates.size()-30; i+=30) {
-			sum += distanceKM(coordinates.get(i), coordinates.get(i + 30));
+		for (int i = 0; i < coordinates.size()-1; i++) {
+			sum += distanceKM(coordinates.get(i), coordinates.get(i+1));
 		}
 
 		return sum;
