@@ -33,8 +33,11 @@ gem 'devise'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
+# ruby java bridge
+gem "rjb"
+
 # time difference
-gem 'time_difference'
+gem 'time_diff'
 
 # bootstrap css
 gem 'anjlab-bootstrap-rails', :require => 'bootstrap-rails'

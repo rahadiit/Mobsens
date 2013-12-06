@@ -26,4 +26,8 @@ MobileSensors::Application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
+ 
+  ENV['JAVA_HOME'] = "/usr/lib/jvm/java-7-openjdk-i386"
+  ENV['LD_LIBRARY_PATH'] = "#{ENV['LD_LIBRARY_PATH']}:#{ENV['JAVA_HOME']}/jre/lib/i386:#{ENV['JAVA_HOME']}/jre/lib/i386/client"
+  
 end
