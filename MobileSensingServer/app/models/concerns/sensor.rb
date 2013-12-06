@@ -20,7 +20,7 @@ module Sensor
     end
 
     def get_hz
-      return 0 if self.count < 2
+      return 0 if self.count < 1
       samples = self.order('time')
       time = samples.last.get_milliseconds - samples.first.get_milliseconds
       return 0 if time == 0
