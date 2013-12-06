@@ -49,7 +49,6 @@
         android:id="@+id/controller_logscroller"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/controller_tagselect"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/controller_local"
@@ -74,19 +73,11 @@
         android:layout_below="@+id/controller_start_stop"
         android:text="Send" />
 
-    <Spinner
-        android:id="@+id/controller_tagselect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/controller_logscroller"
-        android:layout_alignTop="@+id/controller_tag"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/controller_tag" />
-
     <Button
         android:id="@+id/controller_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/controller_logscroller"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="Tag" />
