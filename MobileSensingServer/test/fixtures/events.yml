@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  time: 2013-12-06 01:22:29
+  recording_id: 
+  event_type_id: 
+
+two:
+  time: 2013-12-06 01:22:29
+  recording_id: 
+  event_type_id: 
