@@ -3,6 +3,7 @@ package mobsens.collector;
 import java.util.Date;
 
 import mobsens.collector.communications.ConnectedService;
+import mobsens.collector.config.Config;
 import mobsens.collector.consumers.WFJStreamingConsumer;
 import mobsens.collector.drivers.annotations.AnnotationDriver;
 import mobsens.collector.drivers.connectivity.ConnectivityDriver;
@@ -15,6 +16,8 @@ import mobsens.collector.drivers.sensors.SensorDriver;
 import mobsens.collector.intents.IntentCollectorStatus;
 import mobsens.collector.pipeline.Consumer;
 import mobsens.collector.pipeline.basics.Filter;
+import mobsens.collector.pipeline.basics.WorkerCache;
+import mobsens.collector.util.Calculations;
 import mobsens.collector.util.Logging;
 import mobsens.collector.wfj.WFJ;
 import mobsens.collector.wfj.basics.BasicWFJ;
@@ -59,6 +62,8 @@ public class Collector extends ConnectedService
 			wfjStreamer.setLocation("wfj/" + item.title + new Date().getTime() + ".wfj");
 
 			wfjStreamer.start();
+
+			wfjDetacher.start();
 
 			for (SensorDriver sensorDriver : sensorDrivers)
 			{
@@ -108,6 +113,9 @@ public class Collector extends ConnectedService
 			annotationDriver.stop();
 
 			wfjStreamer.stop();
+
+			wfjDetacher.stop();
+			wfjDetacher.releaseAllItems();
 		}
 	};
 
@@ -125,6 +133,8 @@ public class Collector extends ConnectedService
 
 	private final WFJStreamingConsumer wfjStreamer;
 
+	private final WorkerCache<WFJ> wfjDetacher;
+
 	private final Filter<WFJ> wfjFilter;
 
 	private boolean collecting;
@@ -141,11 +151,13 @@ public class Collector extends ConnectedService
 		stopCollectorDriver = new StopCollectorDriver(this);
 		stopCollectorDriver.setConsumer(STOP_COLLECTOR_ENDPOINT);
 
-		sensorDrivers = new SensorDriver[] { new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, 1000 / 50), new SensorDriver(this, Sensor.TYPE_GYROSCOPE, 1000 / 50),
-				new SensorDriver(this, Sensor.TYPE_MAGNETIC_FIELD, 1000 / 50), new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, 1000 / 50),
-				new SensorDriver(this, Sensor.TYPE_GRAVITY, 1000 / 50) };
+		sensorDrivers = new SensorDriver[] { new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, Calculations.msFromFrequency(Config.FREQUENCY_ACCELEROMETER)),
+				new SensorDriver(this, Sensor.TYPE_GYROSCOPE, Calculations.msFromFrequency(Config.FREQUENCY_GYROSCOPE)),
+				new SensorDriver(this, Sensor.TYPE_MAGNETIC_FIELD, Calculations.msFromFrequency(Config.FREQUENCY_MAGNETIC_FIELD)),
+				new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, Calculations.msFromFrequency(Config.FREQUENCY_LINEAR_ACCELEROMETER)),
+				new SensorDriver(this, Sensor.TYPE_GRAVITY, Calculations.msFromFrequency(Config.FREQUENCY_GRAVITY)) };
 
-		locationDriver = new LocationDriver(this, 500, 0, true, false, false);
+		locationDriver = new LocationDriver(this, Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0, true, !Config.CONFIG_GPS_ONLY, !Config.CONFIG_GPS_ONLY);
 
 		connectivityDriver = new ConnectivityDriver(this);
 
@@ -153,8 +165,11 @@ public class Collector extends ConnectedService
 
 		wfjStreamer = new WFJStreamingConsumer(this);
 
+		wfjDetacher = new WorkerCache<WFJ>(true);
+		wfjDetacher.setConsumer(wfjStreamer);
+
 		wfjFilter = new Filter<WFJ>(WFJ.class);
-		wfjFilter.setConsumer(wfjStreamer);
+		wfjFilter.setConsumer(wfjDetacher);
 
 		for (SensorDriver sensorDriver : sensorDrivers)
 		{
