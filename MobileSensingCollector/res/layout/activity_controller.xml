@@ -45,30 +45,10 @@
         android:layout_below="@+id/controller_web"
         android:text="... to local" />
 
-    <Button
-        android:id="@+id/controller_send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/controller_local"
-        android:layout_alignLeft="@+id/controller_title"
-        android:layout_alignTop="@+id/controller_web"
-        android:text="Send" />
-
-    <Button
-        android:id="@+id/controller_tag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/controller_send"
-        android:layout_alignLeft="@+id/controller_start_stop"
-        android:layout_alignRight="@+id/controller_start_stop"
-        android:layout_alignTop="@+id/controller_web"
-        android:text="Tag" />
-
     <ScrollView
         android:id="@+id/controller_logscroller"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/controller_local"
@@ -82,5 +62,24 @@
             android:layout_weight="1.0"
             android:typeface="monospace" />
     </ScrollView>
+
+    <Button
+        android:id="@+id/controller_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/controller_local"
+        android:layout_alignLeft="@+id/controller_start_stop"
+        android:layout_alignRight="@+id/controller_start_stop"
+        android:layout_below="@+id/controller_start_stop"
+        android:text="Send" />
+
+    <Button
+        android:id="@+id/controller_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/controller_logscroller"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="Tag" />
 
 </RelativeLayout>

@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Date;
-
 import mobsens.collector.communications.ConnectingActivity;
 import mobsens.collector.drivers.messaging.CollectorStatusDriver;
 import mobsens.collector.drivers.messaging.CollectorStatusOutput;
@@ -14,12 +12,12 @@ import mobsens.collector.drivers.messaging.LogDriver;
 import mobsens.collector.drivers.messaging.LogOutput;
 import mobsens.collector.drivers.messaging.UploadResponseDriver;
 import mobsens.collector.drivers.messaging.UploadResponseOutput;
-import mobsens.collector.intents.IntentAnnotation;
 import mobsens.collector.intents.IntentStartCollector;
 import mobsens.collector.intents.IntentStopCollector;
 import mobsens.collector.intents.IntentUpload;
 import mobsens.collector.pipeline.Consumer;
 import mobsens.collector.util.Logging;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -238,7 +236,7 @@ public class Controller extends ConnectingActivity
 			@Override
 			public void onClick(View v)
 			{
-				IntentAnnotation.sendBroadcast(Controller.this, new Date(), "TAG");
+				startActivity(new Intent(getApplicationContext(), Fasttag.class));
 			}
 		});
 	}
@@ -251,7 +249,7 @@ public class Controller extends ConnectingActivity
 		uploadResponseDriver.stop();
 
 		collectorStatusDriver.stop();
-		
+
 		super.onDestroy();
 	}
 
