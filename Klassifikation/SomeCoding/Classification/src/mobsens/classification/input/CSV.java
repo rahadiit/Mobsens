@@ -9,6 +9,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import mobsens.classification.data.Annotation;
 import mobsens.classification.data.Location;
 import mobsens.classification.output.FileOutput;
 
@@ -98,6 +99,39 @@ public class CSV {
 
 	}
 
+	public static ArrayList<Annotation> csvToAnnotation(String input){
+		return csvToAnnotation(csvToArrayList(input));
+	}
+	public static ArrayList<Annotation> csvToAnnotation(ArrayList<String[]> input) {
+		ArrayList<Annotation> result = new ArrayList<>();
+		
+		//TODO: rausnehmen wenn im Client gefixt
+		input = FileOutput.deleteDuplicates(input);
+		
+		// remove description
+		input.remove(0);
+		
+		String recordCpy[]=null;
+		try {
+			for (String[] record : input) {
+				recordCpy = record.clone();
+				if(record.length==2){
+					result.add(new Annotation(parseDouble(record[0]),record[1]));
+				
+				}
+			}
+		} catch (Exception e) {
+			for(String rec:recordCpy)
+				System.out.print(rec+ " ");
+			System.err.println("incorrect CSV-File/Format. " + e );
+		}
+		return result;
+
+	}
+	
+	
+	
+	
 	private static double parseDouble(String input) {
 		try {
 			return Double.parseDouble(input);
