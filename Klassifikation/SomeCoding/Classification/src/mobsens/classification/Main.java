@@ -1,51 +1,54 @@
 package mobsens.classification;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.XYPlot;
 
+import com.sun.jersey.api.client.Client;
+
+import mobsens.classification.data.Annotation;
 import mobsens.classification.data.Location;
-import mobsens.classification.data.Recording;
+import mobsens.classification.data.Sensor;
+import mobsens.classification.data.URLS;
 import mobsens.classification.input.CSV;
-import mobsens.classification.input.RESTFul;
-import mobsens.classification.output.PrettyPrint;
+import mobsens.classification.input.RESTful;
+import mobsens.classification.output.Chart;
 
 public class Main {
 
-	public static void main(String[] args) {
+	private static final String username = "mlukas@gmx.net";
+	private static final String password = "12345678";
 
-		ArrayList<Location> locations = CSV.csvToLocation(new File(
-				"locSpazieren.csv"));
-		PrettyPrint.print(locations);
+	public static void main(String[] args) throws IOException {
 
-		String URL_LOGIN = "http://mobilesensing.west.uni-koblenz.de/users/sign_in.json";
-		String URL_DATA = "http://mobilesensing.west.uni-koblenz.de/recordings.json";
+		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
+		// ArrayList<Recording> recordings =
+		// RESTful.recordingOutput(client,URLS.LIST_RECORDINGS.getURL());
+
+		int id=48;
+		String locationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+				Sensor.LOCATIONS);
+		String annotationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+				Sensor.ANNOTATIONS);
 		
-		String username = "mlukas@gmx.net";
-		String password = "12345678";
 
-		Client client = RESTFul.login(URL_LOGIN, username, password);
-
-		ArrayList<Recording> recordings = RESTFul.recordingOutput(client, URL_DATA);
-		
-		for(Recording rec: recordings){
-			rec.prettyPrint();
+		if (locationCSV != null) {
+			ArrayList<Location> csvTest = CSV.csvToLocation(locationCSV);
+			ArrayList<Annotation> annotations = CSV.csvToAnnotation(annotationCSV);
+			XYPlot plot = Chart.speedPlot(csvTest);
+			Chart.addAnnotations(annotations, plot);
+			
+			
+			JFreeChart chart = new JFreeChart(plot);
+			
+			ChartUtilities.saveChartAsPNG(new File("chart.png"), chart, 1024, 768);
+			
 		}
-		
+
 	}
+
 }
-
-// $ curl -v -H "Accept: application/json" -H "Content-type: application/json"
-// -c cookies.txt -X POST --data
-// '{"user":{"email":"your@ema.il","password":"yourpassword"}}'
-// 'http://localhost:3000/users/sign_in.json'
-//
-// IntentUpload.startService(Controller.this, file.getName(),
-// "http://mobilesensing.west.uni-koblenz.de/users/sign_in.json",
-// "mlukas@gmx.net", "12345678",
-// "http://mobilesensing.west.uni-koblenz.de/recordings/upload", file,
-// "application/text", "*/*", true);
-

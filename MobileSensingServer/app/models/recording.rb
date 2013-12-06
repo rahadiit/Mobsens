@@ -1,4 +1,10 @@
+class Peter
+  
+end
+
 class Recording < ActiveRecord::Base
+  default_scope :order => 'time_start DESC'
+
   belongs_to :device
   belongs_to :user
 
@@ -31,78 +37,85 @@ class Recording < ActiveRecord::Base
   def get_duration
     return nil if self.time_start.nil?
     return nil if self.time_stop.nil?
-    TimeDifference.between(self.time_start, self.time_stop).in_seconds.round(0)
+    time_difference = Time.diff(self.time_start, self.time_stop, '%y, %d and %h:%m:%s')[:diff]
   end
-  
+
+  def classify
+    Rjb::load('/home/lukas/projects/uni/forschungspraktikum/MobileSensors.jar', ['-verbose:gc'])
+    loc = Rjb::import('MobileSensors.Storage.GPS.Location')
+    l = loc.new(1,2,3,4,5,6,7)
+    l.getTime()
+  end
+
   def upload(line)
     entry = JSON.parse(line)
 
     if entry.has_key?('sensor') then
-      self.upload_sensor(entry)
-      return 
+    self.upload_sensor(entry)
+    return
     end
-    
+
     if entry.has_key?('annotation') then
       a = self.annotations.new
-      a.upload(entry['annotation']['time'], entry['annotation']['value']) 
-      return
-    end 
+      a.upload(entry['annotation']['time'], entry['annotation']['value'])
+    return
+    end
 
     if entry.has_key?('location') then
       l = self.locations.new
-      l.upload(entry['location']['time'], entry['location']) 
-      return
-    end 
- 
+      l.upload(entry['location']['time'], entry['location'])
+    return
+    end
+
     if entry.has_key?('rec') then
-     if entry['rec'].has_key?('did') then
+      if entry['rec'].has_key?('did') then
         d = Device.find_or_create_by(:identifier => entry['rec']['did'])
-        self.device = d
+      self.device = d
       end
       if entry['rec'].has_key?('title') then
         self.title = entry['rec']['title']
-      end 
+      end
       if entry['rec'].has_key?('time_start') then
         self.time_start = Time.strptime(entry['rec']['time_start'].to_s, '%Q')
-      end 
+      end
       if entry['rec'].has_key?('time_stop') then
         self.time_stop = Time.strptime(entry['rec']['time_stop'].to_s, '%Q')
-      end 
-      self.save
-      return
-    end 
-  end
-  
-  def upload_sensor(entry)
-      case entry['sensor']['sensor']
-      when 1
-       a = self.accelerometers.new
-       a.upload(entry['sensor']['time'], entry['sensor']['values'])
-      when 2
-       m = self.magnetic_fields.new
-       m.upload(entry['sensor']['time'], entry['sensor']['values'])
-      when 4
-       g = self.gyroscopes.new
-       g.upload(entry['sensor']['time'], entry['sensor']['values'])
-      when 5
-       l = self.lights.new
-       l.upload(entry['sensor']['time'], entry['sensor']['values'])
-      when 6
-       p = self.pressures.new
-       p.upload(entry['sensor']['time'], entry['sensor']['values'])
-      when 8
-       p = self.proximities.new
-       p.upload(entry['sensor']['time'], entry['sensor']['values'])
-      when 9
-       g = self.gravities.new
-       g.upload(entry['sensor']['time'], entry['sensor']['values'])
-      when 10
-       l = self.linear_accelerations.new
-       l.upload(entry['sensor']['time'], entry['sensor']['values'])
-      when 11
-       r = self.rotation_vectors.new
-       r.upload(entry['sensor']['time'], entry['sensor']['values'])
       end
-  end 
+    self.save
+    return
+    end
+  end
+
+  def upload_sensor(entry)
+    case entry['sensor']['sensor']
+    when 1
+      a = self.accelerometers.new
+      a.upload(entry['sensor']['time'], entry['sensor']['values'])
+    when 2
+      m = self.magnetic_fields.new
+      m.upload(entry['sensor']['time'], entry['sensor']['values'])
+    when 4
+      g = self.gyroscopes.new
+      g.upload(entry['sensor']['time'], entry['sensor']['values'])
+    when 5
+      l = self.lights.new
+      l.upload(entry['sensor']['time'], entry['sensor']['values'])
+    when 6
+      p = self.pressures.new
+      p.upload(entry['sensor']['time'], entry['sensor']['values'])
+    when 8
+      p = self.proximities.new
+      p.upload(entry['sensor']['time'], entry['sensor']['values'])
+    when 9
+      g = self.gravities.new
+      g.upload(entry['sensor']['time'], entry['sensor']['values'])
+    when 10
+      l = self.linear_accelerations.new
+      l.upload(entry['sensor']['time'], entry['sensor']['values'])
+    when 11
+      r = self.rotation_vectors.new
+      r.upload(entry['sensor']['time'], entry['sensor']['values'])
+    end
+  end
 
 end
