@@ -1,8 +1,9 @@
-package MobileSensors.Storage.GPS;
+package MobileSensors.Storage.Sensors;
 
-public class Location {
+import MobileSensors.Storage.Sensors.Sensor.Sensor;
 
-	private long time;
+public class Location extends Sensor{
+
 	private double latitude;
 	private double longitude;
 	private double altitude;
@@ -12,21 +13,13 @@ public class Location {
 
 	public Location(long time, double latitude, double longitude,
 			double altitude, double speed, double bearing, double accuracy) {
-		this.time = time;
+		super(time);
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.altitude = altitude;
 		this.speed = speed;
 		this.bearing = bearing;
 		this.accuracy = accuracy;
-	}
-
-	public long getTime() {
-		return time;
-	}
-
-	public void setTime(long time) {
-		this.time = time;
 	}
 
 	public double getLatitude() {
