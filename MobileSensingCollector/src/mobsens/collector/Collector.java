@@ -4,10 +4,14 @@ import java.util.Date;
 
 import mobsens.collector.communications.ConnectedService;
 import mobsens.collector.config.Config;
+import mobsens.collector.consumers.LogConsumer;
 import mobsens.collector.consumers.WFJStreamingConsumer;
 import mobsens.collector.drivers.annotations.AnnotationDriver;
 import mobsens.collector.drivers.connectivity.ConnectivityDriver;
 import mobsens.collector.drivers.locations.LocationDriver;
+import mobsens.collector.drivers.locations.LocationOutput;
+import mobsens.collector.drivers.locations.LocationPSDriver;
+import mobsens.collector.drivers.locations.LocationSysDriver;
 import mobsens.collector.drivers.messaging.StartCollectorDriver;
 import mobsens.collector.drivers.messaging.StartCollectorOutput;
 import mobsens.collector.drivers.messaging.StopCollectorDriver;
@@ -15,10 +19,12 @@ import mobsens.collector.drivers.messaging.StopCollectorOutput;
 import mobsens.collector.drivers.sensors.SensorDriver;
 import mobsens.collector.intents.IntentCollectorStatus;
 import mobsens.collector.pipeline.Consumer;
+import mobsens.collector.pipeline.basics.Dispatcher;
 import mobsens.collector.pipeline.basics.Filter;
 import mobsens.collector.pipeline.basics.WorkerCache;
 import mobsens.collector.util.Calculations;
 import mobsens.collector.util.Logging;
+import mobsens.collector.util.Pipeline;
 import mobsens.collector.wfj.WFJ;
 import mobsens.collector.wfj.basics.BasicWFJ;
 
@@ -27,9 +33,11 @@ import org.json.JSONStringer;
 
 import android.content.Intent;
 import android.hardware.Sensor;
+import android.location.Location;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.provider.Settings.Secure;
+import android.util.Log;
 
 public class Collector extends ConnectedService
 {
@@ -123,19 +131,23 @@ public class Collector extends ConnectedService
 
 	private final StopCollectorDriver stopCollectorDriver;
 
-	private final SensorDriver[] sensorDrivers;
+	private SensorDriver[] sensorDrivers;
 
-	private final LocationDriver locationDriver;
+	private LocationDriver locationDriver;
 
-	private final ConnectivityDriver connectivityDriver;
+	private ConnectivityDriver connectivityDriver;
 
-	private final AnnotationDriver annotationDriver;
+	private AnnotationDriver annotationDriver;
 
-	private final WFJStreamingConsumer wfjStreamer;
+	private WFJStreamingConsumer wfjStreamer;
 
-	private final WorkerCache<WFJ> wfjDetacher;
+	private LogConsumer wfjLogger;
 
-	private final Filter<WFJ> wfjFilter;
+	private Dispatcher<WFJ> wfjDispatcher;
+
+	private WorkerCache<WFJ> wfjDetacher;
+
+	private Filter<WFJ> wfjFilter;
 
 	private boolean collecting;
 
@@ -151,13 +163,24 @@ public class Collector extends ConnectedService
 		stopCollectorDriver = new StopCollectorDriver(this);
 		stopCollectorDriver.setConsumer(STOP_COLLECTOR_ENDPOINT);
 
+		collecting = false;
+	}
+
+	@Override
+	public void onCreate()
+	{
+		super.onCreate();
+
+		did = "DEV" + Integer.toHexString((Secure.getString(getContentResolver(), Secure.ANDROID_ID)).hashCode());
+
 		sensorDrivers = new SensorDriver[] { new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, Calculations.msFromFrequency(Config.FREQUENCY_ACCELEROMETER)),
 				new SensorDriver(this, Sensor.TYPE_GYROSCOPE, Calculations.msFromFrequency(Config.FREQUENCY_GYROSCOPE)),
 				new SensorDriver(this, Sensor.TYPE_MAGNETIC_FIELD, Calculations.msFromFrequency(Config.FREQUENCY_MAGNETIC_FIELD)),
 				new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, Calculations.msFromFrequency(Config.FREQUENCY_LINEAR_ACCELEROMETER)),
 				new SensorDriver(this, Sensor.TYPE_GRAVITY, Calculations.msFromFrequency(Config.FREQUENCY_GRAVITY)) };
 
-		locationDriver = new LocationDriver(this, Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0, true, !Config.CONFIG_GPS_ONLY, !Config.CONFIG_GPS_ONLY);
+		locationDriver = LocationPSDriver.isAvailable(this) ? new LocationPSDriver(this, Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0.0f) : new LocationSysDriver(this,
+				Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0.0f);
 
 		connectivityDriver = new ConnectivityDriver(this);
 
@@ -165,8 +188,14 @@ public class Collector extends ConnectedService
 
 		wfjStreamer = new WFJStreamingConsumer(this);
 
+		wfjLogger = new LogConsumer(Log.INFO, "WFJ");
+
+		wfjDispatcher = new Dispatcher<WFJ>();
+		wfjDispatcher.addConsumer(wfjStreamer);
+		wfjDispatcher.addConsumer(Pipeline.with(new Filter<LocationOutput>(LocationOutput.class), wfjLogger));
+
 		wfjDetacher = new WorkerCache<WFJ>(true);
-		wfjDetacher.setConsumer(wfjStreamer);
+		wfjDetacher.setConsumer(wfjDispatcher);
 
 		wfjFilter = new Filter<WFJ>(WFJ.class);
 		wfjFilter.setConsumer(wfjDetacher);
@@ -181,16 +210,6 @@ public class Collector extends ConnectedService
 		connectivityDriver.setConsumer(wfjFilter);
 
 		annotationDriver.setConsumer(wfjFilter);
-
-		collecting = false;
-	}
-
-	@Override
-	public void onCreate()
-	{
-		super.onCreate();
-
-		did = "DEV" + Integer.toHexString((Secure.getString(getContentResolver(), Secure.ANDROID_ID)).hashCode());
 
 		startCollectorDriver.start();
 
