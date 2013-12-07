@@ -25,7 +25,4 @@ public class Event {
 	public void setEventType(EventType eventType) {
 		this.eventType = eventType;
 	}
-
-	
-
 }
