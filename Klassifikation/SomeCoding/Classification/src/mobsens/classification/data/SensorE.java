@@ -1,6 +1,6 @@
 package mobsens.classification.data;
 
-public enum Sensor {
+public enum SensorE {
 	ACCELEROMETERS, ANNOTATIONS, 
 	BATTERIES, GRAVITIES, GYROSCOPES, 
 	LIGHTS, LINEAR_ACCELERATIONS, LOCATIONS, 
