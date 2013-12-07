@@ -1,0 +1,7 @@
+Ich nehme gerade Teile aus meiner "alten" Klassifizierung und pack die in
+das neue "MobileSensorsTest"-Projekt.
+
+Hab z.B. Die RESTful Kommunikation reinkopiert und das CSV-parsen.
+Das plotten der Graphen pack ich demnächst auch mit rein. 
+
+Ziel ist schnelles testen der Event-Klassifizierung, ohne in dem Klassifizierungs-Projekt rumzufuschen.
