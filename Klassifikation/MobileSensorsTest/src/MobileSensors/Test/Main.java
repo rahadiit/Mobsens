@@ -12,6 +12,7 @@ import org.jfree.chart.plot.XYPlot;
 
 import com.sun.jersey.api.client.Client;
 
+import MobileSensors.Classifiers.DetectBreaking;
 import MobileSensors.Classifiers.DetectStanding;
 import MobileSensors.Storage.Event.Event;
 import MobileSensors.Storage.Sensors.Annotation;
@@ -42,6 +43,7 @@ public class Main {
 			
 			
 			ArrayList<Event> events = new DetectStanding(locations).getEvents();
+			events.addAll(new DetectBreaking(locations).getEvents());
 			
 			for(Event event:events){
 				System.out.println(event.getTime()+" : "+event.getEventType().toString());
