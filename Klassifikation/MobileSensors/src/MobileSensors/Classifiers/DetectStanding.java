@@ -20,7 +20,7 @@ public class DetectStanding implements EventClassifier {
 		
 		for(int i=0;i<locations.size()-1;i++){
 			Location location=locations.get(i);
-			System.out.println(location.getTime()+" : "+location.getSpeed());
+			//System.out.println(location.getTime()+" : "+location.getSpeed());
 			if(location.getSpeed()<=0.2){
 				this.events.add(new Event(location.getTime(),
 						MobileSensors.Storage.Event.EventType.STANDING));

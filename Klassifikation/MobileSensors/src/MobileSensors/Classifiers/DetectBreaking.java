@@ -24,14 +24,14 @@ public class DetectBreaking implements EventClassifier {
 			
 			if(location.getSpeed()-nextlocation.getSpeed() >= 2.5)
 			{
-				System.out.println("breaking: "+location.getSpeed()+" : "+nextlocation.getSpeed());
+				//System.out.println("breaking: "+location.getSpeed()+" : "+nextlocation.getSpeed());
 				this.events.add(new Event(location.getTime(),
 						MobileSensors.Storage.Event.EventType.BRAKING));
 				i++;
 			}
 			
 			else if(nextlocation.getSpeed()<=0.3 && location.getSpeed()>1.5){
-				System.out.println("breaking: "+location.getSpeed()+" : "+nextlocation.getSpeed());
+				//System.out.println("breaking: "+location.getSpeed()+" : "+nextlocation.getSpeed());
 				this.events.add(new Event(location.getTime(),
 						MobileSensors.Storage.Event.EventType.BRAKING));
 				i++;
