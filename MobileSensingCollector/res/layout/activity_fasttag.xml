@@ -15,7 +15,7 @@
             android:layout_height="fill_parent"
             android:layout_margin="16dp"
             android:layout_weight="1"
-            android:text="@string/fasttag_break" />
+            android:text="@string/fasttag_topLeftValue" />
 
         <Button
             android:id="@+id/fasttag_topRight"
@@ -23,7 +23,7 @@
             android:layout_height="fill_parent"
             android:layout_margin="16dp"
             android:layout_weight="1"
-            android:text="@string/fasttag_evasion" />
+            android:text="@string/fasttag_topRightValue" />
     </TableRow>
 
     <TableRow
@@ -38,7 +38,7 @@
             android:layout_height="fill_parent"
             android:layout_margin="16dp"
             android:layout_weight="1"
-            android:text="@string/fasttag_ground_permanent" />
+            android:text="@string/fasttag_bottomLeftValue" />
 
         <Button
             android:id="@+id/fasttag_bottomRight"
@@ -46,7 +46,7 @@
             android:layout_height="fill_parent"
             android:layout_margin="16dp"
             android:layout_weight="1"
-            android:text="@string/fasttag_ground_single" />
+            android:text="@string/fasttag_bottomRightValue" />
     </TableRow>
 
 </TableLayout>

@@ -6,9 +6,9 @@
     <string name="service_name__collector">Collector Service</string>
     <string name="service_name__uploader">Uploader Service</string>
     
-    <string name="fasttag_break">Bremsen</string>
-	<string name="fasttag_ground_single">Bodenevent einzeln</string>
-	<string name="fasttag_ground_permanent">Bodenevent dauerhaft</string>
-	<string name="fasttag_evasion">Ausweichmanöver</string>
+    <string name="fasttag_topLeftValue">Bremsen</string>
+	<string name="fasttag_topRightValue">Bodenevent einzeln</string>
+	<string name="fasttag_bottomLeftValue">Bodenevent dauerhaft</string>
+	<string name="fasttag_bottomRightValue">Ausweichmanöver</string>
 
 </resources>
