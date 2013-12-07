@@ -1,4 +1,4 @@
-package mobsens.classification.input;
+package MobileSensors.Test.Input;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,13 +7,11 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 
-import mobsens.classification.data.Annotation;
-import mobsens.classification.data.Location;
-import mobsens.classification.output.FileOutput;
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+
+import MobileSensors.Storage.Sensors.Location;
 
 public class CSV {
 
@@ -68,7 +66,7 @@ public class CSV {
 		ArrayList<Location> result = new ArrayList<>();
 		
 		//TODO: rausnehmen wenn im Client gefixt
-		input = FileOutput.deleteDuplicates(input);
+		input = FileInput.deleteDuplicates(input);
 		
 		// remove description
 		input.remove(0);
@@ -78,7 +76,7 @@ public class CSV {
 			for (String[] record : input) {
 				recordCpy = record.clone();
 				if(record.length==7){
-					result.add(new Location(parseDouble(record[0]),
+					result.add(new Location(parseLong(record[0]),
 							parseDouble(record[1]), parseDouble(record[2]),
 							parseDouble(record[3]), parseDouble(record[4]),
 							parseDouble(record[5]), parseDouble(record[6])));
@@ -97,6 +95,7 @@ public class CSV {
 
 	}
 
+	/*
 	public static ArrayList<Annotation> csvToAnnotation(String input){
 		return csvToAnnotation(csvToArrayList(input));
 	}
@@ -127,7 +126,7 @@ public class CSV {
 
 	}
 	
-	
+	*/
 	
 	
 	private static double parseDouble(String input) {
@@ -137,5 +136,13 @@ public class CSV {
 			return 0;
 		}
 	}
+	private static long parseLong(String input) {
+		try {
+			return Long.parseLong(input);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
 
 }

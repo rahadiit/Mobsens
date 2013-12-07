@@ -2,13 +2,17 @@ package MobileSensors.Storage.Sensors.Sensor;
 
 public abstract class Sensor {
 
-	private Integer time;
+	private long time;
+	
+	public Sensor(long time){
+		this.time=time;
+	}
 
-	public void setTime(Integer time) {
+	public void setTime(long time) {
 		this.time = time;
 	}
 
-	public Integer getTime() {
+	public long getTime() {
 		return this.time;
 	}
 

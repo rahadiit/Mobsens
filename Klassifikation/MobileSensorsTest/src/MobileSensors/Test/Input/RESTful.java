@@ -1,12 +1,16 @@
-package mobsens.classification.input;
+package MobileSensors.Test.Input;
+
+
 
 import java.util.ArrayList;
 
-import mobsens.classification.data.Recording;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+
+import MobileSensors.Test.Data.Recording;
+import MobileSensors.Test.Data.SensorE;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -17,7 +21,6 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
-import mobsens.classification.data.SensorE;
 
 public class RESTful {
 

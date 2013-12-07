@@ -12,7 +12,7 @@ import com.sun.jersey.api.client.Client;
 
 import mobsens.classification.data.Annotation;
 import mobsens.classification.data.Location;
-import mobsens.classification.data.Sensor;
+import mobsens.classification.data.SensorE;
 import mobsens.classification.data.URLS;
 import mobsens.classification.input.CSV;
 import mobsens.classification.input.RESTful;
@@ -29,11 +29,11 @@ public class Main {
 		// ArrayList<Recording> recordings =
 		// RESTful.recordingOutput(client,URLS.LIST_RECORDINGS.getURL());
 
-		int id=48;
+		int id=47;
 		String locationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
-				Sensor.LOCATIONS);
+				SensorE.LOCATIONS);
 		String annotationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
-				Sensor.ANNOTATIONS);
+				SensorE.ANNOTATIONS);
 		
 
 		if (locationCSV != null) {
@@ -42,11 +42,9 @@ public class Main {
 			XYPlot plot = Chart.speedPlot(csvTest);
 			Chart.addAnnotations(annotations, plot);
 			
-			
 			JFreeChart chart = new JFreeChart(plot);
 			
 			ChartUtilities.saveChartAsPNG(new File("chart.png"), chart, 1024, 768);
-			
 		}
 
 	}
