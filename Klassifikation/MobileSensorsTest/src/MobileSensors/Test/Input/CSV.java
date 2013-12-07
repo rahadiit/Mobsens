@@ -11,13 +11,13 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Storage.Sensors.Annotation;
 import MobileSensors.Storage.Sensors.Location;
 import MobileSensors.Storage.Sensors.Sensor.Sensor;
 
 public class CSV {
-	
-	
+
 	@SuppressWarnings("unchecked")
 	public static <T extends Sensor> ArrayList<T> csvToSensor(
 			ArrayList<String[]> input, Class<T> type) {
@@ -34,15 +34,20 @@ public class CSV {
 				recordCpy = record.clone();
 
 				try {
-					if(type == Location.class){
-						result.add((T)new Location(parseLong(record[0]),
+					if (type == Location.class) {
+						result.add((T) new Location(parseLong(record[0]),
 								parseDouble(record[1]), parseDouble(record[2]),
 								parseDouble(record[3]), parseDouble(record[4]),
 								parseDouble(record[5]), parseDouble(record[6])));
-					}else if(type == Annotation.class){
-						result.add((T) new Annotation(parseLong(record[0]), record[1]));
+					} else if (type == Annotation.class) {
+						result.add((T) new Annotation(parseLong(record[0]),
+								record[1]));
+					} else if(type==Accelerometer.class){
+						result.add((T) new Accelerometer(parseLong(record[0]),
+								parseDouble(record[1]), parseDouble(record[2]),
+								parseDouble(record[3])));
 					}
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -54,15 +59,17 @@ public class CSV {
 		}
 		return result;
 	}
-	
-	public static <T extends Sensor>ArrayList<T> csvToSensor(File file,Class<T> type) {
-		return csvToSensor(csvToArrayList(file),type);
+
+	public static <T extends Sensor> ArrayList<T> csvToSensor(File file,
+			Class<T> type) {
+		return csvToSensor(csvToArrayList(file), type);
 	}
-	
-	public static <T extends Sensor> ArrayList<T> csvToSensor(String input, Class<T> type) {
-		return csvToSensor(csvToArrayList(input),type);
+
+	public static <T extends Sensor> ArrayList<T> csvToSensor(String input,
+			Class<T> type) {
+		return csvToSensor(csvToArrayList(input), type);
 	}
-	
+
 	public static ArrayList<String[]> csvToArrayList(File file) {
 
 		try (Reader r = new BufferedReader(new FileReader(file))) {

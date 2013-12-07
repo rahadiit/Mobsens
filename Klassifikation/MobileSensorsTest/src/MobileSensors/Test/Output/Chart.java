@@ -19,10 +19,15 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import MobileSensors.Storage.Event.Event;
 import MobileSensors.Storage.Event.EventType;
+import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Storage.Sensors.Annotation;
 import MobileSensors.Storage.Sensors.Location;
 
 public class Chart {
+
+	private final static int X = 0;
+	private final static int Y = 1;
+	private final static int Z = 2;
 
 	public static void addAnnotations(ArrayList<Annotation> annotations,
 			XYPlot plot) {
@@ -35,12 +40,12 @@ public class Chart {
 	public static void addEvents(ArrayList<Event> events, XYPlot plot) {
 		for (Event event : events) {
 			double position = 0.35;
-			double factor=0.2;
+			double factor = 0.2;
 			if (event.getEventType() == EventType.BRAKING) {
-				position +=factor;
+				position += factor;
 
 			} else if (event.getEventType() == EventType.STANDING) {
-				position += 2*factor;
+				position += 2 * factor;
 			}
 			plot.addAnnotation(new XYTextAnnotation(event.getEventType()
 					.toString(), event.getTime(), position));
@@ -58,6 +63,27 @@ public class Chart {
 		return result;
 	}
 
+	public static XYSeries accelData(String name,
+			ArrayList<Accelerometer> values, int axis) {
+		XYSeries result = new XYSeries(name);
+
+		for (int i = 0; i < values.size(); i++) {
+			double axisValue = 0;
+
+			if(axis==X)
+				axisValue = values.get(i).getX();
+			else if(axis==Y)
+				axisValue = values.get(i).getY();
+			else if(axis==Z)
+				axisValue = values.get(i).getZ();
+			
+
+			result.add(values.get(i).getTime(), axisValue);
+		}
+
+		return result;
+	}
+
 	public static XYSeriesCollection dataset(ArrayList<XYSeries> series) {
 		XYSeriesCollection result = new XYSeriesCollection();
 
@@ -65,6 +91,21 @@ public class Chart {
 			result.addSeries(serie);
 		}
 
+		return result;
+	}
+
+	public static XYPlot acceleroPlot(ArrayList<Accelerometer> values) {
+		
+		ArrayList<XYSeries> series = new ArrayList<>();
+		series.add(accelData("X", values,X));
+		series.add(accelData("Y", values,Y));
+		series.add(accelData("Z", values,Z));
+		XYSeriesCollection dataset = dataset(series);
+		
+		XYPlot result = plot(dataset, "time", "accel");
+		NumberAxis domain = (NumberAxis) result.getDomainAxis();
+		domain.setRange(values.get(0).getTime(), values.get(values.size() - 1)
+				.getTime());
 		return result;
 	}
 
@@ -89,12 +130,12 @@ public class Chart {
 //		 XYDotRenderer dot = new XYDotRenderer();
 //		 dot.setDotHeight(5);
 //		 dot.setDotWidth(5);
-//
-//		return new XYPlot(dataset, new NumberAxis(xAxis),
-//				new NumberAxis(yAxis), dot);
 //		
+//		 return new XYPlot(dataset, new NumberAxis(xAxis),
+//		 new NumberAxis(yAxis), dot);
+		
 		return new XYPlot(dataset, new NumberAxis(xAxis),
-				new NumberAxis(yAxis), new XYSplineRenderer());
+				new NumberAxis(yAxis), new XYLineAndShapeRenderer(true,false));
 
 	}
 
