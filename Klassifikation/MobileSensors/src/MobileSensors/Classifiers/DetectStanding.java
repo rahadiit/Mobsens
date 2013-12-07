@@ -18,17 +18,20 @@ public class DetectStanding implements EventClassifier {
 	@Override
 	public ArrayList<Event> getEvents() {
 		
-		for(int i=0;i<locations.size();i++){
+		for(int i=0;i<locations.size()-1;i++){
 			Location location=locations.get(i);
+			System.out.println(location.getTime()+" : "+location.getSpeed());
 			if(location.getSpeed()<=0.2){
 				this.events.add(new Event(location.getTime(),
 						MobileSensors.Storage.Event.EventType.STANDING));
 			}
 			//nachfolgende locations mit getSpeed==0 ueberspringen. Nur ein Event fuer eine "Stand-Phase"
-			while(locations.get(i++).getSpeed()<=0.2){
+			while(locations.get(i++).getSpeed()<=0.25){
 				if(i==locations.size())
 					break;
 			}
+			i--;
+			
 		}
 		return this.events;
 	}
