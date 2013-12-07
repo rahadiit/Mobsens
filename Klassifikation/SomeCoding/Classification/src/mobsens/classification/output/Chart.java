@@ -64,6 +64,9 @@ public class Chart {
 	}
 	
 	public static XYPlot plot(XYSeriesCollection dataset, String xAxis, String yAxis){
+		//XYDotRenderer dot = new XYDotRenderer();
+		//dot.setDotHeight(5);
+		//dot.setDotWidth(5);
 		
 		return new XYPlot(dataset,new NumberAxis(xAxis), new NumberAxis(yAxis), new XYSplineRenderer());
 		
