@@ -72,6 +72,9 @@ MobileSensors::Application.configure do
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
+  # turn off identity map pattern for large uploads 
+  config.active_record.identity_map = false
+
   # Disable automatic flushing of the log to improve performance.
   # config.autoflush_log = false
 

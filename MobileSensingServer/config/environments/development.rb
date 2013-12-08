@@ -18,6 +18,9 @@ MobileSensors::Application.configure do
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
+ 
+  # turn off identity map pattern for large uploads 
+  config.active_record.identity_map = false
 
   # Raise an error on page load if there are pending migrations
   config.active_record.migration_error = :page_load
