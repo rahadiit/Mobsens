@@ -1,7 +1,3 @@
-class Peter
-  
-end
-
 class Recording < ActiveRecord::Base
   default_scope :order => 'time_start DESC'
 
