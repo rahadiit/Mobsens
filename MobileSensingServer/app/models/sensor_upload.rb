@@ -7,7 +7,9 @@ class SensorUpload < ActiveRecord::Base
       rec.user = self.user;
       rec.save
       self.data.each_line do |line|
-        rec.upload(line)
+        ActiveRecord::Base.transaction do
+          rec.upload(line)
+        end
       end
     end
   end
