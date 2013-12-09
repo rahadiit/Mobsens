@@ -10,7 +10,6 @@ class SensorUpload < ActiveRecord::Base
         ActiveRecord::Base.transaction do
           rec.upload(line)
         end
-        GC.start
       end
     end
   end
