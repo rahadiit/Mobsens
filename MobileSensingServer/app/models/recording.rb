@@ -4,18 +4,18 @@ class Recording < ActiveRecord::Base
   belongs_to :device
   belongs_to :user
 
-  has_many :accelerometers, :dependent => :destroy, :order => 'time ASC'
-  has_many :annotations, :dependent => :destroy, :order => 'time ASC'
-  has_many :batteries, :dependent => :destroy, :order => 'time ASC'
-  has_many :gravities, :dependent => :destroy, :order => 'time ASC'
-  has_many :gyroscopes, :dependent => :destroy, :order => 'time ASC'
-  has_many :lights, :dependent => :destroy, :order => 'time ASC'
-  has_many :linear_accelerations, :dependent => :destroy, :order => 'time ASC'
-  has_many :locations, :dependent => :destroy, :order => 'time ASC'
-  has_many :magnetic_fields, :dependent => :destroy, :order => 'time ASC'
-  has_many :pressures, :dependent => :destroy, :order => 'time ASC'
-  has_many :proximities, :dependent => :destroy, :order => 'time ASC'
-  has_many :rotation_vectors, :dependent => :destroy, :order => 'time ASC'
+  has_many :accelerometers, :dependent => :delete_all, :order => 'time ASC'
+  has_many :annotations, :dependent => :delete_all, :order => 'time ASC'
+  has_many :batteries, :dependent => :delete_all, :order => 'time ASC'
+  has_many :gravities, :dependent => :delete_all, :order => 'time ASC'
+  has_many :gyroscopes, :dependent => :delete_all, :order => 'time ASC'
+  has_many :lights, :dependent => :delete_all, :order => 'time ASC'
+  has_many :linear_accelerations, :dependent => :delete_all, :order => 'time ASC'
+  has_many :locations, :dependent => :delete_all, :order => 'time ASC'
+  has_many :magnetic_fields, :dependent => :delete_all, :order => 'time ASC'
+  has_many :pressures, :dependent => :delete_all, :order => 'time ASC'
+  has_many :proximities, :dependent => :delete_all, :order => 'time ASC'
+  has_many :rotation_vectors, :dependent => :delete_all, :order => 'time ASC'
 
   accepts_nested_attributes_for :accelerometers
   accepts_nested_attributes_for :annotations
