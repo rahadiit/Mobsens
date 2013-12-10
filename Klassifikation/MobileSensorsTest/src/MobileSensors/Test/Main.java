@@ -31,7 +31,7 @@ public class Main {
 
 		// Auf Server einloggen
 		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
-		int id = 47;
+		int id = 92;
 
 		// Laed verschiedene CSV-Dateien vom Server
 		String locationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
@@ -57,10 +57,11 @@ public class Main {
 			ArrayList<Event> events = new DetectStanding(locations).getEvents();
 			events.addAll(new DetectBreaking(locations).getEvents());
 
+			/*
 			for (Event event : events) {
 				System.out.println(event.getTime() + " : "
 						+ event.getEventType().toString());
-			}
+			}*/
 
 			//Erstellung der Charts. Erst fuer Geschwindigkeit dann Acceleromter
 			//Annotations und Events werden eingeblendet
@@ -70,15 +71,19 @@ public class Main {
 			JFreeChart speedchart = new JFreeChart(speedplot);
 
 			ChartUtilities.saveChartAsPNG(new File("speedChart.png"),
-					speedchart, 1024, 768);
+					speedchart, 3840, 1200);
 
+			
 			XYPlot accelplot = Chart.acceleroPlot(accelerometer);
+			
 			Chart.addAnnotations(annotations, accelplot);
 			Chart.addEvents(events, accelplot);
 			JFreeChart accelchart = new JFreeChart(accelplot);
 
 			ChartUtilities.saveChartAsPNG(new File("accelChart.png"),
 					accelchart, 3840, 1200);
+			
+			System.out.println("done");
 
 		}
 

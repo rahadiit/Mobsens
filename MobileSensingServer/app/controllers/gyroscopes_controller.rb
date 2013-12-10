@@ -68,7 +68,7 @@ class GyroscopesController < ApplicationController
 
   def show_highcharts
     recording = Recording.find(params[:id])
-    @sensors = recording.gravities.sample_down(params[:begin], params[:end])
+    @sensors = recording.gyroscopes.sample_down(params[:begin], params[:end])
     super
   end
 
