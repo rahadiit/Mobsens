@@ -31,24 +31,21 @@ public class Chart {
 
 	public static void addAnnotations(ArrayList<Annotation> annotations,
 			XYPlot plot) {
-		for (Annotation annotation : annotations) {
+
+		for (int i = 0; i < annotations.size(); i++) {
+			Annotation annotation = annotations.get(i);
+			
 			plot.addAnnotation(new XYTextAnnotation(annotation.getTag(),
-					annotation.getTime(), 0.2));
+					annotation.getTime(), 0.2 + (0.2 * (i % 4))));
 		}
 	}
 
 	public static void addEvents(ArrayList<Event> events, XYPlot plot) {
-		for (Event event : events) {
-			double position = 0.35;
-			double factor = 0.2;
-			if (event.getEventType() == EventType.BRAKING) {
-				position += factor;
-
-			} else if (event.getEventType() == EventType.STANDING) {
-				position += 2 * factor;
-			}
+		for (int i = 0; i < events.size(); i++) {
+			Event event = events.get(i);
+			double position = 0.8;
 			plot.addAnnotation(new XYTextAnnotation(event.getEventType()
-					.toString(), event.getTime(), position));
+					.toString(), event.getTime(), position + (0.2 * i % 4)));
 
 		}
 	}
@@ -70,13 +67,12 @@ public class Chart {
 		for (int i = 0; i < values.size(); i++) {
 			double axisValue = 0;
 
-			if(axis==X)
+			if (axis == X)
 				axisValue = values.get(i).getX();
-			else if(axis==Y)
+			else if (axis == Y)
 				axisValue = values.get(i).getY();
-			else if(axis==Z)
+			else if (axis == Z)
 				axisValue = values.get(i).getZ();
-			
 
 			result.add(values.get(i).getTime(), axisValue);
 		}
@@ -95,13 +91,13 @@ public class Chart {
 	}
 
 	public static XYPlot acceleroPlot(ArrayList<Accelerometer> values) {
-		
+
 		ArrayList<XYSeries> series = new ArrayList<>();
-		series.add(accelData("X", values,X));
-		series.add(accelData("Y", values,Y));
-		series.add(accelData("Z", values,Z));
+		series.add(accelData("X", values, X));
+		series.add(accelData("Y", values, Y));
+		series.add(accelData("Z", values, Z));
 		XYSeriesCollection dataset = dataset(series);
-		
+
 		XYPlot result = plot(dataset, "time", "accel");
 		NumberAxis domain = (NumberAxis) result.getDomainAxis();
 		domain.setRange(values.get(0).getTime(), values.get(values.size() - 1)
@@ -127,15 +123,15 @@ public class Chart {
 
 	public static XYPlot plot(XYSeriesCollection dataset, String xAxis,
 			String yAxis) {
-//		 XYDotRenderer dot = new XYDotRenderer();
-//		 dot.setDotHeight(5);
-//		 dot.setDotWidth(5);
-//		
-//		 return new XYPlot(dataset, new NumberAxis(xAxis),
-//		 new NumberAxis(yAxis), dot);
-		
-		return new XYPlot(dataset, new NumberAxis(xAxis),
-				new NumberAxis(yAxis), new XYLineAndShapeRenderer(true,false));
+//		XYDotRenderer dot = new XYDotRenderer();
+//		dot.setDotHeight(5);
+//		dot.setDotWidth(5);
+//
+//		return new XYPlot(dataset, new NumberAxis(xAxis),
+//				new NumberAxis(yAxis), dot);
+		//
+		 return new XYPlot(dataset, new NumberAxis(xAxis),
+		 new NumberAxis(yAxis), new XYSplineRenderer());
 
 	}
 
