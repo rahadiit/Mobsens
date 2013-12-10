@@ -4,18 +4,18 @@ class Recording < ActiveRecord::Base
   belongs_to :device
   belongs_to :user
 
-  has_many :accelerometers, :dependent => :destroy, :order => 'time ASC'
-  has_many :annotations, :dependent => :destroy, :order => 'time ASC'
-  has_many :batteries, :dependent => :destroy, :order => 'time ASC'
-  has_many :gravities, :dependent => :destroy, :order => 'time ASC'
-  has_many :gyroscopes, :dependent => :destroy, :order => 'time ASC'
-  has_many :lights, :dependent => :destroy, :order => 'time ASC'
-  has_many :linear_accelerations, :dependent => :destroy, :order => 'time ASC'
-  has_many :locations, :dependent => :destroy, :order => 'time ASC'
-  has_many :magnetic_fields, :dependent => :destroy, :order => 'time ASC'
-  has_many :pressures, :dependent => :destroy, :order => 'time ASC'
-  has_many :proximities, :dependent => :destroy, :order => 'time ASC'
-  has_many :rotation_vectors, :dependent => :destroy, :order => 'time ASC'
+  has_many :accelerometers, :dependent => :delete_all, :order => 'time ASC'
+  has_many :annotations, :dependent => :delete_all, :order => 'time ASC'
+  has_many :batteries, :dependent => :delete_all, :order => 'time ASC'
+  has_many :gravities, :dependent => :delete_all, :order => 'time ASC'
+  has_many :gyroscopes, :dependent => :delete_all, :order => 'time ASC'
+  has_many :lights, :dependent => :delete_all, :order => 'time ASC'
+  has_many :linear_accelerations, :dependent => :delete_all, :order => 'time ASC'
+  has_many :locations, :dependent => :delete_all, :order => 'time ASC'
+  has_many :magnetic_fields, :dependent => :delete_all, :order => 'time ASC'
+  has_many :pressures, :dependent => :delete_all, :order => 'time ASC'
+  has_many :proximities, :dependent => :delete_all, :order => 'time ASC'
+  has_many :rotation_vectors, :dependent => :delete_all, :order => 'time ASC'
 
   accepts_nested_attributes_for :accelerometers
   accepts_nested_attributes_for :annotations
@@ -52,13 +52,15 @@ class Recording < ActiveRecord::Base
     end
 
     if entry.has_key?('annotation') then
-      a = self.annotations.new
+      a = Annotation.new 
+      a.recording = self
       a.upload(entry['annotation']['time'], entry['annotation']['value'])
     return
     end
 
     if entry.has_key?('location') then
-      l = self.locations.new
+      l = Location.new
+      l.recording = self
       l.upload(entry['location']['time'], entry['location'])
     return
     end
@@ -66,7 +68,7 @@ class Recording < ActiveRecord::Base
     if entry.has_key?('rec') then
       if entry['rec'].has_key?('did') then
         d = Device.find_or_create_by(:identifier => entry['rec']['did'])
-      self.device = d
+        self.device = d
       end
       if entry['rec'].has_key?('title') then
         self.title = entry['rec']['title']
@@ -85,31 +87,40 @@ class Recording < ActiveRecord::Base
   def upload_sensor(entry)
     case entry['sensor']['sensor']
     when 1
-      a = self.accelerometers.new
+      a = Accelerometer.new
+      a.recording = self
       a.upload(entry['sensor']['time'], entry['sensor']['values'])
     when 2
-      m = self.magnetic_fields.new
+      m = MagneticField.new
+      m.recording =  self
       m.upload(entry['sensor']['time'], entry['sensor']['values'])
     when 4
-      g = self.gyroscopes.new
+      g = Gyroscope.new
+      g.recording = self
       g.upload(entry['sensor']['time'], entry['sensor']['values'])
     when 5
-      l = self.lights.new
+      l = Light.new
+      l.recording = self
       l.upload(entry['sensor']['time'], entry['sensor']['values'])
     when 6
-      p = self.pressures.new
+      p = Pressure.new
+      p.recording = self
       p.upload(entry['sensor']['time'], entry['sensor']['values'])
     when 8
-      p = self.proximities.new
+      p = Proximity.new
+      p.recording = self
       p.upload(entry['sensor']['time'], entry['sensor']['values'])
     when 9
-      g = self.gravities.new
+      g = Gravity.new
+      g.recording = self
       g.upload(entry['sensor']['time'], entry['sensor']['values'])
     when 10
-      l = self.linear_accelerations.new
+      l = LinearAcceleration.new
+      l.recording = self
       l.upload(entry['sensor']['time'], entry['sensor']['values'])
     when 11
-      r = self.rotation_vectors.new
+      r = RotationVector.new
+      r.recording = self
       r.upload(entry['sensor']['time'], entry['sensor']['values'])
     end
   end
