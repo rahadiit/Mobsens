@@ -52,36 +52,7 @@
         android:textSize="18dp"
         android:text="Frage 1"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <RadioGroup
-        android:id="@+id/radioGroup1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/view1"
-        android:layout_below="@+id/view1" >
-	
-    </RadioGroup>
-
-    <RadioButton
-        android:id="@+id/radio0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/Frage1"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_marginLeft="30dp"
-        android:onClick="radioButton"
-        android:checked="true"
-        android:text="Nein" />
-
-    <RadioButton
-        android:id="@+id/radio1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/Frage1"
-        android:layout_marginLeft="31dp"
-        android:layout_toRightOf="@+id/radio0"
-        android:onClick="radioButton"
-        android:text="Ja" />
+    
 
     <RatingBar
         android:id="@+id/ratingBar1"
@@ -89,5 +60,35 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/Frage2"
         android:layout_centerHorizontal="true" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/Frage1"
+        android:layout_alignLeft="@+id/Frage1"
+        android:layout_alignRight="@+id/Frage1"
+        android:layout_below="@+id/textView1"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/Frage1"
+            android:layout_alignLeft="@+id/textView1"
+            android:layout_marginLeft="30dp"
+            android:checked="true"
+            android:text="Nein" />
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/Frage1"
+            android:layout_marginLeft="31dp"
+            android:layout_toRightOf="@+id/radio0"
+            android:text="Ja" />
+    </RadioGroup>
 
 </RelativeLayout>
