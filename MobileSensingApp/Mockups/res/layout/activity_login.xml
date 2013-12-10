@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+<View
+    android:id="@+id/view1"
+    android:layout_width="1000dp"
+    android:layout_height="200dp"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginTop="50dp"
+    android:layout_alignParentLeft="true"
+    android:background="#eaeaea" />
+
+<TextView
+    android:id="@+id/textView1"
+    android:layout_width="120dp"
+    android:layout_height="25dp"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:textSize="18dp"
+    android:layout_marginTop="18dp"
+    android:text="Einstellungen" />
+
+<EditText
+    android:id="@+id/editText1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/view1"
+    android:layout_alignTop="@+id/view1"
+    android:layout_marginLeft="17dp"
+    android:layout_marginTop="35dp"
+    android:ems="10"
+    android:inputType="textPersonName" >
+
+    <requestFocus />
+</EditText>
+
+<EditText
+    android:id="@+id/editText2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignBottom="@+id/view1"
+    android:layout_alignLeft="@+id/editText1"
+    android:layout_marginBottom="20dp"
+    android:ems="10"
+    android:inputType="textPassword" />
+
+<TextView
+    android:id="@+id/textView2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/editText1"
+    android:layout_alignTop="@+id/view1"
+    android:layout_marginTop="14dp"
+    android:text="Benutzername"
+    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+<TextView
+    android:id="@+id/textView3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/editText2"
+    android:layout_alignLeft="@+id/editText2"
+    android:layout_marginBottom="3dp"
+    android:text="Passwort"
+    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+<View 
+    android:id="@+id/defaultIntention"
+    android:layout_width="1000dp"
+    android:layout_height="150dp"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:background="#eaeaea"
+    android:layout_marginTop="300dp"
+    
+    />
+    
+
+<TextView
+    android:id="@+id/textView4"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/editText2"
+    android:layout_alignTop="@+id/defaultIntention"
+    android:layout_marginTop="22dp"
+    android:text="Standard-Intention:"
+    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+<Button
+    android:id="@+id/intention"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_alignRight="@+id/editText1"
+    android:layout_below="@+id/textView4"
+    android:layout_marginTop="28dp"
+    android:onClick="intention"
+    android:text="None" />
+
+</RelativeLayout>
