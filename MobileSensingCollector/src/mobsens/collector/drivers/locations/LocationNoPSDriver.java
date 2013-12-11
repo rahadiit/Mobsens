@@ -9,7 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-public class LocationSysDriver extends LocationDriver
+public class LocationNoPSDriver extends LocationDriver
 {
 	public final LocationListener LOCATION_ENDPOINT = new LocationListener()
 	{
@@ -69,7 +69,7 @@ public class LocationSysDriver extends LocationDriver
 
 	private boolean started;
 
-	public LocationSysDriver(ContextWrapper contextWrapper, long minTime, float minDistance)
+	public LocationNoPSDriver(ContextWrapper contextWrapper, long minTime, float minDistance)
 	{
 		this.contextWrapper = contextWrapper;
 		this.minTime = minTime;
@@ -84,9 +84,12 @@ public class LocationSysDriver extends LocationDriver
 		if (started) return;
 		started = true;
 
-		LocationManager lm = (LocationManager) contextWrapper.getSystemService(Context.LOCATION_SERVICE);
+		if (!LocationPSDriver.isAvailable(contextWrapper))
+		{
+			LocationManager lm = (LocationManager) contextWrapper.getSystemService(Context.LOCATION_SERVICE);
 
-		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, LOCATION_ENDPOINT);
+			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, LOCATION_ENDPOINT);
+		}
 	}
 
 	@Override
@@ -95,9 +98,12 @@ public class LocationSysDriver extends LocationDriver
 		if (!started) return;
 		started = false;
 
-		LocationManager lm = (LocationManager) contextWrapper.getSystemService(Context.LOCATION_SERVICE);
+		if (!LocationPSDriver.isAvailable(contextWrapper))
+		{
+			LocationManager lm = (LocationManager) contextWrapper.getSystemService(Context.LOCATION_SERVICE);
 
-		lm.removeUpdates(LOCATION_ENDPOINT);
+			lm.removeUpdates(LOCATION_ENDPOINT);
+		}
 	}
 
 }

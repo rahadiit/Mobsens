@@ -11,7 +11,7 @@ import mobsens.collector.drivers.connectivity.ConnectivityDriver;
 import mobsens.collector.drivers.locations.LocationDriver;
 import mobsens.collector.drivers.locations.LocationOutput;
 import mobsens.collector.drivers.locations.LocationPSDriver;
-import mobsens.collector.drivers.locations.LocationSysDriver;
+import mobsens.collector.drivers.locations.LocationNoPSDriver;
 import mobsens.collector.drivers.messaging.StartCollectorDriver;
 import mobsens.collector.drivers.messaging.StopCollectorDriver;
 import mobsens.collector.drivers.sensors.SensorDriver;
@@ -203,7 +203,7 @@ public class Collector extends ConnectedService
 		sensorDriver.addDriver(locationPSDriver);
 
 		// Position ohne Playservices
-		locationSysDriver = new LocationSysDriver(this, Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0.0f);
+		locationSysDriver = new LocationNoPSDriver(this, Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0.0f);
 		locationSysDriver.addConsumer(wfjFilter);
 		sensorDriver.addDriver(locationSysDriver);
 
