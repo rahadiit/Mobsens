@@ -12,7 +12,7 @@ public interface MultiGenerator<Item>
 {
 	public boolean hasConsumers();
 	
-	public Iterable<? extends Consumer<? super Item>> getConsumers();
+	public Iterable<Consumer<? super Item>> getConsumers();
 
 	public void addConsumer(Consumer<? super Item> consumer);
 

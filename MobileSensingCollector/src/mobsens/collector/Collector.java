@@ -17,7 +17,7 @@ import mobsens.collector.drivers.messaging.StopCollectorDriver;
 import mobsens.collector.drivers.sensors.SensorDriver;
 import mobsens.collector.intents.IntentCollectorStatus;
 import mobsens.collector.pipeline.basics.ClassFilter;
-import mobsens.collector.pipeline.basics.Dispatcher;
+import mobsens.collector.pipeline.basics.HostDriver;
 import mobsens.collector.pipeline.basics.WorkerCache;
 import mobsens.collector.util.Calculations;
 import mobsens.collector.util.Deviceinfo;
@@ -48,29 +48,29 @@ public class Collector extends ConnectedService
 		}
 	};
 
+	private final HostDriver messagingDriver;
+
 	private final StartCollectorDriver startCollectorDriver;
 
 	private final StopCollectorDriver stopCollectorDriver;
 
-	private SensorDriver[] sensorDrivers;
+	private final HostDriver sensorDriver;
 
-	private SensorDriver accelerometerDriver, gyroscopeDriver, magneticFieldDriver, linearAccelerationDriver, gravityDriver;
+	private final SensorDriver accelerometerDriver, gyroscopeDriver, magneticFieldDriver, linearAccelerationDriver, gravityDriver;
 
-	private LocationDriver locationDriver;
+	private final LocationDriver locationPSDriver, locationSysDriver;
 
-	private ConnectivityDriver connectivityDriver;
+	private final ConnectivityDriver connectivityDriver;
 
-	private AnnotationDriver annotationDriver;
+	private final AnnotationDriver annotationDriver;
 
-	private WFJStreamingConsumer wfjStreamer;
+	private final WFJStreamingConsumer wfjStreamer;
 
-	private LogConsumer wfjLogger;
+	private final LogConsumer wfjLogger;
 
-	private Dispatcher<WFJ> wfjDispatcher;
+	private final WorkerCache<WFJ> wfjDetacher;
 
-	private WorkerCache<WFJ> wfjDetacher;
-
-	private ClassFilter<WFJ, Object> wfjFilter;
+	private final ClassFilter<WFJ, Object> wfjFilter;
 
 	private boolean collecting;
 
@@ -80,6 +80,9 @@ public class Collector extends ConnectedService
 
 	public Collector()
 	{
+		messagingDriver = new HostDriver();
+
+		// Messaging: Collector starten
 		startCollectorDriver = new StartCollectorDriver(this)
 		{
 			@Override
@@ -96,23 +99,12 @@ public class Collector extends ConnectedService
 
 				wfjStreamer.setLocation("wfj/" + title + new Date().getTime() + ".wfj");
 
-				wfjStreamer.start();
-
-				wfjDetacher.start();
-
-				for (SensorDriver sensorDriver : sensorDrivers)
-				{
-					sensorDriver.start();
-				}
-
-				locationDriver.start();
-
-				connectivityDriver.start();
-
-				annotationDriver.start();
+				sensorDriver.start();
 			}
 		};
+		messagingDriver.addDriver(startCollectorDriver);
 
+		// Messaging: Collector stoppen
 		stopCollectorDriver = new StopCollectorDriver(this)
 		{
 			@Override
@@ -153,23 +145,77 @@ public class Collector extends ConnectedService
 					}
 				});
 
-				for (SensorDriver sensorDriver : sensorDrivers)
-				{
-					sensorDriver.stop();
-				}
+				sensorDriver.stop();
 
-				locationDriver.stop();
-
-				connectivityDriver.stop();
-
-				annotationDriver.stop();
-
-				wfjStreamer.stop();
-
-				wfjDetacher.stop();
 				wfjDetacher.releaseAllItems();
 			}
 		};
+		messagingDriver.addDriver(stopCollectorDriver);
+
+		// Sensor Hosttreiber
+		sensorDriver = new HostDriver();
+
+		// Dateiausgabe
+		wfjStreamer = new WFJStreamingConsumer(this);
+		sensorDriver.addDriver(wfjStreamer);
+
+		// Log-Ausgabe
+		wfjLogger = new LogConsumer(Log.INFO, "WFJ");
+
+		// Detachment-Cache
+		wfjDetacher = new WorkerCache<WFJ>(true);
+		wfjDetacher.addConsumer(wfjStreamer);
+		wfjDetacher.addConsumer(Pipeline.with(new ClassFilter<LocationOutput, Object>(LocationOutput.class), wfjLogger));
+		sensorDriver.addDriver(wfjDetacher);
+
+		// Filter für WFJ Objekte
+		wfjFilter = new ClassFilter<WFJ, Object>(WFJ.class);
+		wfjFilter.setConsumer(wfjDetacher);
+
+		// Accelerometer
+		accelerometerDriver = new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, Calculations.msFromFrequency(Config.FREQUENCY_ACCELEROMETER));
+		accelerometerDriver.addConsumer(wfjFilter);
+		sensorDriver.addDriver(accelerometerDriver);
+
+		// Gyroskop
+		gyroscopeDriver = new SensorDriver(this, Sensor.TYPE_GYROSCOPE, Calculations.msFromFrequency(Config.FREQUENCY_GYROSCOPE));
+		gyroscopeDriver.addConsumer(wfjFilter);
+		sensorDriver.addDriver(gyroscopeDriver);
+
+		// Magnetfeld
+		magneticFieldDriver = new SensorDriver(this, Sensor.TYPE_MAGNETIC_FIELD, Calculations.msFromFrequency(Config.FREQUENCY_MAGNETIC_FIELD));
+		magneticFieldDriver.addConsumer(wfjFilter);
+		sensorDriver.addDriver(magneticFieldDriver);
+
+		// Lineare Beschleunigung
+		linearAccelerationDriver = new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, Calculations.msFromFrequency(Config.FREQUENCY_LINEAR_ACCELEROMETER));
+		linearAccelerationDriver.addConsumer(wfjFilter);
+		sensorDriver.addDriver(linearAccelerationDriver);
+
+		// Gravitation
+		gravityDriver = new SensorDriver(this, Sensor.TYPE_GRAVITY, Calculations.msFromFrequency(Config.FREQUENCY_GRAVITY));
+		gravityDriver.addConsumer(wfjFilter);
+		sensorDriver.addDriver(gravityDriver);
+
+		// Position mit Playservices
+		locationPSDriver = new LocationPSDriver(this, Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0.0f);
+		locationPSDriver.addConsumer(wfjFilter);
+		sensorDriver.addDriver(locationPSDriver);
+
+		// Position ohne Playservices
+		locationSysDriver = new LocationSysDriver(this, Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0.0f);
+		locationSysDriver.addConsumer(wfjFilter);
+		sensorDriver.addDriver(locationSysDriver);
+
+		// Verbindungsstatus
+		connectivityDriver = new ConnectivityDriver(this);
+		connectivityDriver.addConsumer(wfjFilter);
+		sensorDriver.addDriver(connectivityDriver);
+
+		// Annotationen
+		annotationDriver = new AnnotationDriver(this);
+		annotationDriver.addConsumer(wfjFilter);
+		sensorDriver.addDriver(annotationDriver);
 
 		collecting = false;
 	}
@@ -179,66 +225,8 @@ public class Collector extends ConnectedService
 	{
 		super.onCreate();
 
-		// Alle Sensoren
-		sensorDrivers = new SensorDriver[] {
-				// Accelerometer
-				accelerometerDriver = new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, Calculations.msFromFrequency(Config.FREQUENCY_ACCELEROMETER)),
-				// Gyroskop
-				gyroscopeDriver = new SensorDriver(this, Sensor.TYPE_GYROSCOPE, Calculations.msFromFrequency(Config.FREQUENCY_GYROSCOPE)),
-				// Magnetfeld
-				magneticFieldDriver = new SensorDriver(this, Sensor.TYPE_MAGNETIC_FIELD, Calculations.msFromFrequency(Config.FREQUENCY_MAGNETIC_FIELD)),
-				// Lineare Beschleunigung
-				linearAccelerationDriver = new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, Calculations.msFromFrequency(Config.FREQUENCY_LINEAR_ACCELEROMETER)),
-				// Gravitation
-				gravityDriver = new SensorDriver(this, Sensor.TYPE_GRAVITY, Calculations.msFromFrequency(Config.FREQUENCY_GRAVITY))
-		};
-
-		// Positionstreiber
-		if (LocationPSDriver.isAvailable(this))
-		{
-			// Mit Playservices
-			locationDriver = new LocationPSDriver(this, Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0.0f);
-		}
-		else
-		{
-			// Ohne Playservices
-			locationDriver = new LocationSysDriver(this, Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0.0f);
-		}
-
-		// Verbindungsstatus
-		connectivityDriver = new ConnectivityDriver(this);
-
-		// Annotationen
-		annotationDriver = new AnnotationDriver(this);
-
-		wfjStreamer = new WFJStreamingConsumer(this);
-
-		wfjLogger = new LogConsumer(Log.INFO, "WFJ");
-
-		wfjDispatcher = new Dispatcher<WFJ>();
-		wfjDispatcher.addConsumer(wfjStreamer);
-		wfjDispatcher.addConsumer(Pipeline.with(new ClassFilter<LocationOutput, Object>(LocationOutput.class), wfjLogger));
-
-		wfjDetacher = new WorkerCache<WFJ>(true);
-		wfjDetacher.setConsumer(wfjDispatcher);
-
-		wfjFilter = new ClassFilter<WFJ, Object>(WFJ.class);
-		wfjFilter.setConsumer(wfjDetacher);
-
-		for (SensorDriver sensorDriver : sensorDrivers)
-		{
-			sensorDriver.addConsumer(wfjFilter);
-		}
-
-		locationDriver.addConsumer(wfjFilter);
-
-		connectivityDriver.addConsumer(wfjFilter);
-
-		annotationDriver.addConsumer(wfjFilter);
-
-		startCollectorDriver.start();
-
-		stopCollectorDriver.start();
+		// Messaging Listener anschalten
+		messagingDriver.start();
 
 		Logging.log(this, "Collector:" + sid, "Created", null);
 	}
@@ -252,11 +240,10 @@ public class Collector extends ConnectedService
 	@Override
 	public void onDestroy()
 	{
-		startCollectorDriver.stop();
-
-		stopCollectorDriver.stop();
-
 		Logging.log(this, "Collector:" + sid, "Destroyed", null);
+
+		// Messaging Listener abschalten
+		messagingDriver.stop();
 
 		super.onDestroy();
 	}
