@@ -12,5 +12,5 @@ public interface Config
 
 	public static final double FREQUENCY_MAGNETIC_FIELD = 50.0;
 	
-	public static final double FREQUENCY_LOCATION = 2.0;
+	public static final double FREQUENCY_LOCATION = 5.0;
 }
