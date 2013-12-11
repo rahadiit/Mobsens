@@ -23,6 +23,7 @@ import mobsens.collector.pipeline.basics.Dispatcher;
 import mobsens.collector.pipeline.basics.Filter;
 import mobsens.collector.pipeline.basics.WorkerCache;
 import mobsens.collector.util.Calculations;
+import mobsens.collector.util.Deviceinfo;
 import mobsens.collector.util.Logging;
 import mobsens.collector.util.Pipeline;
 import mobsens.collector.wfj.WFJ;
@@ -31,6 +32,7 @@ import mobsens.collector.wfj.basics.BasicWFJ;
 import org.json.JSONException;
 import org.json.JSONStringer;
 
+import android.bluetooth.BluetoothClass.Device;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.os.IBinder;
@@ -41,8 +43,6 @@ import android.util.Log;
 public class Collector extends ConnectedService
 {
 	private final int sid = Float.floatToIntBits((float) Math.random()) % 10000;
-
-	private String did;
 
 	public final CollectorIPC IPC_ENDPOINT = new CollectorIPC.Stub()
 	{
@@ -103,8 +103,25 @@ public class Collector extends ConnectedService
 				@Override
 				public void generateTo(JSONStringer stringer) throws JSONException
 				{
-					stringer.object().key("rec").object().key("title").value(title).key("did").value(did).key("time_start").value(startTime.getTime()).key("time_stop")
-							.value(endTime.getTime()).endObject().endObject();
+					stringer.object().key("rec").object();
+					
+					stringer.key("title").value(title);
+					stringer.key("time_start").value(startTime.getTime());
+					stringer.key("time_stop").value(endTime.getTime());
+
+					// Legacy-Feld
+					stringer.key("did").value(Deviceinfo.getID(Collector.this));
+
+					// Neues deviceinfo-feld
+					stringer.key("deviceinfo").object();
+					stringer.key("id").value(Deviceinfo.getID(Collector.this));
+					stringer.key("device").value(Deviceinfo.getDevice());
+					stringer.key("model").value(Deviceinfo.getModel());
+					stringer.key("manufacturer").value(Deviceinfo.getManufacturer());
+					stringer.key("product").value(Deviceinfo.getProduct());
+					stringer.endObject();
+
+					stringer.endObject().endObject();
 				}
 			});
 
@@ -169,8 +186,6 @@ public class Collector extends ConnectedService
 	public void onCreate()
 	{
 		super.onCreate();
-
-		did = "DEV" + Integer.toHexString((Secure.getString(getContentResolver(), Secure.ANDROID_ID)).hashCode());
 
 		sensorDrivers = new SensorDriver[] { new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, Calculations.msFromFrequency(Config.FREQUENCY_ACCELEROMETER)),
 				new SensorDriver(this, Sensor.TYPE_GYROSCOPE, Calculations.msFromFrequency(Config.FREQUENCY_GYROSCOPE)),
