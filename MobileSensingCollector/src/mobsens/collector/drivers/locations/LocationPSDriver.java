@@ -29,7 +29,7 @@ public class LocationPSDriver extends LocationDriver
 			if (hasConsumers())
 			{
 				// Felder erstellen
-				final Date time = new Date(location.getTime());
+				final Date time = new Date();
 				final double latitude = location.getLatitude();
 				final double longitude = location.getLongitude();
 				final Float accuracy = location.hasAccuracy() ? location.getAccuracy() : null;
@@ -56,6 +56,12 @@ public class LocationPSDriver extends LocationDriver
 		@Override
 		public void onConnected(Bundle arg0)
 		{
+			if (requesting)
+			{
+				requesting = false;
+
+				locationClient.requestLocationUpdates(locationRequest, LOCATION_ENDPOINT);
+			}
 		}
 	};
 
@@ -72,40 +78,78 @@ public class LocationPSDriver extends LocationDriver
 	 */
 	public final ContextWrapper contextWrapper;
 
-	private final LocationClient locationClient;
+	public final long minTime;
 
-	private final LocationRequest locationRequest;
+	public final float minDistance;
+
+	private LocationClient locationClient;
+
+	private LocationRequest locationRequest;
+
+	private boolean started;
+
+	private boolean requesting;
 
 	public LocationPSDriver(ContextWrapper contextWrapper, long minTime, float minDistance)
 	{
 		this.contextWrapper = contextWrapper;
+		this.minTime = minTime;
+		this.minDistance = minDistance;
 
-		locationClient = new LocationClient(contextWrapper, CONNECTION_ENDPOINT, CONNECTION_FAILED_ENDPOINT);
-		locationClient.connect();
+		locationClient = null;
+		locationRequest = null;
 
-		locationRequest = new LocationRequest();
-		locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-		locationRequest.setInterval(minTime);
-		locationRequest.setFastestInterval(minTime);
-		locationRequest.setSmallestDisplacement(minDistance);
+		started = false;
+		requesting = false;
 	}
 
 	@Override
 	public void start()
 	{
+		if (started) return;
+		started = true;
+
 		if (isAvailable(contextWrapper))
 		{
-			locationClient.requestLocationUpdates(locationRequest, LOCATION_ENDPOINT);
+			if (locationClient == null)
+			{
+				locationClient = new LocationClient(contextWrapper, CONNECTION_ENDPOINT, CONNECTION_FAILED_ENDPOINT);
+				locationClient.connect();
+
+				locationRequest = new LocationRequest();
+				locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+				locationRequest.setInterval(minTime);
+				locationRequest.setFastestInterval(minTime);
+				locationRequest.setSmallestDisplacement(minDistance);
+			}
+
+			if (locationClient.isConnected())
+			{
+				locationClient.requestLocationUpdates(locationRequest, LOCATION_ENDPOINT);
+			}
+			else
+			{
+				requesting = true;
+			}
 		}
 	}
 
 	@Override
 	public void stop()
 	{
+		if (!started) return;
+		started = false;
+
 		if (isAvailable(contextWrapper))
 		{
-			locationClient.removeLocationUpdates(LOCATION_ENDPOINT);
+			if (locationClient.isConnected())
+			{
+				locationClient.removeLocationUpdates(LOCATION_ENDPOINT);
+			}
+			else
+			{
+				requesting = false;
+			}
 		}
 	}
-
 }

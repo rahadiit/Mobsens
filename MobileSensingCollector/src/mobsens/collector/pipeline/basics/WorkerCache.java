@@ -1,5 +1,6 @@
 package mobsens.collector.pipeline.basics;
 
+import mobsens.collector.pipeline.Driver;
 import mobsens.collector.util.threading.Worker;
 
 /**
@@ -10,7 +11,7 @@ import mobsens.collector.util.threading.Worker;
  * @param <Item>
  *            Klasse der gecacheten Items
  */
-public class WorkerCache<Item> extends Cache<Item>
+public class WorkerCache<Item> extends Cache<Item> implements Driver
 {
 	/**
 	 * Initiale Einstellung der Releaserate in Millisekunden
@@ -58,10 +59,10 @@ public class WorkerCache<Item> extends Cache<Item>
 	{
 		return releasing;
 	}
-
 	/**
 	 * Startet den automatiesierten Releasevorgang
 	 */
+	@Override
 	public void start()
 	{
 		if (!releasing)
@@ -78,6 +79,7 @@ public class WorkerCache<Item> extends Cache<Item>
 	/**
 	 * Beendet den automatiesierten Releasevorgang
 	 */
+	@Override
 	public void stop()
 	{
 		if (releasing)

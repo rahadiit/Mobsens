@@ -2,8 +2,9 @@ package mobsens.collector.util.threading;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 
-public final class Worker
+public class Worker
 {
 	private static final int FIELD_WAIT_TIME = 10;
 
@@ -21,7 +22,17 @@ public final class Worker
 				Looper.prepare();
 
 				looper = Looper.myLooper();
-				handler = new Handler(looper);
+				handler = new Handler(looper)
+				{
+					@Override
+					public void handleMessage(Message msg)
+					{
+						if (!Worker.this.handleMessage(msg))
+						{
+							super.handleMessage(msg);
+						}
+					}
+				};
 
 				Looper.loop();
 			}
@@ -38,6 +49,17 @@ public final class Worker
 				Thread.currentThread().interrupt();
 			}
 		}
+	}
+
+	/**
+	 * Handles the message, returns true if handled
+	 * 
+	 * @param msg
+	 * @return
+	 */
+	protected boolean handleMessage(Message msg)
+	{
+		return false;
 	}
 
 	public Handler getHandler()

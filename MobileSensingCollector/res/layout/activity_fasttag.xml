@@ -7,7 +7,7 @@
         android:id="@+id/fasttag_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1" >
+        android:layout_weight="3" >
 
         <Button
             android:id="@+id/fasttag_topLeft"
@@ -30,7 +30,7 @@
         android:id="@+id/fasttag_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1" >
+        android:layout_weight="3" >
 
         <Button
             android:id="@+id/fasttag_bottomLeft"
@@ -47,6 +47,36 @@
             android:layout_margin="16dp"
             android:layout_weight="1"
             android:text="@string/fasttag_bottomRightValue" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/fasttag_base_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/fasttag_tag"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:text="Tag ..." />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/fasttag_base_value"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <EditText
+            android:id="@+id/fasttag_value"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Tag" />
     </TableRow>
 
 </TableLayout>

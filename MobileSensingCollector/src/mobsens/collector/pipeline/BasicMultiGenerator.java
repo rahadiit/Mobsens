@@ -31,7 +31,7 @@ public class BasicMultiGenerator<Item> implements MultiGenerator<Item>
 	}
 
 	@Override
-	public Iterable<? extends Consumer<? super Item>> getConsumers()
+	public Iterable<Consumer<? super Item>> getConsumers()
 	{
 		return Collections.unmodifiableSet(consumers);
 	}
