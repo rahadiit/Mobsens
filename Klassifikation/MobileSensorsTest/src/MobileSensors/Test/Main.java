@@ -10,6 +10,7 @@ import org.jfree.chart.plot.XYPlot;
 
 import com.sun.jersey.api.client.Client;
 
+import MobileSensors.Calculation.GPS;
 import MobileSensors.Classifiers.DetectBreaking;
 import MobileSensors.Classifiers.DetectStanding;
 import MobileSensors.Storage.Event.Event;
@@ -21,6 +22,7 @@ import MobileSensors.Test.Data.URLS;
 import MobileSensors.Test.Input.CSV;
 import MobileSensors.Test.Input.RESTful;
 import MobileSensors.Test.Output.Chart;
+
 
 public class Main {
 
@@ -34,23 +36,59 @@ public class Main {
 		int id = 92;
 
 		// Laed verschiedene CSV-Dateien vom Server
-		String locationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
-				SensorE.LOCATIONS);
+//		String locationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+//				SensorE.LOCATIONS);
 		String annotationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
 				SensorE.ANNOTATIONS);
 		String acceleroCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
 				SensorE.ACCELEROMETERS);
 
-		if (locationCSV != null && annotationCSV != null && acceleroCSV != null) {
+		
+
+		if ( annotationCSV != null && acceleroCSV != null) {
 			
 			//Die CSV-Dateien zu ArrayLists machen
-			ArrayList<Location> locations = CSV.csvToSensor(locationCSV,
-					Location.class);
+//			ArrayList<Location> locations = CSV.csvToSensor(locationCSV,
+//					Location.class);
+			
+			ArrayList<Location> locations = CSV.csvToLocation(new File("/Users/henny/Downloads/loc.csv"));
+			
+			
 			ArrayList<Annotation> annotations = CSV.csvToSensor(annotationCSV,
 					Annotation.class);
 			ArrayList<Accelerometer> accelerometer = CSV.csvToSensor(
 					acceleroCSV, Accelerometer.class);
 
+			double distance=0;
+			double speed=0;
+			double acceleration=0;
+			for(int i=1;i<locations.size();i++){
+				Location location  = locations.get(i);
+				Location prevLocation  = locations.get(i-1);
+				
+				double timeDelta = (location.getTime()-prevLocation.getTime())/1000;
+				
+				double singleDistance =GPS.distance(location,prevLocation);
+				
+				System.out.println("time "+timeDelta);
+				System.out.println("distance "+singleDistance);
+				distance += singleDistance;
+				
+				double actualSpeed =GPS.speed(singleDistance, timeDelta);
+				
+				System.out.println("speed: "+actualSpeed);
+				
+				double actualAcceleration = GPS.acceleration(speed, actualSpeed, timeDelta);
+				
+				double jerk = GPS.jerk(actualAcceleration, acceleration, timeDelta);
+				
+				
+				
+				acceleration=actualAcceleration;
+				speed= actualSpeed;
+			}
+			System.out.println("gesamtdistanz: "+distance);
+			
 			
 			//Ausfuerung der Event-Erkennung, anschliessend Ausgabe
 			 

@@ -3,6 +3,8 @@ package mobsens.classification.input;
 import java.util.ArrayList;
 
 import mobsens.classification.data.Recording;
+import mobsens.classification.data.URLS;
+
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
@@ -21,10 +23,10 @@ import mobsens.classification.data.SensorE;
 
 public class RESTful {
 
-	public static String postServerResponse(Client client, String URL,
+	public static String postServerResponse(Client client, URLS url,
 			String type, String message) {
 
-		WebResource webResource = client.resource(URL);
+		WebResource webResource = client.resource(url.getURL());
 		ClientResponse cResponse = null;
 		if (!message.equals("")) {
 			cResponse = webResource.type(type).post(ClientResponse.class,
@@ -35,7 +37,7 @@ public class RESTful {
 		if (cResponse.getStatus() == 200) {
 			return cResponse.getEntity(String.class);
 		} else {
-			System.out.println("url: " + URL + " type: " + type + " message: "
+			System.out.println("url: " + url + " type: " + type + " message: "
 					+ message);
 			System.out.println("Status-Code: " + cResponse.toString());
 
@@ -44,12 +46,12 @@ public class RESTful {
 
 	}
 
-	public static String getServerResponse(Client client, String URL,
+	public static String getServerResponse(Client client, URLS url,
 			String type) {
-		return postServerResponse(client, URL, type, "");
+		return postServerResponse(client, url, type, "");
 	}
 
-	public static Client login(String URL_LOGIN, String username,
+	public static Client login(URLS url, String username,
 			String password) {
 
 		ClientConfig clientConfig = new DefaultClientConfig();
@@ -88,14 +90,14 @@ public class RESTful {
 
 		// System.out.println(message);
 
-		postServerResponse(client, URL_LOGIN, "application/json", message);
+		postServerResponse(client, url, "application/json", message);
 
 		return client;
 
 	}
 
 	public static ArrayList<Recording> recordingOutput(Client client,
-			String recordingsURL) {
+			URLS recordingsURL) {
 		ArrayList<Recording> recordings = new ArrayList<>();
 
 		String response = getServerResponse(client, recordingsURL,
@@ -147,10 +149,10 @@ public class RESTful {
 
 	}
 
-	public static String getCSV(Client client, int recordingID, String url,
+	public static String getCSV(Client client, int recordingID, URLS url,
 			SensorE sensor) {
-
-		url += recordingID + "/" + sensor.toString() + ".csv";
+		String link=url.getURL();
+		link += recordingID + "/" + sensor.toString() + ".csv";
 		return getServerResponse(client, url, "application/csv");
 	}
 
