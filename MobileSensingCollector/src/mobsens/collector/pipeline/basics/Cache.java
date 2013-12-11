@@ -4,10 +4,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import mobsens.collector.pipeline.BasicGenerator;
+import mobsens.collector.pipeline.BasicMultiGenerator;
 import mobsens.collector.pipeline.Consumer;
 
-public class Cache<Item> extends BasicGenerator<Item> implements Consumer<Item>
+public class Cache<Item> extends BasicMultiGenerator<Item> implements Consumer<Item>
 {
 	private Queue<Item> queuedItems;
 

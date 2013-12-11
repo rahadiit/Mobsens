@@ -19,7 +19,7 @@ public class LocationSysDriver extends LocationDriver
 			if (hasConsumers())
 			{
 				// Felder erstellen
-				final Date time = new Date(location.getTime());
+				final Date time = new Date();
 				final double latitude = location.getLatitude();
 				final double longitude = location.getLongitude();
 				final Float accuracy = location.hasAccuracy() ? location.getAccuracy() : null;
@@ -67,13 +67,15 @@ public class LocationSysDriver extends LocationDriver
 	 */
 	public final float minDistance;
 
-	private boolean started = false;
+	private boolean started;
 
 	public LocationSysDriver(ContextWrapper contextWrapper, long minTime, float minDistance)
 	{
 		this.contextWrapper = contextWrapper;
 		this.minTime = minTime;
 		this.minDistance = minDistance;
+
+		started = false;
 	}
 
 	@Override

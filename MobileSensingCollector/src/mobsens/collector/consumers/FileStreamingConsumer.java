@@ -5,10 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import mobsens.collector.pipeline.Receiver;
+import mobsens.collector.pipeline.Consumer;
+import mobsens.collector.pipeline.Driver;
 import android.content.ContextWrapper;
 
-public abstract class FileStreamingConsumer<Item> implements Receiver<Item>
+public abstract class FileStreamingConsumer<Item> implements Consumer<Item>, Driver
 {
 	public final ContextWrapper contextWrapper;
 

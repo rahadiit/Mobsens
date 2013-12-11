@@ -3,6 +3,7 @@
 
     <string name="app_name">Collector</string>
     <string name="action_settings">Settings</string>
+    <string name="action_tag">Tag</string>
     <string name="service_name__collector">Collector Service</string>
     <string name="service_name__uploader">Uploader Service</string>
     
