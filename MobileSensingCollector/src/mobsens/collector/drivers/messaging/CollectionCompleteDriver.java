@@ -1,7 +1,6 @@
 package mobsens.collector.drivers.messaging;
 
 import mobsens.collector.intents.IntentCollectionComplete;
-import mobsens.collector.pipeline.BasicGenerator;
 import mobsens.collector.pipeline.Driver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,7 +8,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-public class CollectionCompleteDriver extends BasicGenerator<CollectionCompleteOutput> implements Driver<CollectionCompleteOutput>
+public abstract class CollectionCompleteDriver implements Driver
 {
 	public final BroadcastReceiver INTENT_ENDPOINT = new BroadcastReceiver()
 	{
@@ -18,23 +17,19 @@ public class CollectionCompleteDriver extends BasicGenerator<CollectionCompleteO
 		{
 			if (IntentCollectionComplete.ACTION.equals(intent.getAction()))
 			{
-				if (consumer != null)
-				{
-					// Intent-Extras holen
-					final String extra_location = intent.getStringExtra(IntentCollectionComplete.EXTRA_LOCATION);
+				// Intent-Extras holen
+				final String extra_location = intent.getStringExtra(IntentCollectionComplete.EXTRA_LOCATION);
 
-					// Felder erstellen
-					final String location = extra_location;
+				// Felder erstellen
+				final String location = extra_location;
 
-					// Item erstellen
-					final CollectionCompleteOutput item = new CollectionCompleteOutput(location);
-
-					// Item senden
-					consumer.consume(item);
-				}
+				// Methode aufrufen
+				onCollectionComplete(location);
 			}
 		}
 	};
+
+	protected abstract void onCollectionComplete(String location);
 
 	public final ContextWrapper contextWrapper;
 

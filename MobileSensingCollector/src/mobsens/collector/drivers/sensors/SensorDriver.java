@@ -2,7 +2,7 @@ package mobsens.collector.drivers.sensors;
 
 import java.util.Date;
 
-import mobsens.collector.pipeline.BasicGenerator;
+import mobsens.collector.pipeline.BasicMultiGenerator;
 import mobsens.collector.pipeline.Driver;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -11,14 +11,14 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-public class SensorDriver extends BasicGenerator<SensorOutput> implements Driver<SensorOutput>
+public class SensorDriver extends BasicMultiGenerator<SensorOutput> implements Driver
 {
 	public final SensorEventListener SENSOR_EVENT_ENDPOINT = new SensorEventListener()
 	{
 		@Override
 		public void onSensorChanged(SensorEvent event)
 		{
-			if (consumer != null)
+			if (hasConsumers())
 			{
 				// Felder erstellen
 				final Date time = new Date(System.currentTimeMillis() + (event.timestamp - System.nanoTime()) / 1000000L);
@@ -29,7 +29,7 @@ public class SensorDriver extends BasicGenerator<SensorOutput> implements Driver
 				final SensorOutput item = new SensorOutput(time, accuracy, event.sensor.getType(), values);
 
 				// Item senden
-				consumer.consume(item);
+				offer(item);
 			}
 		}
 

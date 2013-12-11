@@ -16,7 +16,7 @@ public class LocationSysDriver extends LocationDriver
 		@Override
 		public void onLocationChanged(Location location)
 		{
-			if (consumer != null)
+			if (hasConsumers())
 			{
 				// Felder erstellen
 				final Date time = new Date(location.getTime());
@@ -31,7 +31,7 @@ public class LocationSysDriver extends LocationDriver
 				final LocationOutput item = new LocationOutput(time, latitude, longitude, accuracy, altitude, bearing, speed);
 
 				// Item senden
-				consumer.consume(item);
+				offer(item);
 			}
 		}
 

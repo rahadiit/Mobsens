@@ -1,7 +1,6 @@
 package mobsens.collector.drivers.messaging;
 
 import mobsens.collector.intents.IntentStartCollector;
-import mobsens.collector.pipeline.BasicGenerator;
 import mobsens.collector.pipeline.Driver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,7 +8,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-public class StartCollectorDriver extends BasicGenerator<StartCollectorOutput> implements Driver<StartCollectorOutput>
+public abstract class StartCollectorDriver implements Driver
 {
 	public final BroadcastReceiver INTENT_ENDPOINT = new BroadcastReceiver()
 	{
@@ -18,23 +17,19 @@ public class StartCollectorDriver extends BasicGenerator<StartCollectorOutput> i
 		{
 			if (IntentStartCollector.ACTION.equals(intent.getAction()))
 			{
-				if (consumer != null)
-				{
-					// Intent-Extras holen
-					final String extra_title = intent.getStringExtra(IntentStartCollector.EXTRA_TITLE);
+				// Intent-Extras holen
+				final String extra_title = intent.getStringExtra(IntentStartCollector.EXTRA_TITLE);
 
-					// Felder erstellen
-					final String title = extra_title;
+				// Felder erstellen
+				final String title = extra_title;
 
-					// Item erstellen
-					final StartCollectorOutput item = new StartCollectorOutput(title);
-
-					// Item senden
-					consumer.consume(item);
-				}
+				// Methode aufrufen
+				onStartCollector(title);
 			}
 		}
 	};
+
+	protected abstract void onStartCollector(String title);
 
 	public final ContextWrapper contextWrapper;
 

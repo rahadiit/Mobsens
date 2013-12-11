@@ -20,11 +20,11 @@ public class Synchronizer<Item> extends BasicGenerator<Item> implements Consumer
 	@Override
 	public void consume(Item item)
 	{
-		if (consumer != null)
+		if (hasConsumer())
 		{
 			synchronized (gateObject)
 			{
-				consumer.consume(item);
+				offer(item);
 			}
 		}
 	}

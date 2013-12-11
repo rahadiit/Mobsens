@@ -2,9 +2,24 @@ package mobsens.collector.pipeline;
 
 public class BasicBinaryGenerator<LeftItem, RightItem> implements BinaryGenerator<LeftItem, RightItem>
 {
-	protected Consumer<? super LeftItem> leftConsumer;
+	private Consumer<? super LeftItem> leftConsumer;
 
-	protected Consumer<? super RightItem> rightConsumer;
+	private Consumer<? super RightItem> rightConsumer;
+
+	protected void offerLeft(LeftItem item)
+	{
+		if(hasLeftConsumer())
+		{
+			leftConsumer.consume(item);
+		}
+	}
+	protected void offerRight(RightItem item)
+	{
+		if(hasRightConsumer())
+		{
+			rightConsumer.consume(item);
+		}
+	}
 
 	@Override
 	public boolean hasLeftConsumer()

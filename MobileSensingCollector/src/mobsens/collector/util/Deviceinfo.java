@@ -1,10 +1,5 @@
 package mobsens.collector.util;
 
-import org.json.JSONException;
-import org.json.JSONStringer;
-
-import mobsens.collector.wfj.WFJ;
-import mobsens.collector.wfj.basics.BasicWFJ;
 import android.content.ContextWrapper;
 import android.os.Build;
 import android.provider.Settings.Secure;

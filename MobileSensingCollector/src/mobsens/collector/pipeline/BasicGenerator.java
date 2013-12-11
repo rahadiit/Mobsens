@@ -2,7 +2,15 @@ package mobsens.collector.pipeline;
 
 public class BasicGenerator<Item> implements Generator<Item>
 {
-	protected Consumer<? super Item> consumer;
+	private Consumer<? super Item> consumer;
+
+	protected void offer(Item item)
+	{
+		if (hasConsumer())
+		{
+			consumer.consume(item);
+		}
+	}
 
 	@Override
 	public boolean hasConsumer()

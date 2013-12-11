@@ -1,6 +1,5 @@
 package mobsens.collector.pipeline;
 
-
 /**
  * Start- und Stoppbare Generator
  * 
@@ -9,7 +8,7 @@ package mobsens.collector.pipeline;
  * @param <Item>
  *            Typ der generierten Item
  */
-public interface Driver<Item> extends Generator<Item>
+public interface Driver
 {
 	/**
 	 * Startet den Treiber

@@ -1,3 +1,3 @@
 Pipeline
 ===================
-Generator für Systemkommunikation
+Treiber für Systemkommunikation
