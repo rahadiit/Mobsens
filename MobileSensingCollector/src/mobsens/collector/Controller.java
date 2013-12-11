@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+
 import mobsens.collector.communications.ConnectingActivity;
 import mobsens.collector.drivers.messaging.CollectorStatusDriver;
 import mobsens.collector.drivers.messaging.CollectorStatusOutput;

@@ -2,14 +2,12 @@ package mobsens.collector.drivers.locations;
 
 import java.util.Date;
 
-import mobsens.collector.pipeline.Driver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 
 public class LocationSysDriver extends LocationDriver
 {

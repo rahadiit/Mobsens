@@ -1,7 +1,7 @@
 package mobsens.collector.consumers;
 
-import android.util.Log;
 import mobsens.collector.pipeline.Consumer;
+import android.util.Log;
 
 public class LogConsumer implements Consumer<Object>
 {
