@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -40,7 +41,6 @@ public class Controller extends ConnectingActivity
 	private TextView textViewControllerTitle;
 	private Button buttonControllerSend;
 	private Button buttonControllerStartStop;
-	private Button buttonControllerTag;
 	private CheckBox checkBoxControllerLocal;
 	private CheckBox checkBoxControllerWeb;
 
@@ -114,6 +114,20 @@ public class Controller extends ConnectingActivity
 	}
 
 	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+		case R.id.action_tag:
+			startActivity(new Intent(getApplicationContext(), Fasttag.class));
+			return true;
+
+		default:
+			return super.onMenuItemSelected(featureId, item);
+		}
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -131,7 +145,6 @@ public class Controller extends ConnectingActivity
 		checkBoxControllerWeb = (CheckBox) findViewById(R.id.controller_web);
 		buttonControllerStartStop = (Button) findViewById(R.id.controller_start_stop);
 		buttonControllerSend = (Button) findViewById(R.id.controller_send);
-		buttonControllerTag = (Button) findViewById(R.id.controller_tag);
 
 		buttonControllerStartStop.setOnClickListener(new OnClickListener()
 		{
@@ -218,15 +231,6 @@ public class Controller extends ConnectingActivity
 						file.delete();
 					}
 				}
-			}
-		});
-
-		buttonControllerTag.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				startActivity(new Intent(getApplicationContext(), Fasttag.class));
 			}
 		});
 	}
