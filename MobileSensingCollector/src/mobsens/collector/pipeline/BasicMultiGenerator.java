@@ -8,9 +8,15 @@ public class BasicMultiGenerator<Item> implements MultiGenerator<Item>
 {
 	private final Set<Consumer<? super Item>> consumers;
 
-	protected final boolean should()
+	protected void offer(Item item)
 	{
-		return hasConsumers();
+		if (hasConsumers())
+		{
+			for (Consumer<? super Item> consumer : consumers)
+			{
+				consumer.consume(item);
+			}
+		}
 	}
 
 	public BasicMultiGenerator()

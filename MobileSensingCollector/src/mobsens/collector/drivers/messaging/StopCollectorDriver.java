@@ -1,7 +1,6 @@
 package mobsens.collector.drivers.messaging;
 
 import mobsens.collector.intents.IntentStopCollector;
-import mobsens.collector.pipeline.BasicGenerator;
 import mobsens.collector.pipeline.Driver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,7 +8,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-public class StopCollectorDriver extends BasicGenerator<StopCollectorOutput> implements Driver<StopCollectorOutput>
+public abstract class StopCollectorDriver implements Driver
 {
 	public final BroadcastReceiver INTENT_ENDPOINT = new BroadcastReceiver()
 	{
@@ -18,17 +17,13 @@ public class StopCollectorDriver extends BasicGenerator<StopCollectorOutput> imp
 		{
 			if (IntentStopCollector.ACTION.equals(intent.getAction()))
 			{
-				if (consumer != null)
-				{
-					// Item erstellen
-					final StopCollectorOutput item = new StopCollectorOutput();
-
-					// Item senden
-					consumer.consume(item);
-				}
+				// Methode aufrufen
+				onStopCollector();
 			}
 		}
 	};
+
+	protected abstract void onStopCollector();
 
 	public final ContextWrapper contextWrapper;
 

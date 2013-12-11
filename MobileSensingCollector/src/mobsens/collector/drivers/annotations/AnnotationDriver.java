@@ -3,7 +3,7 @@ package mobsens.collector.drivers.annotations;
 import java.util.Date;
 
 import mobsens.collector.intents.IntentAnnotation;
-import mobsens.collector.pipeline.BasicGenerator;
+import mobsens.collector.pipeline.BasicMultiGenerator;
 import mobsens.collector.pipeline.Driver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-public class AnnotationDriver extends BasicGenerator<AnnotationOutput> implements Driver<AnnotationOutput>
+public class AnnotationDriver extends BasicMultiGenerator<AnnotationOutput> implements Driver
 {
 	public final BroadcastReceiver INTENT_ENDPOINT = new BroadcastReceiver()
 	{
@@ -20,7 +20,7 @@ public class AnnotationDriver extends BasicGenerator<AnnotationOutput> implement
 		{
 			if (IntentAnnotation.ACTION.equals(intent.getAction()))
 			{
-				if (consumer != null)
+				if (hasConsumers())
 				{
 					// Intent-Extras holen
 					final long extra_time = intent.getLongExtra(IntentAnnotation.EXTRA_TIME, Long.MIN_VALUE);
@@ -34,7 +34,7 @@ public class AnnotationDriver extends BasicGenerator<AnnotationOutput> implement
 					final AnnotationOutput item = new AnnotationOutput(time, value);
 
 					// Item senden
-					consumer.consume(item);
+					offer(item);
 				}
 			}
 		}

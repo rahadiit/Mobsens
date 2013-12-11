@@ -37,13 +37,8 @@ public class Cache<Item> extends BasicGenerator<Item> implements Consumer<Item>
 		}
 		else
 		{
-			final Item item = queuedItems.poll();
-
-			if (hasConsumer())
-			{
-				consumer.consume(item);
-			}
-
+			offer(queuedItems.poll());
+			
 			return true;
 		}
 	}

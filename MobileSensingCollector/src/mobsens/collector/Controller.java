@@ -5,18 +5,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Date;
 
 import mobsens.collector.communications.ConnectingActivity;
 import mobsens.collector.drivers.messaging.CollectorStatusDriver;
-import mobsens.collector.drivers.messaging.CollectorStatusOutput;
 import mobsens.collector.drivers.messaging.LogDriver;
-import mobsens.collector.drivers.messaging.LogOutput;
 import mobsens.collector.drivers.messaging.UploadResponseDriver;
-import mobsens.collector.drivers.messaging.UploadResponseOutput;
 import mobsens.collector.intents.IntentStartCollector;
 import mobsens.collector.intents.IntentStopCollector;
 import mobsens.collector.intents.IntentUpload;
-import mobsens.collector.pipeline.Consumer;
 import mobsens.collector.util.Logging;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,67 +28,6 @@ import android.widget.TextView;
 
 public class Controller extends ConnectingActivity
 {
-	public final Consumer<LogOutput> LOG_ENDPOINT = new Consumer<LogOutput>()
-	{
-
-		@Override
-		public void consume(LogOutput item)
-		{
-			String text = item.title + "\r\n  " + item.subtitle;
-
-			if (item.description != null)
-			{
-				text += "\r\n" + item.description.replaceAll("(?m)^", "> ");
-			}
-			textViewControllerLog.setText(text + "\r\n\r\n" + textViewControllerLog.getText());
-		}
-	};
-
-	public final Consumer<UploadResponseOutput> UPLOAD_RESPONSE_ENDPOINT = new Consumer<UploadResponseOutput>()
-	{
-		@Override
-		public void consume(UploadResponseOutput item)
-		{
-			try
-			{
-				File file = new File(getExternalFilesDir(null), "responses/" + item.handle + ".response");
-
-				file.getParentFile().mkdirs();
-
-				FileOutputStream fileOutputStream = new FileOutputStream(file, true);
-				PrintStream printStream = new PrintStream(fileOutputStream);
-
-				printStream.println(item.response);
-
-				printStream.close();
-				fileOutputStream.close();
-
-				Logging.log(Controller.this, item.endTime, "Upload complete", item.handle, item.transmitted + " bytes transmitted\r\nresponsefile written");
-			}
-			catch (IOException e)
-			{
-				Logging.log(Controller.this, e);
-			}
-
-		}
-	};
-
-	public final Consumer<CollectorStatusOutput> COLLECTOR_STATUS_ENDPOINT = new Consumer<CollectorStatusOutput>()
-	{
-		@Override
-		public void consume(CollectorStatusOutput item)
-		{
-			if (item.status)
-			{
-				buttonControllerStartStop.setText("Stop");
-			}
-			else
-			{
-				buttonControllerStartStop.setText("Start");
-			}
-		}
-	};
-
 	private final LogDriver logDriver;
 
 	private final UploadResponseDriver uploadResponseDriver;
@@ -112,14 +48,67 @@ public class Controller extends ConnectingActivity
 	{
 		super(Collector.class);
 
-		logDriver = new LogDriver(this);
-		logDriver.setConsumer(LOG_ENDPOINT);
+		logDriver = new LogDriver(this)
+		{
+			@Override
+			protected void onLog(Date time, String title, String subtitle, String description)
+			{
+				String text = title + "\r\n  " + subtitle;
 
-		uploadResponseDriver = new UploadResponseDriver(this);
-		uploadResponseDriver.setConsumer(UPLOAD_RESPONSE_ENDPOINT);
+				if (description != null)
+				{
+					text += "\r\n" + description.replaceAll("(?m)^", "> ");
+				}
+				textViewControllerLog.setText(text + "\r\n\r\n" + textViewControllerLog.getText());
+			}
+		};
 
-		collectorStatusDriver = new CollectorStatusDriver(this);
-		collectorStatusDriver.setConsumer(COLLECTOR_STATUS_ENDPOINT);
+		uploadResponseDriver = new UploadResponseDriver(this)
+		{
+
+			@Override
+			protected void onUploadResponse(String handle, Date startTime, Date endTime, long transmitted, String response, Throwable exception)
+			{
+				try
+				{
+					File file = new File(getExternalFilesDir(null), "responses/" + handle + ".response");
+
+					file.getParentFile().mkdirs();
+
+					FileOutputStream fileOutputStream = new FileOutputStream(file, true);
+					PrintStream printStream = new PrintStream(fileOutputStream);
+
+					printStream.println(response);
+
+					printStream.close();
+					fileOutputStream.close();
+
+					Logging.log(Controller.this, endTime, "Upload complete", handle, transmitted + " bytes transmitted\r\nresponsefile written");
+				}
+				catch (IOException e)
+				{
+					Logging.log(Controller.this, e);
+				}
+
+			}
+		};
+
+		collectorStatusDriver = new CollectorStatusDriver(this)
+		{
+
+			@Override
+			protected void onCollectorStatus(boolean status)
+			{
+				if (status)
+				{
+					buttonControllerStartStop.setText("Stop");
+				}
+				else
+				{
+					buttonControllerStartStop.setText("Start");
+				}
+			}
+		};
 
 		collectorIPC = null;
 	}

@@ -2,7 +2,7 @@ package mobsens.collector.drivers.connectivity;
 
 import java.util.Date;
 
-import mobsens.collector.pipeline.BasicGenerator;
+import mobsens.collector.pipeline.BasicMultiGenerator;
 import mobsens.collector.pipeline.Driver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,7 +13,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 
-public class ConnectivityDriver extends BasicGenerator<ConnectivityOutput> implements Driver<ConnectivityOutput>
+public class ConnectivityDriver extends BasicMultiGenerator<ConnectivityOutput> implements Driver
 {
 	public final BroadcastReceiver INTENT_ENDPOINT = new BroadcastReceiver()
 	{
@@ -22,7 +22,7 @@ public class ConnectivityDriver extends BasicGenerator<ConnectivityOutput> imple
 		{
 			if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()))
 			{
-				if (consumer != null)
+				if (hasConsumers())
 				{
 					// Intent-Extras holen
 					final NetworkInfo extra_networkInfo = intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
@@ -37,7 +37,7 @@ public class ConnectivityDriver extends BasicGenerator<ConnectivityOutput> imple
 					final ConnectivityOutput item = new ConnectivityOutput(time, type, subtype, state);
 
 					// Item senden
-					consumer.consume(item);
+					offer(item);
 				}
 			}
 		}

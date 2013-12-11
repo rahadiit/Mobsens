@@ -8,10 +8,7 @@ public class Dispatcher<Item> extends BasicMultiGenerator<Item> implements Consu
 	@Override
 	public void consume(Item item)
 	{
-		for (Consumer<? super Item> consumer : getConsumers())
-		{
-			consumer.consume(item);
-		}
+		offer(item);
 	}
 
 }

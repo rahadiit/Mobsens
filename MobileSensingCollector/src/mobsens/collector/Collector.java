@@ -13,14 +13,11 @@ import mobsens.collector.drivers.locations.LocationOutput;
 import mobsens.collector.drivers.locations.LocationPSDriver;
 import mobsens.collector.drivers.locations.LocationSysDriver;
 import mobsens.collector.drivers.messaging.StartCollectorDriver;
-import mobsens.collector.drivers.messaging.StartCollectorOutput;
 import mobsens.collector.drivers.messaging.StopCollectorDriver;
-import mobsens.collector.drivers.messaging.StopCollectorOutput;
 import mobsens.collector.drivers.sensors.SensorDriver;
 import mobsens.collector.intents.IntentCollectorStatus;
-import mobsens.collector.pipeline.Consumer;
+import mobsens.collector.pipeline.basics.ClassFilter;
 import mobsens.collector.pipeline.basics.Dispatcher;
-import mobsens.collector.pipeline.basics.Filter;
 import mobsens.collector.pipeline.basics.WorkerCache;
 import mobsens.collector.util.Calculations;
 import mobsens.collector.util.Deviceinfo;
@@ -32,12 +29,10 @@ import mobsens.collector.wfj.basics.BasicWFJ;
 import org.json.JSONException;
 import org.json.JSONStringer;
 
-import android.bluetooth.BluetoothClass.Device;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.provider.Settings.Secure;
 import android.util.Log;
 
 public class Collector extends ConnectedService
@@ -53,101 +48,13 @@ public class Collector extends ConnectedService
 		}
 	};
 
-	public final Consumer<StartCollectorOutput> START_COLLECTOR_ENDPOINT = new Consumer<StartCollectorOutput>()
-	{
-		@Override
-		public void consume(final StartCollectorOutput item)
-		{
-			collecting = true;
-			IntentCollectorStatus.sendBroadcast(Collector.this, true);
-
-			startTime = new Date();
-			title = item.title;
-
-			Logging.log(Collector.this, "Collector:" + sid, "Starting collection", null);
-
-			wfjStreamer.setLocation("wfj/" + item.title + new Date().getTime() + ".wfj");
-
-			wfjStreamer.start();
-
-			wfjDetacher.start();
-
-			for (SensorDriver sensorDriver : sensorDrivers)
-			{
-				sensorDriver.start();
-			}
-
-			locationDriver.start();
-
-			connectivityDriver.start();
-
-			annotationDriver.start();
-		}
-	};
-
-	public final Consumer<StopCollectorOutput> STOP_COLLECTOR_ENDPOINT = new Consumer<StopCollectorOutput>()
-	{
-		@Override
-		public void consume(StopCollectorOutput item)
-		{
-			collecting = false;
-			IntentCollectorStatus.sendBroadcast(Collector.this, false);
-
-			final Date endTime = new Date();
-
-			Logging.log(Collector.this, new Date(), "Collector", "Stopping collection", null);
-
-			// Rec-Token schreiben
-			wfjStreamer.consume(new BasicWFJ()
-			{
-				@Override
-				public void generateTo(JSONStringer stringer) throws JSONException
-				{
-					stringer.object().key("rec").object();
-					
-					stringer.key("title").value(title);
-					stringer.key("time_start").value(startTime.getTime());
-					stringer.key("time_stop").value(endTime.getTime());
-
-					// Legacy-Feld
-					stringer.key("did").value(Deviceinfo.getID(Collector.this));
-
-					// Neues deviceinfo-feld
-					stringer.key("deviceinfo").object();
-					stringer.key("id").value(Deviceinfo.getID(Collector.this));
-					stringer.key("device").value(Deviceinfo.getDevice());
-					stringer.key("model").value(Deviceinfo.getModel());
-					stringer.key("manufacturer").value(Deviceinfo.getManufacturer());
-					stringer.key("product").value(Deviceinfo.getProduct());
-					stringer.endObject();
-
-					stringer.endObject().endObject();
-				}
-			});
-
-			for (SensorDriver sensorDriver : sensorDrivers)
-			{
-				sensorDriver.stop();
-			}
-
-			locationDriver.stop();
-
-			connectivityDriver.stop();
-
-			annotationDriver.stop();
-
-			wfjStreamer.stop();
-
-			wfjDetacher.stop();
-			wfjDetacher.releaseAllItems();
-		}
-	};
-
 	private final StartCollectorDriver startCollectorDriver;
 
 	private final StopCollectorDriver stopCollectorDriver;
 
 	private SensorDriver[] sensorDrivers;
+
+	private SensorDriver accelerometerDriver, gyroscopeDriver, magneticFieldDriver, linearAccelerationDriver, gravityDriver;
 
 	private LocationDriver locationDriver;
 
@@ -163,7 +70,7 @@ public class Collector extends ConnectedService
 
 	private WorkerCache<WFJ> wfjDetacher;
 
-	private Filter<WFJ, Object> wfjFilter;
+	private ClassFilter<WFJ, Object> wfjFilter;
 
 	private boolean collecting;
 
@@ -173,11 +80,96 @@ public class Collector extends ConnectedService
 
 	public Collector()
 	{
-		startCollectorDriver = new StartCollectorDriver(this);
-		startCollectorDriver.setConsumer(START_COLLECTOR_ENDPOINT);
+		startCollectorDriver = new StartCollectorDriver(this)
+		{
+			@Override
+			protected void onStartCollector(String title)
+			{
+				Collector.this.title = title;
 
-		stopCollectorDriver = new StopCollectorDriver(this);
-		stopCollectorDriver.setConsumer(STOP_COLLECTOR_ENDPOINT);
+				collecting = true;
+				IntentCollectorStatus.sendBroadcast(Collector.this, true);
+
+				startTime = new Date();
+
+				Logging.log(Collector.this, "Collector:" + sid, "Starting collection", null);
+
+				wfjStreamer.setLocation("wfj/" + title + new Date().getTime() + ".wfj");
+
+				wfjStreamer.start();
+
+				wfjDetacher.start();
+
+				for (SensorDriver sensorDriver : sensorDrivers)
+				{
+					sensorDriver.start();
+				}
+
+				locationDriver.start();
+
+				connectivityDriver.start();
+
+				annotationDriver.start();
+			}
+		};
+
+		stopCollectorDriver = new StopCollectorDriver(this)
+		{
+			@Override
+			protected void onStopCollector()
+			{
+				collecting = false;
+				IntentCollectorStatus.sendBroadcast(Collector.this, false);
+
+				final Date endTime = new Date();
+
+				Logging.log(Collector.this, new Date(), "Collector", "Stopping collection", null);
+
+				// Rec-Token schreiben
+				wfjStreamer.consume(new BasicWFJ()
+				{
+					@Override
+					public void generateTo(JSONStringer stringer) throws JSONException
+					{
+						stringer.object().key("rec").object();
+
+						stringer.key("title").value(title);
+						stringer.key("time_start").value(startTime.getTime());
+						stringer.key("time_stop").value(endTime.getTime());
+
+						// Legacy-Feld
+						stringer.key("did").value(Deviceinfo.getID(Collector.this));
+
+						// Neues deviceinfo-feld
+						stringer.key("deviceinfo").object();
+						stringer.key("id").value(Deviceinfo.getID(Collector.this));
+						stringer.key("device").value(Deviceinfo.getDevice());
+						stringer.key("model").value(Deviceinfo.getModel());
+						stringer.key("manufacturer").value(Deviceinfo.getManufacturer());
+						stringer.key("product").value(Deviceinfo.getProduct());
+						stringer.endObject();
+
+						stringer.endObject().endObject();
+					}
+				});
+
+				for (SensorDriver sensorDriver : sensorDrivers)
+				{
+					sensorDriver.stop();
+				}
+
+				locationDriver.stop();
+
+				connectivityDriver.stop();
+
+				annotationDriver.stop();
+
+				wfjStreamer.stop();
+
+				wfjDetacher.stop();
+				wfjDetacher.releaseAllItems();
+			}
+		};
 
 		collecting = false;
 	}
@@ -187,17 +179,36 @@ public class Collector extends ConnectedService
 	{
 		super.onCreate();
 
-		sensorDrivers = new SensorDriver[] { new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, Calculations.msFromFrequency(Config.FREQUENCY_ACCELEROMETER)),
-				new SensorDriver(this, Sensor.TYPE_GYROSCOPE, Calculations.msFromFrequency(Config.FREQUENCY_GYROSCOPE)),
-				new SensorDriver(this, Sensor.TYPE_MAGNETIC_FIELD, Calculations.msFromFrequency(Config.FREQUENCY_MAGNETIC_FIELD)),
-				new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, Calculations.msFromFrequency(Config.FREQUENCY_LINEAR_ACCELEROMETER)),
-				new SensorDriver(this, Sensor.TYPE_GRAVITY, Calculations.msFromFrequency(Config.FREQUENCY_GRAVITY)) };
+		// Alle Sensoren
+		sensorDrivers = new SensorDriver[] {
+				// Accelerometer
+				accelerometerDriver = new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, Calculations.msFromFrequency(Config.FREQUENCY_ACCELEROMETER)),
+				// Gyroskop
+				gyroscopeDriver = new SensorDriver(this, Sensor.TYPE_GYROSCOPE, Calculations.msFromFrequency(Config.FREQUENCY_GYROSCOPE)),
+				// Magnetfeld
+				magneticFieldDriver = new SensorDriver(this, Sensor.TYPE_MAGNETIC_FIELD, Calculations.msFromFrequency(Config.FREQUENCY_MAGNETIC_FIELD)),
+				// Lineare Beschleunigung
+				linearAccelerationDriver = new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, Calculations.msFromFrequency(Config.FREQUENCY_LINEAR_ACCELEROMETER)),
+				// Gravitation
+				gravityDriver = new SensorDriver(this, Sensor.TYPE_GRAVITY, Calculations.msFromFrequency(Config.FREQUENCY_GRAVITY))
+		};
 
-		locationDriver = LocationPSDriver.isAvailable(this) ? new LocationPSDriver(this, Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0.0f) : new LocationSysDriver(this,
-				Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0.0f);
+		// Positionstreiber
+		if (LocationPSDriver.isAvailable(this))
+		{
+			// Mit Playservices
+			locationDriver = new LocationPSDriver(this, Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0.0f);
+		}
+		else
+		{
+			// Ohne Playservices
+			locationDriver = new LocationSysDriver(this, Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0.0f);
+		}
 
+		// Verbindungsstatus
 		connectivityDriver = new ConnectivityDriver(this);
 
+		// Annotationen
 		annotationDriver = new AnnotationDriver(this);
 
 		wfjStreamer = new WFJStreamingConsumer(this);
@@ -206,24 +217,24 @@ public class Collector extends ConnectedService
 
 		wfjDispatcher = new Dispatcher<WFJ>();
 		wfjDispatcher.addConsumer(wfjStreamer);
-		wfjDispatcher.addConsumer(Pipeline.with(new Filter<LocationOutput, Object>(LocationOutput.class), wfjLogger));
+		wfjDispatcher.addConsumer(Pipeline.with(new ClassFilter<LocationOutput, Object>(LocationOutput.class), wfjLogger));
 
 		wfjDetacher = new WorkerCache<WFJ>(true);
 		wfjDetacher.setConsumer(wfjDispatcher);
 
-		wfjFilter = new Filter<WFJ, Object>(WFJ.class);
+		wfjFilter = new ClassFilter<WFJ, Object>(WFJ.class);
 		wfjFilter.setConsumer(wfjDetacher);
 
 		for (SensorDriver sensorDriver : sensorDrivers)
 		{
-			sensorDriver.setConsumer(wfjFilter);
+			sensorDriver.addConsumer(wfjFilter);
 		}
 
-		locationDriver.setConsumer(wfjFilter);
+		locationDriver.addConsumer(wfjFilter);
 
-		connectivityDriver.setConsumer(wfjFilter);
+		connectivityDriver.addConsumer(wfjFilter);
 
-		annotationDriver.setConsumer(wfjFilter);
+		annotationDriver.addConsumer(wfjFilter);
 
 		startCollectorDriver.start();
 
