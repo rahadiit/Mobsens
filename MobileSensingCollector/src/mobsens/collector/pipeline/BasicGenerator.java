@@ -5,6 +5,12 @@ public class BasicGenerator<Item> implements Generator<Item>
 	protected Consumer<? super Item> consumer;
 
 	@Override
+	public boolean hasConsumer()
+	{
+		return consumer != null;
+	}
+
+	@Override
 	public Consumer<? super Item> getConsumer()
 	{
 		return consumer;
@@ -15,4 +21,5 @@ public class BasicGenerator<Item> implements Generator<Item>
 	{
 		this.consumer = consumer;
 	}
+
 }

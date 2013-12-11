@@ -1,28 +1,52 @@
 package mobsens.collector.pipeline.basics;
 
-import mobsens.collector.pipeline.BasicGenerator;
+import mobsens.collector.pipeline.BasicBinaryGenerator;
 import mobsens.collector.pipeline.Consumer;
+import mobsens.collector.pipeline.Generator;
 
-public class Filter<Item> extends BasicGenerator<Item> implements Consumer<Object>
+public class Filter<Specific, General> extends BasicBinaryGenerator<Specific, General> implements Generator<Specific>, Consumer<General>
 {
-	public final Class<Item> filterClass;
+	public final Class<Specific> filterClass;
 
-	public Filter(Class<Item> filterClass)
+	public Filter(Class<Specific> filterClass)
 	{
 		this.filterClass = filterClass;
 	}
 
 	@Override
-	public void consume(Object item)
+	public void consume(General item)
 	{
-		if (consumer != null)
+		if (filterClass.isInstance(item))
 		{
-			if (filterClass.isInstance(item))
+			if (hasLeftConsumer())
 			{
-				consumer.consume(filterClass.cast(item));
+				getLeftConsumer().consume(filterClass.cast(item));
 			}
 		}
-
+		else
+		{
+			if (hasRightConsumer())
+			{
+				getRightConsumer().consume(item);
+			}
+		}
 	}
 
+	@Override
+	public boolean hasConsumer()
+	{
+		return hasLeftConsumer();
+	}
+
+	@Override
+	public Consumer<? super Specific> getConsumer()
+	{
+		return getLeftConsumer();
+	}
+
+	@Override
+	public void setConsumer(Consumer<? super Specific> consumer)
+	{
+		setLeftConsumer(consumer);
+	}
 }

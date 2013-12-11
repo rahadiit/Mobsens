@@ -10,6 +10,8 @@ package mobsens.collector.pipeline;
  */
 public interface Generator<Item>
 {
+	public boolean hasConsumer();
+	
 	/**
 	 * 
 	 * @return Gibt den aktuellen Konsumenten aus

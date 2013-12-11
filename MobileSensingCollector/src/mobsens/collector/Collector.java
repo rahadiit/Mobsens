@@ -33,7 +33,6 @@ import org.json.JSONStringer;
 
 import android.content.Intent;
 import android.hardware.Sensor;
-import android.location.Location;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.provider.Settings.Secure;
@@ -147,7 +146,7 @@ public class Collector extends ConnectedService
 
 	private WorkerCache<WFJ> wfjDetacher;
 
-	private Filter<WFJ> wfjFilter;
+	private Filter<WFJ, Object> wfjFilter;
 
 	private boolean collecting;
 
@@ -192,12 +191,12 @@ public class Collector extends ConnectedService
 
 		wfjDispatcher = new Dispatcher<WFJ>();
 		wfjDispatcher.addConsumer(wfjStreamer);
-		wfjDispatcher.addConsumer(Pipeline.with(new Filter<LocationOutput>(LocationOutput.class), wfjLogger));
+		wfjDispatcher.addConsumer(Pipeline.with(new Filter<LocationOutput, Object>(LocationOutput.class), wfjLogger));
 
 		wfjDetacher = new WorkerCache<WFJ>(true);
 		wfjDetacher.setConsumer(wfjDispatcher);
 
-		wfjFilter = new Filter<WFJ>(WFJ.class);
+		wfjFilter = new Filter<WFJ, Object>(WFJ.class);
 		wfjFilter.setConsumer(wfjDetacher);
 
 		for (SensorDriver sensorDriver : sensorDrivers)
