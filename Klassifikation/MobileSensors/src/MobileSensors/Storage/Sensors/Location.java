@@ -70,4 +70,8 @@ public class Location extends Sensor{
 		this.accuracy = accuracy;
 	}
 
+	public double[] getCoordinates(){
+		double[] result = {latitude,longitude};
+		return result;
+	}
 }

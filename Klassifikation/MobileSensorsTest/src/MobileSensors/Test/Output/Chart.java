@@ -3,6 +3,7 @@ package MobileSensors.Test.Output;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.jfree.chart.annotations.XYAnnotation;
 import org.jfree.chart.annotations.XYTextAnnotation;
@@ -31,7 +32,7 @@ public class Chart {
 
 	public static void addAnnotations(ArrayList<Annotation> annotations,
 			XYPlot plot) {
-
+		
 		for (int i = 0; i < annotations.size(); i++) {
 			Annotation annotation = annotations.get(i);
 			
