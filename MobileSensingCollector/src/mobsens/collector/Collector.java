@@ -135,6 +135,8 @@ public class Collector extends ConnectedService
 						// Neues deviceinfo-feld
 						stringer.key("deviceinfo").object();
 						stringer.key("id").value(Deviceinfo.getID(Collector.this));
+						stringer.key("os").value(Deviceinfo.getOS());
+						stringer.key("sdk").value(Deviceinfo.getSDK());
 						stringer.key("device").value(Deviceinfo.getDevice());
 						stringer.key("model").value(Deviceinfo.getModel());
 						stringer.key("manufacturer").value(Deviceinfo.getManufacturer());
