@@ -25,14 +25,14 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 
-		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
+		Client client = RESTful.login(URLS.LOGIN, username, password);
 		// ArrayList<Recording> recordings =
 		// RESTful.recordingOutput(client,URLS.LIST_RECORDINGS.getURL());
 
 		int id=47;
-		String locationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+		String locationCSV = RESTful.getCSV(client, id, URLS.CSV,
 				SensorE.LOCATIONS);
-		String annotationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+		String annotationCSV = RESTful.getCSV(client, id, URLS.CSV,
 				SensorE.ANNOTATIONS);
 		
 

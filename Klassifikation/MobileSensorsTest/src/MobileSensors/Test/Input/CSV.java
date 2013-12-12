@@ -15,6 +15,7 @@ import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Storage.Sensors.Annotation;
 import MobileSensors.Storage.Sensors.Location;
 import MobileSensors.Storage.Sensors.Sensor.Sensor;
+import MobileSensors.Test.Data.SensorE;
 
 public class CSV {
 
@@ -78,6 +79,9 @@ public class CSV {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	public static ArrayList<Location> csvToLocation(File file) {
+		return csvToSensor(csvToArrayList(file),Location.class);
 	}
 
 	public static ArrayList<String[]> csvToArrayList(String input) {
