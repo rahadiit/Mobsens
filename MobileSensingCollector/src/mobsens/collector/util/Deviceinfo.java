@@ -13,6 +13,16 @@ public class Deviceinfo
 		return "Device " + Integer.toHexString(0xffff & (abstractId >> 16)) + " " + Integer.toHexString(0xffff & (abstractId >> 0));
 	}
 
+	public static String getOS()
+	{
+		return System.getProperty("os.version");
+	}
+
+	public static String getSDK()
+	{
+		return Build.VERSION.SDK;
+	}
+
 	public static String getDevice()
 	{
 		return Build.DEVICE;
