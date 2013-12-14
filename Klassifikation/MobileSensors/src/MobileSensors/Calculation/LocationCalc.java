@@ -29,6 +29,7 @@ public class LocationCalc {
 
 	private static void setTime(Location prevLoc, Location loc) {
 		long time = loc.getTime() - prevLoc.getTime();
+		time=Math.abs(time);
 		time /= 1000; // ms in s
 		loc.setTimeCalc(time);
 	}
