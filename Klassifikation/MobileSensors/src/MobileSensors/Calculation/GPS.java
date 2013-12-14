@@ -32,23 +32,40 @@ public class GPS {
 		return (distance(loc1.getCoordinates(), loc2.getCoordinates()));
 	}
 	
-	
 	public static double speed(double distance, double time){
 		if(time!=0)
 			return distance/time;
 		return 0;
 	}
 	
-	public static double acceleration(double speed1, double speed2, double time){
+	public static double acceleration(double prevSpeed, double speed, double time){
 		if(time!=0)
-			return (speed2-speed1)/time;
+			return (speed-prevSpeed)/time;
 		return 0;
 	}
 	
-	public static double jerk(double accel1, double accel2, double time){
+	public static double jerk(double prevSpeed, double speed, double time){
 		if(time!=0)
-			return (accel2-accel1)/time;
+			return (speed-prevSpeed)/time;
 		return 0;
 	}
+
 	
+	/*
+	public static double dist2(double lat1, double lng1, double lat2, double lng2){
+		
+		double R=6371;
+		double dLat = Math.toRadians(lat2-lat1);
+		double dLng = Math.toRadians(lng2-lng1);
+		lat1=Math.toRadians(lat1);
+		lat2=Math.toRadians(lat2);
+		double a = Math.sin(dLat/2) * Math.sin(dLat/2)+
+					Math.sin(dLng/2) * Math.sin(dLng/2)
+					*Math.cos(lat1)*Math.cos(lat2);
+		double c = 2* Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+		
+		double d = R*c;
+		return d;
+	}
+	*/
 }
