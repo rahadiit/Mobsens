@@ -122,6 +122,10 @@ public class Controller extends ConnectingActivity
 			startActivity(new Intent(getApplicationContext(), Fasttag.class));
 			return true;
 
+		case R.id.action_map:
+			startActivity(new Intent(getApplicationContext(), Map.class));
+			return true;
+
 		default:
 			return super.onMenuItemSelected(featureId, item);
 		}
@@ -132,12 +136,6 @@ public class Controller extends ConnectingActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_controller);
-
-		logDriver.start();
-
-		uploadResponseDriver.start();
-
-		collectorStatusDriver.start();
 
 		textViewControllerLog = (TextView) findViewById(R.id.controller_log);
 		textViewControllerTitle = (TextView) findViewById(R.id.controller_title);
@@ -233,15 +231,17 @@ public class Controller extends ConnectingActivity
 				}
 			}
 		});
+
+		logDriver.start();
+		uploadResponseDriver.start();
+		collectorStatusDriver.start();
 	}
 
 	@Override
 	protected void onDestroy()
 	{
 		logDriver.stop();
-
 		uploadResponseDriver.stop();
-
 		collectorStatusDriver.stop();
 
 		super.onDestroy();
