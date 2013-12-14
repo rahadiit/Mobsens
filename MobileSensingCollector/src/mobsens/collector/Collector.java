@@ -4,7 +4,7 @@ import java.util.Date;
 
 import mobsens.collector.communications.ConnectedService;
 import mobsens.collector.config.Config;
-import mobsens.collector.consumers.LogConsumer;
+import mobsens.collector.consumers.LocationPublisher;
 import mobsens.collector.consumers.WFJStreamingConsumer;
 import mobsens.collector.drivers.annotations.AnnotationDriver;
 import mobsens.collector.drivers.connectivity.ConnectivityDriver;
@@ -33,7 +33,6 @@ import android.content.Intent;
 import android.hardware.Sensor;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.util.Log;
 
 public class Collector extends ConnectedService
 {
@@ -64,9 +63,9 @@ public class Collector extends ConnectedService
 
 	private final AnnotationDriver annotationDriver;
 
-	private final WFJStreamingConsumer wfjStreamer;
+	private final LocationPublisher locationPublisher;
 
-	private final LogConsumer wfjLogger;
+	private final WFJStreamingConsumer wfjStreamer;
 
 	private final WorkerCache<WFJ> wfjDetacher;
 
@@ -102,6 +101,7 @@ public class Collector extends ConnectedService
 				sensorDriver.start();
 			}
 		};
+		
 		messagingDriver.addDriver(startCollectorDriver);
 
 		// Messaging: Collector stoppen
@@ -161,13 +161,13 @@ public class Collector extends ConnectedService
 		wfjStreamer = new WFJStreamingConsumer(this);
 		sensorDriver.addDriver(wfjStreamer);
 
-		// Log-Ausgabe
-		wfjLogger = new LogConsumer(Log.INFO, "WFJ");
+		// Locationintent-Ausgabe
+		locationPublisher = new LocationPublisher(this);
 
 		// Detachment-Cache
 		wfjDetacher = new WorkerCache<WFJ>(true);
 		wfjDetacher.addConsumer(wfjStreamer);
-		wfjDetacher.addConsumer(Pipeline.with(new ClassFilter<LocationOutput, Object>(LocationOutput.class), wfjLogger));
+		wfjDetacher.addConsumer(Pipeline.with(new ClassFilter<LocationOutput, Object>(LocationOutput.class), locationPublisher));
 		sensorDriver.addDriver(wfjDetacher);
 
 		// Filter für WFJ Objekte
