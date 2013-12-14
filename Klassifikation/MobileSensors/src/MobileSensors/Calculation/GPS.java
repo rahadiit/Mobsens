@@ -32,26 +32,26 @@ public class GPS {
 		return (distance(loc1.getCoordinates(), loc2.getCoordinates()));
 	}
 	
-	
 	public static double speed(double distance, double time){
 		if(time!=0)
 			return distance/time;
 		return 0;
 	}
 	
-	public static double acceleration(double speed1, double speed2, double time){
+	public static double acceleration(double prevSpeed, double speed, double time){
 		if(time!=0)
-			return (speed2-speed1)/time;
+			return (speed-prevSpeed)/time;
 		return 0;
 	}
 	
-	public static double jerk(double accel1, double accel2, double time){
+	public static double jerk(double prevSpeed, double speed, double time){
 		if(time!=0)
-			return (accel2-accel1)/time;
+			return (speed-prevSpeed)/time;
 		return 0;
 	}
+
 	
-	
+	/*
 	public static double dist2(double lat1, double lng1, double lat2, double lng2){
 		
 		double R=6371;
@@ -67,6 +67,5 @@ public class GPS {
 		double d = R*c;
 		return d;
 	}
-	
-	
+	*/
 }
