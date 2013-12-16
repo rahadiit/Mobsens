@@ -19,12 +19,15 @@ public class Location extends Sensor {
 	
 	private double speedCalcCo;
 	
+	private double accelerationCalc;
+	private double jerkCalc;
+	
 	private double distanceFusion;
 	private double distanceFusionSum;
 	private double speedFusion;
+	private double accelerationFusion;
+	private double jerkFusion;
 	
-	private double accelerationCalc;
-	private double jerkCalc;
 	private long timeCalc;
 
 	public Location(long time, double latitude, double longitude,
@@ -181,6 +184,22 @@ public class Location extends Sensor {
 
 	public void setTimeCalc(long timeCalc) {
 		this.timeCalc = timeCalc;
+	}
+
+	public double getAccelerationFusion() {
+		return accelerationFusion;
+	}
+
+	public void setAccelerationFusion(double accelerationFusion) {
+		this.accelerationFusion = accelerationFusion;
+	}
+
+	public double getJerkFusion() {
+		return jerkFusion;
+	}
+
+	public void setJerkFusion(double jerkFusion) {
+		this.jerkFusion = jerkFusion;
 	}
 
 }

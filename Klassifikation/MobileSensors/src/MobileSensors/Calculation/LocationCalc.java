@@ -16,7 +16,6 @@ public class LocationCalc {
 				setDistance(prevLocation, location);
 				setDistanceSum(prevLocation, location);
 
-
 				setSpeed(location);
 				setAcceleration(prevLocation, location);
 				setJerk(prevLocation, location);
@@ -26,7 +25,7 @@ public class LocationCalc {
 	}
 
 	private static void setTime(Location prevLoc, Location loc) {
-		
+
 		long time = loc.getTime() - prevLoc.getTime();
 		time = Math.abs(time);
 		time /= 1000; // ms in s
@@ -46,26 +45,41 @@ public class LocationCalc {
 	private static void setDistanceSum(Location prevLoc, Location loc) {
 		loc.setDistanceSumCalcCo(prevLoc.getDistanceSumCalcCo()
 				+ loc.getDistanceCalcCo());
-		
+
 		loc.setDistanceSumCalcGs(prevLoc.getDistanceSumCalcGs()
 				+ loc.getDistanceCalcGs());
-		
+
 		loc.setDistanceFusionSum(prevLoc.getDistanceFusionSum()
 				+ loc.getDistanceFusion());
 	}
 
 	private static void setSpeed(Location loc) {
-		loc.setSpeedCalcCo(GPS.speed(loc.getDistanceCalcCo(), loc.getTimeCalc()));
+		double speedCo = GPS.speed(loc.getDistanceCalcCo(), loc.getTimeCalc());
+
+		loc.setSpeedCalcCo(speedCo);
+
+		loc.setSpeedFusion((speedCo + loc.getSpeed()) / 2);
 	}
 
 	private static void setAcceleration(Location prevLoc, Location loc) {
-		loc.setAccelerationCalc(GPS.acceleration(prevLoc.getSpeedCalcCo(),
-				loc.getSpeedCalcCo(), loc.getTimeCalc()));
+		double accelCalc = GPS.acceleration(prevLoc.getSpeedCalcCo(),
+				loc.getSpeedCalcCo(), loc.getTimeCalc());
+		loc.setAccelerationCalc(accelCalc);
+
+		double accelFusion = GPS.acceleration(prevLoc.getSpeedFusion(),
+				loc.getSpeedFusion(), loc.getTimeCalc());
+		loc.setAccelerationFusion(accelFusion);
 	}
 
 	private static void setJerk(Location prevLoc, Location loc) {
-		loc.setJerkCalc(GPS.jerk(prevLoc.getSpeedCalcCo(),
-				loc.getSpeedCalcCo(), loc.getTimeCalc()));
+		double jerkCalc=GPS.jerk(prevLoc.getAccelerationCalc(),
+				loc.getAccelerationCalc(), loc.getTimeCalc());
+		loc.setJerkCalc(jerkCalc);
+		
+		double jerkFusion=GPS.jerk(prevLoc.getAccelerationFusion(),
+				loc.getAccelerationFusion(), loc.getTimeCalc());
+		loc.setJerkFusion(jerkFusion);
+		
 	}
 
 }
