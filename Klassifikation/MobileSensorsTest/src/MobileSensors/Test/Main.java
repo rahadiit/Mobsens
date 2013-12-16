@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -16,6 +17,7 @@ import com.sun.jersey.api.client.Client;
 import MobileSensors.Calculation.GPS;
 import MobileSensors.Calculation.LocationCalc;
 import MobileSensors.Classifiers.DetectBreaking;
+import MobileSensors.Classifiers.DetectJerk;
 import MobileSensors.Classifiers.DetectStanding;
 import MobileSensors.Storage.Event.Event;
 import MobileSensors.Storage.Sensors.Accelerometer;
@@ -36,38 +38,81 @@ public class Main {
 
 		// Auf Server einloggen
 		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
-		int id = 102;
+		int id = 103;
+
+		String acceleroCSV = "";
+		String locationCSV = "";
+		String annotationCSV = "";
 
 		// Laed verschiedene CSV-Dateien vom Server
-		String locationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+		locationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
 				SensorE.LOCATIONS);
-		// String annotationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
-		// SensorE.ANNOTATIONS);
-		// String acceleroCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+		annotationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+				SensorE.ANNOTATIONS);
+
+		// acceleroCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
 		// SensorE.ACCELEROMETERS);
 
-		// if (locationCSV!=null&& annotationCSV != null && acceleroCSV != null)
-		// {
+		if (locationCSV != null && annotationCSV != null && acceleroCSV != null) {
 
-		// ArrayList<Location> locations = CSV.csvToLocation(new
-		// File("/Users/henny/Downloads/locspazieren.csv"));
+			// Die CSV-Dateien zu ArrayLists
 
-		ArrayList<Location> locations = CSV.csvToSensor(locationCSV,
-				Location.class);
+			// ArrayList<Location> locations = CSV.csvToLocation(new
+			// File("/Users/henny/Downloads/locspazieren.csv"));
 
-		System.out.println("start: "
-				+ DateFormatUtils.format(new Date(locations.get(0).getTime()),
-						"MM-dd HH:mm:ss"));
-		System.out
-				.println("stop: "
-						+ DateFormatUtils.format(
-								new Date(locations.get(locations.size() - 1)
-										.getTime()), "HH:mm:ss"));
+			ArrayList<Location> locations = CSV.csvToSensor(locationCSV,
+					Location.class);
+			ArrayList<Annotation> annotations = CSV.csvToSensor(annotationCSV,
+					Annotation.class);
+			// ArrayList<Accelerometer> accelerometer = CSV.csvToSensor(
+			// acceleroCSV, Accelerometer.class);
 
-		// Die CSV-Dateien zu ArrayLists machen
+			// Ausgabe der Start- und Endzeit
 
-		LocationCalc.locationCalc(locations);
+			printStartStop(locations);
 
+			// Berechnungen auf dem Locations-Array
+
+			LocationCalc.locationCalc(locations);
+
+			// printCalcData(locations);
+			// Ausfuerung der Event-Erkennung
+
+			ArrayList<Event> events = new DetectStanding(locations).getEvents();
+			events.addAll(new DetectBreaking(locations).getEvents());
+			events.addAll(new DetectJerk(locations).getEvents());
+
+			// Erstellung der Charts. Erst fuer Geschwindigkeit dann
+			// Acceleromter
+			// Annotations und Events werden eingeblendet
+			XYPlot speedplot = Chart.allDistancePlot(locations);
+			Chart.addAnnotations(annotations, speedplot);
+			Chart.addEvents(events, speedplot);
+			JFreeChart speedchart = new JFreeChart(speedplot);
+
+			ChartUtilities.saveChartAsPNG(new File("distanceFusion " + id
+					+ ".png"), speedchart, 3840, 1200);
+
+			// XYPlot accelplot = Chart.acceleroPlot(accelerometer);
+			//
+			// Chart.addAnnotations(annotations, accelplot);
+			// Chart.addEvents(events, accelplot);
+			// JFreeChart accelchart = new JFreeChart(accelplot);
+			//
+			// ChartUtilities.saveChartAsPNG(new File("accelChart.png"),
+			// accelchart, 3840, 1200);
+
+			System.out.println("done");
+
+		}
+
+	}
+	
+	
+	
+	
+
+	public static void printCalcData(Collection<Location> locations) {
 		for (Location location : locations) {
 			System.out.println(location.getJerkCalc() + "jerk vs jerkfusion "
 					+ location.getJerkFusion());
@@ -90,46 +135,16 @@ public class Main {
 					+ " SensorDistSum vs CalcDistSum "
 					+ location.getDistanceFusionSum());
 		}
-
-		// ArrayList<Annotation> annotations = CSV.csvToSensor(annotationCSV,
-		// Annotation.class);
-		// ArrayList<Accelerometer> accelerometer = CSV.csvToSensor(
-		// acceleroCSV, Accelerometer.class);
-		//
-		// //Ausfuerung der Event-Erkennung, anschliessend Ausgabe
-		//
-		// ArrayList<Event> events = new DetectStanding(locations).getEvents();
-		// events.addAll(new DetectBreaking(locations).getEvents());
-		//
-		// /*
-		// for (Event event : events) {
-		// System.out.println(event.getTime() + " : "
-		// + event.getEventType().toString());
-		// }*/
-		//
-		// //Erstellung der Charts. Erst fuer Geschwindigkeit dann Acceleromter
-		// //Annotations und Events werden eingeblendet
-		// XYPlot speedplot = Chart.speedPlot(locations);
-		// Chart.addAnnotations(annotations, speedplot);
-		// Chart.addEvents(events, speedplot);
-		// JFreeChart speedchart = new JFreeChart(speedplot);
-		//
-		// ChartUtilities.saveChartAsPNG(new File("speedChart.png"),
-		// speedchart, 3840, 1200);
-		//
-		//
-		// XYPlot accelplot = Chart.acceleroPlot(accelerometer);
-		//
-		// Chart.addAnnotations(annotations, accelplot);
-		// Chart.addEvents(events, accelplot);
-		// JFreeChart accelchart = new JFreeChart(accelplot);
-		//
-		// ChartUtilities.saveChartAsPNG(new File("accelChart.png"),
-		// accelchart, 3840, 1200);
-
-		System.out.println("done");
-
 	}
 
-	// }
+	public static void printStartStop(ArrayList<Location> locations) {
+		System.out.println("start: "
+				+ DateFormatUtils.format(new Date(locations.get(0).getTime()),
+						"MM-dd HH:mm:ss"));
+		System.out
+				.println("stop: "
+						+ DateFormatUtils.format(
+								new Date(locations.get(locations.size() - 1)
+										.getTime()), "HH:mm:ss"));
+	}
 }
