@@ -23,6 +23,7 @@ import MobileSensors.Storage.Event.EventType;
 import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Storage.Sensors.Annotation;
 import MobileSensors.Storage.Sensors.Location;
+import MobileSensors.Storage.Sensors.Sensor.Sensor;
 
 public class Chart {
 
@@ -32,53 +33,22 @@ public class Chart {
 
 	public static void addAnnotations(ArrayList<Annotation> annotations,
 			XYPlot plot) {
-		
+
 		for (int i = 0; i < annotations.size(); i++) {
 			Annotation annotation = annotations.get(i);
-			
+
 			plot.addAnnotation(new XYTextAnnotation(annotation.getTag(),
-					annotation.getTime(), 0.2 + (0.2 * (i % 4))));
+					annotation.getTime(), 0.2 + (0.2 * (i % 3))));
 		}
 	}
 
 	public static void addEvents(ArrayList<Event> events, XYPlot plot) {
 		for (int i = 0; i < events.size(); i++) {
 			Event event = events.get(i);
-			double position = 0.8;
+			double position = 0.8 + (0.2 * (i % 3));
 			plot.addAnnotation(new XYTextAnnotation(event.getEventType()
-					.toString(), event.getTime(), position + (0.2 * i % 4)));
-
+					.toString(), event.getTime(), position));
 		}
-	}
-
-	public static XYSeries speedData(String name, ArrayList<Location> values) {
-		XYSeries result = new XYSeries(name);
-
-		for (int i = 0; i < values.size(); i++) {
-			result.add(values.get(i).getTime(), values.get(i).getSpeed());
-		}
-
-		return result;
-	}
-
-	public static XYSeries accelData(String name,
-			ArrayList<Accelerometer> values, int axis) {
-		XYSeries result = new XYSeries(name);
-
-		for (int i = 0; i < values.size(); i++) {
-			double axisValue = 0;
-
-			if (axis == X)
-				axisValue = values.get(i).getX();
-			else if (axis == Y)
-				axisValue = values.get(i).getY();
-			else if (axis == Z)
-				axisValue = values.get(i).getZ();
-
-			result.add(values.get(i).getTime(), axisValue);
-		}
-
-		return result;
 	}
 
 	public static XYSeriesCollection dataset(ArrayList<XYSeries> series) {
@@ -94,45 +64,56 @@ public class Chart {
 	public static XYPlot acceleroPlot(ArrayList<Accelerometer> values) {
 
 		ArrayList<XYSeries> series = new ArrayList<>();
-		series.add(accelData("X", values, X));
-		series.add(accelData("Y", values, Y));
-		series.add(accelData("Z", values, Z));
-		XYSeriesCollection dataset = dataset(series);
+		series.add(ChartData.accelData("X", values, X));
+		series.add(ChartData.accelData("Y", values, Y));
+		series.add(ChartData.accelData("Z", values, Z));
 
-		XYPlot result = plot(dataset, "time", "accel");
-		NumberAxis domain = (NumberAxis) result.getDomainAxis();
-		domain.setRange(values.get(0).getTime(), values.get(values.size() - 1)
-				.getTime());
-		return result;
+		return plot(dataset(series), "time", "speed", values);
+	}
+
+	public static XYPlot allSpeedPlot(ArrayList<Location> values) {
+
+		ArrayList<XYSeries> series = new ArrayList<>();
+		series.add(ChartData.getSpeed("getSpeed()", values, 0));
+		series.add(ChartData.getSpeed("getSpeedCalcCo()", values, 1));
+		series.add(ChartData.getSpeed("getSpeedFusion()", values, 2));
+
+		return plot(dataset(series), "time", "speed", values);
+	}
+
+	public static XYPlot allDistancePlot(ArrayList<Location> values) {
+
+		ArrayList<XYSeries> series = new ArrayList<>();
+		series.add(ChartData.getDistance("getDistanceSumCalcCo()", values, 0));
+		series.add(ChartData.getDistance("getDistanceSumCalcGs()", values, 1));
+		series.add(ChartData.getDistance("getSpeedFusion()", values, 2));
+
+		return plot(dataset(series), "time", "distance", values);
 	}
 
 	public static XYPlot speedPlot(ArrayList<Location> values) {
 
-		XYSeries serie = speedData("1", values);
 		ArrayList<XYSeries> series = new ArrayList<>();
-		series.add(serie);
-		XYSeriesCollection dataset = dataset(series);
-		XYPlot result = plot(dataset, "time", "speed");
+		series.add(ChartData.getSpeed("getSpeed()", values));
 
-		NumberAxis domain = (NumberAxis) result.getDomainAxis();
-		domain.setRange(values.get(0).getTime(), values.get(values.size() - 1)
-				.getTime());
-
-		return result;
-
+		return plot(dataset(series), "time", "speed", values);
 	}
 
-	public static XYPlot plot(XYSeriesCollection dataset, String xAxis,
-			String yAxis) {
-//		XYDotRenderer dot = new XYDotRenderer();
-//		dot.setDotHeight(5);
-//		dot.setDotWidth(5);
-//
-//		return new XYPlot(dataset, new NumberAxis(xAxis),
-//				new NumberAxis(yAxis), dot);
+	public static <T extends Sensor> XYPlot plot(XYSeriesCollection dataset,
+			String xAxis, String yAxis, ArrayList<T> values) {
+		// XYDotRenderer dot = new XYDotRenderer();
+		// dot.setDotHeight(5);
+		// dot.setDotWidth(5);
 		//
-		 return new XYPlot(dataset, new NumberAxis(xAxis),
-		 new NumberAxis(yAxis), new XYSplineRenderer());
+		// return new XYPlot(dataset, new NumberAxis(xAxis),
+		// new NumberAxis(yAxis), dot);
+		//
+		XYPlot plot = new XYPlot(dataset, new NumberAxis(xAxis),
+				new NumberAxis(yAxis), new XYSplineRenderer());
+		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
+		domain.setRange(values.get(0).getTime(), values.get(values.size() - 1)
+				.getTime());
+		return plot;
 
 	}
 
