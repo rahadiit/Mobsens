@@ -16,8 +16,6 @@ public class LocationCalc {
 				setDistance(prevLocation, location);
 				setDistanceSum(prevLocation, location);
 
-				setDistanceCalc2(location);
-				setDistanceSumCalc2(prevLocation, location);
 
 				setSpeed(location);
 				setAcceleration(prevLocation, location);
@@ -28,42 +26,46 @@ public class LocationCalc {
 	}
 
 	private static void setTime(Location prevLoc, Location loc) {
+		
 		long time = loc.getTime() - prevLoc.getTime();
-		time=Math.abs(time);
+		time = Math.abs(time);
 		time /= 1000; // ms in s
 		loc.setTimeCalc(time);
 	}
 
 	private static void setDistance(Location prevLoc, Location loc) {
-		loc.setDistanceCalc(GPS.distance(prevLoc, loc));
+		double distCo = GPS.distance(prevLoc, loc);
+		double distGs = loc.getSpeed() * loc.getTimeCalc();
+
+		loc.setDistanceCalcCo(distCo);
+		loc.setDistanceCalcGs(distGs);
+
+		loc.setDistanceFusion((distCo + distGs) / 2);
 	}
 
 	private static void setDistanceSum(Location prevLoc, Location loc) {
-		loc.setDistanceSumCalc(prevLoc.getDistanceSumCalc()
-				+ loc.getDistanceCalc());
+		loc.setDistanceSumCalcCo(prevLoc.getDistanceSumCalcCo()
+				+ loc.getDistanceCalcCo());
+		
+		loc.setDistanceSumCalcGs(prevLoc.getDistanceSumCalcGs()
+				+ loc.getDistanceCalcGs());
+		
+		loc.setDistanceFusionSum(prevLoc.getDistanceFusionSum()
+				+ loc.getDistanceFusion());
 	}
 
 	private static void setSpeed(Location loc) {
-		loc.setSpeedCalc(GPS.speed(loc.getDistanceCalc(), loc.getTimeCalc()));
+		loc.setSpeedCalcCo(GPS.speed(loc.getDistanceCalcCo(), loc.getTimeCalc()));
 	}
 
 	private static void setAcceleration(Location prevLoc, Location loc) {
-		loc.setAccelerationCalc(GPS.acceleration(prevLoc.getSpeedCalc(),
-				loc.getSpeed(), loc.getTimeCalc()));
+		loc.setAccelerationCalc(GPS.acceleration(prevLoc.getSpeedCalcCo(),
+				loc.getSpeedCalcCo(), loc.getTimeCalc()));
 	}
 
 	private static void setJerk(Location prevLoc, Location loc) {
-		loc.setJerkCalc(GPS.jerk(prevLoc.getSpeedCalc(), loc.getSpeedCalc(),
-				loc.getTimeCalc()));
-	}
-
-	private static void setDistanceCalc2(Location loc) {
-		loc.setDistanceCalc2(loc.getSpeed() * loc.getTimeCalc());
-	}
-
-	private static void setDistanceSumCalc2(Location prevLoc, Location loc) {
-		loc.setDistanceSumCalc2(prevLoc.getDistanceSumCalc2()
-				+ loc.getDistanceCalc2());
+		loc.setJerkCalc(GPS.jerk(prevLoc.getSpeedCalcCo(),
+				loc.getSpeedCalcCo(), loc.getTimeCalc()));
 	}
 
 }

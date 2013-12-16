@@ -11,13 +11,18 @@ public class Location extends Sensor {
 	private double bearing;
 	private double accuracy;
 	
-	private double distanceCalc;
-	private double distanceSumCalc;
+	private double distanceCalcCo;
+	private double distanceSumCalcCo;
 	
-	private double distanceCalc2;
-	private double distanceSumCalc2;
+	private double distanceCalcGs;
+	private double distanceSumCalcGs;
 	
-	private double speedCalc;
+	private double speedCalcCo;
+	
+	private double distanceFusion;
+	private double distanceFusionSum;
+	private double speedFusion;
+	
 	private double accelerationCalc;
 	private double jerkCalc;
 	private long timeCalc;
@@ -88,15 +93,7 @@ public class Location extends Sensor {
 		double[] result = { latitude, longitude };
 		return result;
 	}
-
-	public double getSpeedCalc() {
-		return speedCalc;
-	}
-
-	public void setSpeedCalc(double speedCalc) {
-		this.speedCalc = speedCalc;
-	}
-
+	
 	public double getAccelerationCalc() {
 		return accelerationCalc;
 	}
@@ -105,20 +102,69 @@ public class Location extends Sensor {
 		this.accelerationCalc = accelerationCalc;
 	}
 
-	public long getTimeCalc() {
-		return timeCalc;
+	public double getDistanceCalcCo() {
+		return distanceCalcCo;
 	}
 
-	public void setTimeCalc(long timeCalc) {
-		this.timeCalc = timeCalc;
+	public void setDistanceCalcCo(double distanceCalcCo) {
+		this.distanceCalcCo = distanceCalcCo;
+	}
+	
+
+	public double getDistanceSumCalcCo() {
+		return distanceSumCalcCo;
 	}
 
-	public double getDistanceCalc() {
-		return distanceCalc;
+	public void setDistanceSumCalcCo(double distanceSumCalcCo) {
+		this.distanceSumCalcCo = distanceSumCalcCo;
 	}
 
-	public void setDistanceCalc(double distanceCalc) {
-		this.distanceCalc = distanceCalc;
+	public double getDistanceCalcGs() {
+		return distanceCalcGs;
+	}
+
+	public void setDistanceCalcGs(double distanceCalcGs) {
+		this.distanceCalcGs = distanceCalcGs;
+	}
+
+	public double getDistanceSumCalcGs() {
+		return distanceSumCalcGs;
+	}
+
+	public void setDistanceSumCalcGs(double distanceSumCalcGs) {
+		this.distanceSumCalcGs = distanceSumCalcGs;
+	}
+
+	public double getSpeedCalcCo() {
+		return speedCalcCo;
+	}
+
+	public void setSpeedCalcCo(double speedCalcCo) {
+		this.speedCalcCo = speedCalcCo;
+	}
+
+	public double getDistanceFusion() {
+		return distanceFusion;
+	}
+
+	public void setDistanceFusion(double distanceFusion) {
+		this.distanceFusion = distanceFusion;
+	}
+
+	public double getDistanceFusionSum() {
+		return distanceFusionSum;
+	}
+
+	public void setDistanceFusionSum(double distanceFusionSum) {
+		this.distanceFusionSum = distanceFusionSum;
+	}
+
+	public double getSpeedFusion() {
+		return speedFusion;
+	}
+
+	public void setSpeedFusion(double speedFusion) {
+		this.speedFusion = speedFusion;
 	}
 
 	public double getJerkCalc() {
@@ -129,27 +175,12 @@ public class Location extends Sensor {
 		this.jerkCalc = jerkCalc;
 	}
 
-	public double getDistanceSumCalc() {
-		return distanceSumCalc;
+	public long getTimeCalc() {
+		return timeCalc;
 	}
 
-	public void setDistanceSumCalc(double distanceSumCalc) {
-		this.distanceSumCalc = distanceSumCalc;
+	public void setTimeCalc(long timeCalc) {
+		this.timeCalc = timeCalc;
 	}
 
-	public double getDistanceCalc2() {
-		return distanceCalc2;
-	}
-
-	public void setDistanceCalc2(double distanceCalc2) {
-		this.distanceCalc2 = distanceCalc2;
-	}
-
-	public double getDistanceSumCalc2() {
-		return distanceSumCalc2;
-	}
-
-	public void setDistanceSumCalc2(double distanceSumCalc2) {
-		this.distanceSumCalc2 = distanceSumCalc2;
-	}
 }
