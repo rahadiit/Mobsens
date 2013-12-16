@@ -69,7 +69,8 @@ public class Main {
 		LocationCalc.locationCalc(locations);
 
 		for (Location location : locations) {
-			System.out.println("jerk" + location.getJerkCalc());
+			System.out.println(location.getJerkCalc() + "jerk vs jerkfusion "
+					+ location.getJerkFusion());
 		}
 
 		for (Location location : locations) {
