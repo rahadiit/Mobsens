@@ -2,9 +2,12 @@ package MobileSensors.Test.Output;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
 import org.jfree.chart.annotations.XYAnnotation;
 import org.jfree.chart.annotations.XYTextAnnotation;
 import org.jfree.chart.axis.NumberAxis;
@@ -18,12 +21,23 @@ import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import com.sun.jersey.api.client.Client;
+
+import MobileSensors.Calculation.LocationCalc;
+import MobileSensors.Classifiers.DetectBreaking;
+import MobileSensors.Classifiers.DetectJerk;
+import MobileSensors.Classifiers.DetectStanding;
 import MobileSensors.Storage.Event.Event;
 import MobileSensors.Storage.Event.EventType;
 import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Storage.Sensors.Annotation;
 import MobileSensors.Storage.Sensors.Location;
 import MobileSensors.Storage.Sensors.Sensor.Sensor;
+import MobileSensors.Test.Data.Recording;
+import MobileSensors.Test.Data.SensorE;
+import MobileSensors.Test.Data.URLS;
+import MobileSensors.Test.Input.CSV;
+import MobileSensors.Test.Input.RESTful;
 
 public class Chart {
 
@@ -115,6 +129,121 @@ public class Chart {
 				.getTime());
 		return plot;
 
+	}
+
+	/*
+	 * 0 == speed 1 == distance 2 == accelerometer
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends Sensor> void drawChart(int id,
+			ArrayList<T> values, ArrayList<Annotation> annotations,
+			ArrayList<Event> events, int method, Class<T> type) {
+		XYPlot plot = null;
+		String filename = "";
+		int x = 3850;
+		int y = 1200;
+
+		if (values.size() > 5) {
+
+			if (method == 0 && type == Location.class) {
+				plot = Chart.allSpeedPlot((ArrayList<Location>) values);
+				filename = "allSpeedMethods";
+			} else if (method == 1 && type == Location.class) {
+				plot = Chart.allDistancePlot((ArrayList<Location>) values);
+				filename = "allDistanceMethods";
+			} else if (method == 2 && type == Accelerometer.class) {
+				plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values);
+				filename = "linearAccelerometerValues";
+				x = 50000;
+			}
+
+			Chart.addAnnotations(annotations, plot);
+			Chart.addEvents(events, plot);
+			JFreeChart speedchart = new JFreeChart(plot);
+
+			int length = (id + "").length();
+			String cutMeOf = "0000";
+			int cut = (4 - length) < 0 ? 0 : 4 - length;
+			cutMeOf = cutMeOf.substring(0, cut);
+
+			try {
+				ChartUtilities.saveChartAsPNG(new File(cutMeOf + id + " "
+						+ filename + ".png"), speedchart, x, y);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public static void drawAllRecordings(Collection<Recording> recordings,
+			String username, String password) {
+
+		int i = 1;
+		for (Recording recording : recordings) {
+			System.out.println("doing " + i++ + " of " + recordings.size());
+			int id = recording.getId();
+			Chart.drawSingleRecording(id, true, username, password);
+
+		}
+
+	}
+
+	public static void drawSingleRecording(int id, boolean accelero,
+			String username, String password) {
+		String acceleroCSV = "";
+		String locationCSV = "";
+		String annotationCSV = "";
+		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
+
+		// Laed verschiedene CSV-Dateien vom Server
+		locationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+				SensorE.LOCATIONS);
+		annotationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+				SensorE.ANNOTATIONS);
+		if (accelero) {
+			acceleroCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+					SensorE.LINEAR_ACCELERATIONS);
+		}
+		if (locationCSV != null && annotationCSV != null && acceleroCSV != null) {
+
+			ArrayList<Location> locations = CSV.csvToSensor(locationCSV,
+					Location.class);
+			ArrayList<Annotation> annotations = CSV.csvToSensor(annotationCSV,
+					Annotation.class);
+			ArrayList<Accelerometer> accelerometer = null;
+			if (accelero) {
+				accelerometer = CSV.csvToSensor(acceleroCSV,
+						Accelerometer.class);
+			}
+			// Ausgabe der Start- und Endzeit
+			// printStartStop(locations);
+
+			// Berechnungen auf dem Locations-Array
+			LocationCalc.locationCalc(locations);
+			// printCalcData(locations);
+
+			// Ausfuerung der Event-Erkennung
+			ArrayList<Event> events = allEvents(locations);
+
+			Chart.drawChart(id, locations, annotations, events, 0,
+					Location.class);
+			Chart.drawChart(id, locations, annotations, events, 1,
+					Location.class);
+			if (accelero) {
+				Chart.drawChart(id, accelerometer, annotations, events, 2,
+						Accelerometer.class);
+			}
+		}
+	}
+
+	private static ArrayList<Event> allEvents(ArrayList<Location> locations) {
+
+		ArrayList<Event> events = new DetectStanding(locations).getEvents();
+		events.addAll(new DetectBreaking(locations).getEvents());
+		events.addAll(new DetectJerk(locations).getEvents());
+
+		return events;
 	}
 
 }

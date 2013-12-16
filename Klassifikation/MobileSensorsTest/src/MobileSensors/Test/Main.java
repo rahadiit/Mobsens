@@ -23,6 +23,8 @@ import MobileSensors.Storage.Event.Event;
 import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Storage.Sensors.Annotation;
 import MobileSensors.Storage.Sensors.Location;
+import MobileSensors.Storage.Sensors.Sensor.Sensor;
+import MobileSensors.Test.Data.Recording;
 import MobileSensors.Test.Data.SensorE;
 import MobileSensors.Test.Data.URLS;
 import MobileSensors.Test.Input.CSV;
@@ -38,79 +40,14 @@ public class Main {
 
 		// Auf Server einloggen
 		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
-		int id = 103;
+		ArrayList<Recording> recordings = RESTful.recordingOutput(client,
+				URLS.LIST_RECORDINGS.getURL());
 
-		String acceleroCSV = "";
-		String locationCSV = "";
-		String annotationCSV = "";
+		Chart.drawAllRecordings(recordings, username, password);
 
-		// Laed verschiedene CSV-Dateien vom Server
-		locationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
-				SensorE.LOCATIONS);
-		annotationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
-				SensorE.ANNOTATIONS);
-
-		// acceleroCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
-		// SensorE.ACCELEROMETERS);
-
-		if (locationCSV != null && annotationCSV != null && acceleroCSV != null) {
-
-			// Die CSV-Dateien zu ArrayLists
-
-			// ArrayList<Location> locations = CSV.csvToLocation(new
-			// File("/Users/henny/Downloads/locspazieren.csv"));
-
-			ArrayList<Location> locations = CSV.csvToSensor(locationCSV,
-					Location.class);
-			ArrayList<Annotation> annotations = CSV.csvToSensor(annotationCSV,
-					Annotation.class);
-			// ArrayList<Accelerometer> accelerometer = CSV.csvToSensor(
-			// acceleroCSV, Accelerometer.class);
-
-			// Ausgabe der Start- und Endzeit
-
-			printStartStop(locations);
-
-			// Berechnungen auf dem Locations-Array
-
-			LocationCalc.locationCalc(locations);
-
-			// printCalcData(locations);
-			// Ausfuerung der Event-Erkennung
-
-			ArrayList<Event> events = new DetectStanding(locations).getEvents();
-			events.addAll(new DetectBreaking(locations).getEvents());
-			events.addAll(new DetectJerk(locations).getEvents());
-
-			// Erstellung der Charts. Erst fuer Geschwindigkeit dann
-			// Acceleromter
-			// Annotations und Events werden eingeblendet
-			XYPlot speedplot = Chart.allDistancePlot(locations);
-			Chart.addAnnotations(annotations, speedplot);
-			Chart.addEvents(events, speedplot);
-			JFreeChart speedchart = new JFreeChart(speedplot);
-
-			ChartUtilities.saveChartAsPNG(new File("distanceFusion " + id
-					+ ".png"), speedchart, 3840, 1200);
-
-			// XYPlot accelplot = Chart.acceleroPlot(accelerometer);
-			//
-			// Chart.addAnnotations(annotations, accelplot);
-			// Chart.addEvents(events, accelplot);
-			// JFreeChart accelchart = new JFreeChart(accelplot);
-			//
-			// ChartUtilities.saveChartAsPNG(new File("accelChart.png"),
-			// accelchart, 3840, 1200);
-
-			System.out.println("done");
-
-		}
+		System.out.println("done");
 
 	}
-	
-	
-	
-	
 
 	public static void printCalcData(Collection<Location> locations) {
 		for (Location location : locations) {
@@ -148,3 +85,9 @@ public class Main {
 										.getTime()), "HH:mm:ss"));
 	}
 }
+// ALTER CODE
+
+// Die CSV-Dateien zu ArrayLists
+
+// ArrayList<Location> locations = CSV.csvToLocation(new
+// File("/Users/henny/Downloads/locspazieren.csv"));
