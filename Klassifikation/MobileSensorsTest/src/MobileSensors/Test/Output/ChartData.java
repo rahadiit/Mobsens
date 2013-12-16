@@ -45,6 +45,9 @@ public class ChartData {
 				value=values.get(i).getSpeedCalcCo();
 			else if (method == 2)
 				value=values.get(i).getSpeedFusion();
+			else if (method == 3)
+				value=values.get(i).getJerkFusion();
+			
 			
 			result.add(values.get(i).getTime(), value);
 		}

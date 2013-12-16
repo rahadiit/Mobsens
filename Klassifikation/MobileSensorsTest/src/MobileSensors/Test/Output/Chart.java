@@ -91,6 +91,7 @@ public class Chart {
 		series.add(ChartData.getSpeed("getSpeed()", values, 0));
 		series.add(ChartData.getSpeed("getSpeedCalcCo()", values, 1));
 		series.add(ChartData.getSpeed("getSpeedFusion()", values, 2));
+		series.add(ChartData.getSpeed("getJerk()", values, 3));
 
 		return plot(dataset(series), "time", "speed", values);
 	}
@@ -147,7 +148,7 @@ public class Chart {
 
 			if (method == 0 && type == Location.class) {
 				plot = Chart.allSpeedPlot((ArrayList<Location>) values);
-				filename = "allSpeedMethods";
+				filename = "allSpeedMethodsJerk";
 			} else if (method == 1 && type == Location.class) {
 				plot = Chart.allDistancePlot((ArrayList<Location>) values);
 				filename = "allDistanceMethods";
@@ -183,7 +184,7 @@ public class Chart {
 		for (Recording recording : recordings) {
 			System.out.println("doing " + i++ + " of " + recordings.size());
 			int id = recording.getId();
-			Chart.drawSingleRecording(id, true, username, password);
+			Chart.drawSingleRecording(id, false, username, password);
 
 		}
 
