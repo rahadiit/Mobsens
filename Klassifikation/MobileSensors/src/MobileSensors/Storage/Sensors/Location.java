@@ -11,6 +11,9 @@ public class Location extends Sensor {
 	private double bearing;
 	private double accuracy;
 	
+	private double acceleration;
+	private double jerk;
+	
 	private double distanceCalcCo;
 	private double distanceSumCalcCo;
 	
@@ -200,6 +203,22 @@ public class Location extends Sensor {
 
 	public void setJerkFusion(double jerkFusion) {
 		this.jerkFusion = jerkFusion;
+	}
+
+	public double getAcceleration() {
+		return acceleration;
+	}
+
+	public void setAcceleration(double acceleration) {
+		this.acceleration = acceleration;
+	}
+
+	public double getJerk() {
+		return jerk;
+	}
+
+	public void setJerk(double jerk) {
+		this.jerk = jerk;
 	}
 
 }

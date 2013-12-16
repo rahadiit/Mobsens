@@ -62,6 +62,9 @@ public class LocationCalc {
 	}
 
 	private static void setAcceleration(Location prevLoc, Location loc) {
+		double accel = GPS.acceleration(prevLoc.getSpeed(), loc.getSpeed(), loc.getTimeCalc());
+		loc.setAcceleration(accel);
+		
 		double accelCalc = GPS.acceleration(prevLoc.getSpeedCalcCo(),
 				loc.getSpeedCalcCo(), loc.getTimeCalc());
 		loc.setAccelerationCalc(accelCalc);
@@ -72,6 +75,9 @@ public class LocationCalc {
 	}
 
 	private static void setJerk(Location prevLoc, Location loc) {
+		double jerk = GPS.jerk(prevLoc.getAcceleration(), loc.getAcceleration(), loc.getTimeCalc());
+		loc.setJerk(jerk);
+		
 		double jerkCalc=GPS.jerk(prevLoc.getAccelerationCalc(),
 				loc.getAccelerationCalc(), loc.getTimeCalc());
 		loc.setJerkCalc(jerkCalc);

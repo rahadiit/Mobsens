@@ -19,7 +19,7 @@ public class DetectJerk implements EventClassifier {
 	public ArrayList<Event> getEvents() {
 
 		for (Location location : locations) {
-			if (location.getAccelerationFusion() <=- 0.3) {
+			if (location.getJerk() <=- 0.3) {
 				this.events.add(new Event(location.getTime(),
 						MobileSensors.Storage.Event.EventType.JERK));
 			}
