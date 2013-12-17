@@ -2,9 +2,12 @@ package MobileSensors.Test.Output;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
 import org.jfree.chart.annotations.XYAnnotation;
 import org.jfree.chart.annotations.XYTextAnnotation;
 import org.jfree.chart.axis.NumberAxis;
@@ -18,11 +21,23 @@ import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import com.sun.jersey.api.client.Client;
+
+import MobileSensors.Calculation.LocationCalc;
+import MobileSensors.Classifiers.DetectBreaking;
+import MobileSensors.Classifiers.DetectJerk;
+import MobileSensors.Classifiers.DetectStanding;
 import MobileSensors.Storage.Event.Event;
 import MobileSensors.Storage.Event.EventType;
 import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Storage.Sensors.Annotation;
 import MobileSensors.Storage.Sensors.Location;
+import MobileSensors.Storage.Sensors.Sensor.Sensor;
+import MobileSensors.Test.Data.Recording;
+import MobileSensors.Test.Data.SensorE;
+import MobileSensors.Test.Data.URLS;
+import MobileSensors.Test.Input.CSV;
+import MobileSensors.Test.Input.RESTful;
 
 public class Chart {
 
@@ -32,53 +47,22 @@ public class Chart {
 
 	public static void addAnnotations(ArrayList<Annotation> annotations,
 			XYPlot plot) {
-		
+
 		for (int i = 0; i < annotations.size(); i++) {
 			Annotation annotation = annotations.get(i);
-			
+
 			plot.addAnnotation(new XYTextAnnotation(annotation.getTag(),
-					annotation.getTime(), 0.2 + (0.2 * (i % 4))));
+					annotation.getTime(), 0.2 + (0.2 * (i % 3))));
 		}
 	}
 
 	public static void addEvents(ArrayList<Event> events, XYPlot plot) {
 		for (int i = 0; i < events.size(); i++) {
 			Event event = events.get(i);
-			double position = 0.8;
+			double position = 0.8 + (0.2 * (i % 3));
 			plot.addAnnotation(new XYTextAnnotation(event.getEventType()
-					.toString(), event.getTime(), position + (0.2 * i % 4)));
-
+					.toString(), event.getTime(), position));
 		}
-	}
-
-	public static XYSeries speedData(String name, ArrayList<Location> values) {
-		XYSeries result = new XYSeries(name);
-
-		for (int i = 0; i < values.size(); i++) {
-			result.add(values.get(i).getTime(), values.get(i).getSpeed());
-		}
-
-		return result;
-	}
-
-	public static XYSeries accelData(String name,
-			ArrayList<Accelerometer> values, int axis) {
-		XYSeries result = new XYSeries(name);
-
-		for (int i = 0; i < values.size(); i++) {
-			double axisValue = 0;
-
-			if (axis == X)
-				axisValue = values.get(i).getX();
-			else if (axis == Y)
-				axisValue = values.get(i).getY();
-			else if (axis == Z)
-				axisValue = values.get(i).getZ();
-
-			result.add(values.get(i).getTime(), axisValue);
-		}
-
-		return result;
 	}
 
 	public static XYSeriesCollection dataset(ArrayList<XYSeries> series) {
@@ -94,46 +78,173 @@ public class Chart {
 	public static XYPlot acceleroPlot(ArrayList<Accelerometer> values) {
 
 		ArrayList<XYSeries> series = new ArrayList<>();
-		series.add(accelData("X", values, X));
-		series.add(accelData("Y", values, Y));
-		series.add(accelData("Z", values, Z));
-		XYSeriesCollection dataset = dataset(series);
+		series.add(ChartData.accelData("X", values, X));
+		series.add(ChartData.accelData("Y", values, Y));
+		series.add(ChartData.accelData("Z", values, Z));
 
-		XYPlot result = plot(dataset, "time", "accel");
-		NumberAxis domain = (NumberAxis) result.getDomainAxis();
-		domain.setRange(values.get(0).getTime(), values.get(values.size() - 1)
-				.getTime());
-		return result;
+		return plot(dataset(series), "time", "speed", values);
+	}
+
+	public static XYPlot allSpeedPlot(ArrayList<Location> values) {
+
+		ArrayList<XYSeries> series = new ArrayList<>();
+		series.add(ChartData.getSpeed("getSpeed()", values, 0));
+		series.add(ChartData.getSpeed("getSpeedCalcCo()", values, 1));
+		series.add(ChartData.getSpeed("getSpeedFusion()", values, 2));
+		series.add(ChartData.getSpeed("getJerk()", values, 3));
+
+		return plot(dataset(series), "time", "speed", values);
+	}
+
+	public static XYPlot allDistancePlot(ArrayList<Location> values) {
+
+		ArrayList<XYSeries> series = new ArrayList<>();
+		series.add(ChartData.getDistance("getDistanceSumCalcCo()", values, 0));
+		series.add(ChartData.getDistance("getDistanceSumCalcGs()", values, 1));
+		series.add(ChartData.getDistance("getSpeedFusion()", values, 2));
+
+		return plot(dataset(series), "time", "distance", values);
 	}
 
 	public static XYPlot speedPlot(ArrayList<Location> values) {
 
-		XYSeries serie = speedData("1", values);
 		ArrayList<XYSeries> series = new ArrayList<>();
-		series.add(serie);
-		XYSeriesCollection dataset = dataset(series);
-		XYPlot result = plot(dataset, "time", "speed");
+		series.add(ChartData.getSpeed("getSpeed()", values));
 
-		NumberAxis domain = (NumberAxis) result.getDomainAxis();
+		return plot(dataset(series), "time", "speed", values);
+	}
+
+	public static <T extends Sensor> XYPlot plot(XYSeriesCollection dataset,
+			String xAxis, String yAxis, ArrayList<T> values) {
+		// XYDotRenderer dot = new XYDotRenderer();
+		// dot.setDotHeight(5);
+		// dot.setDotWidth(5);
+		//
+		// return new XYPlot(dataset, new NumberAxis(xAxis),
+		// new NumberAxis(yAxis), dot);
+		//
+		XYPlot plot = new XYPlot(dataset, new NumberAxis(xAxis),
+				new NumberAxis(yAxis), new XYSplineRenderer());
+		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
 		domain.setRange(values.get(0).getTime(), values.get(values.size() - 1)
 				.getTime());
-
-		return result;
+		return plot;
 
 	}
 
-	public static XYPlot plot(XYSeriesCollection dataset, String xAxis,
-			String yAxis) {
-//		XYDotRenderer dot = new XYDotRenderer();
-//		dot.setDotHeight(5);
-//		dot.setDotWidth(5);
-//
-//		return new XYPlot(dataset, new NumberAxis(xAxis),
-//				new NumberAxis(yAxis), dot);
-		//
-		 return new XYPlot(dataset, new NumberAxis(xAxis),
-		 new NumberAxis(yAxis), new XYSplineRenderer());
+	/*
+	 * 0 == speed 1 == distance 2 == accelerometer
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends Sensor> void drawChart(int id,
+			ArrayList<T> values, ArrayList<Annotation> annotations,
+			ArrayList<Event> events, int method, Class<T> type) {
+		XYPlot plot = null;
+		String filename = "";
+		int x = 3850;
+		int y = 1200;
 
+		if (values.size() > 5) {
+
+			if (method == 0 && type == Location.class) {
+				plot = Chart.allSpeedPlot((ArrayList<Location>) values);
+				filename = "allSpeedMethodsJerk";
+			} else if (method == 1 && type == Location.class) {
+				plot = Chart.allDistancePlot((ArrayList<Location>) values);
+				filename = "allDistanceMethods";
+			} else if (method == 2 && type == Accelerometer.class) {
+				plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values);
+				filename = "linearAccelerometerValues";
+				x = 50000;
+			}
+
+			Chart.addAnnotations(annotations, plot);
+			Chart.addEvents(events, plot);
+			JFreeChart speedchart = new JFreeChart(plot);
+
+			int length = (id + "").length();
+			String cutMeOf = "0000";
+			int cut = (4 - length) < 0 ? 0 : 4 - length;
+			cutMeOf = cutMeOf.substring(0, cut);
+
+			try {
+				ChartUtilities.saveChartAsPNG(new File(cutMeOf + id + " "
+						+ filename + ".png"), speedchart, x, y);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public static void drawAllRecordings(Collection<Recording> recordings,
+			String username, String password) {
+
+		int i = 1;
+		for (Recording recording : recordings) {
+			System.out.println("doing " + i++ + " of " + recordings.size());
+			int id = recording.getId();
+			Chart.drawSingleRecording(id, false, username, password);
+
+		}
+
+	}
+
+	public static void drawSingleRecording(int id, boolean accelero,
+			String username, String password) {
+		String acceleroCSV = "";
+		String locationCSV = "";
+		String annotationCSV = "";
+		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
+
+		// Laed verschiedene CSV-Dateien vom Server
+		locationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+				SensorE.LOCATIONS);
+		annotationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+				SensorE.ANNOTATIONS);
+		if (accelero) {
+			acceleroCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+					SensorE.LINEAR_ACCELERATIONS);
+		}
+		if (locationCSV != null && annotationCSV != null && acceleroCSV != null) {
+
+			ArrayList<Location> locations = CSV.csvToSensor(locationCSV,
+					Location.class);
+			ArrayList<Annotation> annotations = CSV.csvToSensor(annotationCSV,
+					Annotation.class);
+			ArrayList<Accelerometer> accelerometer = null;
+			if (accelero) {
+				accelerometer = CSV.csvToSensor(acceleroCSV,
+						Accelerometer.class);
+			}
+			// Ausgabe der Start- und Endzeit
+			// printStartStop(locations);
+
+			// Berechnungen auf dem Locations-Array
+			LocationCalc.locationCalc(locations);
+			// printCalcData(locations);
+
+			// Ausfuerung der Event-Erkennung
+			ArrayList<Event> events = allEvents(locations);
+
+			Chart.drawChart(id, locations, annotations, events, 0,
+					Location.class);
+			Chart.drawChart(id, locations, annotations, events, 1,
+					Location.class);
+			if (accelero) {
+				Chart.drawChart(id, accelerometer, annotations, events, 2,
+						Accelerometer.class);
+			}
+		}
+	}
+
+	private static ArrayList<Event> allEvents(ArrayList<Location> locations) {
+
+		ArrayList<Event> events = new DetectStanding(locations).getEvents();
+		events.addAll(new DetectBreaking(locations).getEvents());
+		events.addAll(new DetectJerk(locations).getEvents());
+
+		return events;
 	}
 
 }
