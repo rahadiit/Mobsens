@@ -10,7 +10,7 @@ public class Deviceinfo
 	{
 		final int abstractId = (Secure.getString(wrapper.getContentResolver(), Secure.ANDROID_ID)).hashCode();
 
-		return "Device " + Integer.toHexString(0xffff & (abstractId >> 16)) + " " + Integer.toHexString(0xffff & (abstractId >> 0));
+		return Integer.toHexString(0xffff & (abstractId >> 16)) + " " + Integer.toHexString(0xffff & (abstractId >> 0));
 	}
 
 	public static String getOS()
