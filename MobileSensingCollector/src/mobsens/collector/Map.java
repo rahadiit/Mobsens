@@ -82,6 +82,7 @@ public class Map extends ConnectingActivity
 		buttonMapStop = (Button) findViewById(R.id.map_stop);
 
 		mapViewMapPosition.setBuiltInZoomControls(true);
+		mapViewMapPosition.getController().setCenter(new GeoPoint(50.363566, 7.559343));
 		mapViewMapPosition.getController().setZoom(16);
 
 		buttonMapStop.setOnClickListener(new OnClickListener()
