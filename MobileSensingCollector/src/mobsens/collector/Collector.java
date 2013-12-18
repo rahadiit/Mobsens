@@ -9,9 +9,9 @@ import mobsens.collector.consumers.WFJStreamingConsumer;
 import mobsens.collector.drivers.annotations.AnnotationDriver;
 import mobsens.collector.drivers.connectivity.ConnectivityDriver;
 import mobsens.collector.drivers.locations.LocationDriver;
+import mobsens.collector.drivers.locations.LocationNoPSDriver;
 import mobsens.collector.drivers.locations.LocationOutput;
 import mobsens.collector.drivers.locations.LocationPSDriver;
-import mobsens.collector.drivers.locations.LocationNoPSDriver;
 import mobsens.collector.drivers.messaging.StartCollectorDriver;
 import mobsens.collector.drivers.messaging.StopCollectorDriver;
 import mobsens.collector.drivers.sensors.SensorDriver;
@@ -101,7 +101,7 @@ public class Collector extends ConnectedService
 				sensorDriver.start();
 			}
 		};
-		
+
 		messagingDriver.addDriver(startCollectorDriver);
 
 		// Messaging: Collector stoppen

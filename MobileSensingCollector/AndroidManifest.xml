@@ -12,9 +12,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -49,6 +48,9 @@
         <service
             android:name="mobsens.collector.Uploader"
             android:label="@string/service_name__uploader" />
+        <service
+            android:name="mobsens.collector.Externalizer"
+            android:label="@string/service_name__externalizer" />
 
         <activity
             android:name="mobsens.collector.Map"
@@ -56,6 +58,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="mobsens.collector.Controller" />
+        </activity>
+        <activity
+            android:name="mobsens.collector.Stage"
+            android:label="@string/title_activity_stage" >
         </activity>
     </application>
 

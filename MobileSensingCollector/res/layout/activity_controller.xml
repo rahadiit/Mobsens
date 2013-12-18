@@ -24,26 +24,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/controller_start_stop"
-        android:ems="10" 
-        android:hint="Title"/>
-
-    <CheckBox
-        android:id="@+id/controller_web"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/controller_title"
-        android:layout_toRightOf="@+id/controller_send"
-        android:text="... to web" />
-
-    <CheckBox
-        android:id="@+id/controller_local"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/controller_web"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/controller_web"
-        android:text="... to local" />
+        android:ems="10"
+        android:hint="Title" />
 
     <ScrollView
         android:id="@+id/controller_logscroller"
@@ -51,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/controller_local"
+        android:layout_below="@+id/controller_title"
         android:fillViewport="true"
         android:scrollbars="vertical" >
 
@@ -60,17 +42,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1.0"
-            android:textSize="9sp"
+            android:textSize="12sp"
             android:typeface="monospace" />
     </ScrollView>
-
-    <Button
-        android:id="@+id/controller_send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/controller_local"
-        android:layout_alignLeft="@+id/controller_start_stop"
-        android:layout_below="@+id/controller_start_stop"
-        android:text="Send all" />
 
 </RelativeLayout>
