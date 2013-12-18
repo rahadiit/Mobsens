@@ -75,15 +75,17 @@ public class Stage extends Activity
 				final View rowView = inflater.inflate(R.layout.layout_stageitem, parent, false);
 
 				final TextView textViewStageName = (TextView) rowView.findViewById(R.id.stage_name);
+				final TextView textViewStageSize = (TextView) rowView.findViewById(R.id.stage_size);
 				final Button buttonStageToLocal = (Button) rowView.findViewById(R.id.stage_toLocal);
 				final Button buttonStageToWeb = (Button) rowView.findViewById(R.id.stage_toWeb);
-				final TextView textViewStageSize = (TextView) rowView.findViewById(R.id.stage_size);
+				final TextView textViewStageTime = (TextView) rowView.findViewById(R.id.stage_time);
 				final TextView textViewStageDate = (TextView) rowView.findViewById(R.id.stage_date);
 				final Button buttonStageRemove = (Button) rowView.findViewById(R.id.stage_remove);
 
 				textViewStageName.setText(file.getName());
 				textViewStageSize.setText((Math.round(file.length() * 100.0 / 1024.0) / 100.0) + "kb");
-				textViewStageDate.setText(String.format(Locale.ENGLISH, "%tT", file.lastModified()));
+				textViewStageTime.setText(String.format(Locale.ENGLISH, "%tT", file.lastModified()));
+				textViewStageDate.setText(String.format(Locale.ENGLISH, "%tF", file.lastModified()));
 
 				buttonStageToLocal.setOnClickListener(new OnClickListener()
 				{
