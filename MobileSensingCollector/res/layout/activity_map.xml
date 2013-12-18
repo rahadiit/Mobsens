@@ -10,11 +10,22 @@
         android:id="@+id/map_position"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/map_speed"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
+    </org.osmdroid.views.MapView>
+
+    <TextView
+        android:id="@+id/map_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/map_stop"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        tilesource="Mapnik" />
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
         android:id="@+id/map_stop"
@@ -22,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/map_position"
+        android:layout_alignParentRight="true"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:enabled="false"

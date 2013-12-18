@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class Map extends ConnectingActivity
 {
@@ -28,6 +29,8 @@ public class Map extends ConnectingActivity
 	private CollectorIPC collectorIPC;
 
 	private MapView mapViewMapPosition;
+
+	private TextView textViewMapSpeed;
 
 	private Button buttonMapStop;
 
@@ -47,6 +50,19 @@ public class Map extends ConnectingActivity
 					if (bearing != null)
 					{
 						mapViewMapPosition.setMapOrientation(bearing);
+					}
+				}
+
+				if (textViewMapSpeed != null)
+				{
+					if (speed == null)
+					{
+						textViewMapSpeed.setText("Unknown speed");
+
+					}
+					else
+					{
+						textViewMapSpeed.setText(speed + "m/s, " + (speed * 3600.0f / 1000.0f) + "km/h");
 					}
 				}
 			}
@@ -79,6 +95,7 @@ public class Map extends ConnectingActivity
 		setContentView(R.layout.activity_map);
 
 		mapViewMapPosition = (MapView) findViewById(R.id.map_position);
+		textViewMapSpeed = (TextView) findViewById(R.id.map_speed);
 		buttonMapStop = (Button) findViewById(R.id.map_stop);
 
 		mapViewMapPosition.setBuiltInZoomControls(true);

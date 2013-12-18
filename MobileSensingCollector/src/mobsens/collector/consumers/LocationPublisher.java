@@ -1,9 +1,9 @@
 package mobsens.collector.consumers;
 
-import android.content.ContextWrapper;
 import mobsens.collector.drivers.locations.LocationOutput;
 import mobsens.collector.intents.IntentLocationUpdate;
 import mobsens.collector.pipeline.Consumer;
+import android.content.ContextWrapper;
 
 public class LocationPublisher implements Consumer<LocationOutput>
 {
