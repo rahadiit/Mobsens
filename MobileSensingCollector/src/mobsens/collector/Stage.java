@@ -13,6 +13,7 @@ import mobsens.collector.intents.IntentUpload;
 import mobsens.collector.util.Dialogs;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -83,6 +84,7 @@ public class Stage extends Activity
 
 				final TextView textViewStageName = (TextView) rowView.findViewById(R.id.stage_name);
 				final TextView textViewStageSize = (TextView) rowView.findViewById(R.id.stage_size);
+				final Button buttonStageView = (Button) rowView.findViewById(R.id.stage_view);
 				final Button buttonStageToLocal = (Button) rowView.findViewById(R.id.stage_toLocal);
 				final Button buttonStageToWeb = (Button) rowView.findViewById(R.id.stage_toWeb);
 				final TextView textViewStageTime = (TextView) rowView.findViewById(R.id.stage_time);
@@ -94,6 +96,14 @@ public class Stage extends Activity
 				textViewStageTime.setText(String.format(Locale.ENGLISH, "%tT", file.lastModified()));
 				textViewStageDate.setText(String.format(Locale.ENGLISH, "%tF", file.lastModified()));
 
+				buttonStageView.setOnClickListener(new OnClickListener()
+				{
+					@Override
+					public void onClick(View v)
+					{
+						executeView(file);
+					}
+				});
 				buttonStageToLocal.setOnClickListener(new OnClickListener()
 				{
 					@Override
@@ -232,6 +242,11 @@ public class Stage extends Activity
 	private List<File> stageFiles()
 	{
 		return Arrays.asList(new File(getFilesDir(), "wfj").listFiles());
+	}
+
+	private void executeView(File file)
+	{
+		Viewer.showActivity(this, file);
 	}
 
 	private void executeToLocal(final File file)

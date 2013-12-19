@@ -67,6 +67,10 @@
             android:name="mobsens.collector.Settings"
             android:label="@string/title_activity_settings" >
         </activity>
+        <activity
+            android:name="mobsens.collector.Viewer"
+            android:label="@string/title_activity_viewer" >
+        </activity>
     </application>
 
 </manifest>
