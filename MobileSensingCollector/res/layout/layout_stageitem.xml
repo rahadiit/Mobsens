@@ -8,9 +8,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_margin="3dp"
+        android:layout_toLeftOf="@+id/stage_view"
         android:text="Name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -19,9 +19,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/stage_name"
         android:layout_margin="3dp"
+        android:layout_toLeftOf="@+id/stage_view"
         android:text="Size" />
 
     <Button
@@ -70,5 +70,14 @@
         android:layout_toLeftOf="@+id/stage_remove"
         android:layout_toRightOf="@+id/stage_toWeb"
         android:text="Date" />
+
+    <Button
+        android:id="@+id/stage_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="3dp"
+        android:text="View" />
 
 </RelativeLayout>
