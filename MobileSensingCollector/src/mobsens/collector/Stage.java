@@ -13,6 +13,7 @@ import mobsens.collector.intents.IntentUpload;
 import mobsens.collector.util.Dialogs;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -27,6 +28,12 @@ import android.widget.TextView;
 
 public class Stage extends Activity
 {
+	private static final String PREFERENCES_NAME = "mscprefs";
+
+	private static final String PREFERENCE_EMAIL = "mscemail";
+
+	private static final String PREFERENCE_PASSWORD = "mscpwd";
+
 	private final static long UPDATE_INTERVAL = 1000L;
 
 	private final Runnable UPDATE_ENDPOINT = new Runnable()
@@ -241,8 +248,10 @@ public class Stage extends Activity
 	{
 		if (file.exists())
 		{
-			IntentUpload.startService(Stage.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de/users/sign_in.json", "mlukas@gmx.net", "12345678",
-					"http://mobilesensing.west.uni-koblenz.de/recordings/upload", file, "application/text", "*/*");
+			final SharedPreferences sp = getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+
+			IntentUpload.startService(Stage.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de/users/sign_in.json", sp.getString(PREFERENCE_EMAIL, ""),
+					sp.getString(PREFERENCE_PASSWORD, ""), "http://mobilesensing.west.uni-koblenz.de/recordings/upload", file, "application/text", "*/*");
 		}
 	}
 
