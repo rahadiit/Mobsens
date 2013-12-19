@@ -100,6 +100,11 @@ public class Controller extends ConnectingActivity
 	{
 		switch (item.getItemId())
 		{
+
+		case R.id.action_settings:
+			startActivity(new Intent(getApplicationContext(), Settings.class));
+			return true;
+
 		case R.id.action_tag:
 			startActivity(new Intent(getApplicationContext(), Fasttag.class));
 			return true;

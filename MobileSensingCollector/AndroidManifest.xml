@@ -63,6 +63,10 @@
             android:name="mobsens.collector.Stage"
             android:label="@string/title_activity_stage" >
         </activity>
+        <activity
+            android:name="mobsens.collector.Settings"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>
