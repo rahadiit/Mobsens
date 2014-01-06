@@ -4,8 +4,17 @@ import java.util.Collection;
 
 import MobileSensors.Storage.Sensors.Location;
 
+/**
+ * 
+ * @author henny, thomas, max
+ *
+ */
 public class LocationCalc {
 
+	/**
+	 * 
+	 * @param locations
+	 */
 	public static void locationCalc(Collection<Location> locations) {
 		Location prevLocation = null;
 
@@ -24,6 +33,11 @@ public class LocationCalc {
 		}
 	}
 
+	/**
+	 * 
+	 * @param prevLoc
+	 * @param loc
+	 */
 	private static void setTime(Location prevLoc, Location loc) {
 
 		long time = loc.getTime() - prevLoc.getTime();
@@ -32,6 +46,11 @@ public class LocationCalc {
 		loc.setTimeCalc(time);
 	}
 
+	/**
+	 * 
+	 * @param prevLoc
+	 * @param loc
+	 */
 	private static void setDistance(Location prevLoc, Location loc) {
 		double distCo = GPS.distance(prevLoc, loc);
 		double distGs = loc.getSpeed() * loc.getTimeCalc();
@@ -42,6 +61,11 @@ public class LocationCalc {
 		loc.setDistanceFusion((distCo + distGs) / 2);
 	}
 
+	/**
+	 * 
+	 * @param prevLoc
+	 * @param loc
+	 */
 	private static void setDistanceSum(Location prevLoc, Location loc) {
 		loc.setDistanceSumCalcCo(prevLoc.getDistanceSumCalcCo()
 				+ loc.getDistanceCalcCo());
@@ -53,6 +77,10 @@ public class LocationCalc {
 				+ loc.getDistanceFusion());
 	}
 
+	/**
+	 * 
+	 * @param loc
+	 */
 	private static void setSpeed(Location loc) {
 		double speedCo = GPS.speed(loc.getDistanceCalcCo(), loc.getTimeCalc());
 
@@ -61,6 +89,11 @@ public class LocationCalc {
 		loc.setSpeedFusion((speedCo + loc.getSpeed()) / 2);
 	}
 
+	/**
+	 * 
+	 * @param prevLoc
+	 * @param loc
+	 */
 	private static void setAcceleration(Location prevLoc, Location loc) {
 		double accel = GPS.acceleration(prevLoc.getSpeed(), loc.getSpeed(), loc.getTimeCalc());
 		loc.setAcceleration(accel);
@@ -74,6 +107,11 @@ public class LocationCalc {
 		loc.setAccelerationFusion(accelFusion);
 	}
 
+	/**
+	 * 
+	 * @param prevLoc
+	 * @param loc
+	 */
 	private static void setJerk(Location prevLoc, Location loc) {
 		double jerk = GPS.jerk(prevLoc.getAcceleration(), loc.getAcceleration(), loc.getTimeCalc());
 		loc.setJerk(jerk);
