@@ -5,16 +5,30 @@ import java.util.ArrayList;
 import MobileSensors.Storage.Event.Event;
 import MobileSensors.Storage.Sensors.Location;
 
+/**
+ * 
+ * Breaking Classifier
+ * 
+ * @author henny, thomas, max
+ *
+ */
 public class DetectBreaking implements EventClassifier {
 
 	private ArrayList<Location> locations;
 	private ArrayList<Event> events;
 
+	/**
+	 * 
+	 * @param locations
+	 */
 	public DetectBreaking(ArrayList<Location> locations) {
 		this.locations = locations;
 		this.events = new ArrayList<Event>();
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public ArrayList<Event> getEvents() {
 
@@ -51,4 +65,5 @@ public class DetectBreaking implements EventClassifier {
 		}
 		return this.events;
 	}
+
 }
