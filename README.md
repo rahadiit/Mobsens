@@ -1,1 +1,1 @@
-# Projektpraktikum: MobileSensors
+# Projektpraktikum - MobileSensors
