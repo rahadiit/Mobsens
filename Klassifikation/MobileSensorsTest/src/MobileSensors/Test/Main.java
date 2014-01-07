@@ -1,33 +1,16 @@
 package MobileSensors.Test;
 
-import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.jfree.chart.ChartUtilities;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.XYPlot;
-
 import com.sun.jersey.api.client.Client;
 
-import MobileSensors.Calculation.GPS;
-import MobileSensors.Calculation.LocationCalc;
-import MobileSensors.Classifiers.DetectBreaking;
-import MobileSensors.Classifiers.DetectJerk;
-import MobileSensors.Classifiers.DetectStanding;
-import MobileSensors.Storage.Event.Event;
-import MobileSensors.Storage.Sensors.Accelerometer;
-import MobileSensors.Storage.Sensors.Annotation;
 import MobileSensors.Storage.Sensors.Location;
-import MobileSensors.Storage.Sensors.Sensor.Sensor;
 import MobileSensors.Test.Data.Recording;
-import MobileSensors.Test.Data.SensorE;
 import MobileSensors.Test.Data.URLS;
-import MobileSensors.Test.Input.CSV;
 import MobileSensors.Test.Input.RESTful;
 import MobileSensors.Test.Output.Chart;
 
