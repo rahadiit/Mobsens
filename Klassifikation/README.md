@@ -1,8 +1,8 @@
 # Projektpraktikum - MobileSensors
 
 ## Klassifikation
-Auswertung und Verwertung von Smartphone-Sensordaten 
-zur Erkennung für Fahrradfahrt typische Ereignisse wie
+Aus- und Verwertung von Smartphone-Sensordaten 
+zur Erkennung für Fahrradfahrten typische Ereignisse wie
 Bremsen, Abbiegen, Stehen, etc.
 
 ### MobileSensors (Eclipse Java-Projekt)
