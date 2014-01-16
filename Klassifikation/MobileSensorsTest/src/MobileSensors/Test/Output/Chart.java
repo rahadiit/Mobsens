@@ -24,6 +24,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import com.sun.jersey.api.client.Client;
 
 import MobileSensors.Calculation.LocationCalc;
+import MobileSensors.Calculation.TimeableCalc;
 import MobileSensors.Classifiers.DetectBreaking;
 import MobileSensors.Classifiers.DetectJerk;
 import MobileSensors.Classifiers.DetectStanding;
@@ -48,11 +49,16 @@ public class Chart {
 	public static void addAnnotations(ArrayList<Annotation> annotations,
 			XYPlot plot) {
 
+		// System.out.println("annotations size: " + annotations.size());
 		for (int i = 0; i < annotations.size(); i++) {
 			Annotation annotation = annotations.get(i);
 
+			// plot.addAnnotation(new XYTextAnnotation(annotation.getTag(),
+			// annotation.getTime(), 0.2 + (0.2 * (i % 3))));
+
+			// System.out.println(annotation.getTag());
 			plot.addAnnotation(new XYTextAnnotation(annotation.getTag(),
-					annotation.getTime(), 0.2 + (0.2 * (i % 3))));
+					annotation.getTime(), 3));
 		}
 	}
 
@@ -89,8 +95,8 @@ public class Chart {
 
 		ArrayList<XYSeries> series = new ArrayList<>();
 		series.add(ChartData.getSpeed("getSpeed()", values, 0));
-		series.add(ChartData.getSpeed("getSpeedCalcCo()", values, 1));
-		series.add(ChartData.getSpeed("getSpeedFusion()", values, 2));
+		// series.add(ChartData.getSpeed("getSpeedCalcCo()", values, 1));
+		// series.add(ChartData.getSpeed("getSpeedFusion()", values, 2));
 		series.add(ChartData.getSpeed("getJerk()", values, 3));
 
 		return plot(dataset(series), "time", "speed", values);
@@ -123,8 +129,9 @@ public class Chart {
 		// return new XYPlot(dataset, new NumberAxis(xAxis),
 		// new NumberAxis(yAxis), dot);
 		//
+		// new XYSplineRenderer()
 		XYPlot plot = new XYPlot(dataset, new NumberAxis(xAxis),
-				new NumberAxis(yAxis), new XYSplineRenderer());
+				new NumberAxis(yAxis), new XYLineAndShapeRenderer());
 		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
 		domain.setRange(values.get(0).getTime(), values.get(values.size() - 1)
 				.getTime());
@@ -137,8 +144,8 @@ public class Chart {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T extends Sensor> void drawChart(int id,
-			ArrayList<T> values, ArrayList<Annotation> annotations,
-			ArrayList<Event> events, int method, Class<T> type) {
+			Collection<T> values, ArrayList<Annotation> annotations,
+			ArrayList<Event> events, int method, int prefix, Class<T> type) {
 		XYPlot plot = null;
 		String filename = "";
 		int x = 3850;
@@ -158,8 +165,11 @@ public class Chart {
 				x = 50000;
 			}
 
+			filename = prefix != 0 ? filename + prefix : filename;
+
 			Chart.addAnnotations(annotations, plot);
 			Chart.addEvents(events, plot);
+
 			JFreeChart speedchart = new JFreeChart(plot);
 
 			int length = (id + "").length();
@@ -222,18 +232,44 @@ public class Chart {
 
 			// Berechnungen auf dem Locations-Array
 			LocationCalc.locationCalc(locations);
+
+			// System.out.println("id: "
+			// + id
+			// + "disFusionSum: "
+			// + locations.get(locations.size() - 1)
+			// .getDistanceFusionSum());
+			// System.out.println("id: "
+			// + id
+			// + "disSumCo: "
+			// + locations.get(locations.size() - 1)
+			// .getDistanceSumCalcCo());
+
 			// printCalcData(locations);
 
 			// Ausfuerung der Event-Erkennung
 			ArrayList<Event> events = allEvents(locations);
 
-			Chart.drawChart(id, locations, annotations, events, 0,
+			Chart.drawChart(id, locations, annotations, events, 0, 0,
 					Location.class);
-			Chart.drawChart(id, locations, annotations, events, 1,
-					Location.class);
-			if (accelero) {
-				Chart.drawChart(id, accelerometer, annotations, events, 2,
-						Accelerometer.class);
+			// Chart.drawChart(id, locations, annotations, events, 1,
+			// Location.class);
+			if (accelero && !accelerometer.isEmpty()) {
+
+				long from = accelerometer.get(0).getTime();
+				long timespan = 1000 * 60 * 2; // 2min
+				int i = 1;
+				Collection<Accelerometer> accel = new ArrayList<>();
+				do {
+					System.out.println("drawing accelerometer-chart no. " + i);
+					accel = TimeableCalc.window(accelerometer, from, from+timespan);
+
+					Chart.drawChart(id, accel, annotations, events, 2, i++,
+							Accelerometer.class);
+
+					from+=timespan;
+
+				} while (!accel.isEmpty());
+
 			}
 		}
 	}

@@ -6,11 +6,14 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+
 import com.sun.jersey.api.client.Client;
 
 import MobileSensors.Storage.Sensors.Location;
 import MobileSensors.Test.Data.Recording;
+import MobileSensors.Test.Data.SensorE;
 import MobileSensors.Test.Data.URLS;
+import MobileSensors.Test.Input.CSV;
 import MobileSensors.Test.Input.RESTful;
 import MobileSensors.Test.Output.Chart;
 
@@ -25,9 +28,20 @@ public class Main {
 		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
 		ArrayList<Recording> recordings = RESTful.recordingOutput(client,
 				URLS.LIST_RECORDINGS.getURL());
-			
 
-		Chart.drawAllRecordings(recordings, username, password);
+		Chart.drawSingleRecording(152, true, username, password);
+
+		// Alle Charts aus dem Bremsvorgang-Test
+		// for (int i = 0; i < recordings.size(); i++) {
+		// int id = recordings.get(i).getId();
+		// if (id >= 139 && id<=179) {
+		// System.out.println("...processing id: " + id);
+		// Chart.drawSingleRecording(id, true, username, password);
+		// }
+		// }
+
+		// Chart.drawAllRecordings(recordings, username, password);
+		// Chart.drawSingleRecording(186, false, username, password);
 
 		System.out.println("done");
 

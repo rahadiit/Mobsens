@@ -23,6 +23,7 @@ public class CSV {
 	public static <T extends Sensor> ArrayList<T> csvToSensor(
 			ArrayList<String[]> input, Class<T> type) {
 		ArrayList<T> result = new ArrayList<>();
+		
 		// TODO: rausnehmen wenn im Client gefixt
 		input = FileInput.deleteDuplicates(input);
 

@@ -7,7 +7,7 @@ package MobileSensors.Storage.Sensors.Sensor;
  * @author henny, thomas, max
  *
  */
-public abstract class Sensor {
+public abstract class Sensor implements Timeable{
 
 	private long time;
 	
