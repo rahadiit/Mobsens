@@ -54,6 +54,15 @@ public class LocationCalc {
 	private static void setDistance(Location prevLoc, Location loc) {
 		double distCo = GPS.distance(prevLoc, loc);
 		double distGs = loc.getSpeed() * loc.getTimeCalc();
+		
+		//falls Stillstand gemessen durch doppler-effekt
+		if (loc.getSpeed() <= 0.3) {
+			distCo = 0;
+		} else {
+			//10% abziehen aufgrund von messfehlern
+			distCo*= 0.9;
+		}
+		
 
 		loc.setDistanceCalcCo(distCo);
 		loc.setDistanceCalcGs(distGs);

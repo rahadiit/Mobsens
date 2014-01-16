@@ -6,8 +6,8 @@ import MobileSensors.Storage.Sensors.Sensor.Sensor;
  * 
  * @author henny, thomas, max
  * 
- * Location Data Model
- *
+ *         Location Data Model
+ * 
  */
 public class Location extends Sensor {
 
@@ -17,27 +17,27 @@ public class Location extends Sensor {
 	private double speed;
 	private double bearing;
 	private double accuracy;
-	
+
 	private double acceleration;
 	private double jerk;
-	
+
 	private double distanceCalcCo;
 	private double distanceSumCalcCo;
-	
+
 	private double distanceCalcGs;
 	private double distanceSumCalcGs;
-	
+
 	private double speedCalcCo;
-	
+
 	private double accelerationCalc;
 	private double jerkCalc;
-	
+
 	private double distanceFusion;
 	private double distanceFusionSum;
 	private double speedFusion;
 	private double accelerationFusion;
 	private double jerkFusion;
-	
+
 	private long timeCalc;
 
 	/**
@@ -165,7 +165,7 @@ public class Location extends Sensor {
 		double[] result = { latitude, longitude };
 		return result;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -195,9 +195,9 @@ public class Location extends Sensor {
 	 * @param distanceCalcCo
 	 */
 	public void setDistanceCalcCo(double distanceCalcCo) {
-		this.distanceCalcCo = distanceCalcCo;
+		this.distanceCalcCo=distanceCalcCo;
 	}
-		
+
 	/**
 	 * 
 	 * @return

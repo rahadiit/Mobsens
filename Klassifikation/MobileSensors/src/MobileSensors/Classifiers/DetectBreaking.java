@@ -10,12 +10,11 @@ import MobileSensors.Storage.Sensors.Location;
  * Breaking Classifier
  * 
  * @author henny, thomas, max
- *
+ * 
  */
 public class DetectBreaking implements EventClassifier {
 
 	private ArrayList<Location> locations;
-	private ArrayList<Event> events;
 
 	/**
 	 * 
@@ -23,7 +22,7 @@ public class DetectBreaking implements EventClassifier {
 	 */
 	public DetectBreaking(ArrayList<Location> locations) {
 		this.locations = locations;
-		this.events = new ArrayList<Event>();
+
 	}
 
 	/**
@@ -31,6 +30,8 @@ public class DetectBreaking implements EventClassifier {
 	 */
 	@Override
 	public ArrayList<Event> getEvents() {
+
+		ArrayList<Event> events = new ArrayList<Event>();
 
 		for (int i = 0; i < locations.size() - 1; i++) {
 			Location location = locations.get(i);
@@ -45,25 +46,26 @@ public class DetectBreaking implements EventClassifier {
 
 				if (location.getSpeed() / locAfterNextLoc.getSpeed() > 1.75) {
 					breaking = true;
-					i+=2;
+					i += 2;
 				}
 			}
 
 			if (breaking) {
 				// System.out.println("breaking: "+location.getSpeed()+" : "+nextlocation.getSpeed());
-				this.events.add(new Event(location.getTime(),
+				events.add(new Event(location.getTime(),
 						MobileSensors.Storage.Event.EventType.BRAKING));
 			}
 
 			// nachfolgende locations mit getSpeed==0 ueberspringen. Nur ein
 			// Event fuer eine "Stand-Phase"
-			while (locations.get(i++).getSpeed() <= 0.2) {
+			while (i < locations.size() && locations.get(i++).getSpeed() <= 0.2) {
 				if (i == locations.size() - 1)
 					break;
 			}
+
 			i--;
 		}
-		return this.events;
+		return events;
 	}
 
 }

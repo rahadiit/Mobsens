@@ -1,12 +1,14 @@
 package MobileSensors.Storage.Event;
 
+import MobileSensors.Storage.Sensors.Sensor.Timeable;
+
 /**
  * Mobile Sensors Event Data Model
  * 
  * @author henny, thomas, max
  *
  */
-public class Event {
+public class Event implements Timeable{
 
 	private long time;
 	private EventType eventType;
