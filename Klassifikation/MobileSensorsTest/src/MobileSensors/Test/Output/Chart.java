@@ -24,7 +24,6 @@ import org.jfree.data.xy.XYSeriesCollection;
 import com.sun.jersey.api.client.Client;
 
 import MobileSensors.Calculation.LocationCalc;
-import MobileSensors.Calculation.TimeableCalc;
 import MobileSensors.Classifiers.DetectBreaking;
 import MobileSensors.Classifiers.DetectJerk;
 import MobileSensors.Classifiers.DetectStanding;
@@ -261,7 +260,7 @@ public class Chart {
 				Collection<Accelerometer> accel = new ArrayList<>();
 				do {
 					System.out.println("drawing accelerometer-chart no. " + i);
-					accel = TimeableCalc.window(accelerometer, from, from+timespan);
+					accel = Accelerometer.window(accelerometer, from, from+timespan);
 
 					Chart.drawChart(id, accel, annotations, events, 2, i++,
 							Accelerometer.class);
