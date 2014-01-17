@@ -8,7 +8,7 @@ import MobileSensors.Storage.Sensors.Sensor.Timeable;
  * @author henny, thomas, max
  *
  */
-public class Event implements Timeable{
+public class Event extends Timeable{
 
 	private long time;
 	private EventType eventType;
