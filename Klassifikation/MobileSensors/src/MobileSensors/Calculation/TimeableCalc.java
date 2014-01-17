@@ -19,7 +19,6 @@ public class TimeableCalc<T> {
 			long timeFrom, long timeTo) {
 		Collection<T> window = new ArrayList<>();
 
-		System.out.println("from "+timeFrom+" to "+timeTo);
 		for (T t : list)
 			if (t.getTime() >= timeFrom && t.getTime() <= timeTo)
 				window.add(t);
@@ -42,7 +41,6 @@ public class TimeableCalc<T> {
 			return times.get(times.size()-1);
 		
 		return null;
-		
 	}
 	
 	
@@ -71,7 +69,6 @@ public class TimeableCalc<T> {
 					+ timeAfter);
 		
 		return new ArrayList<T>();
-
 	}
 
 }

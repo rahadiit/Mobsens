@@ -39,7 +39,6 @@ public class Main {
 		// Chart.drawSingleRecording(id, true, username, password);
 		// }
 		// }
-
 		// Chart.drawAllRecordings(recordings, username, password);
 		// Chart.drawSingleRecording(186, false, username, password);
 
