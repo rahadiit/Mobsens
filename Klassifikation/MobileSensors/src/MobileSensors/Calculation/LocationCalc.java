@@ -19,8 +19,8 @@ public class LocationCalc {
 		Location prevLocation = null;
 
 		for (Location location : locations) {
-			if (prevLocation != null) {
-				setTime(prevLocation, location);
+			if (prevLocation != null) {				
+				location.setTimeDifference(prevLocation);
 
 				setDistance(prevLocation, location);
 				setDistanceSum(prevLocation, location);
@@ -33,18 +33,7 @@ public class LocationCalc {
 		}
 	}
 
-	/**
-	 * 
-	 * @param prevLoc
-	 * @param loc
-	 */
-	private static void setTime(Location prevLoc, Location loc) {
 
-		long time = loc.getTime() - prevLoc.getTime();
-		time = Math.abs(time);
-		time /= 1000; // ms in s
-		loc.setTimeCalc(time);
-	}
 
 	/**
 	 * 
@@ -53,7 +42,7 @@ public class LocationCalc {
 	 */
 	private static void setDistance(Location prevLoc, Location loc) {
 		double distCo = GPS.distance(prevLoc, loc);
-		double distGs = loc.getSpeed() * loc.getTimeCalc();
+		double distGs = loc.getSpeed() * loc.getTimeDifference();
 		
 		//falls Stillstand gemessen durch doppler-effekt
 		if (loc.getSpeed() <= 0.3) {
@@ -91,7 +80,7 @@ public class LocationCalc {
 	 * @param loc
 	 */
 	private static void setSpeed(Location loc) {
-		double speedCo = GPS.speed(loc.getDistanceCalcCo(), loc.getTimeCalc());
+		double speedCo = Calc.speed(loc.getDistanceCalcCo(), loc.getTimeDifference());
 
 		loc.setSpeedCalcCo(speedCo);
 
@@ -104,15 +93,15 @@ public class LocationCalc {
 	 * @param loc
 	 */
 	private static void setAcceleration(Location prevLoc, Location loc) {
-		double accel = GPS.acceleration(prevLoc.getSpeed(), loc.getSpeed(), loc.getTimeCalc());
+		double accel = Calc.acceleration(prevLoc.getSpeed(), loc.getSpeed(), loc.getTimeDifference());
 		loc.setAcceleration(accel);
 		
-		double accelCalc = GPS.acceleration(prevLoc.getSpeedCalcCo(),
-				loc.getSpeedCalcCo(), loc.getTimeCalc());
+		double accelCalc = Calc.acceleration(prevLoc.getSpeedCalcCo(),
+				loc.getSpeedCalcCo(), loc.getTimeDifference());
 		loc.setAccelerationCalc(accelCalc);
 
-		double accelFusion = GPS.acceleration(prevLoc.getSpeedFusion(),
-				loc.getSpeedFusion(), loc.getTimeCalc());
+		double accelFusion = Calc.acceleration(prevLoc.getSpeedFusion(),
+				loc.getSpeedFusion(), loc.getTimeDifference());
 		loc.setAccelerationFusion(accelFusion);
 	}
 
@@ -122,15 +111,15 @@ public class LocationCalc {
 	 * @param loc
 	 */
 	private static void setJerk(Location prevLoc, Location loc) {
-		double jerk = GPS.jerk(prevLoc.getAcceleration(), loc.getAcceleration(), loc.getTimeCalc());
+		double jerk = Calc.jerk(prevLoc.getAcceleration(), loc.getAcceleration(), loc.getTimeDifference());
 		loc.setJerk(jerk);
 		
-		double jerkCalc=GPS.jerk(prevLoc.getAccelerationCalc(),
-				loc.getAccelerationCalc(), loc.getTimeCalc());
+		double jerkCalc=Calc.jerk(prevLoc.getAccelerationCalc(),
+				loc.getAccelerationCalc(), loc.getTimeDifference());
 		loc.setJerkCalc(jerkCalc);
 		
-		double jerkFusion=GPS.jerk(prevLoc.getAccelerationFusion(),
-				loc.getAccelerationFusion(), loc.getTimeCalc());
+		double jerkFusion=Calc.jerk(prevLoc.getAccelerationFusion(),
+				loc.getAccelerationFusion(), loc.getTimeDifference());
 		loc.setJerkFusion(jerkFusion);
 		
 	}

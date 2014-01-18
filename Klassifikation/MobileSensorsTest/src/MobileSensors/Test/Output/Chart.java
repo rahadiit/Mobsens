@@ -82,19 +82,28 @@ public class Chart {
 	}
 
 	public static XYPlot acceleroPlot(ArrayList<Accelerometer> values) {
-		return acceleroPlot(values, true, true, true);
+		return acceleroPlot(values, true, true, true, false);
 	}
+
 	public static XYPlot acceleroPlot(ArrayList<Accelerometer> values,
-			boolean x, boolean y, boolean z) {
+			boolean x, boolean y, boolean z, boolean jerk) {
 
 		ArrayList<XYSeries> series = new ArrayList<>();
-		if (x)
-			series.add(ChartData.accelData("X", values, X));
-		if (y)
-			series.add(ChartData.accelData("Y", values, Y));
-		if (z)
-			series.add(ChartData.accelData("Z", values, Z));
-
+		if (x) {
+			if (jerk)
+				series.add(ChartData.accelData("JerkX", values, X, true));
+			//series.add(ChartData.accelData("X", values, X, false));
+		}
+		if (y) {
+			if (jerk)
+				series.add(ChartData.accelData("JerkY", values, Y, true));
+			series.add(ChartData.accelData("Y", values, Y, false));
+		}
+		if (z) {
+			if (jerk)
+				series.add(ChartData.accelData("JerkZ", values, Z, true));
+			series.add(ChartData.accelData("Z", values, Z, false));
+		}
 		return plot(dataset(series), "time", "speed", values);
 	}
 
@@ -153,7 +162,7 @@ public class Chart {
 	public static <T extends Sensor> void drawChart(int id,
 			Collection<T> values, ArrayList<Annotation> annotations,
 			ArrayList<Event> events, int method, int prefix, Class<T> type) {
-		
+
 		XYPlot plot = null;
 		String filename = "";
 		int x = 3850;
@@ -168,11 +177,14 @@ public class Chart {
 				plot = Chart.allDistancePlot((ArrayList<Location>) values);
 				filename = "allDistanceMethods";
 			} else if (method == 2 && type == Accelerometer.class) {
-				AcceleroCalc.removeFalseValues((Collection<Accelerometer>)values);
-				//alle achsen
-//				plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values);
-				//nur y achse
-				plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values, true,false,false);
+				AcceleroCalc.accelerometerCalc(
+						(Collection<Accelerometer>) values, true);
+				// alle achsen
+				// plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values);
+				// nur y achse
+				plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values,
+						true, false, false, false);
+
 				filename = "linearAccelerometerValues";
 				x = 50000;
 			}
@@ -190,8 +202,8 @@ public class Chart {
 			cutMeOf = cutMeOf.substring(0, cut);
 
 			try {
-				ChartUtilities.saveChartAsPNG(new File("charts/"+cutMeOf + id + " "
-						+ filename + ".png"), speedchart, x, y);
+				ChartUtilities.saveChartAsPNG(new File("charts/" + cutMeOf + id
+						+ " " + filename + ".png"), speedchart, x, y);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -238,6 +250,7 @@ public class Chart {
 			if (accelero) {
 				accelerometer = CSV.csvToSensor(acceleroCSV,
 						Accelerometer.class);
+
 			}
 			// Ausgabe der Start- und Endzeit
 			// printStartStop(locations);
