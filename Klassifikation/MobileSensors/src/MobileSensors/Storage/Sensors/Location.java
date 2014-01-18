@@ -38,8 +38,6 @@ public class Location extends Sensor {
 	private double accelerationFusion;
 	private double jerkFusion;
 
-	private long timeCalc;
-
 	/**
 	 * 
 	 * @param time
@@ -324,22 +322,6 @@ public class Location extends Sensor {
 	 */
 	public void setJerkCalc(double jerkCalc) {
 		this.jerkCalc = jerkCalc;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public long getTimeCalc() {
-		return timeCalc;
-	}
-
-	/**
-	 * 
-	 * @param timeCalc
-	 */
-	public void setTimeCalc(long timeCalc) {
-		this.timeCalc = timeCalc;
 	}
 
 	/**

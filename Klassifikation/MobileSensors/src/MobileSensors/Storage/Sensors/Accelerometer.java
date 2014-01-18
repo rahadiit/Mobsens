@@ -6,13 +6,13 @@ import MobileSensors.Storage.Sensors.Sensor.Sensor;
  * 
  * @author henny, thomas, max
  * 
- * Accelerometer Data Model
- *
+ *         Accelerometer Data Model
+ * 
  */
 public class Accelerometer extends Sensor {
-	
-	private double x,y,z;
-	
+
+	private double x, y, z, jerkX, jerkY, jerkZ;
+
 	/**
 	 * 
 	 * @param time
@@ -20,13 +20,37 @@ public class Accelerometer extends Sensor {
 	 * @param y
 	 * @param z
 	 */
-	public Accelerometer (long time,double x, double y, double z) {
-		
+	public Accelerometer(long time, double x, double y, double z) {
+
 		super(time);
-		this.x=x;
-		this.y=y;
-		this.z=z;
-		
+		this.x = x;
+		this.y = y;
+		this.z = z;
+
+	}
+
+	public double getJerkX() {
+		return jerkX;
+	}
+
+	public void setJerkX(double jerkX) {
+		this.jerkX = jerkX;
+	}
+
+	public double getJerkY() {
+		return jerkY;
+	}
+
+	public void setJerkY(double jerkY) {
+		this.jerkY = jerkY;
+	}
+
+	public double getJerkZ() {
+		return jerkZ;
+	}
+
+	public void setJerkZ(double jerkZ) {
+		this.jerkZ = jerkZ;
 	}
 
 	/**
@@ -35,10 +59,10 @@ public class Accelerometer extends Sensor {
 	 * 
 	 * @return x-coordinate
 	 */
-	public double getX () {
-		
+	public double getX() {
+
 		return x;
-		
+
 	}
 
 	/**
@@ -47,10 +71,10 @@ public class Accelerometer extends Sensor {
 	 * 
 	 * @param x
 	 */
-	public void setX (double x) {
-		
+	public void setX(double x) {
+
 		this.x = x;
-		
+
 	}
 
 	/**
@@ -59,10 +83,10 @@ public class Accelerometer extends Sensor {
 	 * 
 	 * @return y-coordinate
 	 */
-	public double getY () {
-		
+	public double getY() {
+
 		return y;
-		
+
 	}
 
 	/**
@@ -71,10 +95,10 @@ public class Accelerometer extends Sensor {
 	 * 
 	 * @param y
 	 */
-	public void setY (double y) {
-		
+	public void setY(double y) {
+
 		this.y = y;
-		
+
 	}
 
 	/**
@@ -83,10 +107,10 @@ public class Accelerometer extends Sensor {
 	 * 
 	 * @return z-coordinate
 	 */
-	public double getZ () {
-		
+	public double getZ() {
+
 		return z;
-		
+
 	}
 
 	/**
@@ -95,10 +119,10 @@ public class Accelerometer extends Sensor {
 	 * 
 	 * @param z
 	 */
-	public void setZ (double z) {
-		
+	public void setZ(double z) {
+
 		this.z = z;
-		
+
 	}
-	
+
 }
