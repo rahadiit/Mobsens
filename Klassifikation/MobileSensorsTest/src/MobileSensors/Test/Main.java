@@ -29,7 +29,7 @@ public class Main {
 		ArrayList<Recording> recordings = RESTful.recordingOutput(client,
 				URLS.LIST_RECORDINGS.getURL());
 
-		Chart.drawSingleRecording(152, true, username, password);
+		Chart.drawSingleRecording(170, true, username, password);
 
 		// Alle Charts aus dem Bremsvorgang-Test
 		// for (int i = 0; i < recordings.size(); i++) {
