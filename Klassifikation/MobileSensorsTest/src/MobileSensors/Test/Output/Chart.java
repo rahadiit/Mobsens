@@ -23,6 +23,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import com.sun.jersey.api.client.Client;
 
+import MobileSensors.Calculation.AcceleroCalc;
 import MobileSensors.Calculation.LocationCalc;
 import MobileSensors.Classifiers.DetectBreaking;
 import MobileSensors.Classifiers.DetectJerk;
@@ -81,11 +82,18 @@ public class Chart {
 	}
 
 	public static XYPlot acceleroPlot(ArrayList<Accelerometer> values) {
+		return acceleroPlot(values, true, true, true);
+	}
+	public static XYPlot acceleroPlot(ArrayList<Accelerometer> values,
+			boolean x, boolean y, boolean z) {
 
 		ArrayList<XYSeries> series = new ArrayList<>();
-		series.add(ChartData.accelData("X", values, X));
-		series.add(ChartData.accelData("Y", values, Y));
-		series.add(ChartData.accelData("Z", values, Z));
+		if (x)
+			series.add(ChartData.accelData("X", values, X));
+		if (y)
+			series.add(ChartData.accelData("Y", values, Y));
+		if (z)
+			series.add(ChartData.accelData("Z", values, Z));
 
 		return plot(dataset(series), "time", "speed", values);
 	}
@@ -145,6 +153,7 @@ public class Chart {
 	public static <T extends Sensor> void drawChart(int id,
 			Collection<T> values, ArrayList<Annotation> annotations,
 			ArrayList<Event> events, int method, int prefix, Class<T> type) {
+		
 		XYPlot plot = null;
 		String filename = "";
 		int x = 3850;
@@ -159,7 +168,11 @@ public class Chart {
 				plot = Chart.allDistancePlot((ArrayList<Location>) values);
 				filename = "allDistanceMethods";
 			} else if (method == 2 && type == Accelerometer.class) {
-				plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values);
+				AcceleroCalc.removeFalseValues((Collection<Accelerometer>)values);
+				//alle achsen
+//				plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values);
+				//nur y achse
+				plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values, true,false,false);
 				filename = "linearAccelerometerValues";
 				x = 50000;
 			}
@@ -177,7 +190,7 @@ public class Chart {
 			cutMeOf = cutMeOf.substring(0, cut);
 
 			try {
-				ChartUtilities.saveChartAsPNG(new File(cutMeOf + id + " "
+				ChartUtilities.saveChartAsPNG(new File("charts/"+cutMeOf + id + " "
 						+ filename + ".png"), speedchart, x, y);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -260,12 +273,13 @@ public class Chart {
 				Collection<Accelerometer> accel = new ArrayList<>();
 				do {
 					System.out.println("drawing accelerometer-chart no. " + i);
-					accel = Accelerometer.window(accelerometer, from, from+timespan);
+					accel = Accelerometer.window(accelerometer, from, from
+							+ timespan);
 
 					Chart.drawChart(id, accel, annotations, events, 2, i++,
 							Accelerometer.class);
 
-					from+=timespan;
+					from += timespan;
 
 				} while (!accel.isEmpty());
 
