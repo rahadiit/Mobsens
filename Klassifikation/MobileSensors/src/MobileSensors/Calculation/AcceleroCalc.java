@@ -10,31 +10,40 @@ public class AcceleroCalc {
 	public static void accelerometerCalc(
 			Collection<Accelerometer> accelerometers, boolean removeFalse) {
 
-		if(removeFalse){
+		if (removeFalse) {
 			removeFalseValues(accelerometers);
 		}
-		
+
 		Accelerometer prevAccel = null;
 
 		for (Accelerometer accel : accelerometers) {
 			if (prevAccel != null) {
 				accel.setTimeDifference(prevAccel);
-				
-				setJerk(prevAccel,accel);
+
+				setJerk(prevAccel, accel);
 			}
 			prevAccel = accel;
 		}
-		
-		
 
 	}
 
 	private static void setJerk(Accelerometer prevAcc, Accelerometer accel) {
 
-		accel.setJerkX(getJerk(prevAcc, accel, 0));
-		accel.setJerkY(getJerk(prevAcc, accel, 1));
-		accel.setJerkZ(getJerk(prevAcc, accel, 2));
-		
+		// accel.setJerkX(accel.getX() - prevAcc.getX());
+		// accel.setJerkY(accel.getY() - prevAcc.getY());
+		// accel.setJerkZ(accel.getZ() - prevAcc.getZ());
+
+		// accel.setJerkX(prevAcc.getX() != 0 ? accel.getX() / prevAcc.getX() :
+		// 0);
+		// accel.setJerkY(prevAcc.getY() != 0 ? accel.getY() / prevAcc.getZ() :
+		// 0);
+		// accel.setJerkZ(prevAcc.getZ() != 0 ? accel.getY() / prevAcc.getZ() :
+		// 0);
+
+		 accel.setJerkX(getJerk(prevAcc, accel, 0));
+		 accel.setJerkY(getJerk(prevAcc, accel, 1));
+		 accel.setJerkZ(getJerk(prevAcc, accel, 2));
+
 	}
 
 	/**

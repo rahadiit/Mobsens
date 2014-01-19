@@ -25,9 +25,9 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 
 		// Auf Server einloggen
-		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
-		ArrayList<Recording> recordings = RESTful.recordingOutput(client,
-				URLS.LIST_RECORDINGS.getURL());
+//		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
+//		ArrayList<Recording> recordings = RESTful.recordingOutput(client,
+//				URLS.LIST_RECORDINGS.getURL());
 
 		Chart.drawSingleRecording(170, true, username, password);
 
