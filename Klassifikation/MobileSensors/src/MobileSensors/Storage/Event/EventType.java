@@ -13,6 +13,8 @@ public enum EventType {
 	
 	BRAKING,
 	
+	DODGE,
+	
 	JERK;
 
 	
