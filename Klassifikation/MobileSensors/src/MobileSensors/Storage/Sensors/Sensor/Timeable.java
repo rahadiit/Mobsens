@@ -32,8 +32,29 @@ public abstract class Timeable {
 	public long getTimeDifference(Timeable t) {
 		long time = this.getTime() - t.getTime();
 		time = Math.abs(time);
-		
+
 		return time;
+	}
+
+	public static <T extends Timeable> Collection<Collection<T>> window(
+			Collection<T> list, long span) {
+		Collection<Collection<T>> result = new ArrayList<>();
+		
+		if (!list.isEmpty()) {
+			ArrayList<T> alist = new ArrayList<>(list);
+
+			long timeFrom = alist.get(0).getTime();
+			Collection<T> window;
+			do {
+				window = window(list, timeFrom, timeFrom + span);
+				if (!window.isEmpty())
+					result.add(window);
+				timeFrom += span;
+
+			} while (!window.isEmpty());
+		}
+		return result;
+
 	}
 
 	/**
