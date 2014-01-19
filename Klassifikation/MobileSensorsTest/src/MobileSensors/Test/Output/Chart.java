@@ -25,7 +25,7 @@ import com.sun.jersey.api.client.Client;
 
 import MobileSensors.Calculation.AcceleroCalc;
 import MobileSensors.Calculation.LocationCalc;
-import MobileSensors.Classifiers.DetectBreaking;
+import MobileSensors.Classifiers.DetectBraking;
 import MobileSensors.Classifiers.DetectJerk;
 import MobileSensors.Classifiers.DetectStanding;
 import MobileSensors.Storage.Event.Event;
@@ -92,7 +92,7 @@ public class Chart {
 		if (x) {
 			if (jerk)
 				series.add(ChartData.accelData("JerkX", values, X, true));
-			//series.add(ChartData.accelData("X", values, X, false));
+			series.add(ChartData.accelData("X", values, X, false));
 		}
 		if (y) {
 			if (jerk)
@@ -181,7 +181,7 @@ public class Chart {
 						(Collection<Accelerometer>) values, true);
 				// alle achsen
 				// plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values);
-				// nur y achse
+				// nur x achse
 				plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values,
 						true, false, false, false);
 
@@ -240,6 +240,7 @@ public class Chart {
 			acceleroCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
 					SensorE.LINEAR_ACCELERATIONS);
 		}
+
 		if (locationCSV != null && annotationCSV != null && acceleroCSV != null) {
 
 			ArrayList<Location> locations = CSV.csvToSensor(locationCSV,
@@ -252,24 +253,8 @@ public class Chart {
 						Accelerometer.class);
 
 			}
-			// Ausgabe der Start- und Endzeit
-			// printStartStop(locations);
-
 			// Berechnungen auf dem Locations-Array
 			LocationCalc.locationCalc(locations);
-
-			// System.out.println("id: "
-			// + id
-			// + "disFusionSum: "
-			// + locations.get(locations.size() - 1)
-			// .getDistanceFusionSum());
-			// System.out.println("id: "
-			// + id
-			// + "disSumCo: "
-			// + locations.get(locations.size() - 1)
-			// .getDistanceSumCalcCo());
-
-			// printCalcData(locations);
 
 			// Ausfuerung der Event-Erkennung
 			ArrayList<Event> events = allEvents(locations);
@@ -303,7 +288,7 @@ public class Chart {
 	private static ArrayList<Event> allEvents(ArrayList<Location> locations) {
 
 		ArrayList<Event> events = new DetectStanding(locations).getEvents();
-		events.addAll(new DetectBreaking(locations).getEvents());
+		events.addAll(new DetectBraking(locations).getEvents());
 		events.addAll(new DetectJerk(locations).getEvents());
 
 		return events;
