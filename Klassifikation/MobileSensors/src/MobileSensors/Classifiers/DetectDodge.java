@@ -21,11 +21,10 @@ public class DetectDodge implements EventClassifier {
 		ArrayList<Event> events = new ArrayList<Event>();
 
 		System.out.println(data.size());
-		
+
 		long span = 600;// 0,6sek
 		for (int i = 0; i < data.size() - 1; i++) {
 
-			
 			long time = data.get(i).getTime();
 			ArrayList<Accelerometer> accel = new ArrayList<>();
 			accel = (ArrayList<Accelerometer>) Accelerometer.window(data, time,
@@ -100,16 +99,16 @@ public class DetectDodge implements EventClassifier {
 							// "mD "+maximalDiff);
 						}
 					}
-					System.out.println("max diff " +data.get(i).getTime() + "  "+maximalDiff);
-					
+					// System.out.println("max diff " +data.get(i).getTime() +
+					// "  "+maximalDiff);
+
 				}
-						
+
 				// wenn alle werte kleiner||groesser sind && die differenz
 				// zum anfangs-punkt sehr hoch ist
 
 				if (Math.abs(maximalDiff) >= 7) {
-//					System.out.println("");
-					
+					// System.out.println("");
 
 					// neues Intervall erstellen welches nach den getesten
 					// werten anfaeng und auch eine halbe sekunde dauert
@@ -138,57 +137,56 @@ public class DetectDodge implements EventClassifier {
 						}
 					}
 
-//					if (foundValue) {
-//						
-//						System.out.println("End-wert wurde auch gefunden");
-//						
-//						ArrayList<Accelerometer> complete = new ArrayList<>();
-//						complete.addAll(accel);
-//						complete.addAll(accel2);
-//						
-//						System.out.println("complete" +complete.size());
-//
-//						for (Accelerometer a : complete) {
-//							a.setInterestedAxis(Axis.X);
-//						}
-//
-//						try {
-//							@SuppressWarnings("unchecked")
-//							double highestValue = Collections.max(complete)
-//									.getX();
-//							@SuppressWarnings("unchecked")
-//							double lowestValue = Collections.min(complete)
-//									.getX();
-//
-//							foundValue = Math.abs(highestValue - lowestValue) > 7;
-//
-//							if(!foundValue)
-//								System.out.println("abstand nicht gross genug");
-//							
-//							if (foundValue) {
-//								System.out.println("abschnitt1");
-//								for (Accelerometer a : accel) {
-//									System.out.println(a.getTime() + " :: "
-//											+ a.getX());
-//								}
-//								System.out.println("abschnitt2");
-//								for (Accelerometer a : accel2) {
-//									System.out.println(a.getTime() + " :: "
-//											+ a.getX());
-//								}
-//								System.out.println("");
-//							}
-//
-//						} catch (Exception e) {
-//							e.printStackTrace();
-//						}
-//					}else{
-//						System.out.println("endwert wurde nicht gefunden");
-//					}
+					// if (foundValue) {
+					//
+					// System.out.println("End-wert wurde auch gefunden");
+					//
+					// ArrayList<Accelerometer> complete = new ArrayList<>();
+					// complete.addAll(accel);
+					// complete.addAll(accel2);
+					//
+					// System.out.println("complete" +complete.size());
+					//
+					// for (Accelerometer a : complete) {
+					// a.setInterestedAxis(Axis.X);
+					// }
+					//
+					// try {
+					// @SuppressWarnings("unchecked")
+					// double highestValue = Collections.max(complete)
+					// .getX();
+					// @SuppressWarnings("unchecked")
+					// double lowestValue = Collections.min(complete)
+					// .getX();
+					//
+					// foundValue = Math.abs(highestValue - lowestValue) > 7;
+					//
+					// if(!foundValue)
+					// System.out.println("abstand nicht gross genug");
+					//
+					// if (foundValue) {
+					// System.out.println("abschnitt1");
+					// for (Accelerometer a : accel) {
+					// System.out.println(a.getTime() + " :: "
+					// + a.getX());
+					// }
+					// System.out.println("abschnitt2");
+					// for (Accelerometer a : accel2) {
+					// System.out.println(a.getTime() + " :: "
+					// + a.getX());
+					// }
+					// System.out.println("");
+					// }
+					//
+					// } catch (Exception e) {
+					// e.printStackTrace();
+					// }
+					// }else{
+					// System.out.println("endwert wurde nicht gefunden");
+					// }
 
 					if (foundValue) {
-						
-						
+
 						// i kann auf letzten Punkt des Intervalls
 						// gesetzt
 						// werden
@@ -201,7 +199,7 @@ public class DetectDodge implements EventClassifier {
 			}
 
 		}
-		//System.out.println(events.size() + " dodges found");
+		// System.out.println(events.size() + " dodges found");
 		return events;
 	}
 }
