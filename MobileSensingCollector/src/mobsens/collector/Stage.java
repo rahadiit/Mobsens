@@ -13,7 +13,6 @@ import mobsens.collector.intents.IntentUpload;
 import mobsens.collector.util.Dialogs;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
