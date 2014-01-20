@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import MobileSensors.Storage.Sensors.Accelerometer;
+import MobileSensors.Enums.*;
 
 public class AcceleroCalc {
 
@@ -40,9 +41,9 @@ public class AcceleroCalc {
 		// accel.setJerkZ(prevAcc.getZ() != 0 ? accel.getY() / prevAcc.getZ() :
 		// 0);
 
-		 accel.setJerkX(getJerk(prevAcc, accel, 0));
-		 accel.setJerkY(getJerk(prevAcc, accel, 1));
-		 accel.setJerkZ(getJerk(prevAcc, accel, 2));
+		accel.setJerkX(getJerk(prevAcc, accel, 0));
+		accel.setJerkY(getJerk(prevAcc, accel, 1));
+		accel.setJerkZ(getJerk(prevAcc, accel, 2));
 
 	}
 
@@ -110,4 +111,38 @@ public class AcceleroCalc {
 		}
 	}
 
+	private static Accelerometer lowestValue(Collection<Accelerometer> data,
+			Axis ax) {
+
+		Accelerometer lowestValue = null;
+
+		for (Accelerometer accel : data) {
+
+			if (lowestValue == null)
+				lowestValue = accel;
+			else if (accel.getAxis(ax) < lowestValue.getAxis(ax))
+				lowestValue = accel;
+
+		}
+
+		return lowestValue;
+	}
+	
+//	private static Accelerometer lowestValue(Collection<Accelerometer> data,
+//			Axis ax) {
+//
+//		Accelerometer lowestValue = null;
+//
+//		for (Accelerometer accel : data) {
+//
+//			if (lowestValue == null)
+//				lowestValue = accel;
+//			else if (accel.getAxis(ax) < lowestValue.getAxis(ax))
+//				lowestValue = accel;
+//
+//		}
+//
+//		return lowestValue;
+//	}
+	
 }
