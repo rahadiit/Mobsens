@@ -43,7 +43,6 @@ public class Uploader extends IntentService
 		final Serializable extra_file = request.getSerializableExtra(IntentUpload.EXTRA_FILE);
 		final String extra_contentType = request.getStringExtra(IntentUpload.EXTRA_CONTENT_TYPE);
 		final String extra_acceptType = request.getStringExtra(IntentUpload.EXTRA_ACCEPT_TYPE);
-		final boolean extra_consume = request.getBooleanExtra(IntentUpload.EXTRA_CONSUME, true);
 
 		// Parameter erstellen
 		final String handle = extra_handle;
@@ -54,7 +53,6 @@ public class Uploader extends IntentService
 		final File file = (File) extra_file;
 		final String contentType = extra_contentType;
 		final String acceptType = extra_acceptType;
-		final boolean consume = extra_consume;
 
 		Logging.log(this, "Uploader", handle, destination + " <- " + file);
 
@@ -131,12 +129,6 @@ public class Uploader extends IntentService
 
 				// Klienten beenden
 				httpClient.getConnectionManager().shutdown();
-
-				// Optional hochgeladene Datei löschen
-				if (consume)
-				{
-					file.delete();
-				}
 			}
 		}
 		catch (IOException e)

@@ -24,10 +24,8 @@ public class IntentUpload
 
 	public static final String EXTRA_ACCEPT_TYPE = "acceptType";
 
-	public static final String EXTRA_CONSUME = "consume";
-
 	public static void startService(ContextWrapper contextWrapper, String handle, String login, String loginUser, String loginPass, String destination, File file, String contentType,
-			String acceptType, boolean consume)
+			String acceptType)
 	{
 		final Intent intent = new Intent(contextWrapper, Uploader.class);
 
@@ -39,7 +37,6 @@ public class IntentUpload
 		intent.putExtra(EXTRA_FILE, file);
 		intent.putExtra(EXTRA_CONTENT_TYPE, contentType);
 		intent.putExtra(EXTRA_ACCEPT_TYPE, acceptType);
-		intent.putExtra(EXTRA_CONSUME, consume);
 
 		contextWrapper.startService(intent);
 	}

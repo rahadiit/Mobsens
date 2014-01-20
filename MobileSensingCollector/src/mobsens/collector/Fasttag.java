@@ -4,6 +4,7 @@ import java.util.Date;
 
 import mobsens.collector.intents.IntentAnnotation;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,5 +41,36 @@ public class Fasttag extends Activity
 				IntentAnnotation.sendBroadcast(Fasttag.this, new Date(), ((EditText) findViewById(R.id.fasttag_value)).getEditableText().toString());
 			}
 		});
+
+		final SharedPreferences sp = getSharedPreferences("fasttag", MODE_PRIVATE);
+
+		((EditText) findViewById(R.id.fasttag_value)).setText(sp.getString(R.id.fasttag_value + "text", ""));
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+
+		final SharedPreferences sp = getSharedPreferences("fasttag", MODE_PRIVATE);
+		final SharedPreferences.Editor spe = sp.edit();
+		spe.putString(R.id.fasttag_value + "text", ((EditText) findViewById(R.id.fasttag_value)).getText().toString());
+		spe.commit();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+
+		outState.putString(R.id.fasttag_value + "text", ((EditText) findViewById(R.id.fasttag_value)).getText().toString());
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState)
+	{
+		super.onRestoreInstanceState(savedInstanceState);
+
+		((EditText) findViewById(R.id.fasttag_value)).setText(savedInstanceState.getString(R.id.fasttag_value + "text"));
 	}
 }

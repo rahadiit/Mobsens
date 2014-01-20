@@ -71,7 +71,14 @@ public abstract class FileStreamingConsumer<Item> implements Consumer<Item>, Dri
 
 		try
 		{
-			fileOutputStream = new FileOutputStream(new File(contextWrapper.getFilesDir(), location), true);
+			// File holen
+			final File file = new File(contextWrapper.getFilesDir(), location);
+
+			// Ordner, der die File enthählt, erstellen
+			file.getParentFile().mkdirs();
+
+			// Append-Öffnen
+			fileOutputStream = new FileOutputStream(file, true);
 
 			redirect(fileOutputStream);
 		}

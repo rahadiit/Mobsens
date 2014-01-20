@@ -8,5 +8,13 @@
         android:id="@+id/action_tag"
         android:orderInCategory="90"
         android:title="@string/action_tag"/>
+    <item
+        android:id="@+id/action_map"
+        android:orderInCategory="90"
+        android:title="@string/action_map"/>
+    <item
+        android:id="@+id/action_stage"
+        android:orderInCategory="90"
+        android:title="@string/action_stage"/>
 
 </menu>

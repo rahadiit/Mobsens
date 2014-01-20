@@ -4,12 +4,19 @@
     <string name="app_name">Collector</string>
     <string name="action_settings">Settings</string>
     <string name="action_tag">Tag</string>
+    <string name="action_map">Map</string>
+    <string name="action_stage">Stage</string>
     <string name="service_name__collector">Collector Service</string>
     <string name="service_name__uploader">Uploader Service</string>
-    
+    <string name="service_name__externalizer">Externalizer Service</string>
     <string name="fasttag_topLeftValue">Bremsen</string>
-	<string name="fasttag_topRightValue">Bodenevent einzeln</string>
-	<string name="fasttag_bottomLeftValue">Bodenevent dauerhaft</string>
-	<string name="fasttag_bottomRightValue">Ausweichmanöver</string>
+    <string name="fasttag_topRightValue">Bodenevent einzeln</string>
+    <string name="fasttag_bottomLeftValue">Bodenevent dauerhaft</string>
+    <string name="fasttag_bottomRightValue">Ausweichmanöver</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_stage">Stage</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_viewer">Viewer</string>
 
 </resources>

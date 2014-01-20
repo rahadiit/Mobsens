@@ -23,6 +23,7 @@ public class CSV {
 	public static <T extends Sensor> ArrayList<T> csvToSensor(
 			ArrayList<String[]> input, Class<T> type) {
 		ArrayList<T> result = new ArrayList<>();
+		
 		// TODO: rausnehmen wenn im Client gefixt
 		input = FileInput.deleteDuplicates(input);
 
@@ -36,10 +37,17 @@ public class CSV {
 
 				try {
 					if (type == Location.class) {
+						try{
 						result.add((T) new Location(parseLong(record[0]),
 								parseDouble(record[1]), parseDouble(record[2]),
 								parseDouble(record[3]), parseDouble(record[4]),
 								parseDouble(record[5]), parseDouble(record[6])));
+						}catch(Exception e){
+							result.add((T) new Location(parseLong(record[0]),
+									parseDouble(record[1]), parseDouble(record[2]),
+									0, parseDouble(record[3]),
+									parseDouble(record[4]), parseDouble(record[5])));
+						}
 					} else if (type == Annotation.class) {
 						result.add((T) new Annotation(parseLong(record[0]),
 								record[1]));

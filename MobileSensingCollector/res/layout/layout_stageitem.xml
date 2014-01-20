@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/stage_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="3dp"
+        android:layout_toLeftOf="@+id/stage_view"
+        android:text="Name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/stage_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/stage_name"
+        android:layout_margin="3dp"
+        android:layout_toLeftOf="@+id/stage_view"
+        android:text="Size" />
+
+    <Button
+        android:id="@+id/stage_toLocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/stage_size"
+        android:layout_margin="3dp"
+        android:text="To local" />
+
+    <Button
+        android:id="@+id/stage_toWeb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stage_size"
+        android:layout_margin="3dp"
+        android:layout_toRightOf="@id/stage_toLocal"
+        android:text="To web" />
+
+    <Button
+        android:id="@+id/stage_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/stage_size"
+        android:layout_margin="3dp"
+        android:text="Remove" />
+
+    <TextView
+        android:id="@+id/stage_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stage_size"
+        android:layout_margin="3dp"
+        android:layout_toLeftOf="@+id/stage_remove"
+        android:layout_toRightOf="@+id/stage_toWeb"
+        android:text="Time" />
+
+    <TextView
+        android:id="@+id/stage_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/stage_remove"
+        android:layout_margin="3dp"
+        android:layout_toLeftOf="@+id/stage_remove"
+        android:layout_toRightOf="@+id/stage_toWeb"
+        android:text="Date" />
+
+    <Button
+        android:id="@+id/stage_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="3dp"
+        android:text="View" />
+
+</RelativeLayout>
