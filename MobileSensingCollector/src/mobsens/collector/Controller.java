@@ -1,19 +1,14 @@
 package mobsens.collector;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.util.Date;
 
 import mobsens.collector.communications.ConnectingActivity;
 import mobsens.collector.drivers.messaging.CollectorStatusDriver;
+import mobsens.collector.drivers.messaging.ExternalizeResponseDriver;
 import mobsens.collector.drivers.messaging.LogDriver;
 import mobsens.collector.drivers.messaging.UploadResponseDriver;
 import mobsens.collector.intents.IntentStartCollector;
 import mobsens.collector.intents.IntentStopCollector;
-import mobsens.collector.intents.IntentUpload;
 import mobsens.collector.util.Logging;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 public class Controller extends ConnectingActivity
@@ -33,16 +27,15 @@ public class Controller extends ConnectingActivity
 
 	private final UploadResponseDriver uploadResponseDriver;
 
+	private final ExternalizeResponseDriver externalizeResponseDriver;
+
 	private final CollectorStatusDriver collectorStatusDriver;
 
 	private CollectorIPC collectorIPC;
 
 	private TextView textViewControllerLog;
 	private TextView textViewControllerTitle;
-	private Button buttonControllerSend;
 	private Button buttonControllerStartStop;
-	private CheckBox checkBoxControllerLocal;
-	private CheckBox checkBoxControllerWeb;
 
 	public Controller()
 	{
@@ -69,27 +62,16 @@ public class Controller extends ConnectingActivity
 			@Override
 			protected void onUploadResponse(String handle, Date startTime, Date endTime, long transmitted, String response, Throwable exception)
 			{
-				try
-				{
-					File file = new File(getExternalFilesDir(null), "responses/" + handle + ".response");
+				Logging.log(Controller.this, endTime, "Upload complete", handle, transmitted + " bytes transmitted");
+			}
+		};
 
-					file.getParentFile().mkdirs();
-
-					FileOutputStream fileOutputStream = new FileOutputStream(file, true);
-					PrintStream printStream = new PrintStream(fileOutputStream);
-
-					printStream.println(response);
-
-					printStream.close();
-					fileOutputStream.close();
-
-					Logging.log(Controller.this, endTime, "Upload complete", handle, transmitted + " bytes transmitted\r\nresponsefile written");
-				}
-				catch (IOException e)
-				{
-					Logging.log(Controller.this, e);
-				}
-
+		externalizeResponseDriver = new ExternalizeResponseDriver(this)
+		{
+			@Override
+			protected void onExternalizeResponse(String handle, Date startTime, Date endTime, long transmitted, Throwable exception)
+			{
+				Logging.log(Controller.this, endTime, "Externalize complete", handle, transmitted + " bytes transmitted");
 			}
 		};
 
@@ -118,8 +100,21 @@ public class Controller extends ConnectingActivity
 	{
 		switch (item.getItemId())
 		{
+
+		case R.id.action_settings:
+			startActivity(new Intent(getApplicationContext(), Settings.class));
+			return true;
+
 		case R.id.action_tag:
 			startActivity(new Intent(getApplicationContext(), Fasttag.class));
+			return true;
+
+		case R.id.action_map:
+			startActivity(new Intent(getApplicationContext(), Map.class));
+			return true;
+
+		case R.id.action_stage:
+			startActivity(new Intent(getApplicationContext(), Stage.class));
 			return true;
 
 		default:
@@ -133,18 +128,9 @@ public class Controller extends ConnectingActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_controller);
 
-		logDriver.start();
-
-		uploadResponseDriver.start();
-
-		collectorStatusDriver.start();
-
 		textViewControllerLog = (TextView) findViewById(R.id.controller_log);
 		textViewControllerTitle = (TextView) findViewById(R.id.controller_title);
-		checkBoxControllerLocal = (CheckBox) findViewById(R.id.controller_local);
-		checkBoxControllerWeb = (CheckBox) findViewById(R.id.controller_web);
 		buttonControllerStartStop = (Button) findViewById(R.id.controller_start_stop);
-		buttonControllerSend = (Button) findViewById(R.id.controller_send);
 
 		buttonControllerStartStop.setOnClickListener(new OnClickListener()
 		{
@@ -172,76 +158,18 @@ public class Controller extends ConnectingActivity
 			}
 		});
 
-		buttonControllerSend.setOnClickListener(new OnClickListener()
-		{
-
-			@Override
-			public void onClick(View v)
-			{
-				final boolean toLocal = checkBoxControllerLocal.isChecked();
-				final boolean toWeb = checkBoxControllerWeb.isChecked();
-				final byte[] cache;
-
-				if (toLocal)
-				{
-					cache = new byte[2048];
-				}
-				else
-				{
-					cache = null;
-				}
-
-				for (File file : new File(Controller.this.getFilesDir(), "wfj").listFiles())
-				{
-					if (toLocal)
-					{
-						File copy = new File(Controller.this.getExternalFilesDir(null), "wfj/" + file.getName());
-
-						copy.getParentFile().mkdirs();
-
-						try
-						{
-							FileOutputStream fileOutputStream = new FileOutputStream(copy);
-							FileInputStream fileInputStream = new FileInputStream(file);
-
-							int read;
-							while ((read = fileInputStream.read(cache)) > 0)
-							{
-								fileOutputStream.write(cache, 0, read);
-							}
-
-							fileInputStream.close();
-							fileOutputStream.close();
-						}
-						catch (IOException e)
-						{
-							Logging.log(Controller.this, "Could not create local copy of " + file.getName(), e.getMessage(), null);
-						}
-					}
-
-					Logging.log(Controller.this, "Uploading", file.getName(), null);
-
-					if (toWeb)
-					{
-						IntentUpload.startService(Controller.this, file.getName(), "http://mobilesensing.west.uni-koblenz.de/users/sign_in.json", "mlukas@gmx.net", "12345678",
-								"http://mobilesensing.west.uni-koblenz.de/recordings/upload", file, "application/text", "*/*", true);
-					}
-					else
-					{
-						file.delete();
-					}
-				}
-			}
-		});
+		logDriver.start();
+		uploadResponseDriver.start();
+		externalizeResponseDriver.start();
+		collectorStatusDriver.start();
 	}
 
 	@Override
 	protected void onDestroy()
 	{
 		logDriver.stop();
-
 		uploadResponseDriver.stop();
-
+		externalizeResponseDriver.stop();
 		collectorStatusDriver.stop();
 
 		super.onDestroy();
@@ -294,8 +222,6 @@ public class Controller extends ConnectingActivity
 
 		outState.putString(R.id.controller_log + "text", textViewControllerLog.getText().toString());
 		outState.putString(R.id.controller_title + "text", textViewControllerTitle.getText().toString());
-		outState.putBoolean(R.id.controller_local + "checked", checkBoxControllerLocal.isChecked());
-		outState.putBoolean(R.id.controller_web + "checked", checkBoxControllerWeb.isChecked());
 	}
 
 	@Override
@@ -305,7 +231,5 @@ public class Controller extends ConnectingActivity
 
 		textViewControllerLog.setText(savedInstanceState.getString(R.id.controller_log + "text"));
 		textViewControllerTitle.setText(savedInstanceState.getString(R.id.controller_title + "text"));
-		checkBoxControllerLocal.setChecked(savedInstanceState.getBoolean(R.id.controller_local + "checked"));
-		checkBoxControllerWeb.setChecked(savedInstanceState.getBoolean(R.id.controller_web + "checked"));
 	}
 }

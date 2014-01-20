@@ -1,19 +1,20 @@
 package MobileSensors.Storage.Sensors.Sensor;
 
-public abstract class Sensor {
+/**
+ * 
+ * Smartphone Seonsor Abstraction
+ * 
+ * @author henny, thomas, max
+ *
+ */
+public abstract class Sensor extends Timeable{
 
-	private long time;
-	
+	/**
+	 * 
+	 * @param time
+	 */
 	public Sensor(long time){
-		this.time=time;
-	}
-
-	public void setTime(long time) {
-		this.time = time;
-	}
-
-	public long getTime() {
-		return this.time;
+		super.setTime(time);
 	}
 
 }

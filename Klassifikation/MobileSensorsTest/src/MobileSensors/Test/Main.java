@@ -1,28 +1,21 @@
 package MobileSensors.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
-import org.jfree.chart.ChartUtilities;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.XYPlot;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.sun.jersey.api.client.Client;
 
-import MobileSensors.Calculation.GPS;
-import MobileSensors.Classifiers.DetectBreaking;
-import MobileSensors.Classifiers.DetectStanding;
-import MobileSensors.Storage.Event.Event;
-import MobileSensors.Storage.Sensors.Accelerometer;
-import MobileSensors.Storage.Sensors.Annotation;
 import MobileSensors.Storage.Sensors.Location;
+import MobileSensors.Test.Data.Recording;
 import MobileSensors.Test.Data.SensorE;
 import MobileSensors.Test.Data.URLS;
 import MobileSensors.Test.Input.CSV;
 import MobileSensors.Test.Input.RESTful;
 import MobileSensors.Test.Output.Chart;
-
 
 public class Main {
 
@@ -32,98 +25,66 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 
 		// Auf Server einloggen
-		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
-		int id = 92;
+//		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
+//		ArrayList<Recording> recordings = RESTful.recordingOutput(client,
+//				URLS.LIST_RECORDINGS.getURL());
 
-		// Laed verschiedene CSV-Dateien vom Server
-//		String locationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
-//				SensorE.LOCATIONS);
-		String annotationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
-				SensorE.ANNOTATIONS);
-		String acceleroCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
-				SensorE.ACCELEROMETERS);
+		Chart.drawSingleRecording(170, true, username, password);
 
-		
+		// Alle Charts aus dem Bremsvorgang-Test
+		// for (int i = 0; i < recordings.size(); i++) {
+		// int id = recordings.get(i).getId();
+		// if (id >= 139 && id<=179) {
+		// System.out.println("...processing id: " + id);
+		// Chart.drawSingleRecording(id, true, username, password);
+		// }
+		// }
+		// Chart.drawAllRecordings(recordings, username, password);
+		// Chart.drawSingleRecording(186, false, username, password);
 
-		if ( annotationCSV != null && acceleroCSV != null) {
-			
-			//Die CSV-Dateien zu ArrayLists machen
-//			ArrayList<Location> locations = CSV.csvToSensor(locationCSV,
-//					Location.class);
-			
-			ArrayList<Location> locations = CSV.csvToLocation(new File("/Users/henny/Downloads/loc.csv"));
-			
-			
-			ArrayList<Annotation> annotations = CSV.csvToSensor(annotationCSV,
-					Annotation.class);
-			ArrayList<Accelerometer> accelerometer = CSV.csvToSensor(
-					acceleroCSV, Accelerometer.class);
-
-			double distance=0;
-			double speed=0;
-			double acceleration=0;
-			for(int i=1;i<locations.size();i++){
-				Location location  = locations.get(i);
-				Location prevLocation  = locations.get(i-1);
-				
-				double timeDelta = (location.getTime()-prevLocation.getTime())/1000;
-				
-				double singleDistance =GPS.distance(location,prevLocation);
-				
-				System.out.println("time "+timeDelta);
-				System.out.println("distance "+singleDistance);
-				distance += singleDistance;
-				
-				double actualSpeed =GPS.speed(singleDistance, timeDelta);
-				
-				System.out.println("speed: "+actualSpeed);
-				
-				double actualAcceleration = GPS.acceleration(speed, actualSpeed, timeDelta);
-				
-				double jerk = GPS.jerk(actualAcceleration, acceleration, timeDelta);
-				
-				
-				
-				acceleration=actualAcceleration;
-				speed= actualSpeed;
-			}
-			System.out.println("gesamtdistanz: "+distance);
-			
-			
-			//Ausfuerung der Event-Erkennung, anschliessend Ausgabe
-			 
-			ArrayList<Event> events = new DetectStanding(locations).getEvents();
-			events.addAll(new DetectBreaking(locations).getEvents());
-
-			/*
-			for (Event event : events) {
-				System.out.println(event.getTime() + " : "
-						+ event.getEventType().toString());
-			}*/
-
-			//Erstellung der Charts. Erst fuer Geschwindigkeit dann Acceleromter
-			//Annotations und Events werden eingeblendet
-			XYPlot speedplot = Chart.speedPlot(locations);
-			Chart.addAnnotations(annotations, speedplot);
-			Chart.addEvents(events, speedplot);
-			JFreeChart speedchart = new JFreeChart(speedplot);
-
-			ChartUtilities.saveChartAsPNG(new File("speedChart.png"),
-					speedchart, 3840, 1200);
-
-			
-			XYPlot accelplot = Chart.acceleroPlot(accelerometer);
-			
-			Chart.addAnnotations(annotations, accelplot);
-			Chart.addEvents(events, accelplot);
-			JFreeChart accelchart = new JFreeChart(accelplot);
-
-			ChartUtilities.saveChartAsPNG(new File("accelChart.png"),
-					accelchart, 3840, 1200);
-			
-			System.out.println("done");
-
-		}
+		System.out.println("done");
 
 	}
+
+	public static void printCalcData(Collection<Location> locations) {
+		for (Location location : locations) {
+			System.out.println(location.getJerkCalc() + "jerk vs jerkfusion "
+					+ location.getJerkFusion());
+		}
+
+		for (Location location : locations) {
+			System.out.println(location.getSpeed() + " Sensor vs Calc "
+					+ location.getSpeedCalcCo());
+		}
+
+		for (Location location : locations) {
+			System.out
+					.println(location.getDistanceCalcCo()
+							+ " SensorDist vs CalcDist "
+							+ location.getDistanceFusion());
+		}
+
+		for (Location location : locations) {
+			System.out.println(location.getDistanceSumCalcCo()
+					+ " SensorDistSum vs CalcDistSum "
+					+ location.getDistanceFusionSum());
+		}
+	}
+
+	public static void printStartStop(ArrayList<Location> locations) {
+		System.out.println("start: "
+				+ DateFormatUtils.format(new Date(locations.get(0).getTime()),
+						"MM-dd HH:mm:ss"));
+		System.out
+				.println("stop: "
+						+ DateFormatUtils.format(
+								new Date(locations.get(locations.size() - 1)
+										.getTime()), "HH:mm:ss"));
+	}
 }
+// ALTER CODE
+
+// Die CSV-Dateien zu ArrayLists
+
+// ArrayList<Location> locations = CSV.csvToLocation(new
+// File("/Users/henny/Downloads/locspazieren.csv"));
