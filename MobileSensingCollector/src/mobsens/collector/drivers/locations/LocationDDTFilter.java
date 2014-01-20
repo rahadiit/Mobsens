@@ -26,22 +26,24 @@ public class LocationDDTFilter extends BasicGenerator<LocationOutput> implements
 	{
 		if (!hasConsumer()) return;
 
-		try
+		if (lastTime != null)
 		{
-			if (lastTime != null)
+			final double dt = (item.time.getTime() - lastTime.getTime()) / 1000.0;
+			final double dx = Calculations.haversineDistance(lastLon, lastLat, item.longitude, item.latitude);
+
+			if (Math.abs(dx / dt) <= maxDDT)
 			{
-				final double dt = (item.time.getTime() - lastTime.getTime()) / 1000.0;
-				final double dx = Calculations.haversineDistance(lastLon, lastLat, item.longitude, item.latitude);
+				offer(item);
 
-				if (Math.abs(dx / dt) <= maxDDT)
-				{
-					offer(item);
-
-				}
+				lastTime = item.time;
+				lastLon = item.longitude;
+				lastLat = item.latitude;
 			}
 		}
-		finally
+		else
 		{
+			offer(item);
+
 			lastTime = item.time;
 			lastLon = item.longitude;
 			lastLat = item.latitude;

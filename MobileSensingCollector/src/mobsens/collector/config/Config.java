@@ -15,9 +15,9 @@ public interface Config
 	public static final double FREQUENCY_LOCATION = 5.0;
 
 	/**
-	 * Auf Erdbeschleunigung innerhalb einer hundertstel Sekunde
+	 * Auf Erdbeschleunigung innerhalb einer Millisekunde
 	 */
-	public static final double ACCELEROMETER_MAX_DDT = 10.0f / 0.01;
+	public static final double ACCELEROMETER_MAX_DDT = 10.0f / 0.001;
 
 	/**
 	 * Ungefähr 250km/h

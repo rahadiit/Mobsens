@@ -23,32 +23,35 @@ public class AccelerationDDTFilter extends BasicGenerator<SensorOutput> implemen
 	{
 		if (!hasConsumer()) return;
 
-		try
+		if (lastTime != null)
 		{
-			if (lastTime != null)
+			final double dt = (item.time.getTime() - lastTime.getTime()) / 1000.0;
+			boolean success = true;
+			double acc = 0.0;
+
+			for (int i = 0; i < Math.min(item.values.length, lastValues.length); i++)
 			{
-				final double dt = (item.time.getTime() - lastTime.getTime()) / 1000.0;
-				boolean success = true;
+				final double dx = item.values[i] - lastValues[i];
 
-				for (int i = 0; i < Math.min(item.values.length, lastValues.length); i++)
+				acc += dx * dx;
+
+				if (acc / (dt * dt) > (maxDDT * maxDDT))
 				{
-					final float dx = item.values[i] - lastValues[i];
-
-					if (Math.abs(dx / dt) > maxDDT)
-					{
-						success = false;
-						break;
-					}
-				}
-
-				if (success)
-				{
-					offer(item);
+					success = false;
+					break;
 				}
 			}
+
+			if (success)
+			{
+				offer(item);
+				lastTime = item.time;
+				lastValues = item.values;
+			}
 		}
-		finally
+		else
 		{
+			offer(item);
 			lastTime = item.time;
 			lastValues = item.values;
 		}

@@ -24,7 +24,7 @@ public class LocationNoPSDriver extends LocationDriver
 				final double longitude = location.getLongitude();
 				final Float accuracy = location.hasAccuracy() ? location.getAccuracy() : null;
 				final Double altitude = location.hasAltitude() ? location.getAltitude() : null;
-				final Float bearing = location.hasBearing() ? location.getBearing() : null;
+				final Float bearing = location.hasBearing() && location.getBearing() > 0.0 && location.getBearing() <= 360.0 ? location.getBearing() : null;
 				final Float speed = location.hasSpeed() ? location.getSpeed() : null;
 
 				// Item erstellen
