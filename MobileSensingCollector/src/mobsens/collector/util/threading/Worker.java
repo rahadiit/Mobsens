@@ -1,19 +1,21 @@
 package mobsens.collector.util.threading;
 
+import java.util.concurrent.Exchanger;
+
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
 public class Worker
 {
-	private static final int FIELD_WAIT_TIME = 10;
-
 	private Looper looper;
 
 	private Handler handler;
 
 	public Worker()
 	{
+		final Exchanger<Void> gate = new Exchanger<Void>();
+
 		new Thread()
 		{
 			@Override
@@ -34,20 +36,26 @@ public class Worker
 					}
 				};
 
+				try
+				{
+					gate.exchange(null);
+				}
+				catch (InterruptedException e)
+				{
+					Thread.currentThread().interrupt();
+				}
+
 				Looper.loop();
 			}
 		}.start();
 
-		while (handler == null)
+		try
 		{
-			try
-			{
-				Thread.sleep(FIELD_WAIT_TIME);
-			}
-			catch (InterruptedException e)
-			{
-				Thread.currentThread().interrupt();
-			}
+			gate.exchange(null);
+		}
+		catch (InterruptedException e)
+		{
+			Thread.currentThread().interrupt();
 		}
 	}
 
