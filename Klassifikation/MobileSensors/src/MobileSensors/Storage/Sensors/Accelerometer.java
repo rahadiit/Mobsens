@@ -1,5 +1,6 @@
 package MobileSensors.Storage.Sensors;
 
+import MobileSensors.Enums.Axis;
 import MobileSensors.Storage.Sensors.Sensor.Sensor;
 
 /**
@@ -9,9 +10,11 @@ import MobileSensors.Storage.Sensors.Sensor.Sensor;
  *         Accelerometer Data Model
  * 
  */
-public class Accelerometer extends Sensor {
+
+public class Accelerometer extends Sensor implements Comparable {
 
 	private double x, y, z, jerkX, jerkY, jerkZ;
+	private Axis interestedAxis = Axis.X;
 
 	/**
 	 * 
@@ -123,6 +126,43 @@ public class Accelerometer extends Sensor {
 
 		this.z = z;
 
+	}
+
+	public double getAxis(Axis a) {
+
+		if (a.equals(Axis.X)) {
+			return this.getX();
+		} else if (a.equals(Axis.Y)) {
+			return this.getY();
+		} else {
+			return this.getZ();
+		}
+
+	}
+
+	public Axis getInterestedAxis() {
+		return interestedAxis;
+	}
+
+	public void setInterestedAxis(Axis interestedAxis) {
+		this.interestedAxis = interestedAxis;
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+
+		if (arg0 instanceof Accelerometer) {
+			Accelerometer accelerometer = (Accelerometer) arg0;
+
+			if (this.getAxis(this.interestedAxis) < accelerometer
+					.getAxis(this.interestedAxis))
+				return -1;
+			else if (this.getAxis(this.interestedAxis) > accelerometer
+					.getAxis(this.interestedAxis))
+				return 1;
+		}
+
+		return 0;
 	}
 
 }
