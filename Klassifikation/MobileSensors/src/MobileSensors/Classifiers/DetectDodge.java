@@ -20,9 +20,12 @@ public class DetectDodge implements EventClassifier {
 	public ArrayList<Event> getEvents() {
 		ArrayList<Event> events = new ArrayList<Event>();
 
-		long span = 600;// 0,5sek
+		System.out.println(data.size());
+		
+		long span = 600;// 0,6sek
 		for (int i = 0; i < data.size() - 1; i++) {
 
+			
 			long time = data.get(i).getTime();
 			ArrayList<Accelerometer> accel = new ArrayList<>();
 			accel = (ArrayList<Accelerometer>) Accelerometer.window(data, time,
@@ -97,13 +100,16 @@ public class DetectDodge implements EventClassifier {
 							// "mD "+maximalDiff);
 						}
 					}
+					System.out.println("max diff " +data.get(i).getTime() + "  "+maximalDiff);
+					
 				}
+						
 				// wenn alle werte kleiner||groesser sind && die differenz
 				// zum anfangs-punkt sehr hoch ist
 
 				if (Math.abs(maximalDiff) >= 7) {
 //					System.out.println("");
-//					System.out.println("max diff hat gepasst" +data.get(i).getTime());
+					
 
 					// neues Intervall erstellen welches nach den getesten
 					// werten anfaeng und auch eine halbe sekunde dauert
