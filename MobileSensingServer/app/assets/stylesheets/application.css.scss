@@ -5,4 +5,6 @@ $link-color: blue;
 
 // import original bootstrap
 @import "twitter/bootstrap";
+// import of the leaflet css file
+@import url("http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css");
 body { padding-top: 60px; }
