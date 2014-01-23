@@ -24,24 +24,28 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 
-		// Auf Server einloggen
-//		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
-//		ArrayList<Recording> recordings = RESTful.recordingOutput(client,
-//				URLS.LIST_RECORDINGS.getURL());
+		for (int j = 1; j < 15; j++) {
 
-		Chart.drawSingleRecording(170, true, username, password);
+			// Auf Server einloggen
+			Client client = RESTful.login(URLS.LOGIN.getURL(), username,
+					password);
+			ArrayList<Recording> recordings = RESTful.recordingOutput(client,
+					URLS.LIST_RECORDINGS.getURL() + "?page=" + j);
 
-		// Alle Charts aus dem Bremsvorgang-Test
-		// for (int i = 0; i < recordings.size(); i++) {
-		// int id = recordings.get(i).getId();
-		// if (id >= 139 && id<=179) {
-		// System.out.println("...processing id: " + id);
-		// Chart.drawSingleRecording(id, true, username, password);
-		// }
-		// }
-		// Chart.drawAllRecordings(recordings, username, password);
-		// Chart.drawSingleRecording(186, false, username, password);
+			// Chart.drawSingleRecording(170, true, username, password);
 
+			// Alle Charts aus dem Bremsvorgang-Test
+			for (int i = 0; i < recordings.size(); i++) {
+				int id = recordings.get(i).getId();
+				if (id == 178) {
+					System.out.println("...processing id: " + id);
+					Chart.drawSingleRecording(recordings.get(i), true,
+							username, password);
+				}
+			}
+			// Chart.drawAllRecordings(recordings, username, password);
+			// Chart.drawSingleRecording(299, true, username, password);
+		}
 		System.out.println("done");
 
 	}

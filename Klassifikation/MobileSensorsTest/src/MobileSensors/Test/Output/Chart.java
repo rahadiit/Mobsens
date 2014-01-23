@@ -93,22 +93,22 @@ public class Chart {
 		if (x) {
 			if (jerk)
 				series.add(ChartData.accelData("JerkX", values, X, true));
-			else
+			//else
 				series.add(ChartData.accelData("X", values, X, false));
 		}
 		if (y) {
 			if (jerk)
 				series.add(ChartData.accelData("JerkY", values, Y, true));
-			else
+			//else
 				series.add(ChartData.accelData("Y", values, Y, false));
 		}
 		if (z) {
 			if (jerk)
 				series.add(ChartData.accelData("JerkZ", values, Z, true));
-			else
+			//else
 				series.add(ChartData.accelData("Z", values, Z, false));
 		}
-		return plot(dataset(series), "time", "speed", values);
+		return plot(dataset(series), "Time", "Accelerometer Value", values);
 	}
 
 	public static XYPlot allSpeedPlot(ArrayList<Location> values) {
@@ -150,11 +150,20 @@ public class Chart {
 		// new NumberAxis(yAxis), dot);
 		//
 		// new XYSplineRenderer()
+
 		XYPlot plot = new XYPlot(dataset, new NumberAxis(xAxis),
 				new NumberAxis(yAxis), new XYLineAndShapeRenderer());
-		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
-		domain.setRange(values.get(0).getTime(), values.get(values.size() - 1)
+		NumberAxis xDomain = (NumberAxis) plot.getDomainAxis();
+		ValueAxis yDomain = plot.getRangeAxis();
+
+		if (yAxis.toLowerCase().startsWith("accelero")) {
+
+			//yDomain.setRange(-3, 3);
+
+		}
+		xDomain.setRange(values.get(0).getTime(), values.get(values.size() - 1)
 				.getTime());
+
 		return plot;
 
 	}
@@ -163,7 +172,7 @@ public class Chart {
 	 * 0 == speed 1 == distance 2 == accelerometer
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends Sensor> void drawChart(int id,
+	public static <T extends Sensor> void drawChart(Recording id,
 			Collection<T> values, ArrayList<Annotation> annotations,
 			ArrayList<Event> events, int method, int prefix, Class<T> type) {
 
@@ -186,10 +195,13 @@ public class Chart {
 				// plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values);
 				// nur x achse
 				plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values,
-						true, false, false, false);
+						true, false, false, true);
 
 				filename = "linearAccelerometerValues";
 				x = 50000;
+
+				x = values.size() * 6;
+				x = x > 50000 ? 50000 : x;
 			}
 
 			filename = prefix != 0 ? filename + prefix : filename;
@@ -199,13 +211,13 @@ public class Chart {
 
 			JFreeChart speedchart = new JFreeChart(plot);
 
-			int length = (id + "").length();
+			int length = (id.getId() + "").length();
 			String cutMeOf = "0000";
 			int cut = (4 - length) < 0 ? 0 : 4 - length;
 			cutMeOf = cutMeOf.substring(0, cut);
 
 			try {
-				ChartUtilities.saveChartAsPNG(new File("charts/" + cutMeOf + id
+				ChartUtilities.saveChartAsPNG(new File("charts/" + cutMeOf + id.getId() + " "+id.getTitle()
 						+ " " + filename + ".png"), speedchart, x, y);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -220,14 +232,13 @@ public class Chart {
 		int i = 1;
 		for (Recording recording : recordings) {
 			System.out.println("doing " + i++ + " of " + recordings.size());
-			int id = recording.getId();
-			Chart.drawSingleRecording(id, false, username, password);
+			Chart.drawSingleRecording(recording, false, username, password);
 
 		}
 
 	}
 
-	public static void drawSingleRecording(int id, boolean accelero,
+	public static void drawSingleRecording(Recording id, boolean accelero,
 			String username, String password) {
 		String acceleroCSV = "";
 		String locationCSV = "";
@@ -235,12 +246,12 @@ public class Chart {
 		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
 
 		// Laed verschiedene CSV-Dateien vom Server
-		locationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+		locationCSV = RESTful.getCSV(client, id.getId(), URLS.CSV.getURL(),
 				SensorE.LOCATIONS);
-		annotationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+		annotationCSV = RESTful.getCSV(client, id.getId(), URLS.CSV.getURL(),
 				SensorE.ANNOTATIONS);
 		if (accelero) {
-			acceleroCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+			acceleroCSV = RESTful.getCSV(client, id.getId(), URLS.CSV.getURL(),
 					SensorE.LINEAR_ACCELERATIONS);
 		}
 
@@ -274,15 +285,35 @@ public class Chart {
 			// Location.class);
 			if (accelero && !accelerometer.isEmpty()) {
 
+				long timespanAfter = 5000; // 3sek
+				long timespanBefore = 3000; // 0.5sek
+
+				int i = 1;
+				for (Event ev : events) {
+
+					if (ev.getEventType() == EventType.DODGE) {
+
+						Collection<Accelerometer> afterDodge = Accelerometer
+								.window(accelerometer, ev.getTime()
+										- timespanBefore, ev.getTime()
+										+ timespanAfter);
+
+						Chart.drawChart(id, afterDodge, annotations, events, 2,
+								i++, Accelerometer.class);
+
+					}
+
+				}
+
 				long timespan = 1000 * 60 * 2; // 2min
 
 				Collection<Collection<Accelerometer>> windows = Accelerometer
 						.window(accelerometer, timespan);
 
-				int i = 1;
+				int j = i+1;
 				for (Collection<Accelerometer> accel : windows) {
-					System.out.println("drawing accelerometer-chart no. " + i);
-					Chart.drawChart(id, accel, annotations, events, 2, i++,
+					System.out.println("drawing accelerometer-chart no. " + j);
+					Chart.drawChart(id, accel, annotations, events, 2, j++,
 							Accelerometer.class);
 				}
 
