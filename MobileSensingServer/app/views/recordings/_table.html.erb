@@ -1,0 +1,29 @@
+<table class="table table-striped">
+        <tr>
+                <th>Start Time</th>
+                <th>Duration (hh:mm:ss)</th>
+                <th>Title</th>
+                <th></th>
+                <th></th>
+                <th></th>
+<% if extended then %>
+                <th>User</th>
+                <th>Device</th>
+<% end %>
+        </tr>
+
+        <% recordings.each do |recording| %>
+        <tr>
+                <td><span class="glyphicon glyphicon-calendar"></span> <%= recording.time_start.strftime("%Y-%m-%d %H:%M") unless recording.time_start.nil? %></td>
+                <td><span class="glyphicon glyphicon-time"></span> <% if recording.get_duration.nil? then %>0<% else %><%= recording.get_duration %><% end %></td>
+                <td><span class="glyphicon glyphicon-comment"></span> <%= recording.title %></td>
+                <td><%= render :partial => "shared/link_button", :locals => { link: recording_path(recording), caption:'Overview', icon:'list'} %></td>
+                <td><%= render :partial => "shared/link_button", :locals => { link: edit_recording_path(recording), caption:'Edit', icon:'edit'} %></td>
+                <td><%= render :partial => "shared/link_button", :locals => { link: recording_path(recording), caption:'Delete', icon:'trash', confirm: true, method:'delete'} %></td>
+<% if extended then %>
+                <td><span class="glyphicon glyphicon-user"></span> <%= recording.user.email unless recording.user.nil? %></td>
+                <td><span class="glyphicon glyphicon-phone"></span> <%= link_to(recording.device.identifier, device_path(recording.device)) unless recording.device.nil? %></td>
+<% end %>
+        </tr>
+        <% end %>
+</table>

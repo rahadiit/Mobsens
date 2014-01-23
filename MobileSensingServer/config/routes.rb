@@ -40,7 +40,8 @@ MobileSensors::Application.routes.draw do
   get 'admin/user/list' => 'admin#user_list'
 
   post 'recordings/upload' => 'recordings#upload'
-  get 'recordings/device/:id' => 'recordings#index'
+  get 'user/device/:id' => 'recordings#list'
+  get 'user/device' => 'recordings#list'
   root 'recordings#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
