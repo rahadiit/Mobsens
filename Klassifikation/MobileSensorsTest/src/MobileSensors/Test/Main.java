@@ -30,7 +30,7 @@ public class Main {
 			Client client = RESTful.login(URLS.LOGIN.getURL(), username,
 					password);
 			ArrayList<Recording> recordings = RESTful.recordingOutput(client,
-					URLS.LIST_RECORDINGS.getURL() + "?page=2");
+					URLS.LIST_RECORDINGS.getURL() + "?page=" + j);
 
 			// Chart.drawSingleRecording(170, true, username, password);
 
