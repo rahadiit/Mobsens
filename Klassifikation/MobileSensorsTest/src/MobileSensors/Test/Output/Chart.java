@@ -93,19 +93,19 @@ public class Chart {
 		if (x) {
 			if (jerk)
 				series.add(ChartData.accelData("JerkX", values, X, true));
-			else
+			//else
 				series.add(ChartData.accelData("X", values, X, false));
 		}
 		if (y) {
 			if (jerk)
 				series.add(ChartData.accelData("JerkY", values, Y, true));
-			else
+			//else
 				series.add(ChartData.accelData("Y", values, Y, false));
 		}
 		if (z) {
 			if (jerk)
 				series.add(ChartData.accelData("JerkZ", values, Z, true));
-			else
+			//else
 				series.add(ChartData.accelData("Z", values, Z, false));
 		}
 		return plot(dataset(series), "Time", "Accelerometer Value", values);
@@ -158,7 +158,7 @@ public class Chart {
 
 		if (yAxis.toLowerCase().startsWith("accelero")) {
 
-			yDomain.setRange(-8, 8);
+			//yDomain.setRange(-3, 3);
 
 		}
 		xDomain.setRange(values.get(0).getTime(), values.get(values.size() - 1)
@@ -195,7 +195,7 @@ public class Chart {
 				// plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values);
 				// nur x achse
 				plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values,
-						true, false, false, false);
+						true, false, false, true);
 
 				filename = "linearAccelerometerValues";
 				x = 50000;

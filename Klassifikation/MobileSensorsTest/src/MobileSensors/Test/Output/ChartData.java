@@ -18,7 +18,7 @@ public class ChartData {
 
 			if (axis == 0)
 				if (jerk)
-					axisValue = values.get(i).getJerkX();
+					axisValue = values.get(i).getMeanX();
 				else
 					axisValue = values.get(i).getX();
 			else if (axis == 1)

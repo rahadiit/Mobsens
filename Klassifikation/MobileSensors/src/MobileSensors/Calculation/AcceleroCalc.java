@@ -22,15 +22,64 @@ public class AcceleroCalc {
 				accel.setTimeDifference(prevAccel);
 				setJerk(prevAccel, accel);
 			}
-			setSmoothed(prevAccel, accel);
-			
 			prevAccel = accel;
 		}
+		
+		setMean(accelerometers, 15);
+		
 
 	}
 
-	private static void setSmoothed(Accelerometer prevAcc, Accelerometer accel) {
-
+	private static void setMean(Collection<Accelerometer> accelerometers, int numberMean) {
+		
+		//Behandlung falscher Parameter
+		numberMean=numberMean%2==0?numberMean++:numberMean;
+		numberMean=numberMean<3?3:numberMean;
+		
+		ArrayList<Accelerometer> accelList = (ArrayList<Accelerometer>) accelerometers;
+		
+		int halfMean = numberMean/2;
+		
+		for(int i=1;i<accelList.size();i++){
+			
+			//Randbehandlung fuer Werte < als der erste Wert fuer den eine
+			//Berechnung durchgefuehrt werden kann
+			if(i<(numberMean/2)){
+				double sum =0;
+				int j=0;
+				int number=0;
+				for(j=0;j<=i;j++){
+					number++;
+					sum+=accelList.get(j).getX();
+				}
+				accelList.get(i).setMeanX(sum/number);
+			}
+			//Durchschnitt von zb 5 Werten ausrechnen und an 3. Stelle setzen
+			//normale Behandlung
+			else if(i<accelList.size()-halfMean){
+				double sum=0;
+				int number=0;
+				for(int j=i-halfMean;j<=i+halfMean;j++){
+					number++;
+					sum+=accelList.get(j).getX();
+				}
+				accelList.get(i).setMeanX(sum/number);
+			}
+			//Rangbehandlung am Ende
+			else{
+				double sum=0;
+				int number=0;
+				for(int j=i;j<accelList.size();j++){
+					number++;
+					sum+=accelList.get(j).getX();
+				}
+				accelList.get(i).setMeanX(sum/number);
+			}
+			
+		}
+		
+		
+		
 	}
 
 	private static void setJerk(Accelerometer prevAcc, Accelerometer accel) {
