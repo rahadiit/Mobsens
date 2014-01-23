@@ -34,7 +34,7 @@ gem 'devise'
 gem 'jbuilder', '~> 1.2'
 
 # ruby java bridge
-gem "rjb"
+gem 'rjb'
 
 # time difference
 gem 'time_diff'
@@ -46,12 +46,15 @@ gem 'anjlab-bootstrap-rails', :require => 'bootstrap-rails'
 gem 'delayed_job_active_record'
 
 # daemons
-gem "daemons"
+gem 'daemons'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
+
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
