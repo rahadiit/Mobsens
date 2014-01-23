@@ -16,6 +16,8 @@ public class Accelerometer extends Sensor implements Comparable {
 	private double x, y, z, jerkX, jerkY, jerkZ;
 
 	private double smoothedX, smoothedY, smoothedZ;
+	
+	private double meanX,meanY,meanZ;
 
 	private Axis interestedAxis = Axis.X;
 
@@ -173,6 +175,30 @@ public class Accelerometer extends Sensor implements Comparable {
 
 	public void setSmoothedZ(double smoothedZ) {
 		this.smoothedZ = smoothedZ;
+	}
+
+	public double getMeanX() {
+		return meanX;
+	}
+
+	public void setMeanX(double meanX) {
+		this.meanX = meanX;
+	}
+
+	public double getMeanY() {
+		return meanY;
+	}
+
+	public void setMeanY(double meanY) {
+		this.meanY = meanY;
+	}
+
+	public double getMeanZ() {
+		return meanZ;
+	}
+
+	public void setMeanZ(double meanZ) {
+		this.meanZ = meanZ;
 	}
 
 	@Override

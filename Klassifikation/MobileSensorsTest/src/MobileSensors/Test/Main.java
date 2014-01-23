@@ -24,7 +24,7 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 
-		for (int j = 1; j < 10; j++) {
+		for (int j = 1; j < 15; j++) {
 
 			// Auf Server einloggen
 			Client client = RESTful.login(URLS.LOGIN.getURL(), username,
@@ -37,7 +37,7 @@ public class Main {
 			// Alle Charts aus dem Bremsvorgang-Test
 			for (int i = 0; i < recordings.size(); i++) {
 				int id = recordings.get(i).getId();
-				if (id >= 217) {
+				if (id == 178) {
 					System.out.println("...processing id: " + id);
 					Chart.drawSingleRecording(recordings.get(i), true,
 							username, password);
