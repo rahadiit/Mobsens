@@ -129,25 +129,25 @@ public class LocationOutput extends BasicWFJ
 		if (accuracy != null)
 		{
 			jsonStringer.key("accuracy");
-			jsonStringer.value(accuracy);
+			jsonStringer.value((double) (float) accuracy);
 		}
 
 		if (altitude != null)
 		{
 			jsonStringer.key("altitude");
-			jsonStringer.value(altitude);
+			jsonStringer.value((double) altitude);
 		}
 
 		if (bearing != null)
 		{
 			jsonStringer.key("bearing");
-			jsonStringer.value(bearing);
+			jsonStringer.value((double) (float) bearing);
 		}
 
 		if (speed != null)
 		{
 			jsonStringer.key("speed");
-			jsonStringer.value(speed);
+			jsonStringer.value((double) (float) speed);
 		}
 
 		jsonStringer.endObject();

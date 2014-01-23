@@ -1,11 +1,17 @@
 class RecordingsController < ApplicationController
   before_action :set_recording, only: [:show, :edit, :update, :destroy]
   before_filter :handle_gzip_params
-  
+
   # GET /recordings
   # GET /recordings.json
   def index
-    @recordings = Recording.all
+    @user = current_user
+    if @user.devices.count <= 0 then
+	@device = nil
+   	return
+    end
+    @device = Device.find(params[:id])
+    @recordings = @device.recordings.paginate(:page => params[:page])
   end
 
   # GET /recordings/1

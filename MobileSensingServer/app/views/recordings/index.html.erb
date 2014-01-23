@@ -1,4 +1,22 @@
 <h1>Recordings</h1>
+
+<% if (@device == nil) then %>
+No Devices
+<% else %>
+
+<ul class="nav nav-tabs">
+	<% @user.devices.each do |device| %>
+		<li <% if(@device == device) then %>class="active"<% end %>>
+			<a href="/recordings/device/<%= device.id %>">
+				<span class="badge pull-right"><%= device.recordings.count %></span>
+				<%= device.identifier %>&nbsp;
+			</a>
+		</li>
+	<% end %>
+</ul>
+
+<br />
+
 <table class="table table-striped">
 		<tr>
 			<th>Start Time</th>
@@ -24,3 +42,6 @@
 		</tr>
 		<% end %>
 </table>
+<%= will_paginate @recordings %>
+
+<% end %>

@@ -65,6 +65,8 @@ public class SensorDriver extends BasicMultiGenerator<SensorOutput> implements D
 	@Override
 	public void start()
 	{
+		if (rate <= 0) return;
+
 		SensorManager sm = (SensorManager) contextWrapper.getSystemService(Context.SENSOR_SERVICE);
 
 		sm.registerListener(SENSOR_EVENT_ENDPOINT, sm.getDefaultSensor(type), rate);
@@ -73,6 +75,8 @@ public class SensorDriver extends BasicMultiGenerator<SensorOutput> implements D
 	@Override
 	public void stop()
 	{
+		if (rate <= 0) return;
+
 		SensorManager sm = (SensorManager) contextWrapper.getSystemService(Context.SENSOR_SERVICE);
 
 		sm.unregisterListener(SENSOR_EVENT_ENDPOINT);
