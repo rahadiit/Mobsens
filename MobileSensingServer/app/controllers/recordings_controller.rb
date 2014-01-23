@@ -5,12 +5,24 @@ class RecordingsController < ApplicationController
   # GET /recordings
   # GET /recordings.json
   def index
+    respond_to do |format|
+        format.html { @recordings = Recording.all.paginate(:page => params[:page]) }
+        format.json { @recordings = Recording.all }
+    end    
+
+  end
+
+  def list 
     @user = current_user
     if @user.devices.count <= 0 then
 	@device = nil
    	return
     end
-    @device = Device.find(params[:id])
+    if params[:id].nil? then
+     	@device = @user.devices.first
+    else  
+	@device = Device.find(params[:id])
+    end
     @recordings = @device.recordings.paginate(:page => params[:page])
   end
 

@@ -1,0 +1,25 @@
+<% if (@device == nil) then %>
+No Devices
+<% else %>
+<h4 class="pull-right">Devices</h4>
+
+<ul class="nav nav-tabs">
+        <% @user.devices.each do |device| %>
+                <li <% if(@device == device) then %>class="active"<% end %>>
+                        <a href="/user/device/<%= device.id %>">
+                                <span class="glyphicon glyphicon-phone"></span>
+                                <span class="badge pull-right"><%= device.recordings.count %></span>
+                                <%= device.identifier %>&nbsp;
+                        </a>
+                </li>
+        <% end %>
+</ul>
+
+<br />
+<h4>Recordings</h4>
+
+<%= render :partial => 'table', :locals => {:recordings => @recordings, :extended => false} %>
+
+<%= will_paginate @recordings %>
+
+<% end %>

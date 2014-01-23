@@ -1,47 +1,5 @@
-<h1>Recordings</h1>
+<h4>Recordings</h4>
 
-<% if (@device == nil) then %>
-No Devices
-<% else %>
+<%= render :partial => 'table', :locals => {:recordings => @recordings, :extended => true} %>
 
-<ul class="nav nav-tabs">
-	<% @user.devices.each do |device| %>
-		<li <% if(@device == device) then %>class="active"<% end %>>
-			<a href="/recordings/device/<%= device.id %>">
-				<span class="badge pull-right"><%= device.recordings.count %></span>
-				<%= device.identifier %>&nbsp;
-			</a>
-		</li>
-	<% end %>
-</ul>
-
-<br />
-
-<table class="table table-striped">
-		<tr>
-			<th>Start Time</th>
-			<th>Duration (hh:mm:ss)</th>
-			<th></th>
-			<th></th>
-			<th></th>
-			<th>User</th>
-			<th>Device</th>
-			<th>Title</th>
-		</tr>
-
-		<% @recordings.each do |recording| %>
-		<tr>
-			<td><span class="glyphicon glyphicon-calendar"></span> <%= recording.time_start.strftime("%Y-%m-%d %H:%M") unless recording.time_start.nil? %></td>
-			<td><span class="glyphicon glyphicon-time"></span> <% if recording.get_duration.nil? then %>0<% else %><%= recording.get_duration %><% end %></td>
-			<td><%= render :partial => "shared/link_button", :locals => { link: recording_path(recording), caption:'Overview', icon:'list'} %></td>
-			<td><%= render :partial => "shared/link_button", :locals => { link: edit_recording_path(recording), caption:'Edit', icon:'edit'} %></td>
-			<td><%= render :partial => "shared/link_button", :locals => { link: recording_path(recording), caption:'Delete', icon:'trash', confirm: true, method:'delete'} %></td>
-			<td><span class="glyphicon glyphicon-user"></span> <%= recording.user.email unless recording.user.nil? %></td>
-			<td><span class="glyphicon glyphicon-phone"></span> <%= link_to(recording.device.identifier, device_path(recording.device)) unless recording.device.nil? %></td>
-			<td><span class="glyphicon glyphicon-comment"></span> <%= recording.title %></td>
-		</tr>
-		<% end %>
-</table>
 <%= will_paginate @recordings %>
-
-<% end %>
