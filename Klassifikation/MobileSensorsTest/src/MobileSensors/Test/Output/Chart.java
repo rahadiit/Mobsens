@@ -172,7 +172,7 @@ public class Chart {
 	 * 0 == speed 1 == distance 2 == accelerometer
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends Sensor> void drawChart(int id,
+	public static <T extends Sensor> void drawChart(Recording id,
 			Collection<T> values, ArrayList<Annotation> annotations,
 			ArrayList<Event> events, int method, int prefix, Class<T> type) {
 
@@ -211,16 +211,14 @@ public class Chart {
 
 			JFreeChart speedchart = new JFreeChart(plot);
 
-			int length = (id + "").length();
+			int length = (id.getId() + "").length();
 			String cutMeOf = "0000";
 			int cut = (4 - length) < 0 ? 0 : 4 - length;
 			cutMeOf = cutMeOf.substring(0, cut);
 
 			try {
-				ChartUtilities
-						.saveChartAsPNG(new File("charts/" + cutMeOf + id + " "
-								+ id + " " + filename + ".png"), speedchart, x,
-								y);
+				ChartUtilities.saveChartAsPNG(new File("charts/" + cutMeOf + id.getId() + " "+id.getTitle()
+						+ " " + filename + ".png"), speedchart, x, y);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -234,14 +232,13 @@ public class Chart {
 		int i = 1;
 		for (Recording recording : recordings) {
 			System.out.println("doing " + i++ + " of " + recordings.size());
-			Chart.drawSingleRecording(recording.getId(), false, username,
-					password);
+			Chart.drawSingleRecording(recording, false, username, password);
 
 		}
 
 	}
 
-	public static void drawSingleRecording(int id, boolean accelero,
+	public static void drawSingleRecording(Recording id, boolean accelero,
 			String username, String password) {
 		String acceleroCSV = "";
 		String locationCSV = "";
@@ -249,12 +246,12 @@ public class Chart {
 		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
 
 		// Laed verschiedene CSV-Dateien vom Server
-		locationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+		locationCSV = RESTful.getCSV(client, id.getId(), URLS.CSV.getURL(),
 				SensorE.LOCATIONS);
-		annotationCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+		annotationCSV = RESTful.getCSV(client, id.getId(), URLS.CSV.getURL(),
 				SensorE.ANNOTATIONS);
 		if (accelero) {
-			acceleroCSV = RESTful.getCSV(client, id, URLS.CSV.getURL(),
+			acceleroCSV = RESTful.getCSV(client, id.getId(), URLS.CSV.getURL(),
 					SensorE.LINEAR_ACCELERATIONS);
 		}
 
@@ -313,7 +310,7 @@ public class Chart {
 				Collection<Collection<Accelerometer>> windows = Accelerometer
 						.window(accelerometer, timespan);
 
-				int j = i + 1;
+				int j = i+1;
 				for (Collection<Accelerometer> accel : windows) {
 					System.out.println("drawing accelerometer-chart no. " + j);
 					Chart.drawChart(id, accel, annotations, events, 2, j++,
