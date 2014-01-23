@@ -20,11 +20,16 @@ public class AcceleroCalc {
 		for (Accelerometer accel : accelerometers) {
 			if (prevAccel != null) {
 				accel.setTimeDifference(prevAccel);
-
 				setJerk(prevAccel, accel);
 			}
+			setSmoothed(prevAccel, accel);
+			
 			prevAccel = accel;
 		}
+
+	}
+
+	private static void setSmoothed(Accelerometer prevAcc, Accelerometer accel) {
 
 	}
 
@@ -127,22 +132,22 @@ public class AcceleroCalc {
 
 		return lowestValue;
 	}
-	
-//	private static Accelerometer lowestValue(Collection<Accelerometer> data,
-//			Axis ax) {
-//
-//		Accelerometer lowestValue = null;
-//
-//		for (Accelerometer accel : data) {
-//
-//			if (lowestValue == null)
-//				lowestValue = accel;
-//			else if (accel.getAxis(ax) < lowestValue.getAxis(ax))
-//				lowestValue = accel;
-//
-//		}
-//
-//		return lowestValue;
-//	}
-	
+
+	// private static Accelerometer lowestValue(Collection<Accelerometer> data,
+	// Axis ax) {
+	//
+	// Accelerometer lowestValue = null;
+	//
+	// for (Accelerometer accel : data) {
+	//
+	// if (lowestValue == null)
+	// lowestValue = accel;
+	// else if (accel.getAxis(ax) < lowestValue.getAxis(ax))
+	// lowestValue = accel;
+	//
+	// }
+	//
+	// return lowestValue;
+	// }
+
 }

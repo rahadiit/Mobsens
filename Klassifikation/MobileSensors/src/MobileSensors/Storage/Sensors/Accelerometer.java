@@ -14,6 +14,9 @@ import MobileSensors.Storage.Sensors.Sensor.Sensor;
 public class Accelerometer extends Sensor implements Comparable {
 
 	private double x, y, z, jerkX, jerkY, jerkZ;
+
+	private double smoothedX, smoothedY, smoothedZ;
+
 	private Axis interestedAxis = Axis.X;
 
 	/**
@@ -146,6 +149,30 @@ public class Accelerometer extends Sensor implements Comparable {
 
 	public void setInterestedAxis(Axis interestedAxis) {
 		this.interestedAxis = interestedAxis;
+	}
+
+	public double getSmoothedX() {
+		return smoothedX;
+	}
+
+	public void setSmoothedX(double smoothedX) {
+		this.smoothedX = smoothedX;
+	}
+
+	public double getSmoothedY() {
+		return smoothedY;
+	}
+
+	public void setSmoothedY(double smoothedY) {
+		this.smoothedY = smoothedY;
+	}
+
+	public double getSmoothedZ() {
+		return smoothedZ;
+	}
+
+	public void setSmoothedZ(double smoothedZ) {
+		this.smoothedZ = smoothedZ;
 	}
 
 	@Override
