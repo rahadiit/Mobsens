@@ -2,7 +2,7 @@ class Recording < ActiveRecord::Base
 
   self.per_page = 10
 
-  default_scope :order => 'time_start DESC'
+  #default_scope :order => 'time_start DESC'
 
   belongs_to :device
   belongs_to :user
