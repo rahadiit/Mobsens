@@ -29,6 +29,8 @@ import MobileSensors.Classifiers.DetectBraking;
 import MobileSensors.Classifiers.DetectDodge;
 import MobileSensors.Classifiers.DetectJerk;
 import MobileSensors.Classifiers.DetectStanding;
+import MobileSensors.Enums.AcceleroOption;
+import MobileSensors.Enums.Axis;
 import MobileSensors.Storage.Event.Event;
 import MobileSensors.Storage.Event.EventType;
 import MobileSensors.Storage.Sensors.Accelerometer;
@@ -83,31 +85,29 @@ public class Chart {
 	}
 
 	public static XYPlot acceleroPlot(ArrayList<Accelerometer> values) {
-		return acceleroPlot(values, true, true, true, false);
+		Collection<Axis> axis = new ArrayList<>();
+		Collection<AcceleroOption> options = new ArrayList<>();
+		
+		axis.add(Axis.X);
+		axis.add(Axis.Y);
+		axis.add(Axis.Z);
+		
+		options.add(AcceleroOption.PLAIN);
+		
+		return acceleroPlot(values, axis, options);
 	}
 
 	public static XYPlot acceleroPlot(ArrayList<Accelerometer> values,
-			boolean x, boolean y, boolean z, boolean jerk) {
+			Collection<Axis> axis, Collection<AcceleroOption> options) {
 
 		ArrayList<XYSeries> series = new ArrayList<>();
-		if (x) {
-			if (jerk)
-				series.add(ChartData.accelData("JerkX", values, X, true));
-			//else
-				series.add(ChartData.accelData("X", values, X, false));
+
+		for (Axis a : axis) {
+			for (AcceleroOption o : options) {
+				series.add(ChartData.accelData(values, a, o));
+			}
 		}
-		if (y) {
-			if (jerk)
-				series.add(ChartData.accelData("JerkY", values, Y, true));
-			//else
-				series.add(ChartData.accelData("Y", values, Y, false));
-		}
-		if (z) {
-			if (jerk)
-				series.add(ChartData.accelData("JerkZ", values, Z, true));
-			//else
-				series.add(ChartData.accelData("Z", values, Z, false));
-		}
+
 		return plot(dataset(series), "Time", "Accelerometer Value", values);
 	}
 
@@ -158,7 +158,7 @@ public class Chart {
 
 		if (yAxis.toLowerCase().startsWith("accelero")) {
 
-			//yDomain.setRange(-3, 3);
+			// yDomain.setRange(-3, 3);
 
 		}
 		xDomain.setRange(values.get(0).getTime(), values.get(values.size() - 1)
@@ -194,8 +194,18 @@ public class Chart {
 				// alle achsen
 				// plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values);
 				// nur x achse
+				
+				Collection<Axis> axis = new ArrayList<>();
+				Collection<AcceleroOption> options = new ArrayList<>();
+				axis.add(Axis.X);
+				options.add(AcceleroOption.MEAN_SHORT);
+				options.add(AcceleroOption.MEAN_LONG);
+				options.add(AcceleroOption.PLAIN);
+				
+				
+				
 				plot = Chart.acceleroPlot((ArrayList<Accelerometer>) values,
-						true, false, false, true);
+						axis,options);
 
 				filename = "linearAccelerometerValues";
 				x = 50000;
@@ -217,8 +227,10 @@ public class Chart {
 			cutMeOf = cutMeOf.substring(0, cut);
 
 			try {
-				ChartUtilities.saveChartAsPNG(new File("charts/" + cutMeOf + id.getId() + " "+id.getTitle()
-						+ " " + filename + ".png"), speedchart, x, y);
+				ChartUtilities.saveChartAsPNG(
+						new File("charts/" + cutMeOf + id.getId() + " "
+								+ id.getTitle() + " " + filename + ".png"),
+						speedchart, x, y);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -310,7 +322,7 @@ public class Chart {
 				Collection<Collection<Accelerometer>> windows = Accelerometer
 						.window(accelerometer, timespan);
 
-				int j = i+1;
+				int j = i + 1;
 				for (Collection<Accelerometer> accel : windows) {
 					System.out.println("drawing accelerometer-chart no. " + j);
 					Chart.drawChart(id, accel, annotations, events, 2, j++,

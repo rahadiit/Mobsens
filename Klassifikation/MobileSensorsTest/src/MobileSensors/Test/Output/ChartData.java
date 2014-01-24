@@ -1,38 +1,28 @@
 package MobileSensors.Test.Output;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.jfree.data.xy.XYSeries;
 
+import MobileSensors.Enums.Axis;
+import MobileSensors.Enums.AcceleroOption;
 import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Storage.Sensors.Location;
 
 public class ChartData {
 
-	public static XYSeries accelData(String name,
-			ArrayList<Accelerometer> values, int axis, boolean jerk) {
-		XYSeries result = new XYSeries(name);
+	public static XYSeries accelData(ArrayList<Accelerometer> values,
+			Axis axis, AcceleroOption option) {
+
+		XYSeries result = new XYSeries(option.toString().toLowerCase()+axis.toString());
 
 		for (int i = 0; i < values.size(); i++) {
+
 			double axisValue = 0;
-
-			if (axis == 0)
-				if (jerk)
-					axisValue = values.get(i).getMeanX();
-				else
-					axisValue = values.get(i).getX();
-			else if (axis == 1)
-				if (jerk)
-					axisValue = values.get(i).getJerkY();
-				else
-					axisValue = values.get(i).getY();
-			else if (axis == 2)
-				if (jerk)
-					axisValue = values.get(i).getJerkZ();
-				else
-					axisValue = values.get(i).getZ();
-
+			axisValue = values.get(i).getOptionValue(option, axis);
 			result.add(values.get(i).getTime(), axisValue);
+
 		}
 
 		return result;
