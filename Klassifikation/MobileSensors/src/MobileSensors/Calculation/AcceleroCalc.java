@@ -25,10 +25,11 @@ public class AcceleroCalc {
 			prevAccel = accel;
 		}
 
-		setMean(accelerometers, 15, Axis.X,true);
-		setMean(accelerometers, 31, Axis.X,false);
+		setMean(accelerometers, 41, Axis.X, true);
+		setMean(accelerometers, 201, Axis.X, false);
 		
-
+		setDifference(accelerometers,20, Axis.X);
+		
 	}
 
 	private static void setMean(Collection<Accelerometer> accelerometers,
@@ -43,7 +44,7 @@ public class AcceleroCalc {
 		int halfMean = numberMean / 2;
 
 		for (int i = 1; i < accelList.size(); i++) {
-			
+
 			double sum = 0;
 			int number = 0;
 			// Randbehandlung fuer Werte < als der erste Wert fuer den eine
@@ -75,16 +76,34 @@ public class AcceleroCalc {
 					sum += accelList.get(j).getAxisValue(axis);
 				}
 			}
-			if(shortMean){
-				accelList.get(i).setMeanShort((sum/number), axis);
-			}
-			else{
-				accelList.get(i).setMeanLong((sum/number), axis);
+			if (shortMean) {
+				accelList.get(i).setMeanShort((sum / number), axis);
+			} else {
+				accelList.get(i).setMeanLong((sum / number), axis);
 			}
 		}
 
 	}
 
+	private static void setDifference(Collection<Accelerometer> accelerometers, int difference, Axis axis){
+		
+		ArrayList<Accelerometer> accelList = (ArrayList<Accelerometer>) accelerometers;
+		
+		for(int i=0;i<accelList.size();i++){
+			
+			Accelerometer current = accelList.get(i);
+			
+			if(i>difference && i<accelList.size()-difference){
+				double diff = accelList.get(i-difference).getMeanShort(axis)-accelList.get(i+difference).getMeanShort(axis);
+				current.setMeanDifference(diff, axis);
+				
+			}else{
+				current.setMeanDifference(0, axis);
+			}
+		}
+	}
+	
+	
 	private static void setJerk(Accelerometer prevAcc, Accelerometer accel) {
 
 		// accel.setJerkX(accel.getX() - prevAcc.getX());

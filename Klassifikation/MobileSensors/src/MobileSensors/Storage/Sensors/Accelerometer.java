@@ -15,11 +15,10 @@ import MobileSensors.Storage.Sensors.Sensor.Sensor;
 public class Accelerometer extends Sensor implements Comparable {
 
 	private double x, y, z, jerkX, jerkY, jerkZ;
-
 	private double smoothedX, smoothedY, smoothedZ;
-
 	private double meanShortX, meanShortY, meanShortZ;
 	private double meanLongX, meanLongY, meanLongZ;
+	private double meanDifferenceX, meanDifferenceY, meanDifferenceZ;
 
 	private Axis interestedAxis = Axis.X;
 
@@ -190,6 +189,8 @@ public class Accelerometer extends Sensor implements Comparable {
 			this.setMeanShort(value, axis);
 		case MEAN_LONG:
 			this.setMeanLong(value, axis);
+		case DIFFERENCE:
+			this.setMeanDifference(value, axis);
 		case PLAIN:
 			this.setAxis(value, axis);
 		default:
@@ -274,6 +275,39 @@ public class Accelerometer extends Sensor implements Comparable {
 		}
 	}
 
+	public double getMeanDifference(Axis axis) {
+		switch (axis) {
+		case X: {
+			return this.getMeanDifferenceX();
+		}
+		case Y: {
+			return this.getMeanDifferenceY();
+		}
+		case Z: {
+			return this.getMeanDifferenceZ();
+		}
+		default:
+			return this.getMeanDifferenceX();
+		}
+	}
+
+	public void setMeanDifference(double value, Axis axis) {
+		switch (axis) {
+		case X: {
+			this.setMeanDifferenceX(value);
+			break;
+		}
+		case Y: {
+			this.setMeanDifferenceY(value);
+			break;
+		}
+		case Z: {
+			this.setMeanDifferenceZ(value);
+			break;
+		}
+		}
+	}
+
 	public void setMeanLong(double value, Axis axis) {
 		switch (axis) {
 		case X: {
@@ -300,6 +334,8 @@ public class Accelerometer extends Sensor implements Comparable {
 			return this.getMeanShort(axis);
 		case MEAN_LONG:
 			return this.getMeanLong(axis);
+		case DIFFERENCE:
+			return this.getMeanDifference(axis);
 		case PLAIN:
 			return this.getAxisValue(axis);
 		default:
@@ -386,6 +422,30 @@ public class Accelerometer extends Sensor implements Comparable {
 
 	public void setMeanLongZ(double meanLongZ) {
 		this.meanLongZ = meanLongZ;
+	}
+
+	public double getMeanDifferenceX() {
+		return meanDifferenceX;
+	}
+
+	public void setMeanDifferenceX(double meanDifferenceX) {
+		this.meanDifferenceX = meanDifferenceX;
+	}
+
+	public double getMeanDifferenceY() {
+		return meanDifferenceY;
+	}
+
+	public void setMeanDifferenceY(double meanDifferenceY) {
+		this.meanDifferenceY = meanDifferenceY;
+	}
+
+	public double getMeanDifferenceZ() {
+		return meanDifferenceZ;
+	}
+
+	public void setMeanDifferenceZ(double meanDifferenceZ) {
+		this.meanDifferenceZ = meanDifferenceZ;
 	}
 
 	@Override

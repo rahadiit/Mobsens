@@ -34,7 +34,7 @@ public class Main {
 		// Alle Charts aus dem Bremsvorgang-Test
 		for (int i = 0; i < recordings.size(); i++) {
 			int id = recordings.get(i).getId();
-			if (id == 178) {
+			if (id == 170) {
 				System.out.println("...processing id: " + id);
 				Chart.drawSingleRecording(recordings.get(i), true, username,
 						password);

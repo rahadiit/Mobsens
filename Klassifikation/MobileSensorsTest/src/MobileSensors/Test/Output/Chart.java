@@ -61,14 +61,14 @@ public class Chart {
 
 			// System.out.println(annotation.getTag());
 			plot.addAnnotation(new XYTextAnnotation(annotation.getTag(),
-					annotation.getTime(), 3));
+					annotation.getTime(), 0));
 		}
 	}
 
 	public static void addEvents(ArrayList<Event> events, XYPlot plot) {
 		for (int i = 0; i < events.size(); i++) {
 			Event event = events.get(i);
-			double position = 0.8 + (0.2 * (i % 3));
+			double position = 0.1 + (0.2 * (i % 3));
 			plot.addAnnotation(new XYTextAnnotation(event.getEventType()
 					.toString(), event.getTime(), position));
 		}
@@ -198,9 +198,10 @@ public class Chart {
 				Collection<Axis> axis = new ArrayList<>();
 				Collection<AcceleroOption> options = new ArrayList<>();
 				axis.add(Axis.X);
-				options.add(AcceleroOption.MEAN_SHORT);
-				options.add(AcceleroOption.MEAN_LONG);
-				options.add(AcceleroOption.PLAIN);
+				//options.add(AcceleroOption.MEAN_SHORT);
+				//options.add(AcceleroOption.MEAN_LONG);
+				options.add(AcceleroOption.DIFFERENCE);
+				//options.add(AcceleroOption.PLAIN);
 				
 				
 				
@@ -301,21 +302,20 @@ public class Chart {
 				long timespanBefore = 3000; // 0.5sek
 
 				int i = 1;
-				for (Event ev : events) {
-
-					if (ev.getEventType() == EventType.DODGE) {
-
-						Collection<Accelerometer> afterDodge = Accelerometer
-								.window(accelerometer, ev.getTime()
-										- timespanBefore, ev.getTime()
-										+ timespanAfter);
-
-						Chart.drawChart(id, afterDodge, annotations, events, 2,
-								i++, Accelerometer.class);
-
-					}
-
-				}
+//				for (Event ev : events) {
+//
+//					if (ev.getEventType() == EventType.DODGE) {
+//
+//						Collection<Accelerometer> afterDodge = Accelerometer
+//								.window(accelerometer, ev.getTime()
+//										- timespanBefore, ev.getTime()
+//										+ timespanAfter);
+//
+//						Chart.drawChart(id, afterDodge, annotations, events, 2,
+//								i++, Accelerometer.class);
+//
+//					}
+//				}
 
 				long timespan = 1000 * 60 * 2; // 2min
 
