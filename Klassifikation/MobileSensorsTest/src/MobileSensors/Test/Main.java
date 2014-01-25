@@ -35,9 +35,13 @@ public class Main {
 		for (int i = 0; i < recordings.size(); i++) {
 			int id = recordings.get(i).getId();
 			if (id == 170) {
+				// if
+				// (recordings.get(i).getTitle().toLowerCase().contains("auswe"))
+				// {
 				System.out.println("...processing id: " + id);
 				Chart.drawSingleRecording(recordings.get(i), true, username,
 						password);
+				// }
 			}
 		}
 		// Chart.drawAllRecordings(recordings, username, password);
