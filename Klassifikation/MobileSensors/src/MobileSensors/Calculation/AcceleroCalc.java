@@ -25,25 +25,28 @@ public class AcceleroCalc {
 			prevAccel = accel;
 		}
 
-		setMean(accelerometers, 41, Axis.X, true);
+		setMean(accelerometers, 1, Axis.X, true);
 		setMean(accelerometers, 201, Axis.X, false);
 		
-		setDifference(accelerometers,20, Axis.X);
+		setDifference(accelerometers,30, Axis.X);
 		
 	}
 
 	private static void setMean(Collection<Accelerometer> accelerometers,
 			int numberMean, Axis axis, boolean shortMean) {
-
+		
 		// Behandlung falscher Parameter
 		numberMean = numberMean % 2 == 0 ? numberMean++ : numberMean;
 		numberMean = numberMean < 3 ? 3 : numberMean;
 
 		ArrayList<Accelerometer> accelList = (ArrayList<Accelerometer>) accelerometers;
-
+		
+		
 		int halfMean = numberMean / 2;
 
 		for (int i = 1; i < accelList.size(); i++) {
+			
+			System.out.println(Accelerometer.samplingRateBetween(accelList, i));
 
 			double sum = 0;
 			int number = 0;
@@ -186,39 +189,5 @@ public class AcceleroCalc {
 			list.remove(obj);
 		}
 	}
-
-	private static Accelerometer lowestValue(Collection<Accelerometer> data,
-			Axis ax) {
-
-		Accelerometer lowestValue = null;
-
-		for (Accelerometer accel : data) {
-
-			if (lowestValue == null)
-				lowestValue = accel;
-			else if (accel.getAxisValue(ax) < lowestValue.getAxisValue(ax))
-				lowestValue = accel;
-
-		}
-
-		return lowestValue;
-	}
-
-	// private static Accelerometer lowestValue(Collection<Accelerometer> data,
-	// Axis ax) {
-	//
-	// Accelerometer lowestValue = null;
-	//
-	// for (Accelerometer accel : data) {
-	//
-	// if (lowestValue == null)
-	// lowestValue = accel;
-	// else if (accel.getAxis(ax) < lowestValue.getAxis(ax))
-	// lowestValue = accel;
-	//
-	// }
-	//
-	// return lowestValue;
-	// }
 
 }

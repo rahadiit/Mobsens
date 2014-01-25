@@ -198,7 +198,7 @@ public class Chart {
 				Collection<Axis> axis = new ArrayList<>();
 				Collection<AcceleroOption> options = new ArrayList<>();
 				axis.add(Axis.X);
-				//options.add(AcceleroOption.MEAN_SHORT);
+				options.add(AcceleroOption.MEAN_SHORT);
 				//options.add(AcceleroOption.MEAN_LONG);
 				options.add(AcceleroOption.DIFFERENCE);
 				//options.add(AcceleroOption.PLAIN);
