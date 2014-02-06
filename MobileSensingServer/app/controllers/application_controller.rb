@@ -18,11 +18,11 @@ class ApplicationController < ActionController::Base
     self.params.merge!(data.to_options) #params.merge(data.with_indifferent_access).inject({}){|temp,(k,v)| temp[k.to_sym] = v; temp} # replace string keys with symbols
     end
   end
-  
+
   def show_highcharts
     @callback = params[:callback]
     @attr = params[:attr]
     render 'shared/show_highcharts.js.erb'
   end
-  
+
 end

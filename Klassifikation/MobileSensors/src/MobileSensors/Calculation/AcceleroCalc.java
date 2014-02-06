@@ -20,14 +20,93 @@ public class AcceleroCalc {
 		for (Accelerometer accel : accelerometers) {
 			if (prevAccel != null) {
 				accel.setTimeDifference(prevAccel);
-
 				setJerk(prevAccel, accel);
 			}
 			prevAccel = accel;
 		}
 
+		setMean(accelerometers, 1, Axis.X, true);
+		setMean(accelerometers, 201, Axis.X, false);
+		
+		setDifference(accelerometers,30, Axis.X);
+		
 	}
 
+	private static void setMean(Collection<Accelerometer> accelerometers,
+			int numberMean, Axis axis, boolean shortMean) {
+		
+		// Behandlung falscher Parameter
+		numberMean = numberMean % 2 == 0 ? numberMean++ : numberMean;
+		numberMean = numberMean < 3 ? 3 : numberMean;
+
+		ArrayList<Accelerometer> accelList = (ArrayList<Accelerometer>) accelerometers;
+		
+		
+		int halfMean = numberMean / 2;
+
+		for (int i = 1; i < accelList.size(); i++) {
+			
+			System.out.println(Accelerometer.samplingRateBetween(accelList, i));
+
+			double sum = 0;
+			int number = 0;
+			// Randbehandlung fuer Werte < als der erste Wert fuer den eine
+			// Berechnung durchgefuehrt werden kann
+			if (i < (numberMean / 2)) {
+
+				int j = 0;
+
+				for (j = 0; j <= i; j++) {
+					number++;
+					sum += accelList.get(j).getAxisValue(axis);
+				}
+
+			}
+			// Durchschnitt von zb 5 Werten ausrechnen und an 3. Stelle setzen
+			// normale Behandlung
+			else if (i < accelList.size() - halfMean) {
+
+				for (int j = i - halfMean; j <= i + halfMean; j++) {
+					number++;
+					sum += accelList.get(j).getAxisValue(axis);
+				}
+
+			}
+			// Rangbehandlung am Ende
+			else {
+				for (int j = i; j < accelList.size(); j++) {
+					number++;
+					sum += accelList.get(j).getAxisValue(axis);
+				}
+			}
+			if (shortMean) {
+				accelList.get(i).setMeanShort((sum / number), axis);
+			} else {
+				accelList.get(i).setMeanLong((sum / number), axis);
+			}
+		}
+
+	}
+
+	private static void setDifference(Collection<Accelerometer> accelerometers, int difference, Axis axis){
+		
+		ArrayList<Accelerometer> accelList = (ArrayList<Accelerometer>) accelerometers;
+		
+		for(int i=0;i<accelList.size();i++){
+			
+			Accelerometer current = accelList.get(i);
+			
+			if(i>difference && i<accelList.size()-difference){
+				double diff = accelList.get(i-difference).getMeanShort(axis)-accelList.get(i+difference).getMeanShort(axis);
+				current.setMeanDifference(diff, axis);
+				
+			}else{
+				current.setMeanDifference(0, axis);
+			}
+		}
+	}
+	
+	
 	private static void setJerk(Accelerometer prevAcc, Accelerometer accel) {
 
 		// accel.setJerkX(accel.getX() - prevAcc.getX());
@@ -111,38 +190,4 @@ public class AcceleroCalc {
 		}
 	}
 
-	private static Accelerometer lowestValue(Collection<Accelerometer> data,
-			Axis ax) {
-
-		Accelerometer lowestValue = null;
-
-		for (Accelerometer accel : data) {
-
-			if (lowestValue == null)
-				lowestValue = accel;
-			else if (accel.getAxis(ax) < lowestValue.getAxis(ax))
-				lowestValue = accel;
-
-		}
-
-		return lowestValue;
-	}
-	
-//	private static Accelerometer lowestValue(Collection<Accelerometer> data,
-//			Axis ax) {
-//
-//		Accelerometer lowestValue = null;
-//
-//		for (Accelerometer accel : data) {
-//
-//			if (lowestValue == null)
-//				lowestValue = accel;
-//			else if (accel.getAxis(ax) < lowestValue.getAxis(ax))
-//				lowestValue = accel;
-//
-//		}
-//
-//		return lowestValue;
-//	}
-	
 }
