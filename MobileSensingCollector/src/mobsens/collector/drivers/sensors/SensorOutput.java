@@ -90,6 +90,9 @@ public class SensorOutput extends BasicWFJ
 		jsonStringer.key("sensor");
 		jsonStringer.value(sensor);
 
+		jsonStringer.key("accuracy");
+		jsonStringer.value(accuracy);
+
 		jsonStringer.key("values");
 		jsonStringer.array();
 		for (float value : values)

@@ -16,7 +16,7 @@ public class WorkerCache<Item> extends Cache<Item> implements Driver
 	/**
 	 * Initiale Einstellung der Releaserate in Millisekunden
 	 */
-	public static final int INITIAL_RELEASE_DELAY = 100;
+	public static final int INITIAL_RELEASE_DELAY = 5;
 
 	/**
 	 * Worker, das Detachment ausführt
