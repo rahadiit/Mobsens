@@ -20,6 +20,7 @@ int state = 0;
 	
 	public void intention(View v) {
 		
+	
 		
 		
 		Button b = (Button) findViewById(R.id.intention);
