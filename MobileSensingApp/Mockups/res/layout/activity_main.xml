@@ -50,21 +50,14 @@
         android:layout_marginTop="18dp"
         android:text="Freizeit" />
 
-    <ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/Button02"
-        android:layout_alignParentBottom="true"
-        android:onClick="menu"
-        android:src="@drawable/ic_launcher" />
-
     <Button
         android:id="@+id/button3"
+        style="@style/gray_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView1"
-        android:layout_alignTop="@+id/imageButton1"
+        android:layout_height="50dp"
+        android:layout_alignLeft="@+id/Button02"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/Button02"
         android:onClick="start"
         android:text="Start" />
 	
