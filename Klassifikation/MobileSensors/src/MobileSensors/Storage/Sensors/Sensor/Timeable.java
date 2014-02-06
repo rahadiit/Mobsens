@@ -2,6 +2,7 @@ package MobileSensors.Storage.Sensors.Sensor;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 public abstract class Timeable {
 
@@ -39,7 +40,7 @@ public abstract class Timeable {
 	public static <T extends Timeable> Collection<Collection<T>> window(
 			Collection<T> list, long span) {
 		Collection<Collection<T>> result = new ArrayList<>();
-		
+
 		if (!list.isEmpty()) {
 			ArrayList<T> alist = new ArrayList<>(list);
 
@@ -55,6 +56,53 @@ public abstract class Timeable {
 		}
 		return result;
 
+	}
+
+	/**
+	 * 
+	 * @param list
+	 * @param index
+	 * @return samling-rate in HZ. abhaengig vom parameter index. der index
+	 *         befindet sich in der mitte des beobachteten zeitraumes
+	 */
+	public static <T extends Timeable> double samplingRateBetween(
+			Collection<T> list, int index) {
+		long span = 1000; // 1sek
+		double result = -1;
+		long spanHalf = span / 2;
+
+		ArrayList<T> holeList = (ArrayList<T>) list;
+		ArrayList<T> window = new ArrayList<>();
+
+		long leastTime = -1;
+		long lastTime = -1;
+		int i = index;
+		// alle werte kleiner einsammeln
+		while (i > 0
+				&& Math.abs(holeList.get(i).getTime()
+						- holeList.get(index).getTime()) < spanHalf) {
+			window.add(holeList.get(i));
+			leastTime = holeList.get(i).getTime();
+			i--;
+		}
+		i = index;
+		// alle werte grosser einsammeln
+		while (i < holeList.size()
+				&& Math.abs(holeList.get(i).getTime()
+						- holeList.get(index).getTime()) < spanHalf) {
+			window.add(holeList.get(i));
+			lastTime = holeList.get(i).getTime();
+			i++;
+		}
+		
+		double divisor = (double) Math.abs(lastTime - leastTime) / 1000;
+
+		try {
+			result = ((double) window.size()) / divisor;
+		} catch (ArithmeticException ae) {
+			result = -1;
+		}
+		return result;
 	}
 
 	/**
