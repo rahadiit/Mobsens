@@ -10,6 +10,7 @@
     
     <Button
         android:id="@+id/button1"
+        style="@style/red_button"
         android:layout_width="1000dp"
         android:layout_height="50dp"
         android:layout_marginTop="38dp"
@@ -31,6 +32,7 @@
 
     <Button
         android:id="@+id/button2"
+        style="@style/blue_button"
         android:layout_width="1000dp"
         android:layout_height="50dp"
         android:layout_alignLeft="@+id/button1"
@@ -40,6 +42,7 @@
 
     <Button
         android:id="@+id/Button02"
+        style="@style/green_button"
         android:layout_width="1000dp"
         android:layout_height="50dp"
         android:layout_alignRight="@+id/button2"
