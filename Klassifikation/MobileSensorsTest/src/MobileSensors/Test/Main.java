@@ -9,6 +9,9 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.sun.jersey.api.client.Client;
 
+import MobileSensors.Enums.AcceleroOption;
+import MobileSensors.Enums.Axis;
+import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Storage.Sensors.Location;
 import MobileSensors.Test.Data.Recording;
 import MobileSensors.Test.Data.SensorE;
@@ -16,6 +19,7 @@ import MobileSensors.Test.Data.URLS;
 import MobileSensors.Test.Input.CSV;
 import MobileSensors.Test.Input.RESTful;
 import MobileSensors.Test.Output.Chart;
+import MobileSensors.Test.Output.WekaFile;
 
 public class Main {
 
@@ -34,62 +38,34 @@ public class Main {
 		// Alle Charts aus dem Bremsvorgang-Test
 		for (int i = 0; i < recordings.size(); i++) {
 			int id = recordings.get(i).getId();
-			if (id == 170) {
-				// if
-				// (recordings.get(i).getTitle().toLowerCase().contains("auswe"))
-				// {
-				System.out.println("...processing id: " + id);
-				Chart.drawSingleRecording(recordings.get(i), true, username,
-						password);
-				// }
+			 if (id == 170) {
+			//if (recordings.get(i).getTitle().toLowerCase().contains("auswe")) {
+				//System.out.println("...processing id: " + id);
+				// hier Optionen und Achsen waehlen.
+
+				 
+//				Chart.drawSingleRecording(recordings.get(i), true, username,
+//						password);
+				 
+				 String acceleroCSV = RESTful.getCSV(client, recordings.get(i).getId(), URLS.CSV.getURL(),
+							SensorE.ACCELEROMETERS);
+				 ArrayList<Accelerometer> accelerometer = CSV.csvToSensor(acceleroCSV,
+								Accelerometer.class);
+				 
+				 WekaFile.writeFile(accelerometer, 1000, "Weka.csv");
+							
 			}
+			// }
 		}
+
 		// Chart.drawAllRecordings(recordings, username, password);
 		// Chart.drawSingleRecording(299, true, username, password);
 
 		System.out.println("done");
 
 	}
-
-	public static void printCalcData(Collection<Location> locations) {
-		for (Location location : locations) {
-			System.out.println(location.getJerkCalc() + "jerk vs jerkfusion "
-					+ location.getJerkFusion());
-		}
-
-		for (Location location : locations) {
-			System.out.println(location.getSpeed() + " Sensor vs Calc "
-					+ location.getSpeedCalcCo());
-		}
-
-		for (Location location : locations) {
-			System.out
-					.println(location.getDistanceCalcCo()
-							+ " SensorDist vs CalcDist "
-							+ location.getDistanceFusion());
-		}
-
-		for (Location location : locations) {
-			System.out.println(location.getDistanceSumCalcCo()
-					+ " SensorDistSum vs CalcDistSum "
-					+ location.getDistanceFusionSum());
-		}
-	}
-
-	public static void printStartStop(ArrayList<Location> locations) {
-		System.out.println("start: "
-				+ DateFormatUtils.format(new Date(locations.get(0).getTime()),
-						"MM-dd HH:mm:ss"));
-		System.out
-				.println("stop: "
-						+ DateFormatUtils.format(
-								new Date(locations.get(locations.size() - 1)
-										.getTime()), "HH:mm:ss"));
-	}
 }
+
 // ALTER CODE
-
-// Die CSV-Dateien zu ArrayLists
-
-// ArrayList<Location> locations = CSV.csvToLocation(new
-// File("/Users/henny/Downloads/locspazieren.csv"));
+// + DateFormatUtils.format(new Date(locations.get(0).getTime()),
+// "MM-dd HH:mm:ss"));

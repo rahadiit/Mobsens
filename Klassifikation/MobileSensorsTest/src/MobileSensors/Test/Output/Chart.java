@@ -117,7 +117,7 @@ public class Chart {
 		series.add(ChartData.getSpeed("getSpeed()", values, 0));
 		// series.add(ChartData.getSpeed("getSpeedCalcCo()", values, 1));
 		// series.add(ChartData.getSpeed("getSpeedFusion()", values, 2));
-		series.add(ChartData.getSpeed("getJerk()", values, 3));
+		//series.add(ChartData.getSpeed("getJerk()", values, 3));
 
 		return plot(dataset(series), "time", "speed", values);
 	}
@@ -158,7 +158,7 @@ public class Chart {
 
 		if (yAxis.toLowerCase().startsWith("accelero")) {
 
-			// yDomain.setRange(-3, 3);
+			 yDomain.setRange(-6, 6);
 
 		}
 		xDomain.setRange(values.get(0).getTime(), values.get(values.size() - 1)
@@ -201,7 +201,7 @@ public class Chart {
 				options.add(AcceleroOption.MEAN_SHORT);
 				//options.add(AcceleroOption.MEAN_LONG);
 				options.add(AcceleroOption.DIFFERENCE);
-				//options.add(AcceleroOption.PLAIN);
+				options.add(AcceleroOption.PLAIN);
 				
 				
 				
