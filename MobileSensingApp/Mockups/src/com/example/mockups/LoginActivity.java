@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class LoginActivity extends Activity {
+private static final String SPORT = "Sport";
 int state = 0;	
 
 	@Override
@@ -19,10 +20,20 @@ int state = 0;
 	
 	public void intention(View v) {
 		
+	
+		
 		
 		Button b = (Button) findViewById(R.id.intention);
+		
+		b.setText(R.string.app_name);
+		
+		if(b.getText().equals(SPORT))
+		{
+			
+		}
+		
 		if (state == 0) {
-			b.setText("Sport");
+			b.setText(SPORT);
 			state++;
 		} else {
 			if (state == 1) {
