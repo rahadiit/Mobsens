@@ -11,6 +11,7 @@ import com.sun.jersey.api.client.Client;
 
 import MobileSensors.Enums.AcceleroOption;
 import MobileSensors.Enums.Axis;
+import MobileSensors.Helper.AccelerationFeatureVector;
 import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Storage.Sensors.Location;
 import MobileSensors.Test.Data.Recording;
@@ -53,6 +54,8 @@ public class Main {
 								Accelerometer.class);
 				 
 				 WekaFile.writeFile(accelerometer, 1000, "Weka.csv");
+				 
+				 
 							
 			}
 			// }
