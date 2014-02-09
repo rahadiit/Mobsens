@@ -8,14 +8,12 @@ import mobsens.collector.consumers.LocationPublisher;
 import mobsens.collector.consumers.WFJStreamingConsumer;
 import mobsens.collector.drivers.annotations.AnnotationDriver;
 import mobsens.collector.drivers.connectivity.ConnectivityDriver;
-import mobsens.collector.drivers.locations.LocationDDTFilter;
 import mobsens.collector.drivers.locations.LocationDriver;
 import mobsens.collector.drivers.locations.LocationNoPSDriver;
 import mobsens.collector.drivers.locations.LocationOutput;
 import mobsens.collector.drivers.locations.LocationPSDriver;
 import mobsens.collector.drivers.messaging.StartCollectorDriver;
 import mobsens.collector.drivers.messaging.StopCollectorDriver;
-import mobsens.collector.drivers.sensors.AccelerationDDTFilter;
 import mobsens.collector.drivers.sensors.SensorDriver;
 import mobsens.collector.intents.IntentCollectorStatus;
 import mobsens.collector.pipeline.basics.ClassFilter;
@@ -178,7 +176,7 @@ public class Collector extends ConnectedService
 
 		// Accelerometer
 		accelerometerDriver = new SensorDriver(this, Sensor.TYPE_ACCELEROMETER, Calculations.msFromFrequency(Config.FREQUENCY_ACCELEROMETER));
-		accelerometerDriver.addConsumer(Pipeline.with(new AccelerationDDTFilter(Config.ACCELEROMETER_MAX_DDT), wfjFilter));
+		accelerometerDriver.addConsumer(wfjFilter);
 		sensorDriver.addDriver(accelerometerDriver);
 
 		// Gyroskop
@@ -193,22 +191,22 @@ public class Collector extends ConnectedService
 
 		// Lineare Beschleunigung
 		linearAccelerationDriver = new SensorDriver(this, Sensor.TYPE_LINEAR_ACCELERATION, Calculations.msFromFrequency(Config.FREQUENCY_LINEAR_ACCELEROMETER));
-		linearAccelerationDriver.addConsumer(Pipeline.with(new AccelerationDDTFilter(Config.ACCELEROMETER_MAX_DDT), wfjFilter));
+		linearAccelerationDriver.addConsumer(wfjFilter);
 		sensorDriver.addDriver(linearAccelerationDriver);
 
 		// Gravitation
 		gravityDriver = new SensorDriver(this, Sensor.TYPE_GRAVITY, Calculations.msFromFrequency(Config.FREQUENCY_GRAVITY));
-		gravityDriver.addConsumer(Pipeline.with(new AccelerationDDTFilter(Config.ACCELEROMETER_MAX_DDT), wfjFilter));
+		gravityDriver.addConsumer(wfjFilter);
 		sensorDriver.addDriver(gravityDriver);
 
 		// Position mit Playservices
 		locationPSDriver = new LocationPSDriver(this, Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0.0f);
-		locationPSDriver.addConsumer(Pipeline.with(new LocationDDTFilter(Config.LOCATION_MAX_DDT), wfjFilter));
+		locationPSDriver.addConsumer(wfjFilter);
 		sensorDriver.addDriver(locationPSDriver);
 
 		// Position ohne Playservices
 		locationSysDriver = new LocationNoPSDriver(this, Calculations.msFromFrequency(Config.FREQUENCY_LOCATION), 0.0f);
-		locationSysDriver.addConsumer(Pipeline.with(new LocationDDTFilter(Config.LOCATION_MAX_DDT), wfjFilter));
+		locationSysDriver.addConsumer(wfjFilter);
 		sensorDriver.addDriver(locationSysDriver);
 
 		// Verbindungsstatus
