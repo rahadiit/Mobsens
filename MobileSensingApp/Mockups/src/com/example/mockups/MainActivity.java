@@ -1,5 +1,8 @@
 package com.example.mockups;
 
+
+
+import android.R.layout;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -8,8 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-public class MainActivity extends Activity
-{
+public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -40,28 +42,32 @@ public class MainActivity extends Activity
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
-	public void visibilityTrue(View v)
-	{
-
-		View b = findViewById(R.id.textView1);
-
-		if (b.getVisibility() == View.INVISIBLE)
-		{
-			b.setVisibility(View.VISIBLE);
-		}
-		else
-		{
-			b.setVisibility(View.INVISIBLE);
-		}
-
-	}
-
-	public void menu(View v)
-	{
-		Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);
-
+	
+	public void visibilityTrue(View v) {
+		
+		View sport1 = findViewById(R.id.button1);
+		View text1 = findViewById(R.id.textView01);
+		View freizeit1 = findViewById(R.id.Button02);
+		View alltag1 = findViewById(R.id.button2);
+		
+		if (v.getId() == R.id.Button02) {
+			
+				((TextView) text1).setText("Freizeit");
+				
+			}
+		
+		if (v.getId() == R.id.button1) {
+			
+				((TextView) text1).setText("Sport");
+				
+			}
+		
+		if (v.getId() == R.id.button2) {
+			
+				((TextView) text1).setText("Alltag");
+				}
+				
+			
 	}
 
 	public void start(View v)

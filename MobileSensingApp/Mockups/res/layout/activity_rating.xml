@@ -38,9 +38,9 @@
         android:layout_alignRight="@+id/textView1"
         android:layout_alignTop="@+id/Frage2"
         android:layout_marginTop="18dp"
-         android:textSize="18dp"
         android:text="Frage 2"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="18dp" />
 
     <TextView
         android:id="@+id/textView1"
@@ -49,10 +49,9 @@
         android:layout_alignTop="@+id/Frage1"
         android:layout_marginTop="20dp"
         android:layout_toLeftOf="@+id/bewertung"
-        android:textSize="18dp"
         android:text="Frage 1"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-    
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="18dp" />
 
     <RatingBar
         android:id="@+id/ratingBar1"
@@ -66,9 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/Frage1"
-        android:layout_alignLeft="@+id/Frage1"
-        android:layout_alignRight="@+id/Frage1"
-        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
         android:orientation="horizontal" >
 
         <RadioButton
