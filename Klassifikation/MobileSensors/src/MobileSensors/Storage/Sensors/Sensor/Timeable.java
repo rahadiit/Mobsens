@@ -57,6 +57,26 @@ public abstract class Timeable {
 		return result;
 
 	}
+	
+	public static <T extends Timeable> Collection<T> window(
+			Collection<T> list, int startIndex, int endIndex) {
+		Collection<T> result = new ArrayList<>();
+
+		if (!list.isEmpty()) {
+			ArrayList<T> alist = new ArrayList<>(list);
+			
+			for(int i=startIndex; i<endIndex; i++){
+				result.add(alist.get(i));
+			}
+			
+		}
+		
+		return result;
+	
+	}
+	
+	
+	
 
 	/**
 	 * 
