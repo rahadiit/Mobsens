@@ -25,27 +25,26 @@ public class AcceleroCalc {
 			prevAccel = accel;
 		}
 
-		setMean(accelerometers, 1, Axis.X, true);
+		setMean(accelerometers, 30, Axis.X, true);
 		setMean(accelerometers, 201, Axis.X, false);
-		
-		setDifference(accelerometers,30, Axis.X);
-		
+
+		setDifference(accelerometers, 30, Axis.X);
+
 	}
 
 	private static void setMean(Collection<Accelerometer> accelerometers,
 			int numberMean, Axis axis, boolean shortMean) {
-		
+
 		// Behandlung falscher Parameter
 		numberMean = numberMean % 2 == 0 ? numberMean++ : numberMean;
 		numberMean = numberMean < 3 ? 3 : numberMean;
 
 		ArrayList<Accelerometer> accelList = (ArrayList<Accelerometer>) accelerometers;
-		
-		
+
 		int halfMean = numberMean / 2;
 
 		for (int i = 1; i < accelList.size(); i++) {
-			
+
 			System.out.println(Accelerometer.samplingRateBetween(accelList, i));
 
 			double sum = 0;
@@ -88,25 +87,55 @@ public class AcceleroCalc {
 
 	}
 
-	private static void setDifference(Collection<Accelerometer> accelerometers, int difference, Axis axis){
-		
+	private static void setDifference(Collection<Accelerometer> accelerometers,
+			int difference, Axis axis) {
+
 		ArrayList<Accelerometer> accelList = (ArrayList<Accelerometer>) accelerometers;
-		
-		for(int i=0;i<accelList.size();i++){
-			
-			Accelerometer current = accelList.get(i);
-			
-			if(i>difference && i<accelList.size()-difference){
-				double diff = accelList.get(i-difference).getMeanShort(axis)-accelList.get(i+difference).getMeanShort(axis);
-				current.setMeanDifference(diff, axis);
+
+		Accelerometer oldObject = null;
+		double smoothing = 30;
+
+		for (int i = 0; i < accelList.size(); i++) {
+
+			Accelerometer currentObject = accelList.get(i);
+
+			if (oldObject != null) {
+
+				double currentValue = currentObject.getAxisValue(axis);
+				double oldValue = oldObject.getAxisValue(axis);
+
+				double timeDifference = currentObject.getTime()
+						- oldObject.getTime();
 				
-			}else{
-				current.setMeanDifference(0, axis);
+				double divide= smoothing/timeDifference;
+				System.out.println(divide);
+
+				double filteredValue = (oldValue+(currentValue-oldValue))/(divide);
+
+				currentObject.setMeanDifference(filteredValue, axis);
+
+			} else {
+				currentObject.setMeanDifference(0, axis);
 			}
+			oldObject = currentObject;
+
 		}
+
+		// for(int i=0;i<accelList.size();i++){
+		//
+		// Accelerometer current = accelList.get(i);
+		//
+		// if(i>difference && i<accelList.size()-difference){
+		// double diff =
+		// accelList.get(i-difference).getMeanShort(axis)-accelList.get(i+difference).getMeanShort(axis);
+		// current.setMeanDifference(diff, axis);
+		//
+		// }else{
+		// current.setMeanDifference(0, axis);
+		// }
+		// }
 	}
-	
-	
+
 	private static void setJerk(Accelerometer prevAcc, Accelerometer accel) {
 
 		// accel.setJerkX(accel.getX() - prevAcc.getX());
