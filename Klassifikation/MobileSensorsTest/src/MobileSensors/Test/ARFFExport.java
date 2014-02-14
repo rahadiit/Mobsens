@@ -33,8 +33,11 @@ public class ARFFExport {
 		
 		for (int i = 0; i < recordings.size(); i++) {
 			int id = recordings.get(i).getId();
+			
+			client = RESTful.login(URLS.LOGIN.getURL(), username, password);
+			
 			if (true) {
-							 
+				
 				 String acceleroCSV = RESTful.getCSV(client, recordings.get(i).getId(), URLS.CSV.getURL(),
 							SensorE.ACCELEROMETERS);
 				 ArrayList<Accelerometer> accelerometer = CSV.csvToSensor(acceleroCSV,
@@ -44,7 +47,7 @@ public class ARFFExport {
 				 
 				 ArrayList<AccelerationFeatureVector> windows = new ArrayList<AccelerationFeatureVector>();
 				 
-				 System.out.println(recordings.get(i).getTitle());
+//				 System.out.println(recordings.get(i).getTitle());
 				 
 				 String name = recordings.get(i).getId() + "-" + recordings.get(i).getTitle().replace(' ', '-');
 				 
