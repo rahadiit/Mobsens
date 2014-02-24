@@ -15,7 +15,7 @@ public class ArffFile {
 	private String relName;
 	private ArrayList<ArffAttribute> attributes;
 	private String[] labels;
-	private ArrayList<ArrayList<Double>> featureVectors;
+	private ArrayList<String> featureVectors;
 	
 	public ArffFile (String fileName, String relName, String[] labels) {
 		
@@ -23,7 +23,7 @@ public class ArffFile {
 		this.relName    = relName;
 		this.labels     = labels;
 		this.attributes = new ArrayList<ArffAttribute>();
-		this.featureVectors = new ArrayList<ArrayList<Double>>();
+		this.featureVectors = new ArrayList<String>();
 		
 	}
 	
@@ -33,7 +33,7 @@ public class ArffFile {
 		
 	}
 	
-	public void addFeatureVector (ArrayList<Double> featureVector) {
+	public void addFeatureVector (String featureVector) {
 		
 		this.featureVectors.add(featureVector);
 		
@@ -59,9 +59,10 @@ public class ArffFile {
 		bw.write("@DATA");
 		bw.newLine();
 		
-		for (ArrayList<Double> featureVector : this.featureVectors) {
+		for (String featureVector : this.featureVectors) {
 			
-			bw.write(StringUtils.join(featureVector, ","));
+			bw.write(featureVector);
+			bw.newLine();
 			
 		}
 		
