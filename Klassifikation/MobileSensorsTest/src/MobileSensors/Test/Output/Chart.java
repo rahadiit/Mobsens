@@ -250,6 +250,11 @@ public class Chart {
 		}
 
 	}
+	
+	public static void drawSingleRecording(String acceleroCSV){
+		
+		
+	}
 
 	public static void drawSingleRecording(Recording id, boolean accelero,
 			String username, String password) {

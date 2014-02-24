@@ -40,6 +40,7 @@ public class ARFFExport {
 				
 				 String acceleroCSV = RESTful.getCSV(client, recordings.get(i).getId(), URLS.CSV.getURL(),
 							SensorE.ACCELEROMETERS);
+				 
 				 ArrayList<Accelerometer> accelerometer = CSV.csvToSensor(acceleroCSV,
 								Accelerometer.class);
 				 

@@ -15,7 +15,7 @@ import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Storage.Sensors.Annotation;
 import MobileSensors.Storage.Sensors.Location;
 import MobileSensors.Storage.Sensors.Sensor.Sensor;
-import MobileSensors.Test.Data.SensorE;
+
 
 public class CSV {
 
