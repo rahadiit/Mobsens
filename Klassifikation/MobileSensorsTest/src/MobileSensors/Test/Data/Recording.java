@@ -11,6 +11,10 @@ public class Recording {
 	public Recording() {
 
 	}
+	public Recording(int id,String title) {
+		this.id=id;
+		this.title=title;
+	}
 
 	public Recording(int id, int user_id, int device_id, String title,
 			String url) {

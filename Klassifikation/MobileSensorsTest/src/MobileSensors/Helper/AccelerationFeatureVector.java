@@ -1,7 +1,6 @@
 package MobileSensors.Helper;
 
 import java.util.ArrayList;
-
 import MobileSensors.Storage.Sensors.Accelerometer;
 
 public class AccelerationFeatureVector {
