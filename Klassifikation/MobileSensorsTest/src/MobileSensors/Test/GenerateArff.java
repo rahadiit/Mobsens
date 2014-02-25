@@ -16,10 +16,10 @@ public class GenerateArff {
 	
 	final String AttrType = "NUMERIC";
 	
-	private static String arffOut = "C:\\Users\\Thomas\\Desktop\\dodge\\Dodge.arff";
-	private static String pathLabel1 = "C:\\Users\\Thomas\\Desktop\\dodge\\dodge";
+	private static String arffOut = "C:\\Users\\darjeeling\\Desktop\\dodge\\Dodge.arff";
+	private static String pathLabel1 = "C:\\Users\\darjeeling\\Desktop\\dodge\\dodge";
 	private static String label1 = "DODGE";
-	private static String pathLabel2 = "C:\\Users\\Thomas\\Desktop\\dodge\\nododge";
+	private static String pathLabel2 = "C:\\Users\\darjeeling\\Desktop\\dodge\\nododge";
 	private static String label2 = "NODODGE";
 
 	private static int delta = 1;

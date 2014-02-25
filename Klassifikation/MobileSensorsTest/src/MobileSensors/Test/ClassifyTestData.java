@@ -43,6 +43,7 @@ public class ClassifyTestData {
 		 fvWekaAttributes.addElement(Attribute13);
 		 
 		 
+		 
 		 Instances isTrainingSet = new Instances("Rel", fvWekaAttributes, 10); 
 		 isTrainingSet.setClassIndex(12);
 		 
@@ -63,6 +64,7 @@ public class ClassifyTestData {
 		 noDodgeExample.setValue((Attribute)fvWekaAttributes.elementAt(10), 0.5348275587940678);
 		 noDodgeExample.setValue((Attribute)fvWekaAttributes.elementAt(11), 0.5348275587940678);
 		 noDodgeExample.setDataset(isTrainingSet);
+		 
 		 
 		 Instance dodgeExample = new Instance(13);
 		 dodgeExample.setValue((Attribute)fvWekaAttributes.elementAt(0), 0.7345165601372717);      
@@ -85,8 +87,7 @@ public class ClassifyTestData {
 		
 		System.out.println("DODGE: \t" + (resultDodge > 0.5 ? "No Dodge" : "Dodge"));
 		System.out.println("NO DODGE: \t" + (resultNoDodge > 0.5 ? "No Dodge" : "Dodge"));
-		isTrainingSet.add(dodgeExample);
-		System.out.println(isTrainingSet.toString());
+		
 		
 	}
 }
