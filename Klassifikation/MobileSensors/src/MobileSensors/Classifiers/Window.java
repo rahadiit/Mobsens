@@ -5,6 +5,14 @@ import java.util.ArrayList;
 import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Storage.Sensors.Location;
 
+
+/**
+ * 
+ * Window Sensor Wrapper
+ * 
+ * @author henny, thomas, max
+ * 
+ */
 public class Window {
 
 	private ArrayList<Location> location;
@@ -31,11 +39,5 @@ public class Window {
 	public void setAcceleration(ArrayList<Accelerometer> acceleration) {
 		this.acceleration = acceleration;
 	}
-	
-	
-	
-	
-	
-	
 	
 }

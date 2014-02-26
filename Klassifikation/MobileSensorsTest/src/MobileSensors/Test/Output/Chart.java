@@ -26,13 +26,13 @@ import com.sun.jersey.api.client.Client;
 import MobileSensors.Calculation.AcceleroCalc;
 import MobileSensors.Calculation.LocationCalc;
 import MobileSensors.Classifiers.BrakingClassifier;
+import MobileSensors.Deprecated.AcceleroOption;
 import MobileSensors.Deprecated.Accelerometer;
+import MobileSensors.Deprecated.Axis;
 import MobileSensors.Deprecated.DetectDodge;
 import MobileSensors.Deprecated.DetectJerk;
 import MobileSensors.Deprecated.DetectStanding;
 import MobileSensors.Deprecated.Location;
-import MobileSensors.Enums.AcceleroOption;
-import MobileSensors.Enums.Axis;
 import MobileSensors.Storage.Sensor;
 import MobileSensors.Storage.Events.Event;
 import MobileSensors.Storage.Events.EventType;
@@ -371,7 +371,7 @@ public class Chart {
 	private static ArrayList<Event> allEvents(ArrayList<Location> locations) {
 
 		ArrayList<Event> events = new DetectStanding(locations).getEvents();
-		events.addAll(new BrakingClassifier(locations).getEvents());
+//		events.addAll(new BrakingClassifier(locations).getEvents());
 		events.addAll(new DetectJerk(locations).getEvents());
 
 		return events;

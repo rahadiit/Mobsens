@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import MobileSensors.Deprecated.Accelerometer;
-import MobileSensors.Enums.*;
+import MobileSensors.Deprecated.Axis;
 
 public class AcceleroCalc {
 
