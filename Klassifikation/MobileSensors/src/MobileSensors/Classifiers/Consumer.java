@@ -9,7 +9,7 @@ import MobileSensors.Storage.Sensors.Accelerometer;
 
 public class Consumer {
 
-	public ArrayList<Event> classify (Window w) throws Exception {
+	public ArrayList<Event> classify (Window w) {
 		
 		ArrayList<Event> result = new ArrayList<>();
 		
@@ -35,10 +35,7 @@ public class Consumer {
 				
 				
 			}
-			
-			
 		}
-		
 		
 		return result;
 		

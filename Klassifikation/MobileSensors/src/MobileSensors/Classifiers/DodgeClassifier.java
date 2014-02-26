@@ -1,13 +1,16 @@
 package MobileSensors.Classifiers;
 
+import java.util.ArrayList;
+
 import MobileSensors.Classifiers.Weka.DodgeJ48;
 import MobileSensors.Helper.AccelerationFeatureVector;
+import MobileSensors.Storage.Event.Event;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 
-public class DodgeClassifier {
+public class DodgeClassifier implements EventClassifier{
 	
 	
 	private FastVector dodgeAttributes;
@@ -61,9 +64,14 @@ public class DodgeClassifier {
 		
 		DodgeJ48 dodge48 = new DodgeJ48();
 		
+		return dodge48.classifyInstance(i) < 0.5;
 		
-		return dodge48.classifyInstance(i) > 0.5;
+	}
+
+	@Override
+	public ArrayList<Event> getEvents() {
 		
+		return null;
 	}
 	
 }

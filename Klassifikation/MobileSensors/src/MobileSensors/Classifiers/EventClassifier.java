@@ -6,6 +6,6 @@ import MobileSensors.Storage.Event.Event;
 
 public interface EventClassifier {
 
-	public ArrayList<Event> getEvents();
+	public ArrayList<Event> getEvents(Window win);
 
 }

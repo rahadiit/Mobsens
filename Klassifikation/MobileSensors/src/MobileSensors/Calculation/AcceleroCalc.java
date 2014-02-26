@@ -45,7 +45,7 @@ public class AcceleroCalc {
 
 		for (int i = 1; i < accelList.size(); i++) {
 
-			System.out.println(Accelerometer.samplingRateBetween(accelList, i));
+			//System.out.println(Accelerometer.samplingRateBetween(accelList, i));
 
 			double sum = 0;
 			int number = 0;
@@ -108,7 +108,7 @@ public class AcceleroCalc {
 						- oldObject.getTime();
 				
 				double divide= smoothing/timeDifference;
-				System.out.println(divide);
+				//System.out.println(divide);
 
 				double filteredValue = (oldValue+(currentValue-oldValue))/(divide);
 

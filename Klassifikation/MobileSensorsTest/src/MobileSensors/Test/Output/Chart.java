@@ -324,8 +324,7 @@ public class Chart {
 
 				long timespan = 1000 * 60 * 2; // 2min
 
-				Collection<Collection<Accelerometer>> windows = Accelerometer
-						.window(accelerometer, timespan);
+				Collection<Collection<Accelerometer>> windows = Accelerometer.window(accelerometer, timespan);
 
 				int j = i + 1;
 				for (Collection<Accelerometer> accel : windows) {

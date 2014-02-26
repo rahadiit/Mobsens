@@ -20,6 +20,7 @@ public class ChartData {
 		for (int i = 0; i < values.size(); i++) {
 
 			double axisValue = 0;
+			
 			axisValue = values.get(i).getOptionValue(option, axis);
 			result.add(values.get(i).getTime(), axisValue);
 		}
