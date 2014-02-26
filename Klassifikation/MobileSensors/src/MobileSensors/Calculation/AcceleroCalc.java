@@ -3,7 +3,7 @@ package MobileSensors.Calculation;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import MobileSensors.Storage.Sensors.Accelerometer;
+import MobileSensors.Deprecated.Accelerometer;
 import MobileSensors.Enums.*;
 
 public class AcceleroCalc {

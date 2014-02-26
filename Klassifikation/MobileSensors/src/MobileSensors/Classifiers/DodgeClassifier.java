@@ -3,10 +3,10 @@ package MobileSensors.Classifiers;
 import java.util.ArrayList;
 
 import MobileSensors.Classifiers.Weka.DodgeJ48;
-import MobileSensors.Helper.AccelerationFeatureVector;
-import MobileSensors.Storage.Event.Event;
-import MobileSensors.Storage.Event.EventType;
 import MobileSensors.Storage.Sensors.Accelerometer;
+import MobileSensors.Helper.AccelerationFeatureVector;
+import MobileSensors.Storage.Events.Event;
+import MobileSensors.Storage.Events.EventType;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;

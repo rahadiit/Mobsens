@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import MobileSensors.Deprecated.Accelerometer;
 import MobileSensors.Helper.AccelerationFeatureVector;
-import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Test.Input.CSV;
 import MobileSensors.Test.Output.ArffFile;
 
