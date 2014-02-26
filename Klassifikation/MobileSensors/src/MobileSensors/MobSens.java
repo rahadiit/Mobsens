@@ -11,9 +11,19 @@ import MobileSensors.Helper.AccelerationFeatureVector;
 import MobileSensors.Storage.Events.Event;
 import MobileSensors.Storage.Events.EventType;
 
+/**
+ * 
+ * MobSens Facade
+ * 
+ * @author henny, thomas, max
+ * 
+ */
 public class MobSens 
 	implements EventClassifier {
 
+	/**
+	 * 
+	 */
 	public ArrayList<Event> getEvents (Window win) {
 		
 		ArrayList<Event> result = new ArrayList<Event>();
