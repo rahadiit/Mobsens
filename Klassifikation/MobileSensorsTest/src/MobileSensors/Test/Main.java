@@ -2,6 +2,7 @@ package MobileSensors.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -51,15 +52,34 @@ public class Main {
 			for (int i = 0; i < recordings.size(); i++) {
 				int id = recordings.get(i).getId();
 
-				client = RESTful.login(URLS.LOGIN.getURL(), username, password);
+				try {
+					acceleroCSV = RESTful
+							.getCSV(client, recordings.get(i).getId(),
+									URLS.CSV.getURL(), SensorE.ACCELEROMETERS);
+				} catch (ConnectException e) {
+					client = RESTful.login(URLS.LOGIN.getURL(), username,
+							password);
+					i--;
+					continue;
+				}
+				int devID = recordings.get(i).getDevice_id();
+				if (devID == 12 || devID == 13) {
 
-				acceleroCSV = RESTful.getCSV(client, recordings.get(i).getId(),
-						URLS.CSV.getURL(), SensorE.ACCELEROMETERS);
-
-				if (recordings.get(i).getTitle().toLowerCase().contains("auswei")) {
+					// if
+					// (recordings.get(i).getTitle().toLowerCase().contains("auswei"))
+					// {
 					if (acceleroCSV != null) {
-						System.out.println("");
-						System.out.println("neues RECORDING " + id);
+
+						accelerometer = CSV.csvToSensor(acceleroCSV,
+								Accelerometer.class);
+
+						AcceleroCalc.accelerometerCalc(accelerometer, true);
+
+						// Chart.drawChart(recordings.get(i), accelerometer,
+						// new ArrayList<Annotation>(),
+						// new ArrayList<Event>(), 2, 0,
+						// Accelerometer.class);
+
 						accelerometer = CSV.csvToSensor(acceleroCSV,
 								Accelerometer.class);
 
@@ -68,6 +88,10 @@ public class Main {
 						Collection<Collection<Accelerometer>> accelWindows = Accelerometer
 								.window(accelerometer, 3000);
 
+						System.out.println("");
+						System.out.println("neues RECORDING " + id + recordings.get(i).getTitle());
+						System.out.println("Dauer in ms: "+Accelerometer.timespan(accelerometer));
+						
 						Consumer c = new Consumer();
 
 						ArrayList<Event> events = new ArrayList<>();
@@ -79,7 +103,7 @@ public class Main {
 							events.addAll(c.classify(window));
 
 						}
-
+						
 						System.out.println("Anzahl dodges: " + events.size());
 						for (Event ev : events) {
 							System.out.println(ev.toString());
