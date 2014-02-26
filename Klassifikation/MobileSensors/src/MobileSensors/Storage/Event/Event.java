@@ -11,6 +11,8 @@ import MobileSensors.Storage.Sensors.Sensor.Timeable;
 public class Event extends Timeable{
 
 	private long time;
+	private long startTime;
+	private long endTime;
 	private EventType eventType;
 
 	/**
@@ -53,6 +55,11 @@ public class Event extends Timeable{
 	 */
 	public void setEventType(EventType eventType) {
 		this.eventType = eventType;
+	}
+	
+	@Override
+	public String toString(){
+		return this.getTime()+" "+this.eventType.toString();
 	}
 
 }

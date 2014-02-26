@@ -3,12 +3,16 @@ package MobileSensors.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.jaxrs.Annotations;
 
 import com.sun.jersey.api.client.Client;
 
+import MobileSensors.Calculation.AcceleroCalc;
+import MobileSensors.Classifiers.Consumer;
+import MobileSensors.Classifiers.Window;
 import MobileSensors.Storage.Event.Event;
 import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Storage.Sensors.Annotation;
@@ -32,34 +36,63 @@ public class Main {
 		ArrayList<Recording> recordings = RESTful.recordingOutput(client,
 				URLS.LIST_RECORDINGS.getURL()); // + "?page=" + j
 
-		String acceleroCSV = FileUtils
-				.readFileToString(new File("/Users/henny/Desktop/uni/fp/data1/dodge/dodge_2.csv"));
+		String acceleroCSV = FileUtils.readFileToString(new File(
+				"/Users/henny/Desktop/uni/fp/data1/dodge/dodge_2.csv"));
 		ArrayList<Accelerometer> accelerometer = CSV.csvToSensor(acceleroCSV,
 				Accelerometer.class);
-
-		Chart.drawChart(new Recording(0,"0"), accelerometer,
-				new ArrayList<Annotation>(), new ArrayList<Event>(), 2, 0,
-				Accelerometer.class);
+		//
+		// Chart.drawChart(new Recording(0, "0"), accelerometer,
+		// new ArrayList<Annotation>(), new ArrayList<Event>(), 2, 0,
+		// Accelerometer.class);
 
 		boolean schleifeausfuehren = true;
 		if (schleifeausfuehren) {
 			// Alle Charts aus dem Bremsvorgang-Test
 			for (int i = 0; i < recordings.size(); i++) {
 				int id = recordings.get(i).getId();
-				if (id == 310) {
 
-					acceleroCSV = RESTful
-							.getCSV(client, recordings.get(i).getId(),
-									URLS.CSV.getURL(), SensorE.ACCELEROMETERS);
+				client = RESTful.login(URLS.LOGIN.getURL(), username, password);
 
-					accelerometer = CSV.csvToSensor(acceleroCSV,
-							Accelerometer.class);
+				acceleroCSV = RESTful.getCSV(client, recordings.get(i).getId(),
+						URLS.CSV.getURL(), SensorE.ACCELEROMETERS);
 
-					WekaFile.writeFile(accelerometer, 1000, "Weka.csv");
-					
-//					Chart.drawChart(recordings.get(i), accelerometer,
-//							new ArrayList<Annotation>(), new ArrayList<Event>(), 2, 0,
-//							Accelerometer.class);
+				if (recordings.get(i).getTitle().toLowerCase().contains("auswei")) {
+					if (acceleroCSV != null) {
+						System.out.println("");
+						System.out.println("neues RECORDING " + id);
+						accelerometer = CSV.csvToSensor(acceleroCSV,
+								Accelerometer.class);
+
+						AcceleroCalc.accelerometerCalc(accelerometer, true);
+
+						Collection<Collection<Accelerometer>> accelWindows = Accelerometer
+								.window(accelerometer, 3000);
+
+						Consumer c = new Consumer();
+
+						ArrayList<Event> events = new ArrayList<>();
+						for (Collection<Accelerometer> accel : accelWindows) {
+
+							Window window = new Window();
+							window.setAcceleration((ArrayList<Accelerometer>) accel);
+
+							events.addAll(c.classify(window));
+
+						}
+
+						System.out.println("Anzahl dodges: " + events.size());
+						for (Event ev : events) {
+							System.out.println(ev.toString());
+						}
+
+					}
+
+					// WekaFile.writeFile(accelerometer, 1000, "Weka.csv");
+
+					// Chart.drawChart(recordings.get(i), accelerometer,
+					// new ArrayList<Annotation>(), new ArrayList<Event>(), 2,
+					// 0,
+					// Accelerometer.class);
 
 				}
 			}

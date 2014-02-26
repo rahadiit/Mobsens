@@ -12,7 +12,7 @@ import MobileSensors.Storage.Sensors.Location;
  * @author henny, thomas, max
  * 
  */
-public class DetectBraking implements EventClassifier {
+public class DetectBraking  {
 
 	private ArrayList<Location> locations;
 
@@ -28,8 +28,7 @@ public class DetectBraking implements EventClassifier {
 	/**
 	 * 
 	 */
-	@Override
-	public ArrayList<Event> getEvents() {
+	public ArrayList<Event> getEvents(Window win) {
 
 		ArrayList<Event> events = new ArrayList<Event>();
 
