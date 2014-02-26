@@ -1,4 +1,4 @@
-package MobileSensors.Storage.Event;
+package MobileSensors.Storage.Events;
 
 /**
  * 

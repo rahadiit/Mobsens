@@ -11,10 +11,10 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-import MobileSensors.Storage.Sensors.Accelerometer;
+import MobileSensors.Deprecated.Accelerometer;
+import MobileSensors.Deprecated.Location;
+import MobileSensors.Storage.Sensor;
 import MobileSensors.Storage.Sensors.Annotation;
-import MobileSensors.Storage.Sensors.Location;
-import MobileSensors.Storage.Sensors.Sensor.Sensor;
 
 
 public class CSV {

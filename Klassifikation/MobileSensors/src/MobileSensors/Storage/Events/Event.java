@@ -1,6 +1,6 @@
-package MobileSensors.Storage.Event;
+package MobileSensors.Storage.Events;
 
-import MobileSensors.Storage.Sensors.Sensor.Timeable;
+import MobileSensors.Storage.Timeable;
 
 /**
  * Mobile Sensors Event Data Model

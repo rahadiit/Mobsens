@@ -2,7 +2,7 @@ package MobileSensors.Calculation;
 
 import java.util.Collection;
 
-import MobileSensors.Storage.Sensors.Location;
+import MobileSensors.Deprecated.Location;
 
 /**
  * 

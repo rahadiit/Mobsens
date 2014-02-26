@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import MobileSensors.Deprecated.Accelerometer;
 import MobileSensors.Storage.Sensors.*;
 
 public class WekaFile {

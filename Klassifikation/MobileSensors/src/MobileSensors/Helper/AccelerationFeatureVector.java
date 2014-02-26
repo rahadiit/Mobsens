@@ -1,6 +1,7 @@
 package MobileSensors.Helper;
 
 import java.util.ArrayList;
+
 import MobileSensors.Storage.Sensors.Accelerometer;
 
 public class AccelerationFeatureVector {
@@ -29,13 +30,7 @@ public class AccelerationFeatureVector {
 		this.tag    = tag;
 		
 	}
-	
-	public String getTag () {
 		
-		return this.tag;
-		
-	}
-	
 	public double getXArithMean () {
 		
 		return FeatureMath.arithMean(this.xs);

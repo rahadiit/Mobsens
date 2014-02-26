@@ -1,14 +1,13 @@
-package MobileSensors.Classifiers;
+package MobileSensors.Deprecated;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import MobileSensors.Enums.Axis;
-import MobileSensors.Storage.Event.Event;
-import MobileSensors.Storage.Sensors.Accelerometer;
+import MobileSensors.Classifiers.EventClassifier;
+import MobileSensors.Storage.Events.Event;
 
-public class DetectDodge implements EventClassifier {
+public class DetectDodge {
 
 	private ArrayList<Accelerometer> data;
 
@@ -16,7 +15,6 @@ public class DetectDodge implements EventClassifier {
 		this.data = data;
 	}
 
-	@Override
 	public ArrayList<Event> getEvents() {
 		ArrayList<Event> events = new ArrayList<Event>();
 
@@ -191,7 +189,7 @@ public class DetectDodge implements EventClassifier {
 						// gesetzt
 						// werden
 						events.add(new Event(data.get(i).getTime(),
-								MobileSensors.Storage.Event.EventType.DODGE));
+								MobileSensors.Storage.Events.EventType.DODGE));
 						i = data.indexOf(accel.get(accel.size() - 1)) + 1;
 
 					}
