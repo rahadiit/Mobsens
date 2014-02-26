@@ -8,8 +8,8 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
-import MobileSensors.Storage.Event.EventType;
-import MobileSensors.Storage.Sensors.Accelerometer;
+import MobileSensors.Deprecated.Accelerometer;
+import MobileSensors.Storage.Events.EventType;
 import MobileSensors.Test.Data.SensorE;
 import MobileSensors.Test.Input.CSV;
 

@@ -2,8 +2,8 @@ package MobileSensors.Classifiers;
 
 import java.util.ArrayList;
 
-import MobileSensors.Storage.Event.Event;
 import MobileSensors.Storage.Sensors.Location;
+import MobileSensors.Storage.Events.Event;
 
 /**
  * 
@@ -12,26 +12,18 @@ import MobileSensors.Storage.Sensors.Location;
  * @author henny, thomas, max
  * 
  */
-public class DetectBraking  {
-
-	private ArrayList<Location> locations;
+public class BrakingClassifier  {
 
 	/**
 	 * 
-	 * @param locations
-	 */
-	public DetectBraking(ArrayList<Location> locations) {
-		this.locations = locations;
-
-	}
-
-	/**
-	 * 
+	 * @param win
+	 * @return
 	 */
 	public ArrayList<Event> getEvents(Window win) {
-
+		
 		ArrayList<Event> events = new ArrayList<Event>();
-
+		ArrayList<Location> locations = win.getLocation();
+		
 		for (int i = 0; i < locations.size() - 1; i++) {
 			Location location = locations.get(i);
 			Location nextLocation = locations.get(i + 1);
@@ -52,7 +44,7 @@ public class DetectBraking  {
 			if (breaking) {
 				// System.out.println("breaking: "+location.getSpeed()+" : "+nextlocation.getSpeed());
 				events.add(new Event(location.getTime(),
-						MobileSensors.Storage.Event.EventType.BRAKING));
+						MobileSensors.Storage.Events.EventType.BRAKING));
 			}
 
 			// nachfolgende locations mit getSpeed==0 ueberspringen. Nur ein
@@ -64,6 +56,7 @@ public class DetectBraking  {
 
 			i--;
 		}
+		
 		return events;
 	}
 

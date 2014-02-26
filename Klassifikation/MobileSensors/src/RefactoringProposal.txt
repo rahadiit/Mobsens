@@ -1,0 +1,27 @@
+Production Packages:
+
+Proposal for production package layout with all deprecated stuff removed.
+
+- MobileSensors
+	- MobSens                 // Facade for Ruby Bridge
+
+- MobileSensors.Classifiers   // aka WekaMappers
+	- EventClassifier         // interface for all classifiers
+	- DodgeClassifier         // dodge implementation of EventClassifier
+	- BrakingClassifier       // braking implementation of EventClassifier
+	...
+	
+- MobileSensors.Weka          // generated src from Weka
+	- DodgeJ48                // j48 tree algorithm for dodge
+	...
+	
+- MobileSensors.Events        // Event spec
+	- Event                   
+	- EventTypes
+	...
+	
+- MobileSensors.Sensors       // sensor data encapsulation
+	- Sensor
+	- Accelerometer
+	- Location
+	...

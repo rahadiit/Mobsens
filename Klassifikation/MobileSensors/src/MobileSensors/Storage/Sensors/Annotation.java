@@ -1,6 +1,6 @@
 package MobileSensors.Storage.Sensors;
 
-import MobileSensors.Storage.Sensors.Sensor.Sensor;
+import MobileSensors.Storage.Sensor;
 
 /**
  * Annotation Data Model 
@@ -8,7 +8,7 @@ import MobileSensors.Storage.Sensors.Sensor.Sensor;
  * @author henny, thomas, max
  *
  */
-public class Annotation extends Sensor{
+public class Annotation extends Sensor {
 	
 	private String tag;
 	

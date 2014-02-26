@@ -1,11 +1,11 @@
-package MobileSensors.Classifiers;
+package MobileSensors.Deprecated;
 
 import java.util.ArrayList;
 
-import MobileSensors.Storage.Event.Event;
-import MobileSensors.Storage.Sensors.Location;
+import MobileSensors.Classifiers.EventClassifier;
+import MobileSensors.Storage.Events.Event;
 
-public class DetectStanding implements EventClassifier {
+public class DetectStanding  {
 
 	private ArrayList<Location> locations;
 	private ArrayList<Event> events;
@@ -15,7 +15,7 @@ public class DetectStanding implements EventClassifier {
 		this.events = new ArrayList<Event>();
 	}
 
-	@Override
+	
 	public ArrayList<Event> getEvents() {
 		
 		for(int i=0;i<locations.size()-1;i++){
@@ -23,7 +23,7 @@ public class DetectStanding implements EventClassifier {
 			//System.out.println(location.getTime()+" : "+location.getSpeed());
 			if(location.getSpeed()<=0.2){
 				this.events.add(new Event(location.getTime(),
-						MobileSensors.Storage.Event.EventType.STANDING));
+						MobileSensors.Storage.Events.EventType.STANDING));
 			}
 			//nachfolgende locations mit getSpeed==0 ueberspringen. Nur ein Event fuer eine "Stand-Phase"
 			while(locations.get(i++).getSpeed()<=0.25){

@@ -5,10 +5,10 @@ import java.util.Collection;
 
 import org.jfree.data.xy.XYSeries;
 
-import MobileSensors.Enums.Axis;
-import MobileSensors.Enums.AcceleroOption;
-import MobileSensors.Storage.Sensors.Accelerometer;
-import MobileSensors.Storage.Sensors.Location;
+import MobileSensors.Deprecated.AcceleroOption;
+import MobileSensors.Deprecated.Accelerometer;
+import MobileSensors.Deprecated.Axis;
+import MobileSensors.Deprecated.Location;
 
 public class ChartData {
 
