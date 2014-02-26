@@ -12,6 +12,13 @@ import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 
+/**
+ * 
+ * Dodge Classifier
+ * 
+ * @author henny, thomas, max
+ * 
+ */
 public class DodgeClassifier implements EventClassifier{
 	
 	

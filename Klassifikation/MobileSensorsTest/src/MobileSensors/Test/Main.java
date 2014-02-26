@@ -11,7 +11,7 @@ import org.codehaus.jackson.jaxrs.Annotations;
 import com.sun.jersey.api.client.Client;
 
 import MobileSensors.Calculation.AcceleroCalc;
-import MobileSensors.Classifiers.Consumer;
+import MobileSensors.MobSens;
 import MobileSensors.Classifiers.Window;
 import MobileSensors.Deprecated.Accelerometer;
 import MobileSensors.Storage.Events.Event;
@@ -68,7 +68,7 @@ public class Main {
 						Collection<Collection<Accelerometer>> accelWindows = Accelerometer
 								.window(accelerometer, 3000);
 
-						Consumer c = new Consumer();
+						MobSens c = new MobSens();
 
 						ArrayList<Event> events = new ArrayList<>();
 						for (Collection<Accelerometer> accel : accelWindows) {
@@ -76,7 +76,7 @@ public class Main {
 							Window window = new Window();
 							window.setAcceleration((ArrayList<Accelerometer>) accel);
 
-							events.addAll(c.classify(window));
+							events.addAll(c.getEvents(window));
 
 						}
 

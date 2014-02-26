@@ -1,7 +1,5 @@
 package MobileSensors.Deprecated;
 
-import MobileSensors.Enums.AcceleroOption;
-import MobileSensors.Enums.Axis;
 import MobileSensors.Storage.Sensor;
 
 /**

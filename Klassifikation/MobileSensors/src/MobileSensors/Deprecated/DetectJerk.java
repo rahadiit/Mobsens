@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import MobileSensors.Classifiers.EventClassifier;
 import MobileSensors.Storage.Events.Event;
 
-public class DetectJerk implements EventClassifier {
+public class DetectJerk  {
 
 	private ArrayList<Location> locations;
 	private ArrayList<Event> events;
@@ -15,7 +15,7 @@ public class DetectJerk implements EventClassifier {
 		this.events = new ArrayList<Event>();
 	}
 
-	@Override
+	
 	public ArrayList<Event> getEvents() {
 
 		for (Location location : locations) {

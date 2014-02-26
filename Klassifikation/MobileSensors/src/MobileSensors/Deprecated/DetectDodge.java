@@ -5,10 +5,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 import MobileSensors.Classifiers.EventClassifier;
-import MobileSensors.Enums.Axis;
 import MobileSensors.Storage.Events.Event;
 
-public class DetectDodge implements EventClassifier {
+public class DetectDodge {
 
 	private ArrayList<Accelerometer> data;
 
@@ -16,7 +15,6 @@ public class DetectDodge implements EventClassifier {
 		this.data = data;
 	}
 
-	@Override
 	public ArrayList<Event> getEvents() {
 		ArrayList<Event> events = new ArrayList<Event>();
 

@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import MobileSensors.Deprecated.Accelerometer;
+import MobileSensors.Storage.Sensors.Accelerometer;
 import MobileSensors.Helper.AccelerationFeatureVector;
 import MobileSensors.Test.Data.Recording;
 import MobileSensors.Test.Data.SensorE;
