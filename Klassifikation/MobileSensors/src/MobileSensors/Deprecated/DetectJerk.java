@@ -1,7 +1,8 @@
-package MobileSensors.Classifiers;
+package MobileSensors.Deprecated;
 
 import java.util.ArrayList;
 
+import MobileSensors.Classifiers.EventClassifier;
 import MobileSensors.Storage.Event.Event;
 import MobileSensors.Storage.Sensors.Location;
 

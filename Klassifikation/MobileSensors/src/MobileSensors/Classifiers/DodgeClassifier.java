@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import MobileSensors.Classifiers.Weka.DodgeJ48;
 import MobileSensors.Helper.AccelerationFeatureVector;
 import MobileSensors.Storage.Event.Event;
+import MobileSensors.Storage.Event.EventType;
+import MobileSensors.Storage.Sensors.Accelerometer;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
@@ -45,7 +47,7 @@ public class DodgeClassifier implements EventClassifier{
 		
 	}
 	
-	public boolean classify (AccelerationFeatureVector v) throws Exception {
+	private boolean classify (AccelerationFeatureVector v) throws Exception {
 		
 		Instance i = new Instance(this.dodgeAttributes.size());
 		i.setDataset(this.dodgeRelation);
@@ -62,16 +64,39 @@ public class DodgeClassifier implements EventClassifier{
 		i.setValue(10, v.getYKurtosis());
 		i.setValue(11, v.getZKurtosis());
 		
-		DodgeJ48 dodge48 = new DodgeJ48();
-		
-		return dodge48.classifyInstance(i) < 0.5;
+		return (new DodgeJ48()).classifyInstance(i) < 0.5;
 		
 	}
 
+
 	@Override
-	public ArrayList<Event> getEvents() {
+	public ArrayList<Event> getEvents(Window win) {
+
+		ArrayList<Event> result = new ArrayList<>();
 		
-		return null;
+		if (win.getAcceleration().size() > 0) {
+			
+			ArrayList<Accelerometer> acc = win.getAcceleration();
+			
+			AccelerationFeatureVector afv = new AccelerationFeatureVector(acc, "");
+			
+			try {
+				
+				if (this.classify(afv)) {
+					
+					result.add(new Event(acc.get(0).getTime(), EventType.DODGE));
+					
+				}
+				
+			}
+			catch(Exception e) {
+				
+				
+			}
+		}
+		
+		return result;
+		
 	}
 	
 }

@@ -1,9 +1,10 @@
-package MobileSensors.Classifiers;
+package MobileSensors.Deprecated;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import MobileSensors.Classifiers.EventClassifier;
 import MobileSensors.Enums.Axis;
 import MobileSensors.Storage.Event.Event;
 import MobileSensors.Storage.Sensors.Accelerometer;
