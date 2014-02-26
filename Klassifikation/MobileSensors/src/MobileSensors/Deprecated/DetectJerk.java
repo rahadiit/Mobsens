@@ -3,8 +3,7 @@ package MobileSensors.Deprecated;
 import java.util.ArrayList;
 
 import MobileSensors.Classifiers.EventClassifier;
-import MobileSensors.Storage.Event.Event;
-import MobileSensors.Storage.Sensors.Location;
+import MobileSensors.Storage.Events.Event;
 
 public class DetectJerk implements EventClassifier {
 
@@ -22,7 +21,7 @@ public class DetectJerk implements EventClassifier {
 		for (Location location : locations) {
 			if (location.getJerk() <=- 0.3) {
 				this.events.add(new Event(location.getTime(),
-						MobileSensors.Storage.Event.EventType.JERK));
+						MobileSensors.Storage.Events.EventType.JERK));
 			}
 		}
 		return events;

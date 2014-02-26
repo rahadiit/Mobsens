@@ -1,6 +1,6 @@
 package MobileSensors.Calculation;
 
-import MobileSensors.Storage.Sensors.Location;
+import MobileSensors.Deprecated.Location;
 
 /**
  * 

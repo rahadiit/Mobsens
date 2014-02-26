@@ -1,4 +1,4 @@
-package MobileSensors.Storage.Sensors.Sensor;
+package MobileSensors.Storage;
 
 import java.util.ArrayList;
 import java.util.Collection;

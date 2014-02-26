@@ -2,7 +2,7 @@ package MobileSensors.Classifiers;
 
 import java.util.ArrayList;
 
-import MobileSensors.Storage.Event.Event;
+import MobileSensors.Storage.Events.Event;
 
 public interface EventClassifier {
 
