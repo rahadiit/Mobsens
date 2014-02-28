@@ -3,7 +3,7 @@ package MobileSensors.Deprecated;
 import java.util.ArrayList;
 
 import MobileSensors.Classifiers.EventClassifier;
-import MobileSensors.Storage.Events.Event;
+import MobileSensors.Events.Event;
 
 public class DetectStanding  {
 
@@ -23,7 +23,7 @@ public class DetectStanding  {
 			//System.out.println(location.getTime()+" : "+location.getSpeed());
 			if(location.getSpeed()<=0.2){
 				this.events.add(new Event(location.getTime(),
-						MobileSensors.Storage.Events.EventType.STANDING));
+						MobileSensors.Events.EventType.STANDING));
 			}
 			//nachfolgende locations mit getSpeed==0 ueberspringen. Nur ein Event fuer eine "Stand-Phase"
 			while(locations.get(i++).getSpeed()<=0.25){

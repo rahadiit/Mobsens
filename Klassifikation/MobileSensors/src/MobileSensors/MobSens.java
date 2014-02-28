@@ -2,14 +2,15 @@ package MobileSensors;
 
 import java.util.ArrayList;
 
+import weka.core.Attribute;
+import weka.core.FastVector;
+import weka.core.Instance;
+import weka.core.Instances;
 import MobileSensors.Classifiers.BrakingClassifier;
 import MobileSensors.Classifiers.DodgeClassifier;
 import MobileSensors.Classifiers.EventClassifier;
 import MobileSensors.Classifiers.Window;
-import MobileSensors.Deprecated.Accelerometer;
-import MobileSensors.Helper.AccelerationFeatureVector;
-import MobileSensors.Storage.Events.Event;
-import MobileSensors.Storage.Events.EventType;
+import MobileSensors.Events.Event;
 
 /**
  * 
@@ -35,5 +36,20 @@ public class MobSens
 		
 	}
 	
+	
+	public static FastVector createVector () {
+		
+		FastVector v = new FastVector();
+		v.addElement(new Attribute("lala"));
+		
+		return v;
+		
+	}
+	
+	public static void main (String[] args) {
+		
+		
+		
+	}
 	
 }

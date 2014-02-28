@@ -1,4 +1,4 @@
-package MobileSensors.Storage;
+package MobileSensors.Deprecated;
 
 import java.util.ArrayList;
 import java.util.Collection;

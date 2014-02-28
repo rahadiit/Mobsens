@@ -1,6 +1,5 @@
-package MobileSensors.Storage.Sensors;
+package MobileSensors.Sensors;
 
-import MobileSensors.Storage.Sensor;
 
 public class Accelerometer
 	extends Sensor implements Comparable {

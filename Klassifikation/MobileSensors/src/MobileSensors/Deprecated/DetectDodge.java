@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import MobileSensors.Classifiers.EventClassifier;
-import MobileSensors.Storage.Events.Event;
+import MobileSensors.Events.Event;
 
 public class DetectDodge {
 
@@ -189,7 +189,7 @@ public class DetectDodge {
 						// gesetzt
 						// werden
 						events.add(new Event(data.get(i).getTime(),
-								MobileSensors.Storage.Events.EventType.DODGE));
+								MobileSensors.Events.EventType.DODGE));
 						i = data.indexOf(accel.get(accel.size() - 1)) + 1;
 
 					}

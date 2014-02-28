@@ -2,11 +2,12 @@ package MobileSensors.Classifiers;
 
 import java.util.ArrayList;
 
-import MobileSensors.Classifiers.Weka.DodgeJ48;
-import MobileSensors.Storage.Sensors.Accelerometer;
-import MobileSensors.Helper.AccelerationFeatureVector;
-import MobileSensors.Storage.Events.Event;
-import MobileSensors.Storage.Events.EventType;
+import MobileSensors.Sensors.Accelerometer;
+import MobileSensors.Events.Event;
+import MobileSensors.Events.EventType;
+import MobileSensors.Helpers.AccelerationFeatureVector;
+import MobileSensors.Wekas.DodgeJ48;
+import weka.classifiers.Classifier;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
@@ -25,7 +26,7 @@ public class DodgeClassifier implements EventClassifier{
 	private FastVector dodgeAttributes;
 	private Instances dodgeRelation;
 	
-	public DodgeClassifier () {
+	public DodgeClassifier ()  {
 		
 		this.dodgeAttributes = new FastVector();
 		
@@ -52,12 +53,16 @@ public class DodgeClassifier implements EventClassifier{
 		this.dodgeRelation = new Instances("Dodge", this.dodgeAttributes, 1);
 		this.dodgeRelation.setClassIndex(this.dodgeAttributes.size()-1);
 		
+		
+		
+		
 	}
 	
 	private boolean classify (AccelerationFeatureVector v) throws Exception {
 		
 		Instance i = new Instance(this.dodgeAttributes.size());
 		i.setDataset(this.dodgeRelation);
+		
 		i.setValue(0, v.getXArithMean());
 		i.setValue(1, v.getYArithMean());
 		i.setValue(2, v.getZArithMean());

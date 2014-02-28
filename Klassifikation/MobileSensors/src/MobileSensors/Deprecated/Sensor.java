@@ -1,4 +1,5 @@
-package MobileSensors.Storage;
+package MobileSensors.Deprecated;
+
 
 /**
  * 

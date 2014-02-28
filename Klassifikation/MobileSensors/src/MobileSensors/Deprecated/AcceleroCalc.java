@@ -1,10 +1,7 @@
-package MobileSensors.Calculation;
+package MobileSensors.Deprecated;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import MobileSensors.Deprecated.Accelerometer;
-import MobileSensors.Deprecated.Axis;
 
 public class AcceleroCalc {
 

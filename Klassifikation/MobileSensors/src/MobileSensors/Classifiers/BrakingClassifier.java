@@ -2,8 +2,8 @@ package MobileSensors.Classifiers;
 
 import java.util.ArrayList;
 
-import MobileSensors.Storage.Sensors.Location;
-import MobileSensors.Storage.Events.Event;
+import MobileSensors.Events.Event;
+import MobileSensors.Sensors.Location;
 
 /**
  * 
@@ -44,7 +44,7 @@ public class BrakingClassifier  {
 			if (breaking) {
 				// System.out.println("breaking: "+location.getSpeed()+" : "+nextlocation.getSpeed());
 				events.add(new Event(location.getTime(),
-						MobileSensors.Storage.Events.EventType.BRAKING));
+						MobileSensors.Events.EventType.BRAKING));
 			}
 
 			// nachfolgende locations mit getSpeed==0 ueberspringen. Nur ein

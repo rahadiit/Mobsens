@@ -2,8 +2,8 @@ package MobileSensors.Classifiers;
 
 import java.util.ArrayList;
 
-import MobileSensors.Storage.Sensors.Accelerometer;
-import MobileSensors.Storage.Sensors.Location;
+import MobileSensors.Sensors.Accelerometer;
+import MobileSensors.Sensors.Location;
 
 
 /**

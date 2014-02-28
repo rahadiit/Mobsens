@@ -1,4 +1,4 @@
-package MobileSensors.Calculation;
+package MobileSensors.Deprecated;
 
 public class Calc {
 

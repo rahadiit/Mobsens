@@ -1,8 +1,6 @@
-package MobileSensors.Calculation;
+package MobileSensors.Deprecated;
 
 import java.util.Collection;
-
-import MobileSensors.Deprecated.Location;
 
 /**
  * 

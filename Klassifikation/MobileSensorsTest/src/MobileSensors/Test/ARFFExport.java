@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import MobileSensors.Storage.Sensors.Accelerometer;
-import MobileSensors.Helper.AccelerationFeatureVector;
-import MobileSensors.Test.Data.Recording;
-import MobileSensors.Test.Data.SensorE;
-import MobileSensors.Test.Data.URLS;
-import MobileSensors.Test.Input.CSV;
-import MobileSensors.Test.Input.RESTful;
+import MobileSensors.Helpers.AccelerationFeatureVector;
+import MobileSensors.Testtt.Data.Recording;
+import MobileSensors.Testtt.Data.SensorE;
+import MobileSensors.Testtt.Data.URLS;
+import MobileSensors.Testtt.Input.CSV;
+import MobileSensors.Testtt.Input.RESTful;
 
 import com.sun.jersey.api.client.Client;
 
