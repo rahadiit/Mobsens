@@ -1,6 +1,5 @@
 package MobileSensors.Deprecated;
 
-import MobileSensors.Storage.Sensor;
 
 /**
  * 

@@ -1,6 +1,4 @@
-package MobileSensors.Storage.Sensors;
-
-import MobileSensors.Storage.Sensor;
+package MobileSensors.Sensors;
 
 /**
  * Annotation Data Model 

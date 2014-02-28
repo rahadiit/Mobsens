@@ -1,4 +1,4 @@
-package MobileSensors.Helper;
+package MobileSensors.Helpers;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 

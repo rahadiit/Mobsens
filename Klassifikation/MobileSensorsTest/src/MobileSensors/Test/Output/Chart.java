@@ -23,9 +23,8 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import com.sun.jersey.api.client.Client;
 
-import MobileSensors.Calculation.AcceleroCalc;
-import MobileSensors.Calculation.LocationCalc;
 import MobileSensors.Classifiers.BrakingClassifier;
+import MobileSensors.Deprecated.AcceleroCalc;
 import MobileSensors.Deprecated.AcceleroOption;
 import MobileSensors.Deprecated.Accelerometer;
 import MobileSensors.Deprecated.Axis;
@@ -33,15 +32,16 @@ import MobileSensors.Deprecated.DetectDodge;
 import MobileSensors.Deprecated.DetectJerk;
 import MobileSensors.Deprecated.DetectStanding;
 import MobileSensors.Deprecated.Location;
-import MobileSensors.Storage.Sensor;
-import MobileSensors.Storage.Events.Event;
-import MobileSensors.Storage.Events.EventType;
+import MobileSensors.Deprecated.LocationCalc;
+import MobileSensors.Events.Event;
+import MobileSensors.Events.EventType;
 import MobileSensors.Storage.Sensors.Annotation;
-import MobileSensors.Test.Data.Recording;
-import MobileSensors.Test.Data.SensorE;
-import MobileSensors.Test.Data.URLS;
-import MobileSensors.Test.Input.CSV;
-import MobileSensors.Test.Input.RESTful;
+import MobileSensors.Storage.Sensors.Sensor;
+import MobileSensors.Testtt.Data.Recording;
+import MobileSensors.Testtt.Data.SensorE;
+import MobileSensors.Testtt.Data.URLS;
+import MobileSensors.Testtt.Input.CSV;
+import MobileSensors.Testtt.Input.RESTful;
 
 public class Chart {
 

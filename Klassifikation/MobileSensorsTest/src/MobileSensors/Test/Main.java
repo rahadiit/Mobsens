@@ -11,19 +11,19 @@ import org.codehaus.jackson.jaxrs.Annotations;
 
 import com.sun.jersey.api.client.Client;
 
-import MobileSensors.Calculation.AcceleroCalc;
 import MobileSensors.MobSens;
 import MobileSensors.Classifiers.Window;
+import MobileSensors.Deprecated.AcceleroCalc;
 import MobileSensors.Deprecated.Accelerometer;
-import MobileSensors.Storage.Events.Event;
+import MobileSensors.Events.Event;
 import MobileSensors.Storage.Sensors.Annotation;
-import MobileSensors.Test.Data.Recording;
-import MobileSensors.Test.Data.SensorE;
-import MobileSensors.Test.Data.URLS;
-import MobileSensors.Test.Input.CSV;
-import MobileSensors.Test.Input.RESTful;
-import MobileSensors.Test.Output.Chart;
-import MobileSensors.Test.Output.WekaFile;
+import MobileSensors.Testtt.Data.Recording;
+import MobileSensors.Testtt.Data.SensorE;
+import MobileSensors.Testtt.Data.URLS;
+import MobileSensors.Testtt.Input.CSV;
+import MobileSensors.Testtt.Input.RESTful;
+import MobileSensors.Testtt.Output.Chart;
+import MobileSensors.Testtt.Output.WekaFile;
 
 public class Main {
 
