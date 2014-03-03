@@ -2,7 +2,6 @@ package MobileSensors.Deprecated;
 
 import java.util.ArrayList;
 
-import MobileSensors.EventClassifiers.EventClassifier;
 import MobileSensors.Events.Event;
 
 public class DetectStanding  {

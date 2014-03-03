@@ -23,11 +23,11 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import com.sun.jersey.api.client.Client;
 
-import MobileSensors.Classifiers.BrakingClassifier;
 import MobileSensors.Deprecated.AcceleroCalc;
 import MobileSensors.Deprecated.AcceleroOption;
 import MobileSensors.Deprecated.Accelerometer;
 import MobileSensors.Deprecated.Axis;
+import MobileSensors.Deprecated.BrakingClassifier;
 import MobileSensors.Deprecated.DetectDodge;
 import MobileSensors.Deprecated.DetectJerk;
 import MobileSensors.Deprecated.DetectStanding;
