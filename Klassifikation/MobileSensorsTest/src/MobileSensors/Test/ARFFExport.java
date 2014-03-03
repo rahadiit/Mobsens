@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import MobileSensors.Storage.Sensors.Accelerometer;
-import MobileSensors.Helpers.AccelerationFeatureVector;
+import MobileSensors.Deprecated.AccelerationFeatureVector;
 import MobileSensors.Testtt.Data.Recording;
 import MobileSensors.Testtt.Data.SensorE;
 import MobileSensors.Testtt.Data.URLS;

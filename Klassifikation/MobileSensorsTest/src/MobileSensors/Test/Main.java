@@ -12,10 +12,10 @@ import org.codehaus.jackson.jaxrs.Annotations;
 import com.sun.jersey.api.client.Client;
 
 import MobileSensors.MobSens;
-import MobileSensors.Classifiers.Window;
 import MobileSensors.Deprecated.AcceleroCalc;
 import MobileSensors.Deprecated.Accelerometer;
 import MobileSensors.Events.Event;
+import MobileSensors.Sensors.SensorCollection;
 import MobileSensors.Storage.Sensors.Annotation;
 import MobileSensors.Testtt.Data.Recording;
 import MobileSensors.Testtt.Data.SensorE;
@@ -93,7 +93,7 @@ public class Main {
 						ArrayList<Event> events = new ArrayList<>();
 						for (Collection<Accelerometer> accel : accelWindows) {
 
-							Window window = new Window();
+							SensorCollection window = new SensorCollection();
 							window.setAcceleration((ArrayList<Accelerometer>) accel);
 
 							events.addAll(c.getEvents(window));

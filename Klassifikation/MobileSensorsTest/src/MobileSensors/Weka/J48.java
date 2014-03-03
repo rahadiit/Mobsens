@@ -7,7 +7,7 @@ package MobileSensors.Weka;
 //Timestamp: Tue Feb 25 15:57:26 CET 2014
 
 
-import MobileSensors.Wekas.WekaClassifier;
+import MobileSensors.Deprecated.WekaClassifier;
 import weka.core.Attribute;
 import weka.core.Capabilities;
 import weka.core.Capabilities.Capability;

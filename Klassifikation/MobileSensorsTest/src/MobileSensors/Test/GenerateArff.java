@@ -8,9 +8,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import MobileSensors.Storage.Sensors.Accelerometer;
-import MobileSensors.Helpers.AccelerationFeatureVector;
-import MobileSensors.Testtt.Input.CSV;
-import MobileSensors.Testtt.Output.ArffFile;
+import MobileSensors.Deprecated.AccelerationFeatureVector;
+import MobileSensors.Test.Input.CSV;
+import MobileSensors.Test.Output.ArffFile;
 
 public class GenerateArff {
 	
@@ -65,7 +65,7 @@ public class GenerateArff {
 			if (csvFile.getPath().endsWith(".csv") &&! csvFile.isDirectory()){
 				String acceleroCSV = FileUtils
 						.readFileToString(csvFile);
-				ArrayList<Accelerometer> accelerometer = CSV.csvToSensor(acceleroCSV,
+				ArrayList<Accelerometer> accelerometer =  CSV.csvToSensor(acceleroCSV,
 						Accelerometer.class);
 				//GENERATE WINDOW FROM accelerometer
 				GenerateWindow(out, accelerometer, label);
@@ -73,10 +73,10 @@ public class GenerateArff {
 			}
 		}
 	}
-	public static void GenerateWindow(ArffFile arffFile, ArrayList<Accelerometer> accelerometer, String label){
+	public static void GenerateWindow(ArffFile arffFile, ArrayList<MobileSensors.Sensors.Accelerometer> accelerometer, String label){
 
 		for (int i = 0; i<accelerometer.size()-windowSize; i+= delta){
-			ArrayList<Accelerometer> window = new ArrayList<Accelerometer>();
+			ArrayList<MobileSensors.Sensors.Accelerometer> window = new ArrayList<>();
 			for (int j = i; j<windowSize+i; j++){
 				
 				if (accelerometer.get(j) != null) {
