@@ -1,4 +1,4 @@
-package MobileSensors.Classifiers;
+package MobileSensors;
 
 import java.util.ArrayList;
 

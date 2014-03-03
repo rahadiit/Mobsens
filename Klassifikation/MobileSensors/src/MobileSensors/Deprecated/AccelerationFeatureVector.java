@@ -1,7 +1,8 @@
-package MobileSensors.Helpers;
+package MobileSensors.Deprecated;
 
 import java.util.ArrayList;
 
+import MobileSensors.Helpers.FeatureMathHelper;
 import MobileSensors.Sensors.Accelerometer;
 
 public class AccelerationFeatureVector {
@@ -33,109 +34,109 @@ public class AccelerationFeatureVector {
 		
 	public double getXArithMean () {
 		
-		return FeatureMath.arithMean(this.xs);
+		return FeatureMathHelper.arithMean(this.xs);
 		
 	}
 	
 	public double getXGeomMean () {
 		
-		return FeatureMath.geomMean(this.xs);
+		return FeatureMathHelper.geomMean(this.xs);
 		
 	}
 	
 	public double getXHarmMean () {
 		
-		return FeatureMath.harmMean(this.xs);
+		return FeatureMathHelper.harmMean(this.xs);
 		
 	}
 	
 	public double getXVariance () {
 		
-		return FeatureMath.variance(this.xs);
+		return FeatureMathHelper.variance(this.xs);
 		
 	}
 	
 	public double getXs2 () {
 		
-		return FeatureMath.s2(this.xs);
+		return FeatureMathHelper.s2(this.xs);
 		
 	}
 	
 	public double getXKurtosis () {
 		
-		return FeatureMath.kurtosis(this.xs);
+		return FeatureMathHelper.kurtosis(this.xs);
 		
 	}
 	
 	public double getYArithMean () {
 		
-		return FeatureMath.arithMean(this.ys);
+		return FeatureMathHelper.arithMean(this.ys);
 		
 	}
 	
 	public double getYGeomMean () {
 		
-		return FeatureMath.geomMean(this.ys);
+		return FeatureMathHelper.geomMean(this.ys);
 		
 	}
 	
 	public double getYHarmMean () {
 		
-		return FeatureMath.harmMean(this.ys);
+		return FeatureMathHelper.harmMean(this.ys);
 		
 	}
 	
 	public double getYVariance () {
 		
-		return FeatureMath.variance(this.ys);
+		return FeatureMathHelper.variance(this.ys);
 		
 	}
 	
 	public double getYs2 () {
 		
-		return FeatureMath.s2(this.ys);
+		return FeatureMathHelper.s2(this.ys);
 		
 	}
 	
 	public double getYKurtosis () {
 		
-		return FeatureMath.kurtosis(this.ys);
+		return FeatureMathHelper.kurtosis(this.ys);
 		
 	}
 	
 	public double getZArithMean () {
 		
-		return FeatureMath.arithMean(this.zs);
+		return FeatureMathHelper.arithMean(this.zs);
 		
 	}
 	
 	public double getZGeomMean () {
 		
-		return FeatureMath.geomMean(this.zs);
+		return FeatureMathHelper.geomMean(this.zs);
 		
 	}
 	
 	public double getZHarmMean () {
 		
-		return FeatureMath.harmMean(this.zs);
+		return FeatureMathHelper.harmMean(this.zs);
 		
 	}
 	
 	public double getZVariance () {
 		
-		return FeatureMath.variance(this.zs);
+		return FeatureMathHelper.variance(this.zs);
 		
 	}
 	
 	public double getZs2 () {
 		
-		return FeatureMath.s2(this.zs);
+		return FeatureMathHelper.s2(this.zs);
 		
 	}
 	
 	public double getZKurtosis () {
 		
-		return FeatureMath.kurtosis(this.zs);
+		return FeatureMathHelper.kurtosis(this.zs);
 		
 	}
 	

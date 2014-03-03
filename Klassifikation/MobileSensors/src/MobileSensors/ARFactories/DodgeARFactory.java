@@ -1,65 +1,140 @@
-package MobileSensors.Relations;
+package MobileSensors.ARFactories;
 
+import MobileSensors.Window;
+import MobileSensors.Helpers.FeatureMathHelper;
+import MobileSensors.SensorWindows.AccelerometerWindow;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 
-public class DodgeAttributeRelationFactory implements AttributeRelationFactory {
+public class DodgeARFactory implements ARFactory {
 
 	public final static String LABEL_DODGE = "DODGE";
 	public final static String LABEL_NODODGE = "NODODGE";
 	public final static String RELATION_NAME = "MobSensDodge";
 	
-	public FastVector getAttributes () {
+	private final Attribute xArithMean;
+	private final Attribute yArithMean;
+	private final Attribute zArithMean;
+	
+	private final Attribute xHarmMean;
+	private final Attribute yHarmMean;
+	private final Attribute zHarmMean;
+	
+	private final Attribute xKurtosis;
+	private final Attribute yKurtosis;
+	private final Attribute zKurtosis;
+	
+	private final Attribute xVariance;
+	private final Attribute yVariance;
+	private final Attribute zVariance;
+	
+	private final Attribute dodgeLabel;
+	
+	private final FastVector attributeRelationVector;
 		
-		FastVector attrs = new FastVector();
-		
-		attrs.addElement(new Attribute("xArithMean"));
-		attrs.addElement(new Attribute("yArithMean"));
-		attrs.addElement(new Attribute("zArithMean"));
-		
-		attrs.addElement(new Attribute("xHarmMean"));
-		attrs.addElement(new Attribute("yHarmMean"));
-		attrs.addElement(new Attribute("zHarmMean"));
-		
-		attrs.addElement(new Attribute("xVariance"));
-		attrs.addElement(new Attribute("yVariance"));
-		attrs.addElement(new Attribute("zVariance"));
-		
-		attrs.addElement(new Attribute("xKurtosis"));
-		attrs.addElement(new Attribute("yKurtosis"));
-		attrs.addElement(new Attribute("zKurtosis"));
-		
+	public DodgeARFactory () {
 		
 		FastVector labels = new FastVector();
-		labels.addElement(this.LABEL_DODGE);
-		labels.addElement(this.LABEL_NODODGE);
+		labels.addElement(DodgeARFactory.LABEL_DODGE);
+		labels.addElement(DodgeARFactory.LABEL_NODODGE);
 		
-		attrs.addElement(new Attribute("label", labels));
+		this.dodgeLabel = new Attribute("label", labels);
 		
-		return attrs;
+		
+		this.xArithMean = new Attribute("xArithMean");
+		this.yArithMean = new Attribute("yArithMean");
+		this.zArithMean = new Attribute("zArithMean");
+		
+		this.xHarmMean = new Attribute("xHarmMean");
+		this.yHarmMean = new Attribute("yHarmMean");
+		this.zHarmMean = new Attribute("zHarmMean");
+		
+		this.xKurtosis = new Attribute("xKurtosis");
+		this.yKurtosis = new Attribute("yKurtosis");
+		this.zKurtosis = new Attribute("zKurtosis");
+		
+		this.xVariance = new Attribute("xVariance");
+		this.yVariance = new Attribute("yVariance");
+		this.zVariance = new Attribute("zVariance");
+		
+		
+		this.attributeRelationVector = new FastVector();
+		this.attributeRelationVector.addElement(this.xArithMean);
+		this.attributeRelationVector.addElement(this.yArithMean);
+		this.attributeRelationVector.addElement(this.zArithMean);
+		
+		this.attributeRelationVector.addElement(this.xHarmMean);
+		this.attributeRelationVector.addElement(this.yHarmMean);
+		this.attributeRelationVector.addElement(this.zHarmMean);
+		
+		this.attributeRelationVector.addElement(this.xKurtosis);
+		this.attributeRelationVector.addElement(this.yKurtosis);
+		this.attributeRelationVector.addElement(this.zKurtosis);
+		
+		this.attributeRelationVector.addElement(this.xVariance);
+		this.attributeRelationVector.addElement(this.yVariance);
+		this.attributeRelationVector.addElement(this.zVariance);
+		
+		this.attributeRelationVector.addElement(this.dodgeLabel);
 		
 	}
 	
-	public Instances getRealtion(int size) {
+	
+	/**
+	 * Creates new weka training-set of a given size.
+	 * The training-set will be initialized with the dodge attribute relation.
+	 * 
+	 * @param int size
+	 * @return weka.core.Instances
+	 */
+	@Override
+	public Instances createTrainingSet(int size) {
 		
-		FastVector attrs = this.getAttributes();
+		Instances insts = new Instances(
+				DodgeARFactory.RELATION_NAME,
+				this.attributeRelationVector,
+				size);
 		
-		Instances is = new Instances(this.RELATION_NAME, attrs, size);
-		is.setClassIndex(attrs.size()-1);
+		insts.setClass(this.dodgeLabel);
 		
-		return is;
+		return insts;
 		
 	}
+
 	
-	
-	public Instance getVector(int size) {
+	/**
+	 * 
+	 */
+	@Override
+	public Instance createFeatureVector(Window win, String label) {
 		
-		Instance i = new Instance(size);
-		i.setDataset(this.getRealtion(0));
+		AccelerometerWindow accWin = new AccelerometerWindow(win.getAcceleration());
 		
-		return i;
+		Instance inst = new Instance(this.attributeRelationVector.size());
+		
+		inst.setDataset(this.createTrainingSet(0));
+		
+		inst.setValue(this.xArithMean, FeatureMathHelper.arithMean(accWin.getXs()));
+		inst.setValue(this.yArithMean, FeatureMathHelper.arithMean(accWin.getYs()));
+		inst.setValue(this.zArithMean, FeatureMathHelper.arithMean(accWin.getZs()));
+		
+		inst.setValue(this.xHarmMean, FeatureMathHelper.harmMean(accWin.getXs()));
+		inst.setValue(this.yHarmMean, FeatureMathHelper.harmMean(accWin.getYs()));
+		inst.setValue(this.zHarmMean, FeatureMathHelper.harmMean(accWin.getZs()));
+		
+		inst.setValue(this.xKurtosis, FeatureMathHelper.kurtosis(accWin.getXs()));
+		inst.setValue(this.yKurtosis, FeatureMathHelper.kurtosis(accWin.getYs()));
+		inst.setValue(this.zKurtosis, FeatureMathHelper.kurtosis(accWin.getZs()));
+
+		inst.setValue(this.xVariance, FeatureMathHelper.variance(accWin.getXs()));
+		inst.setValue(this.yVariance, FeatureMathHelper.variance(accWin.getYs()));
+		inst.setValue(this.zVariance, FeatureMathHelper.variance(accWin.getZs()));
+		
+		inst.setClassValue(label);
+		
+		return inst;
 		
 	}
 	

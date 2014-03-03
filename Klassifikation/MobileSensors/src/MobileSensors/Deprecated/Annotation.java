@@ -1,4 +1,6 @@
-package MobileSensors.Sensors;
+package MobileSensors.Deprecated;
+
+import MobileSensors.Sensors.Sensor;
 
 /**
  * Annotation Data Model 

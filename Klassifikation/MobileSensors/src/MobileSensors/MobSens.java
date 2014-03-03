@@ -6,10 +6,9 @@ import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
-import MobileSensors.Classifiers.BrakingClassifier;
-import MobileSensors.Classifiers.DodgeClassifier;
-import MobileSensors.Classifiers.EventClassifier;
-import MobileSensors.Classifiers.Window;
+import MobileSensors.EventClassifiers.BrakingClassifier;
+import MobileSensors.EventClassifiers.DodgeClassifier;
+import MobileSensors.EventClassifiers.EventClassifier;
 import MobileSensors.Events.Event;
 
 /**
@@ -19,8 +18,7 @@ import MobileSensors.Events.Event;
  * @author henny, thomas, max
  * 
  */
-public class MobSens 
-	implements EventClassifier {
+public class MobSens implements EventClassifier {
 
 	/**
 	 * 
@@ -36,15 +34,7 @@ public class MobSens
 		
 	}
 	
-	
-	public static FastVector createVector () {
-		
-		FastVector v = new FastVector();
-		v.addElement(new Attribute("lala"));
-		
-		return v;
-		
-	}
+
 	
 	public static void main (String[] args) {
 		

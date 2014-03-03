@@ -2,7 +2,7 @@ package MobileSensors.Deprecated;
 
 import java.util.ArrayList;
 
-import MobileSensors.Classifiers.EventClassifier;
+import MobileSensors.EventClassifiers.EventClassifier;
 import MobileSensors.Events.Event;
 
 public class DetectJerk  {

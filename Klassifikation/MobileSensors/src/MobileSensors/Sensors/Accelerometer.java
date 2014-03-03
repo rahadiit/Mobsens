@@ -1,8 +1,7 @@
 package MobileSensors.Sensors;
 
 
-public class Accelerometer
-	extends Sensor implements Comparable {
+public class Accelerometer extends Sensor {
 
 	private double x,y,z;
 	
@@ -51,10 +50,5 @@ public class Accelerometer
 		this.z = z;
 	}
 
-	@Override
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 }

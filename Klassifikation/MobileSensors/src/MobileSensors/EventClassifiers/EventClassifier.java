@@ -1,7 +1,8 @@
-package MobileSensors.Classifiers;
+package MobileSensors.EventClassifiers;
 
 import java.util.ArrayList;
 
+import MobileSensors.Window;
 import MobileSensors.Events.Event;
 
 /**

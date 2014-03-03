@@ -1,13 +1,14 @@
-package MobileSensors.Classifiers;
+package MobileSensors.EventClassifiers;
 
 import java.util.ArrayList;
 
+import MobileSensors.Window;
 import MobileSensors.Sensors.Accelerometer;
+import MobileSensors.Deprecated.AccelerationFeatureVector;
+import MobileSensors.EventClassifiers.EventClassifier;
 import MobileSensors.Events.Event;
 import MobileSensors.Events.EventType;
-import MobileSensors.Helpers.AccelerationFeatureVector;
 import MobileSensors.Wekas.DodgeJ48;
-import weka.classifiers.Classifier;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
