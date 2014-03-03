@@ -1,15 +1,14 @@
-package MobileSensors.Relations;
+package MobileSensors.ARFactories;
 
-import weka.core.FastVector;
+import MobileSensors.Window;
 import weka.core.Instance;
 import weka.core.Instances;
 
-public interface AttributeRelationFactory {
+public interface ARFactory {
 
 	
-	public FastVector getAttributes();
-	public Instances getRealtion(int size);
-	public Instance getVector(int size);
+	public Instances createTrainingSet(int size);
+	public Instance createFeatureVector(Window win, String label);
 	
 	
 }

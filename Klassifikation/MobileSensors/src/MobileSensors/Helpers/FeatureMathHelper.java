@@ -2,7 +2,7 @@ package MobileSensors.Helpers;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-public class FeatureMath {
+public class FeatureMathHelper {
 
 	public static double sum(double[] xs) {
 		DescriptiveStatistics ds = new DescriptiveStatistics();
@@ -74,7 +74,7 @@ public class FeatureMath {
 
 	public static double s2(double[] xs) {
 
-		return Math.sqrt(FeatureMath.variance(xs));
+		return Math.sqrt(FeatureMathHelper.variance(xs));
 
 	}
 

@@ -1,7 +1,6 @@
 package MobileSensors.Sensors;
 
-public class Location 
-	extends Sensor {
+public class Location extends Sensor {
 
 	private double latitude;
 	private double longitude;

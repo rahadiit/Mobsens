@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import MobileSensors.Classifiers.EventClassifier;
+import MobileSensors.EventClassifiers.EventClassifier;
 import MobileSensors.Events.Event;
 
 public class DetectDodge {
