@@ -12,6 +12,9 @@ import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.ResourceProxy;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.PathOverlay;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -37,7 +40,12 @@ public class Map extends ConnectingActivity
 	private Button buttonMapStop;
 
 	private ResourceProxy mResourceProxy;
-
+		
+	private ResourceOverlay locationOverlay;
+	
+	private PathOverlay myPathOverlay;
+	
+	
 	public Map()
 	{
 		super(Collector.class);
@@ -54,6 +62,12 @@ public class Map extends ConnectingActivity
 					mapViewMapPosition.getController().animateTo(new GeoPoint(latitude, longitude));
 					locationOverlay.setGeoPoint(new GeoPoint(latitude, longitude));
 
+					//at least a 1 second break between path entries?
+					//if (time.getSeconds()-lastDate.getSeconds()>1)
+				    myPathOverlay.addPoint(new GeoPoint(latitude, longitude));
+					
+					
+					
 					if (bearing != null)
 					{
 						mapViewMapPosition.setMapOrientation(bearing);
@@ -95,7 +109,7 @@ public class Map extends ConnectingActivity
 		collectorIPC = null;
 	}
 
-	private ResourceOverlay locationOverlay;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -113,15 +127,20 @@ public class Map extends ConnectingActivity
 		mapViewMapPosition.getController().setZoom(16);
 
 		mResourceProxy = new DefaultResourceProxyImpl(getApplicationContext());
-
+		
 		textViewMapSpeed = (TextView) findViewById(R.id.map_speed);
 		buttonMapStop = (Button) findViewById(R.id.map_stop);
 
+		//Current Location
 		locationOverlay = new ResourceOverlay(this);
 		locationOverlay.setResource(R.drawable.ic_launcher);
-
 		mapViewMapPosition.getOverlayManager().add(locationOverlay);
+		
+		//path
+		myPathOverlay = new PathOverlay(Color.BLUE, this);
+		mapViewMapPosition.getOverlayManager().add(myPathOverlay);		
 
+        
 		buttonMapStop.setOnClickListener(new OnClickListener()
 		{
 			@Override
