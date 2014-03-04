@@ -1,9 +1,28 @@
+Summary:
+========
 
-Correctly Classified Instances       12833               99.6428 %
-Incorrectly Classified Instances        46                0.3572 %
-Kappa statistic                          0.981 
-Mean absolute error                      0.0042
-Root mean squared error                  0.0599
-Relative absolute error                  2.226  %
-Root relative squared error             19.488  %
+Correctly Classified Instances       12820               99.5419 %
+Incorrectly Classified Instances        59                0.4581 %
+Kappa statistic                          0.9757
+Mean absolute error                      0.0052
+Root mean squared error                  0.067 
+Relative absolute error                  2.7448 %
+Root relative squared error             21.8154 %
 Total Number of Instances            12879     
+
+Detailed Statistics:
+====================
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.976     0.002      0.981     0.976     0.978      0.991    DODGE
+                 0.998     0.024      0.997     0.998     0.997      0.991    NODODGE
+Weighted Avg.    0.995     0.022      0.995     0.995     0.995      0.991
+
+Confusion matrix :
+==================
+=== Confusion Matrix ===
+
+     a     b   <-- classified as
+  1325    33 |     a = DODGE
+    26 11495 |     b = NODODGE

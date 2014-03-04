@@ -23,7 +23,7 @@ import MobileSensors.Sensors.CSVParsers.AccelerometerCSVParser;
  */
 public class MobSens {
 
-	private final static String INDIR = "./csv";
+	private final static String INDIR = "./input";
 	
 	private final static String OUTDIR_ARFF = "./arff";
 	private final static String OUTDIR_MODEL = "./model";
