@@ -6,11 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import MobileSensors.Events.Classifiers.DodgeClassifier;
 import MobileSensors.Events.Event;
 import MobileSensors.Events.Labels.DodgeLabel;
 import MobileSensors.Events.Trainers.DodgeTrainer;
+import MobileSensors.Events.TrainingSetBuilders.DodgeTSBuilder;
 import MobileSensors.Sensors.SensorCollection;
 import MobileSensors.Sensors.CSVParsers.AccelerometerCSVParser;
 
@@ -23,21 +25,18 @@ import MobileSensors.Sensors.CSVParsers.AccelerometerCSVParser;
  */
 public class MobSens {
 
-	private final static String INDIR = "./input";
+	public final static String INDIR = "./input";
 	
-	private final static String OUTDIR_ARFF = "./arff";
-	private final static String OUTDIR_MODEL = "./model";
+	public final static String OUTDIR = "./model";
 	
-	private final static String EXTENSION_MODEL = ".model";
-	private final static String EXTENSION_ARFF  = ".arff";
-	private final static String EXTENSION_EVAL  = ".eval";
+	public final static String EXTENSION_MODEL = ".model";
+	public final static String EXTENSION_ARFF  = ".arff";
+	public final static String EXTENSION_EVAL  = ".eval";
 	
-	private final static String FILENAME_DODGE   = "./Dodge";
-	private final static String FILENAME_BRAKING = "./Braking";
-	
-	public final static String MODELFILE_DODGE = MobSens.OUTDIR_MODEL + MobSens.FILENAME_DODGE + MobSens.EXTENSION_MODEL;
-	public final static String ARFFFILE_DODGE  = MobSens.OUTDIR_MODEL + MobSens.FILENAME_DODGE + MobSens.EXTENSION_ARFF;
-	public final static String EVALFILE_DODGE  = MobSens.OUTDIR_MODEL + MobSens.FILENAME_DODGE + MobSens.EXTENSION_EVAL;
+	public final static String FILENAME_DODGE   = "./Dodge";
+	public final static String MODELFILE_DODGE = MobSens.OUTDIR + MobSens.FILENAME_DODGE + MobSens.EXTENSION_MODEL;
+	public final static String ARFFFILE_DODGE  = MobSens.OUTDIR + MobSens.FILENAME_DODGE + MobSens.EXTENSION_ARFF;
+	public final static String EVALFILE_DODGE  = MobSens.OUTDIR + MobSens.FILENAME_DODGE + MobSens.EXTENSION_EVAL;
 	
 	/**
 	 * 
@@ -89,12 +88,22 @@ public class MobSens {
 	public static void main (String[] args) throws Exception {
 		
 		DodgeTrainer dt = new DodgeTrainer();
+		DodgeTSBuilder db = new DodgeTSBuilder();
 		
-		trainDodges(dt, DodgeLabel.DODGE);
-		trainDodges(dt, DodgeLabel.NODODGE);
+//		trainDodges(dt, DodgeLabel.DODGE);
+//		trainDodges(dt, DodgeLabel.NODODGE);
+		
+		Map<SensorCollection, DodgeLabel> ts = db.build();
+		
+		for (SensorCollection sc : ts.keySet()) {
+			
+			dt.addSenorCollection(sc, ts.get(sc));
+			
+		}
 		
 		dt.train();
 		
+		System.out.println("Finished Training. Ready to Rock!");
 		
 	}
 	

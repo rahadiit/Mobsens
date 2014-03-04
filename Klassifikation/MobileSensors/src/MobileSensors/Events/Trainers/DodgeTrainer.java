@@ -1,9 +1,7 @@
 package MobileSensors.Events.Trainers;
 
 import java.io.BufferedWriter;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -24,18 +22,7 @@ public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 	private final static int WINDOW_DELTA = 1;
 	private final static int VALIDATION_FOLDS = 10; 
 	
-	private DodgeARFactory dodgeFactory;
-	
-	public DodgeTrainer () {
 		
-		super();
-		
-		this.dodgeFactory = new DodgeARFactory();
-		
-		
-		
-	}
-	
 	private void addSensorCollectionToTrainingSet(SensorCollection sc, DodgeLabel label, Instances trainingSet) {
 		
 		ArrayList<Accelerometer> accs = sc.getAcceleration();
@@ -57,7 +44,7 @@ public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 			
 			
 			
-			trainingSet.add(dodgeFactory.createFeatureVector(dodgeSC, label));
+			trainingSet.add((new DodgeARFactory()).createFeatureVector(dodgeSC, label));
 			
 		}
 		
@@ -67,7 +54,7 @@ public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 	public Classifier train() throws Exception {
 		
 		
-		Instances trainingSet = dodgeFactory.createTrainingSet(0); 
+		Instances trainingSet = (new DodgeARFactory()).createTrainingSet(0); 
 		
 		for (SensorCollection sc : this.sensorCollections.keySet()) {
 			
@@ -77,12 +64,10 @@ public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 			
 		}
 			
-		BufferedWriter w = new BufferedWriter(new FileWriter(MobSens.ARFFFILE_DODGE));
-		w.write(trainingSet.toString());
-		w.flush();
-		w.close();
-		
-		System.out.println(trainingSet.numInstances());
+		BufferedWriter arffWriter = new BufferedWriter(new FileWriter(MobSens.ARFFFILE_DODGE));
+		arffWriter.write(trainingSet.toString());
+		arffWriter.flush();
+		arffWriter.close();
 		
 		Classifier dodgeJ48 = new J48();
 		
@@ -90,31 +75,33 @@ public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 		
 		SerializationHelper.write(MobSens.MODELFILE_DODGE, dodgeJ48);
 		
-		Evaluation eval = new Evaluation(trainingSet);
-		
-		System.out.println(trainingSet.numInstances());
-		
+		Evaluation eval = new Evaluation(trainingSet);	
 		eval.crossValidateModel(dodgeJ48, trainingSet, DodgeTrainer.VALIDATION_FOLDS, new Random(1));
-		BufferedWriter b = new BufferedWriter(new FileWriter(MobSens.EVALFILE_DODGE));
-		b.write("Summary:");
-		b.newLine();
-		b.write("========");
-		b.newLine();
-		b.write(eval.toSummaryString());
-		b.newLine();
-		b.write("Detailed Statistics:");
-		b.newLine();
-		b.write("====================");
-		b.newLine();
-		b.write(eval.toClassDetailsString());
-		b.newLine();
-		b.write("Confusion matrix :");
-		b.newLine();
-		b.write("==================");
-		b.newLine();
-		b.write(eval.toMatrixString());
-		b.flush();
-		b.close();
+		
+		
+		BufferedWriter evalWriter = new BufferedWriter(new FileWriter(MobSens.EVALFILE_DODGE));
+		evalWriter.write("Summary:");
+		evalWriter.newLine();
+		evalWriter.write("========");
+		evalWriter.newLine();
+		evalWriter.write(eval.toSummaryString());
+		evalWriter.newLine();
+		evalWriter.write("Detailed Statistics:");
+		evalWriter.newLine();
+		evalWriter.write("====================");
+		evalWriter.newLine();
+		evalWriter.write(eval.toClassDetailsString());
+		evalWriter.newLine();
+		evalWriter.write("Confusion matrix :");
+		evalWriter.newLine();
+		evalWriter.write("==================");
+		evalWriter.newLine();
+		evalWriter.write(eval.toMatrixString());
+		evalWriter.newLine();
+		evalWriter.newLine();
+		evalWriter.write(dodgeJ48.toString());
+		evalWriter.flush();
+		evalWriter.close();
 		
 		
 		

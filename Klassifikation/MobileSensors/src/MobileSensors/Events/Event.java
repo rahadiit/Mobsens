@@ -1,7 +1,5 @@
 package MobileSensors.Events;
 
-import MobileSensors.Deprecated.Timeable;
-
 /**
  * Mobile Sensors Event Data Model
  * 
