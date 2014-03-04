@@ -82,6 +82,7 @@ public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 		w.flush();
 		w.close();
 		
+		System.out.println(trainingSet.numInstances());
 		
 		Classifier dodgeJ48 = new J48();
 		
@@ -90,9 +91,28 @@ public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 		SerializationHelper.write(MobSens.MODELFILE_DODGE, dodgeJ48);
 		
 		Evaluation eval = new Evaluation(trainingSet);
+		
+		System.out.println(trainingSet.numInstances());
+		
 		eval.crossValidateModel(dodgeJ48, trainingSet, DodgeTrainer.VALIDATION_FOLDS, new Random(1));
 		BufferedWriter b = new BufferedWriter(new FileWriter(MobSens.EVALFILE_DODGE));
+		b.write("Summary:");
+		b.newLine();
+		b.write("========");
+		b.newLine();
 		b.write(eval.toSummaryString());
+		b.newLine();
+		b.write("Detailed Statistics:");
+		b.newLine();
+		b.write("====================");
+		b.newLine();
+		b.write(eval.toClassDetailsString());
+		b.newLine();
+		b.write("Confusion matrix :");
+		b.newLine();
+		b.write("==================");
+		b.newLine();
+		b.write(eval.toMatrixString());
 		b.flush();
 		b.close();
 		
