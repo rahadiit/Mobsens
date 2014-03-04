@@ -4,8 +4,6 @@ import java.util.Map;
 import java.util.HashMap;
 
 import weka.classifiers.Classifier;
-import weka.classifiers.trees.J48;
-import weka.core.Instances;
 import MobileSensors.Events.Labels.EventLabel;
 import MobileSensors.Sensors.SensorCollection;
 
@@ -18,6 +16,12 @@ public abstract class EventTrainer<L extends EventLabel> {
 	public EventTrainer () {
 		
 		this.sensorCollections = new HashMap<SensorCollection, L>();
+		
+	}
+	
+	public EventTrainer (Map<SensorCollection, L> sensorCollections) {
+		
+		this.sensorCollections = sensorCollections;
 		
 	}
 	

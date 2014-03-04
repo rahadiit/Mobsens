@@ -1,7 +1,5 @@
 package MobileSensors.Events.ARFactories;
 
-import org.apache.commons.lang3.StringUtils;
-
 import MobileSensors.Events.Labels.DodgeLabel;
 import MobileSensors.Helpers.FeatureMathHelper;
 import MobileSensors.Sensors.SensorCollection;
