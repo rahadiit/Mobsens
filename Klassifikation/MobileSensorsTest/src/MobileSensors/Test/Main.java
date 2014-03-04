@@ -17,13 +17,13 @@ import MobileSensors.Deprecated.Accelerometer;
 import MobileSensors.Events.Event;
 import MobileSensors.Sensors.SensorCollection;
 import MobileSensors.Storage.Sensors.Annotation;
-import MobileSensors.Testtt.Data.Recording;
-import MobileSensors.Testtt.Data.SensorE;
-import MobileSensors.Testtt.Data.URLS;
-import MobileSensors.Testtt.Input.CSV;
-import MobileSensors.Testtt.Input.RESTful;
-import MobileSensors.Testtt.Output.Chart;
-import MobileSensors.Testtt.Output.WekaFile;
+import MobileSensors.Test.Data.Recording;
+import MobileSensors.Test.Data.SensorE;
+import MobileSensors.Test.Data.URLS;
+import MobileSensors.Test.Input.CSV;
+import MobileSensors.Test.Input.RESTful;
+import MobileSensors.Test.Output.Chart;
+import MobileSensors.Test.Output.WekaFile;
 
 public class Main {
 
@@ -94,7 +94,7 @@ public class Main {
 						for (Collection<Accelerometer> accel : accelWindows) {
 
 							SensorCollection window = new SensorCollection();
-							window.setAcceleration((ArrayList<Accelerometer>) accel);
+							window.setAcceleration((ArrayList<MobileSensors.Sensors.Accelerometer>) accel);
 
 							events.addAll(c.getEvents(window));
 

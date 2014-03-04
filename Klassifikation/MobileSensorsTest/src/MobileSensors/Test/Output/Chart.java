@@ -1,23 +1,16 @@
 package MobileSensors.Test.Output;
 
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.annotations.XYAnnotation;
 import org.jfree.chart.annotations.XYTextAnnotation;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.event.AnnotationChangeListener;
-import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYDotRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -27,22 +20,21 @@ import MobileSensors.Deprecated.AcceleroCalc;
 import MobileSensors.Deprecated.AcceleroOption;
 import MobileSensors.Deprecated.Accelerometer;
 import MobileSensors.Deprecated.Axis;
-import MobileSensors.Deprecated.BrakingClassifier;
 import MobileSensors.Deprecated.DetectDodge;
 import MobileSensors.Deprecated.DetectJerk;
 import MobileSensors.Deprecated.DetectStanding;
 import MobileSensors.Deprecated.Location;
 import MobileSensors.Deprecated.LocationCalc;
+import MobileSensors.Deprecated.Annotation;
+import MobileSensors.Deprecated.Sensor;
 import MobileSensors.Events.Event;
-import MobileSensors.Events.EventType;
-import MobileSensors.Storage.Sensors.Annotation;
-import MobileSensors.Storage.Sensors.Sensor;
-import MobileSensors.Testtt.Data.Recording;
-import MobileSensors.Testtt.Data.SensorE;
-import MobileSensors.Testtt.Data.URLS;
-import MobileSensors.Testtt.Input.CSV;
-import MobileSensors.Testtt.Input.RESTful;
+import MobileSensors.Test.Data.Recording;
+import MobileSensors.Test.Data.SensorE;
+import MobileSensors.Test.Data.URLS;
+import MobileSensors.Test.Input.CSV;
+import MobileSensors.Test.Input.RESTful;
 
+@SuppressWarnings("deprecation")
 public class Chart {
 
 	private final static int X = 0;
@@ -70,7 +62,7 @@ public class Chart {
 			Event event = events.get(i);
 			double position = 0.1 + (0.2 * (i % 3));
 			plot.addAnnotation(new XYTextAnnotation(event.getEventType()
-					.toString(), event.getTime(), position));
+					.toString(), event.getStartTime(), position));
 		}
 	}
 

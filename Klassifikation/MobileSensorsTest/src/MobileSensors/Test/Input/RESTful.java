@@ -9,8 +9,8 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
-import MobileSensors.Testtt.Data.Recording;
-import MobileSensors.Testtt.Data.SensorE;
+import MobileSensors.Test.Data.Recording;
+import MobileSensors.Test.Data.SensorE;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
