@@ -1,4 +1,4 @@
-package pipeline;
+package MobileSensors.Deprecated;
 
 import java.util.Arrays;
 

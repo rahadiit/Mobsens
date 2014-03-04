@@ -1,6 +1,6 @@
 package MobileSensors.Deprecated;
 
-class WekaClassifier {
+public class WekaClassifier {
 
 	public static double classify(Object[] i) throws Exception {
 

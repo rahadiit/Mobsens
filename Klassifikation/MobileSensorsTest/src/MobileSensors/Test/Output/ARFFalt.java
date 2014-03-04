@@ -10,8 +10,8 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import MobileSensors.Deprecated.Accelerometer;
 import MobileSensors.Events.EventType;
-import MobileSensors.Testtt.Data.SensorE;
-import MobileSensors.Testtt.Input.CSV;
+import MobileSensors.Test.Data.SensorE;
+import MobileSensors.Test.Input.CSV;
 
 public class ARFFalt {
 

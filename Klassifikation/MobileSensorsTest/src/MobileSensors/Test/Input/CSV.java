@@ -13,8 +13,8 @@ import org.apache.commons.csv.CSVRecord;
 
 import MobileSensors.Deprecated.Accelerometer;
 import MobileSensors.Deprecated.Location;
-import MobileSensors.Storage.Sensors.Annotation;
-import MobileSensors.Storage.Sensors.Sensor;
+import MobileSensors.Deprecated.Annotation;
+import MobileSensors.Deprecated.Sensor;
 
 
 public class CSV {
