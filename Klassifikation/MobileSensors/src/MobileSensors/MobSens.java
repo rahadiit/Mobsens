@@ -11,8 +11,8 @@ import java.util.Map;
 import MobileSensors.Events.Classifiers.DodgeClassifier;
 import MobileSensors.Events.Event;
 import MobileSensors.Events.Labels.DodgeLabel;
+import MobileSensors.Events.TSFactories.DodgeTSFactory;
 import MobileSensors.Events.Trainers.DodgeTrainer;
-import MobileSensors.Events.TrainingSetBuilders.DodgeTSBuilder;
 import MobileSensors.Sensors.SensorCollection;
 import MobileSensors.Sensors.CSVParsers.AccelerometerCSVParser;
 
@@ -46,9 +46,9 @@ public class MobSens {
 	public static void main (String[] args) throws Exception {
 		
 
-		DodgeTSBuilder db = new DodgeTSBuilder();
+		DodgeTSFactory db = new DodgeTSFactory();
 		
-		DodgeTrainer dt = new DodgeTrainer(db.build());
+		DodgeTrainer dt = new DodgeTrainer(db.buildTrainingSet());
 		
 				
 		dt.train();

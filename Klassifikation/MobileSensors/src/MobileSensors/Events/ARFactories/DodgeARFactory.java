@@ -1,5 +1,7 @@
 package MobileSensors.Events.ARFactories;
 
+import java.util.Map;
+
 import MobileSensors.Events.Labels.DodgeLabel;
 import MobileSensors.Helpers.FeatureMathHelper;
 import MobileSensors.Sensors.SensorCollection;
@@ -9,11 +11,15 @@ import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 
+/**
+ * Implementation of an Attribute Relation Factory for dodge events
+ * 
+ * @author henny, thomas, max
+ *
+ */
 public class DodgeARFactory implements ARFactory<DodgeLabel> {
 
-	public final static String LABEL_DODGE = "DODGE";
-	public final static String LABEL_NODODGE = "NODODGE";
-	public final static String RELATION_NAME = "MobSensDodge";
+	private final static String RELATION_NAME = "MobSensDodge";
 	
 	private final Attribute xArithMean;
 	private final Attribute yArithMean;
@@ -83,19 +89,27 @@ public class DodgeARFactory implements ARFactory<DodgeLabel> {
 	}
 		
 	/**
-	 * Creates new weka training-set of a given size.
+	 * Creates new weka training set of a given size.
 	 * The training-set will be initialized with the dodge attribute relation.
 	 * 
 	 * @param int size
 	 * @return weka.core.Instances
 	 */
 	@Override
-	public Instances createTrainingSet(int size) {
+	public Instances createTrainingSet() {
+		
+		/* Note: capacity=0 for the Intances constructor implies
+		 * infinity, as it does for every other number, since its
+		 * internally used to construct an instance of FastVector.
+		 * But FastVector provides an overflow prevention mechanism
+		 * which increases its capacity if you try to add an item 
+		 * in an already full vector.
+		 */
 		
 		Instances insts = new Instances(
 				DodgeARFactory.RELATION_NAME,
 				this.dodgeFeatureVector,
-				size);
+				0); // <- see note above 
 		
 		
 		insts.setClass(this.dodgeLabel);
@@ -104,6 +118,22 @@ public class DodgeARFactory implements ARFactory<DodgeLabel> {
 		
 	}
 
+	@Override
+	public Instances createTrainingSet(
+			Map<SensorCollection, DodgeLabel> sensorCollections) {
+		
+		Instances insts = this.createTrainingSet();
+		
+		for (SensorCollection sc : sensorCollections.keySet()) {
+			
+			insts.add(this.createFeatureVector(sc, sensorCollections.get(sc)));
+			
+		}
+		
+		return insts;
+	}
+	
+	
 	
 	/**
 	 * Creates new unlabeled weka feature-vector for the dodge attribute relation
@@ -112,13 +142,13 @@ public class DodgeARFactory implements ARFactory<DodgeLabel> {
 	 * @return
 	 */
 	@Override
-	public Instance createFeatureVector(SensorCollection win) {
+	public Instance createFeatureVector(SensorCollection sc) {
 		
-		AccelerometerWindow accWin = new AccelerometerWindow(win.getAcceleration());
+		AccelerometerWindow accWin = new AccelerometerWindow(sc.getAcceleration());
 				
 		Instance inst = new Instance(this.dodgeFeatureVector.size());
 		
-		inst.setDataset(this.createTrainingSet(0));
+		inst.setDataset(this.createTrainingSet());
 		
 		inst.setValue(this.xArithMean, FeatureMathHelper.arithMean(accWin.getXs()));
 		inst.setValue(this.yArithMean, FeatureMathHelper.arithMean(accWin.getYs()));
@@ -149,14 +179,16 @@ public class DodgeARFactory implements ARFactory<DodgeLabel> {
 	 * @return
 	 */
 	@Override
-	public Instance createFeatureVector(SensorCollection win, DodgeLabel label) {
+	public Instance createFeatureVector(SensorCollection sc, DodgeLabel label) {
 		
-		Instance inst = this.createFeatureVector(win);
+		Instance inst = this.createFeatureVector(sc);
 		
 		inst.setValue(this.dodgeLabel, label.toString());
 		
 		return inst;
 		
 	}
+
+	
 	
 }
