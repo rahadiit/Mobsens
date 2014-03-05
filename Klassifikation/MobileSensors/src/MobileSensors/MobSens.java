@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import MobileSensors.Events.CSVDirParsers.DodgeTSFactory;
 import MobileSensors.Events.Classifiers.DodgeClassifier;
 import MobileSensors.Events.Event;
 import MobileSensors.Events.Labels.DodgeLabel;
-import MobileSensors.Events.TSFactories.DodgeTSFactory;
 import MobileSensors.Events.Trainers.DodgeTrainer;
 import MobileSensors.Sensors.SensorCollection;
 import MobileSensors.Sensors.CSVParsers.AccelerometerCSVParser;
@@ -43,33 +43,41 @@ public class MobSens {
 	 * @param args
 	 * @throws Exception
 	 */
-	public static void main (String[] args) throws Exception {
+	public static void main (String[] args) {
 		
-
-		DodgeTSFactory db = new DodgeTSFactory();
+		MobSens m = new MobSens();
 		
-		DodgeTrainer dt = new DodgeTrainer(db.buildTrainingSet());
 		
-				
-		dt.train();
 		
-		System.out.println("Finished Training. Ready to Rumble!");
+		if (m.trainEvents() > -1) {
+			
+			System.out.println("Finished Training. Ready to Rumble!");
+			
+		}
+		else {
+			
+			System.out.println("Something went horribly wrong!");
+			
+		}
+		
 		
 	}
 	
 	
 	
-	
 	/**
 	 * 
+	 * @param sc
+	 * @return
 	 */
-	public ArrayList<Event> getEvents (SensorCollection win) {
+	public ArrayList<Event> classifyEvents (SensorCollection sc) {
 		
 		ArrayList<Event> result = new ArrayList<Event>();
 		
 		try {
 				
-			result.addAll((new DodgeClassifier()).classify(win));
+			result.addAll((new DodgeClassifier()).classify(sc));
+			//result.addAll((new BrakingClassifier()).classify(win));
 		
 		} catch (Exception e) {
 			
@@ -80,7 +88,31 @@ public class MobSens {
 		return result;
 		
 	}
+	
+	/**
+	 * Trains event classifiers
+	 */
+	public int trainEvents () {
 		
+		DodgeTSFactory db = new DodgeTSFactory();
+		DodgeTrainer dt = new DodgeTrainer(db.buildTrainingSet());
+		
+				
+		try {
+			
+			dt.train();
+		
+		} catch (Exception e) {
+		
+			e.printStackTrace();
+			
+			return -1;
+		
+		}
+		
+		return 0;
+		
+	}
 	
 	
 }
