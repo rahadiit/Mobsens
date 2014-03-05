@@ -3,6 +3,7 @@ package MobileSensors.Events.Trainers;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 
 import weka.classifiers.Classifier;
@@ -16,13 +17,35 @@ import MobileSensors.Events.Labels.DodgeLabel;
 import MobileSensors.Sensors.Accelerometer;
 import MobileSensors.Sensors.SensorCollection;
 
+/**
+ * 
+ * @author henny, thomas, max
+ *
+ */
 public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 
+	/**
+	 * Number of items in a window used to create a feature vector
+	 */
 	private final static int WINDOW_WIDTH = 100;
+	
+	/**
+	 * 
+	 */
 	private final static int WINDOW_DELTA = 1;
+	
+	
+	/**
+	 * Numboer folds used for cross validation
+	 */
 	private final static int VALIDATION_FOLDS = 10; 
 	
+	public DodgeTrainer (Map<SensorCollection, DodgeLabel> sensorCollections) {
 		
+		super(sensorCollections);
+		
+	}
+	
 	private void addSensorCollectionToTrainingSet(SensorCollection sc, DodgeLabel label, Instances trainingSet) {
 		
 		ArrayList<Accelerometer> accs = sc.getAcceleration();
@@ -50,6 +73,9 @@ public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 		
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public Classifier train() throws Exception {
 		
