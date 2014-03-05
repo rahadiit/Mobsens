@@ -25,10 +25,13 @@ public class LocationCSVParser implements SensorCSVParser<Location> {
 		
 		CSVFormat format = CSVFormat.DEFAULT
 				.withHeader(
-						AccelerometerCSVParser.HEADER_TIME,
-						AccelerometerCSVParser.HEADER_X,
-						AccelerometerCSVParser.HEADER_Y,
-						AccelerometerCSVParser.HEADER_Z)
+						LocationCSVParser.HEADER_TIME,
+						LocationCSVParser.HEADER_LATITUDE,
+						LocationCSVParser.HEADER_LONGITUDE,
+						LocationCSVParser.HEADER_ALTITUDE,
+						LocationCSVParser.HEADER_SPEED,
+						LocationCSVParser.HEADER_BEARING,
+						LocationCSVParser.HEADER_ACCURANCY)
 				.withSkipHeaderRecord(true);
 		
 		
