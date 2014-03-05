@@ -1,5 +1,11 @@
 package MobileSensors.Events.Labels;
 
+/**
+ * Super-type for event training labels
+ * 
+ * @author henny, thomas, max
+ *
+ */
 public interface EventLabel {
 
 	/**
