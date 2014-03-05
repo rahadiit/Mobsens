@@ -1,8 +1,10 @@
 MobileSensors
+MobileSensors.Deprecated
 MobileSensors.Events
 MobileSensors.Events.ARFactories
 MobileSensors.Events.Classifiers
 MobileSensors.Events.Labels
+MobileSensors.Events.TSFactories
 MobileSensors.Events.Trainers
 MobileSensors.Helpers
 MobileSensors.Sensors

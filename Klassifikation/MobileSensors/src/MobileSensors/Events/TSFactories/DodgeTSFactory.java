@@ -1,4 +1,4 @@
-package MobileSensors.Events.TrainingSetBuilders;
+package MobileSensors.Events.TSFactories;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,7 +15,7 @@ import MobileSensors.Sensors.Accelerometer;
 import MobileSensors.Sensors.SensorCollection;
 import MobileSensors.Sensors.CSVParsers.AccelerometerCSVParser;
 
-public class DodgeTSBuilder implements TrainingSetBuilder<DodgeLabel> {
+public class DodgeTSFactory implements TSFactory<DodgeLabel> {
 
 	private void addSensorCollection (Map<SensorCollection, DodgeLabel> map, DodgeLabel label) {
 		
@@ -52,7 +52,7 @@ public class DodgeTSBuilder implements TrainingSetBuilder<DodgeLabel> {
 	}
 	
 	@Override
-	public Map<SensorCollection, DodgeLabel> build() {
+	public Map<SensorCollection, DodgeLabel> buildTrainingSet() {
 		
 		Map<SensorCollection, DodgeLabel> result = new HashMap<SensorCollection, DodgeLabel>();
 	
