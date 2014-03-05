@@ -1,12 +1,10 @@
 package mobsens.collector.activities;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.protocol.ResponseProcessCookies;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
@@ -24,14 +22,12 @@ import mobsens.collector.util.Logging;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends ConnectingActivity
@@ -65,6 +61,19 @@ public class MainActivity extends ConnectingActivity
 
 		state = sp.getInt(PREFERENCE_STARTUP, R.string.intent_unspecified);
 		handleStateChanged();
+
+		// Beim Starten testen, ob Collector läuft um Aufruf schneller
+		// auszuführen
+		handleStartupWhileRunning();
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+
+		// Beim Anzeigen der Activity testen, ob Collector läuft
+		handleStartupWhileRunning();
 	}
 
 	@Override
@@ -95,6 +104,13 @@ public class MainActivity extends ConnectingActivity
 	{
 		collectorIPC = CollectorIPC.Stub.asInterface(service);
 
+		handleStartupWhileRunning();
+	}
+
+	private void handleStartupWhileRunning()
+	{
+		if (collectorIPC == null) return;
+
 		try
 		{
 			if (collectorIPC.isCollecting())
@@ -120,15 +136,15 @@ public class MainActivity extends ConnectingActivity
 
 		switch (v.getId())
 		{
-		case R.id.Button02:
+		case R.id.main_leisure:
 			state = R.string.intent_leisure;
 			break;
 
-		case R.id.button1:
+		case R.id.main_sport:
 			state = R.string.intent_sport;
 			break;
 
-		case R.id.button2:
+		case R.id.main_everyday:
 			state = R.string.intent_everyday;
 			break;
 		}
@@ -138,7 +154,7 @@ public class MainActivity extends ConnectingActivity
 
 	private void handleStateChanged()
 	{
-		TextView description = (TextView) findViewById(R.id.textView01);
+		TextView description = (TextView) findViewById(R.id.main_description);
 
 		switch (state)
 		{

@@ -32,10 +32,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/settings_mail_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView1"
+        android:layout_alignRight="@+id/settings_title"
         android:layout_alignTop="@+id/Frage2"
         android:layout_marginTop="18dp"
         android:text="Frage 2"
@@ -43,7 +43,7 @@
         android:textSize="18dp" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/settings_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/Frage1"
@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/Frage1"
-            android:layout_alignLeft="@+id/textView1"
+            android:layout_alignLeft="@+id/settings_title"
             android:layout_marginLeft="30dp"
             android:checked="true"
             android:text="Nein" />
@@ -89,7 +89,7 @@
     </RadioGroup>
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/main_sport"
         style="@style/gray_button"
         android:layout_width="200dp"
         android:layout_height="50dp"

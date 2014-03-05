@@ -7,36 +7,40 @@
         android:id="@+id/map_position"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/button1"
+        android:layout_above="@+id/map_stop"
         android:layout_marginBottom="@dimen/activity_vertical_margin" >
     </org.osmdroid.views.MapView>
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/map_speed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/map_position"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="73dp"
-        android:layout_marginLeft="22dp"
-        android:text="XXX km/h"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:text="@android:string/untitled"
+        android:textAppearance="?android:attr/textAppearanceMedium" 
+        android:gravity="left"/>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/map_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView1"
-        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignBottom="@id/map_position"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="32dp"
-        android:text="XXX km"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:text="@android:string/untitled"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="right" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/map_stop"
         style="@style/gray_button"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -45,6 +49,6 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:onClick="stop"
-        android:text="Stop" />
+        android:text="@string/map_stop" />
 
 </RelativeLayout>

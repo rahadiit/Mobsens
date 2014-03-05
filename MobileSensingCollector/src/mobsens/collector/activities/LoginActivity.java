@@ -31,8 +31,8 @@ public class LoginActivity extends Activity
 
 		final SharedPreferences sp = getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
 
-		EditText mail = (EditText) findViewById(R.id.editText1);
-		EditText pass = (EditText) findViewById(R.id.editText2);
+		EditText mail = (EditText) findViewById(R.id.settings_mail_value);
+		EditText pass = (EditText) findViewById(R.id.settings_pass_value);
 
 		mail.setText(sp.getString(PREFERENCE_EMAIL, ""));
 		pass.setText(sp.getString(PREFERENCE_PASSWORD, ""));
@@ -71,7 +71,7 @@ public class LoginActivity extends Activity
 
 	private void handleState()
 	{
-		final Button b = (Button) findViewById(R.id.intention);
+		final Button b = (Button) findViewById(R.id.settings_intention_value);
 
 		switch (state)
 		{
@@ -105,8 +105,8 @@ public class LoginActivity extends Activity
 
 		Editor ed = sp.edit();
 
-		EditText mail = (EditText) findViewById(R.id.editText1);
-		EditText pass = (EditText) findViewById(R.id.editText2);
+		EditText mail = (EditText) findViewById(R.id.settings_mail_value);
+		EditText pass = (EditText) findViewById(R.id.settings_pass_value);
 
 		ed.putString(PREFERENCE_EMAIL, mail.getText().toString());
 		ed.putString(PREFERENCE_PASSWORD, pass.getText().toString());

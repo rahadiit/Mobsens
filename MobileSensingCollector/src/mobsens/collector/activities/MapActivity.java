@@ -25,11 +25,11 @@ public class MapActivity extends ConnectingActivity
 
 	private CollectorIPC collectorIPC;
 
-	private MapView mapViewMapPosition;
+	private MapView mapPosition;
 
-	private TextView textViewMapSpeed;
+	private TextView mapSpeed;
 
-	private TextView textViewMapDistance;
+	private TextView mapDistance;
 
 	public MapActivity()
 	{
@@ -40,32 +40,32 @@ public class MapActivity extends ConnectingActivity
 			@Override
 			protected void onLocationUpdate(Date time, double latitude, double longitude, Float accuracy, Double altitude, Float bearing, Float speed)
 			{
-				if (mapViewMapPosition != null)
+				if (mapPosition != null)
 				{
-					mapViewMapPosition.getController().animateTo(new GeoPoint(latitude, longitude));
+					mapPosition.getController().animateTo(new GeoPoint(latitude, longitude));
 
 					if (bearing != null)
 					{
-						mapViewMapPosition.setMapOrientation(bearing);
+						mapPosition.setMapOrientation(bearing);
 					}
 				}
 
-				if (textViewMapSpeed != null)
+				if (mapSpeed != null)
 				{
 					if (speed == null)
 					{
-						textViewMapSpeed.setText("--- km/h");
+						mapSpeed.setText("--- km/h");
 
 					}
 					else
 					{
-						textViewMapSpeed.setText((speed * 3600.0f / 1000.0f) + "km/h");
+						mapSpeed.setText((speed * 3600.0f / 1000.0f) + "km/h");
 					}
 				}
 
-				if (textViewMapDistance != null)
+				if (mapDistance != null)
 				{
-					textViewMapDistance.setText("--- km");
+					mapDistance.setText("--- km");
 				}
 			}
 		};
@@ -78,13 +78,13 @@ public class MapActivity extends ConnectingActivity
 		setContentView(R.layout.activity_map);
 
 		// get a handle on the XML element
-		mapViewMapPosition = (MapView) findViewById(R.id.map_position);
-		textViewMapSpeed = (TextView) findViewById(R.id.textView1);
-		textViewMapDistance = (TextView) findViewById(R.id.textView2);
+		mapPosition = (MapView) findViewById(R.id.map_position);
+		mapSpeed = (TextView) findViewById(R.id.map_speed);
+		mapDistance = (TextView) findViewById(R.id.map_distance);
 
-		mapViewMapPosition.setClickable(true);
-		mapViewMapPosition.setBuiltInZoomControls(true);
-		mapViewMapPosition.getController().setZoom(16);
+		mapPosition.setClickable(true);
+		mapPosition.setBuiltInZoomControls(true);
+		mapPosition.getController().setZoom(16);
 
 		locationUpdateDriver.start();
 	}
