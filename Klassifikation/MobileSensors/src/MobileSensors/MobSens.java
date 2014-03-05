@@ -40,6 +40,28 @@ public class MobSens {
 	
 	/**
 	 * 
+	 * @param args
+	 * @throws Exception
+	 */
+	public static void main (String[] args) throws Exception {
+		
+
+		DodgeTSBuilder db = new DodgeTSBuilder();
+		
+		DodgeTrainer dt = new DodgeTrainer(db.build());
+		
+				
+		dt.train();
+		
+		System.out.println("Finished Training. Ready to Rumble!");
+		
+	}
+	
+	
+	
+	
+	/**
+	 * 
 	 */
 	public ArrayList<Event> getEvents (SensorCollection win) {
 		
@@ -58,53 +80,7 @@ public class MobSens {
 		return result;
 		
 	}
+		
 	
-	private static void trainDodges (DodgeTrainer trainer, DodgeLabel label) throws FileNotFoundException, IOException {
-		
-		AccelerometerCSVParser accParser = new AccelerometerCSVParser();
-		File dir = new File(MobSens.INDIR + "./" + label.toString().toLowerCase());
-		
-		if (dir.exists() && dir.isDirectory()) {
-			
-			for (File f : dir.listFiles()) {
-				
-				if (f.isFile() && f.getPath().endsWith(".csv")) {
-					
-					SensorCollection sc = new SensorCollection();
-					sc.setAcceleration(accParser.parse(new BufferedReader(new FileReader(f))));
-					
-					trainer.addSenorCollection(sc, label);
-					
-				}
-				
-			}
-			
-		}
-		
-		
-	}
-
-	
-	public static void main (String[] args) throws Exception {
-		
-		DodgeTrainer dt = new DodgeTrainer();
-		DodgeTSBuilder db = new DodgeTSBuilder();
-		
-//		trainDodges(dt, DodgeLabel.DODGE);
-//		trainDodges(dt, DodgeLabel.NODODGE);
-		
-		Map<SensorCollection, DodgeLabel> ts = db.build();
-		
-		for (SensorCollection sc : ts.keySet()) {
-			
-			dt.addSenorCollection(sc, ts.get(sc));
-			
-		}
-		
-		dt.train();
-		
-		System.out.println("Finished Training. Ready to Rock!");
-		
-	}
 	
 }
