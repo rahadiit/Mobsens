@@ -21,7 +21,7 @@ public class SensorDriver extends BasicMultiGenerator<SensorOutput> implements D
 			if (hasConsumers())
 			{
 				// Felder erstellen
-				final Date time = new Date(System.currentTimeMillis() + (event.timestamp - System.nanoTime()) / 1000000L);
+				final Date time = new Date();
 				final int accuracy = event.accuracy;
 				final float[] values = event.values;
 
