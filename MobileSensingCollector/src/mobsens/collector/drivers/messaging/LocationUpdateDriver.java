@@ -1,6 +1,6 @@
 package mobsens.collector.drivers.messaging;
 
-import java.sql.Date;
+import java.util.Date;
 
 import mobsens.collector.intents.IntentLocationUpdate;
 import mobsens.collector.pipeline.Driver;

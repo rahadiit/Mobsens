@@ -1,6 +1,6 @@
 package mobsens.collector.activities;
 
-import java.sql.Date;
+import java.util.Date;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
