@@ -80,7 +80,7 @@ public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 	public Classifier train() throws Exception {
 		
 		
-		Instances trainingSet = (new DodgeARFactory()).createTrainingSet(0); 
+		Instances trainingSet = (new DodgeARFactory()).createTrainingSet(); 
 		
 		for (SensorCollection sc : this.sensorCollections.keySet()) {
 			

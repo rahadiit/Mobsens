@@ -47,7 +47,7 @@ public interface ARFactory<T extends EventLabel> {
 	 * @param win SensorCollection
 	 * @return weka.core.Instance
 	 */
-	public Instance createFeatureVector (SensorCollection win);
+	public Instance createFeatureVector (SensorCollection sc);
 	
 	/**
 	 * 
@@ -57,6 +57,6 @@ public interface ARFactory<T extends EventLabel> {
 	 * @param label T 
 	 * @return weka.core.Instance
 	 */
-	public Instance createFeatureVector (SensorCollection win, T label);
+	public Instance createFeatureVector (SensorCollection sc, T label);
 	
 }
