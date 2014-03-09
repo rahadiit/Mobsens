@@ -1,0 +1,51 @@
+=== Run information ===
+
+Evaluator:    weka.attributeSelection.ClassifierSubsetEval -B weka.classifiers.trees.J48 -T -H "Click to set hold out or test instances" -- -C 0.25 -M 2
+Search:weka.attributeSelection.BestFirst -D 1 -N 5
+Relation:     MobSensDodge
+Instances:    12879
+Attributes:   16
+              xArithMean
+              yArithMean
+              zArithMean
+              xHarmMean
+              yHarmMean
+              zHarmMean
+              xKurtosis
+              yKurtosis
+              zKurtosis
+              xVariance
+              yVariance
+              zVariance
+              xS2
+              yS2
+              zS2
+              label
+Evaluation mode:evaluate on all training data
+
+
+
+=== Attribute Selection on all input data ===
+
+Search Method:
+	Best first.
+	Start set: no attributes
+	Search direction: forward
+	Stale search after 5 node expansions
+	Total number of subsets evaluated: 116
+	Merit of best subset found:    0    
+
+Attribute Subset Evaluator (supervised, Class (nominal): 16 label):
+	Classifier Subset Evaluator
+	Learning scheme: weka.classifiers.trees.J48
+	Scheme options: -C 0.25 -M 2           
+	Hold out/test set: Training data
+	Accuracy estimation: classification error
+
+Selected attributes: 4,5,6,10,11,12 : 6
+                     xHarmMean
+                     yHarmMean
+                     zHarmMean
+                     xVariance
+                     yVariance
+                     zVariance

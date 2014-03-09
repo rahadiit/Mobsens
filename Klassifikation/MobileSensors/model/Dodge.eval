@@ -1,13 +1,13 @@
 Summary:
 ========
 
-Correctly Classified Instances       12830               99.6195 %
-Incorrectly Classified Instances        49                0.3805 %
-Kappa statistic                          0.9798
-Mean absolute error                      0.0045
-Root mean squared error                  0.0612
-Relative absolute error                  2.3651 %
-Root relative squared error             19.9131 %
+Correctly Classified Instances       12837               99.6739 %
+Incorrectly Classified Instances        42                0.3261 %
+Kappa statistic                          0.9826
+Mean absolute error                      0.004 
+Root mean squared error                  0.0568
+Relative absolute error                  2.106  %
+Root relative squared error             18.5011 %
 Total Number of Instances            12879     
 
 Detailed Statistics:
@@ -15,9 +15,9 @@ Detailed Statistics:
 === Detailed Accuracy By Class ===
 
                TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
-                 0.979     0.002      0.984     0.979     0.982      0.993    DODGE
-                 0.998     0.021      0.998     0.998     0.998      0.993    NODODGE
-Weighted Avg.    0.996     0.019      0.996     0.996     0.996      0.993
+                 0.979     0.001      0.99      0.979     0.984      0.992    DODGE
+                 0.999     0.021      0.998     0.999     0.998      0.992    NODODGE
+Weighted Avg.    0.997     0.019      0.997     0.997     0.997      0.992
 
 Confusion matrix :
 ==================
@@ -25,17 +25,17 @@ Confusion matrix :
 
      a     b   <-- classified as
   1330    28 |     a = DODGE
-    21 11500 |     b = NODODGE
+    14 11507 |     b = NODODGE
 
 
 J48 pruned tree
 ------------------
 
-xVariance <= 3.884184
+xS2 <= 1.970833
 |   xArithMean <= 0.156937
 |   |   yArithMean <= 2.733901
-|   |   |   xVariance <= 3.372636: NODODGE (705.0/2.0)
-|   |   |   xVariance > 3.372636
+|   |   |   xS2 <= 1.836474: NODODGE (705.0/2.0)
+|   |   |   xS2 > 1.836474
 |   |   |   |   xHarmMean <= -0.360153: NODODGE (41.0)
 |   |   |   |   xHarmMean > -0.360153: DODGE (11.0)
 |   |   yArithMean > 2.733901
@@ -43,12 +43,12 @@ xVariance <= 3.884184
 |   |   |   |   zHarmMean <= 0.158935: NODODGE (100.0/1.0)
 |   |   |   |   zHarmMean > 0.158935: DODGE (6.0)
 |   |   |   yHarmMean > 0.208444
-|   |   |   |   yVariance <= 10.486294
+|   |   |   |   yS2 <= 3.238255
 |   |   |   |   |   xVariance <= 1.930867
 |   |   |   |   |   |   zHarmMean <= 0.111814: NODODGE (8.0)
 |   |   |   |   |   |   zHarmMean > 0.111814: DODGE (4.0)
 |   |   |   |   |   xVariance > 1.930867: DODGE (227.0/1.0)
-|   |   |   |   yVariance > 10.486294: NODODGE (30.0)
+|   |   |   |   yS2 > 3.238255: NODODGE (30.0)
 |   xArithMean > 0.156937
 |   |   zHarmMean <= -2.647547
 |   |   |   zHarmMean <= -16.574305: NODODGE (100.0)
@@ -62,11 +62,11 @@ xVariance <= 3.884184
 |   |   |   |   |   |   zHarmMean <= 0.187239: DODGE (108.0)
 |   |   |   |   |   |   zHarmMean > 0.187239: NODODGE (26.0)
 |   |   |   xHarmMean > -3.434439
-|   |   |   |   yVariance <= 7.008231
-|   |   |   |   |   xVariance <= 2.617034
+|   |   |   |   yS2 <= 2.647306
+|   |   |   |   |   xS2 <= 1.617725
 |   |   |   |   |   |   zArithMean <= 9.102529
 |   |   |   |   |   |   |   yArithMean <= 3.108797
-|   |   |   |   |   |   |   |   zVariance <= 7.85324
+|   |   |   |   |   |   |   |   zS2 <= 2.802363
 |   |   |   |   |   |   |   |   |   yHarmMean <= 0.449129
 |   |   |   |   |   |   |   |   |   |   xArithMean <= 0.369938
 |   |   |   |   |   |   |   |   |   |   |   xArithMean <= 0.274995: DODGE (6.0)
@@ -75,7 +75,7 @@ xVariance <= 3.884184
 |   |   |   |   |   |   |   |   |   yHarmMean > 0.449129
 |   |   |   |   |   |   |   |   |   |   xKurtosis <= -0.055317: DODGE (29.0/1.0)
 |   |   |   |   |   |   |   |   |   |   xKurtosis > -0.055317: NODODGE (22.0)
-|   |   |   |   |   |   |   |   zVariance > 7.85324: NODODGE (645.0)
+|   |   |   |   |   |   |   |   zS2 > 2.802363: NODODGE (645.0)
 |   |   |   |   |   |   |   yArithMean > 3.108797
 |   |   |   |   |   |   |   |   xVariance <= 1.618357: NODODGE (52.0)
 |   |   |   |   |   |   |   |   xVariance > 1.618357
@@ -88,7 +88,7 @@ xVariance <= 3.884184
 |   |   |   |   |   |   |   |   |   zHarmMean <= 0.244939: DODGE (19.0)
 |   |   |   |   |   |   |   |   |   zHarmMean > 0.244939: NODODGE (3.0)
 |   |   |   |   |   |   |   |   yKurtosis > 0.372405: NODODGE (267.0)
-|   |   |   |   |   xVariance > 2.617034
+|   |   |   |   |   xS2 > 1.617725
 |   |   |   |   |   |   xKurtosis <= 0.763142
 |   |   |   |   |   |   |   xArithMean <= 0.592678
 |   |   |   |   |   |   |   |   xVariance <= 2.644319
@@ -97,37 +97,37 @@ xVariance <= 3.884184
 |   |   |   |   |   |   |   |   xVariance > 2.644319: DODGE (79.0)
 |   |   |   |   |   |   |   xArithMean > 0.592678: NODODGE (30.0/1.0)
 |   |   |   |   |   |   xKurtosis > 0.763142: NODODGE (69.0)
-|   |   |   |   yVariance > 7.008231
-|   |   |   |   |   xVariance <= 3.618993: NODODGE (5003.0)
-|   |   |   |   |   xVariance > 3.618993
-|   |   |   |   |   |   yVariance <= 8.652347
+|   |   |   |   yS2 > 2.647306
+|   |   |   |   |   xS2 <= 1.902365: NODODGE (5003.0)
+|   |   |   |   |   xS2 > 1.902365
+|   |   |   |   |   |   yS2 <= 2.941487
 |   |   |   |   |   |   |   xKurtosis <= 0.682811: DODGE (5.0)
 |   |   |   |   |   |   |   xKurtosis > 0.682811: NODODGE (15.0)
-|   |   |   |   |   |   yVariance > 8.652347: NODODGE (284.0)
-xVariance > 3.884184
+|   |   |   |   |   |   yS2 > 2.941487: NODODGE (284.0)
+xS2 > 1.970833
 |   xKurtosis <= 0.370088
-|   |   zVariance <= 18.722858
+|   |   zS2 <= 4.326992
 |   |   |   yHarmMean <= -0.979068
 |   |   |   |   xArithMean <= 0.520598: NODODGE (15.0)
 |   |   |   |   xArithMean > 0.520598: DODGE (10.0)
 |   |   |   yHarmMean > -0.979068: DODGE (485.0/1.0)
-|   |   zVariance > 18.722858
+|   |   zS2 > 4.326992
 |   |   |   xVariance <= 5.072036: NODODGE (72.0)
 |   |   |   xVariance > 5.072036: DODGE (27.0)
 |   xKurtosis > 0.370088
 |   |   zHarmMean <= -0.073168: DODGE (98.0)
 |   |   zHarmMean > -0.073168
-|   |   |   yVariance <= 7.139025
+|   |   |   yS2 <= 2.671895
 |   |   |   |   xHarmMean <= -0.471243: NODODGE (60.0)
 |   |   |   |   xHarmMean > -0.471243: DODGE (85.0)
-|   |   |   yVariance > 7.139025
+|   |   |   yS2 > 2.671895
 |   |   |   |   zKurtosis <= 4.281835
-|   |   |   |   |   xVariance <= 8.073234
+|   |   |   |   |   xS2 <= 2.841344
 |   |   |   |   |   |   xKurtosis <= 0.44971
 |   |   |   |   |   |   |   xHarmMean <= 0.584613: NODODGE (20.0)
 |   |   |   |   |   |   |   xHarmMean > 0.584613: DODGE (5.0)
 |   |   |   |   |   |   xKurtosis > 0.44971: NODODGE (791.0)
-|   |   |   |   |   xVariance > 8.073234
+|   |   |   |   |   xS2 > 2.841344
 |   |   |   |   |   |   yArithMean <= 2.748506: NODODGE (19.0)
 |   |   |   |   |   |   yArithMean > 2.748506: DODGE (18.0)
 |   |   |   |   zKurtosis > 4.281835
