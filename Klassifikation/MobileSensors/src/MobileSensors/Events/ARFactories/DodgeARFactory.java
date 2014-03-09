@@ -37,6 +37,10 @@ public class DodgeARFactory implements ARFactory<DodgeLabel> {
 	private final Attribute yVariance;
 	private final Attribute zVariance;
 	
+	private final Attribute xS2;
+	private final Attribute yS2;
+	private final Attribute zS2;
+	
 	private final Attribute dodgeLabel;
 	
 	private final FastVector dodgeFeatureVector;
@@ -66,6 +70,9 @@ public class DodgeARFactory implements ARFactory<DodgeLabel> {
 		this.yVariance = new Attribute("yVariance");
 		this.zVariance = new Attribute("zVariance");
 		
+		this.xS2 = new Attribute("xS2");
+		this.yS2 = new Attribute("yS2");
+		this.zS2 = new Attribute("zS2");
 		
 		this.dodgeFeatureVector = new FastVector();
 		this.dodgeFeatureVector.addElement(this.xArithMean);
@@ -83,6 +90,10 @@ public class DodgeARFactory implements ARFactory<DodgeLabel> {
 		this.dodgeFeatureVector.addElement(this.xVariance);
 		this.dodgeFeatureVector.addElement(this.yVariance);
 		this.dodgeFeatureVector.addElement(this.zVariance);
+		
+		this.dodgeFeatureVector.addElement(this.xS2);
+		this.dodgeFeatureVector.addElement(this.yS2);
+		this.dodgeFeatureVector.addElement(this.zS2);
 		
 		this.dodgeFeatureVector.addElement(this.dodgeLabel);
 		
@@ -165,6 +176,10 @@ public class DodgeARFactory implements ARFactory<DodgeLabel> {
 		inst.setValue(this.xVariance, FeatureMathHelper.variance(accWin.getXs()));
 		inst.setValue(this.yVariance, FeatureMathHelper.variance(accWin.getYs()));
 		inst.setValue(this.zVariance, FeatureMathHelper.variance(accWin.getZs()));
+		
+		inst.setValue(this.xS2, FeatureMathHelper.s2(accWin.getXs()));
+		inst.setValue(this.yS2, FeatureMathHelper.s2(accWin.getYs()));
+		inst.setValue(this.zS2, FeatureMathHelper.s2(accWin.getZs()));
 		
 		return inst;
 		
