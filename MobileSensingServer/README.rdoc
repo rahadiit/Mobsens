@@ -5,7 +5,7 @@ The application is developed for PostgreSQL.
 For development there is a preconfigured SQLite3 database.
 
 == Libraries
-* Google Maps https://developers.google.com/maps
+* Leaflet http://leafletjs.com
 * Highcharts JS http://www.highcharts.com
 * Bootstrap http://getbootstrap.com
 
@@ -41,7 +41,7 @@ data.txt:
   {"rec": {"did": "someID", "title": "Some Title"}}
 
 Send data.txt
-  $ curl -v -H "Accept: application/text" -H "Content-type: application/text" -c cookies.txt -X POST --data @data.txt 'http://localhost:3000/recordings/upload'
+  $ curl -v -H "Accept: application/text" -H "Content-type: application/text" -b cookies.txt -X POST --data @data.txt 'http://localhost:3000/recordings/upload'
 
 === List Recordings
   $ curl -v -H "Accept: application/json" -b cookies.txt -X GET http://localhost:3000/recordings.json
