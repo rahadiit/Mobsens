@@ -10,17 +10,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import static mobsens.collector.config.Constants.*;
 
 public class LoginActivity extends Activity
 {
-	private static final String PREFERENCES_NAME = "mscprefs";
-
-	private static final String PREFERENCE_EMAIL = "mscemail";
-
-	private static final String PREFERENCE_PASSWORD = "mscpwd";
-
-	private static final String PREFERENCE_STARTUP = "mscsup";
-
 	int state;
 
 	@Override

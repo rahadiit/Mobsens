@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.PathOverlay;
 
 import mobsens.collector.Collector;
 import mobsens.collector.CollectorIPC;
@@ -13,11 +14,16 @@ import mobsens.collector.drivers.messaging.LocationUpdateDriver;
 import mobsens.collector.intents.IntentStopCollector;
 import mobsens.collector.util.Logging;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint.Cap;
+import android.graphics.Paint.Join;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.view.View;
 import android.widget.TextView;
+import static mobsens.collector.config.Config.*;
+import static mobsens.collector.config.Constants.*;
 
 public class MapActivity extends ConnectingActivity
 {
@@ -31,6 +37,10 @@ public class MapActivity extends ConnectingActivity
 
 	private TextView mapDistance;
 
+	private PathOverlay pathOverlay;
+
+	private Long lastTime = null;
+
 	public MapActivity()
 	{
 		super(Collector.class);
@@ -43,10 +53,15 @@ public class MapActivity extends ConnectingActivity
 				if (mapPosition != null)
 				{
 					mapPosition.getController().animateTo(new GeoPoint(latitude, longitude));
+				}
 
-					if (bearing != null)
+				if (pathOverlay != null)
+				{
+					if (lastTime == null || (time.getTime() - lastTime) > MAP_POINT_DISTANCE)
 					{
-						mapPosition.setMapOrientation(bearing);
+						lastTime = time.getTime();
+
+						pathOverlay.addPoint(new GeoPoint(latitude, longitude));
 					}
 				}
 
@@ -59,7 +74,7 @@ public class MapActivity extends ConnectingActivity
 					}
 					else
 					{
-						mapSpeed.setText((speed * 3600.0f / 1000.0f) + "km/h");
+						mapSpeed.setText((speed * SECONDS_PER_HOUR / METERS_PER_KILOMETER) + "km/h");
 					}
 				}
 
@@ -81,6 +96,14 @@ public class MapActivity extends ConnectingActivity
 		mapPosition = (MapView) findViewById(R.id.map_position);
 		mapSpeed = (TextView) findViewById(R.id.map_speed);
 		mapDistance = (TextView) findViewById(R.id.map_distance);
+
+		// path
+		pathOverlay = new PathOverlay(Color.BLUE, this);
+		pathOverlay.getPaint().setStrokeWidth(PATH_STROKE_WIDTH);
+		pathOverlay.getPaint().setStrokeCap(Cap.ROUND);
+		pathOverlay.getPaint().setStrokeJoin(Join.ROUND);
+		pathOverlay.getPaint().setStrokeMiter(10.0f);
+		mapPosition.getOverlayManager().add(pathOverlay);
 
 		mapPosition.setClickable(true);
 		mapPosition.setBuiltInZoomControls(true);

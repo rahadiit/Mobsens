@@ -13,19 +13,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
+import static mobsens.collector.config.Constants.*;
 
 public class RatingActivity extends Activity
 {
-
-	private static final String ADDRESS_UPLOAD = "http://mobilesensing.west.uni-koblenz.de/recordings/upload";
-
-	private static final String ADDRESS_LOGIN = "http://mobilesensing.west.uni-koblenz.de/users/sign_in.json";
-
-	private static final String PREFERENCES_NAME = "mscprefs";
-
-	private static final String PREFERENCE_EMAIL = "mscemail";
-
-	private static final String PREFERENCE_PASSWORD = "mscpwd";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -93,7 +84,6 @@ public class RatingActivity extends Activity
 
 	public void submit(View v)
 	{
-
 		for (File file : stageFiles())
 		{
 			executeToWeb(file);

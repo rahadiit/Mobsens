@@ -1,3 +1,3 @@
 Root
 ===================
-Services und Aktivitäten
+Services
