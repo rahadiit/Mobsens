@@ -1,20 +1,21 @@
 package MobileSensors;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.FileFilter;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.HashMap;
+
+import org.apache.commons.lang3.StringUtils;
 
 import MobileSensors.Events.CSVDirParsers.DodgeTSFactory;
 import MobileSensors.Events.Classifiers.DodgeClassifier;
 import MobileSensors.Events.Event;
+import MobileSensors.Events.Labels.BrakeLabel;
 import MobileSensors.Events.Labels.DodgeLabel;
+import MobileSensors.Events.Labels.EventLabel;
 import MobileSensors.Events.Trainers.DodgeTrainer;
+import MobileSensors.Helpers.EventTraingDataParser;
 import MobileSensors.Sensors.SensorCollection;
-import MobileSensors.Sensors.CSVParsers.AccelerometerCSVParser;
 
 /**
  * 
@@ -45,20 +46,36 @@ public class MobSens {
 	 */
 	public static void main (String[] args) {
 		
-		MobSens m = new MobSens();
+		EventLabel[] labels = {
+				DodgeLabel.DODGE,
+				DodgeLabel.NODODGE,
+				BrakeLabel.BRAKE,
+				BrakeLabel.NOBRAKE
+				};
+		
+		EventTraingDataParser etdp = new EventTraingDataParser(new File("./input"), labels);
+		
+		HashMap<EventLabel, ArrayList<SensorCollection>> data = etdp.parse();
+		
+		System.out.println(data);
 		
 		
 		
-		if (m.trainEvents() > -1) {
-			
-			System.out.println("Finished Training. Ready to Rumble!");
-			
-		}
-		else {
-			
-			System.out.println("Something went horribly wrong!");
-			
-		}
+		
+//		MobSens m = new MobSens();
+//		
+//		
+//		
+//		if (m.trainEvents() > -1) {
+//			
+//			System.out.println("Finished Training. Ready to Rumble!");
+//			
+//		}
+//		else {
+//			
+//			System.out.println("Something went horribly wrong!");
+//			
+//		}
 		
 		
 	}
