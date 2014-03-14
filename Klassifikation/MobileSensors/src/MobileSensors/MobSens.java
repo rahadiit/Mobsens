@@ -7,14 +7,13 @@ import java.util.HashMap;
 
 import org.apache.commons.lang3.StringUtils;
 
-import MobileSensors.Events.CSVDirParsers.DodgeTSFactory;
 import MobileSensors.Events.Classifiers.DodgeClassifier;
 import MobileSensors.Events.Event;
 import MobileSensors.Events.Labels.BrakeLabel;
 import MobileSensors.Events.Labels.DodgeLabel;
 import MobileSensors.Events.Labels.EventLabel;
 import MobileSensors.Events.Trainers.DodgeTrainer;
-import MobileSensors.Helpers.EventTraingDataParser;
+import MobileSensors.Helpers.EventRawDataParser;
 import MobileSensors.Sensors.SensorCollection;
 
 /**
@@ -39,6 +38,13 @@ public class MobSens {
 	public final static String ARFFFILE_DODGE  = MobSens.OUTDIR + MobSens.FILENAME_DODGE + MobSens.EXTENSION_ARFF;
 	public final static String EVALFILE_DODGE  = MobSens.OUTDIR + MobSens.FILENAME_DODGE + MobSens.EXTENSION_EVAL;
 	
+	private final static EventLabel[] allEventLabels = {
+		DodgeLabel.DODGE,
+		DodgeLabel.NODODGE,
+		BrakeLabel.BRAKE,
+		BrakeLabel.NOBRAKE
+		};
+	
 	/**
 	 * 
 	 * @param args
@@ -53,7 +59,7 @@ public class MobSens {
 				BrakeLabel.NOBRAKE
 				};
 		
-		EventTraingDataParser etdp = new EventTraingDataParser(new File("./input"), labels);
+		EventRawDataParser etdp = new EventRawDataParser(new File("./input"), labels);
 		
 		HashMap<EventLabel, ArrayList<SensorCollection>> data = etdp.parse();
 		
@@ -111,8 +117,7 @@ public class MobSens {
 	 */
 	public int trainEvents () {
 		
-		DodgeTSFactory db = new DodgeTSFactory();
-		DodgeTrainer dt = new DodgeTrainer(db.buildTrainingSet());
+		DodgeTrainer dt = new DodgeTrainer();
 		
 				
 		try {

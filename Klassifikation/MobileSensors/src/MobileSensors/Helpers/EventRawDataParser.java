@@ -7,8 +7,6 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.commons.lang3.StringUtils;
-
 import MobileSensors.Events.Labels.EventLabel;
 import MobileSensors.Sensors.SensorCollection;
 import MobileSensors.Sensors.CSVParsers.AccelerometerCSVParser;
@@ -29,7 +27,7 @@ import MobileSensors.Sensors.CSVParsers.LocationCSVParser;
  * @author henny, thomas, max
  *
  */
-public class EventTraingDataParser {
+public class EventRawDataParser {
 	
 	/**
 	 * 
@@ -78,7 +76,7 @@ public class EventTraingDataParser {
 	private File inputDir;
 	private EventLabel[] eventLabels;
 	
-	public EventTraingDataParser (File inputDir, EventLabel[] eventLabels) {
+	public EventRawDataParser (File inputDir, EventLabel[] eventLabels) {
 		
 		this.inputDir = inputDir;
 		this.eventLabels = eventLabels;
