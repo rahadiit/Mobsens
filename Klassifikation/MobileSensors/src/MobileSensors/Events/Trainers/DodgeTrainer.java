@@ -64,9 +64,6 @@ public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 			SensorCollection dodgeSC = new SensorCollection();
 			dodgeSC.setAcceleration(dodgeAccs);
 			
-			
-			
-			
 			trainingSet.add((new DodgeARFactory()).createFeatureVector(dodgeSC, label));
 			
 		}
