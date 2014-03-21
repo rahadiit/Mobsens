@@ -1,4 +1,4 @@
-package com.example.ziptest;
+package com.example.ziptest.data;
 
 public class TestData {
 
