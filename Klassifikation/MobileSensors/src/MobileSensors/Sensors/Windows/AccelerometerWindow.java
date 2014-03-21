@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import MobileSensors.Sensors.Accelerometer;
 
 /**
- * Utitlity class to access col vectors of an accelerometer matrix
+ * Utility class to access column vectors of an accelerometer matrix
  * 
  * @author henny, thomas, max
  *
