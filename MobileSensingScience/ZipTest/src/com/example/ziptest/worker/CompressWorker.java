@@ -4,7 +4,11 @@ import java.io.ByteArrayOutputStream;
 import java.util.zip.GZIPOutputStream;
 import java.io.IOException;
 
+import com.example.ziptest.MainActivity;
+
+import android.app.Activity;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Provides Worker to compress data
@@ -13,6 +17,7 @@ public class CompressWorker extends Worker {
 	/**
 	 * Compress Data
 	 */
+	
 	@Override
 	public void run() {
 		// compressed data
@@ -40,6 +45,7 @@ public class CompressWorker extends Worker {
 			
 			// log size of compressed data
 			Log.d("compressed data size", Integer.toString(compressed_data.length));
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
