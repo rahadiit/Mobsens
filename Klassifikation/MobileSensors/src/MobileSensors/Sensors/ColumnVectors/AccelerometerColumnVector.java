@@ -1,4 +1,4 @@
-package MobileSensors.Sensors.Windows;
+package MobileSensors.Sensors.ColumnVectors;
 
 import java.util.ArrayList;
 import MobileSensors.Sensors.Accelerometer;
@@ -9,13 +9,13 @@ import MobileSensors.Sensors.Accelerometer;
  * @author henny, thomas, max
  *
  */
-public class AccelerometerWindow extends SensorWindow<Accelerometer> {
+public class AccelerometerColumnVector extends SensorColumnVector<Accelerometer> {
 
 	private double[] xs;
 	private double[] ys;
 	private double[] zs;
 	
-	public AccelerometerWindow (ArrayList<Accelerometer> accMatrixs) {
+	public AccelerometerColumnVector (ArrayList<Accelerometer> accMatrixs) {
 		
 		this.xs = new double[accMatrixs.size()];
 		this.ys = new double[accMatrixs.size()];
@@ -26,6 +26,8 @@ public class AccelerometerWindow extends SensorWindow<Accelerometer> {
 			this.xs[i] = accMatrixs.get(i).getX();
 			this.ys[i] = accMatrixs.get(i).getY();
 			this.zs[i] = accMatrixs.get(i).getZ();
+			
+			
 			
 		}
 		

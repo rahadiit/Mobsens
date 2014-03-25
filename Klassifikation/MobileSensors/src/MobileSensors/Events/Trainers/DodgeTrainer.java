@@ -15,7 +15,7 @@ import MobileSensors.MobSens;
 import MobileSensors.Events.ARFactories.DodgeARFactory;
 import MobileSensors.Events.Labels.DodgeLabel;
 import MobileSensors.Sensors.Accelerometer;
-import MobileSensors.Sensors.SensorCollection;
+import MobileSensors.Sensors.SensorRecord;
 
 /**
  * 
@@ -36,17 +36,17 @@ public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 	
 	
 	/**
-	 * Numboer folds used for cross validation
+	 * Number folds used for cross validation
 	 */
 	private final static int VALIDATION_FOLDS = 10; 
 	
-	public DodgeTrainer (Map<SensorCollection, DodgeLabel> sensorCollections) {
+	public DodgeTrainer (Map<SensorRecord, DodgeLabel> sensorCollections) {
 		
 		super(sensorCollections);
 		
 	}
 	
-	private void addSensorCollectionToTrainingSet(SensorCollection sc, DodgeLabel label, Instances trainingSet) {
+	private void addSensorCollectionToTrainingSet(SensorRecord sc, DodgeLabel label, Instances trainingSet) {
 		
 		ArrayList<Accelerometer> accs = sc.getAcceleration();
 		
@@ -61,7 +61,7 @@ public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 			}
 			
 			
-			SensorCollection dodgeSC = new SensorCollection();
+			SensorRecord dodgeSC = new SensorRecord();
 			dodgeSC.setAcceleration(dodgeAccs);
 			
 			trainingSet.add((new DodgeARFactory()).createFeatureVector(dodgeSC, label));
@@ -79,7 +79,7 @@ public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 		
 		Instances trainingSet = (new DodgeARFactory()).createTrainingSet(); 
 		
-		for (SensorCollection sc : this.sensorCollections.keySet()) {
+		for (SensorRecord sc : this.sensorCollections.keySet()) {
 			
 			DodgeLabel label = this.sensorCollections.get(sc);
 			

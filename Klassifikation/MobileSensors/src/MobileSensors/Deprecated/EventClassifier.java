@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import MobileSensors.Events.Event;
-import MobileSensors.Sensors.SensorCollection;
+import MobileSensors.Sensors.SensorRecord;
 
 /**
  * 
@@ -16,7 +16,7 @@ import MobileSensors.Sensors.SensorCollection;
  */
 public interface EventClassifier {
 
-	public ArrayList<Event> getEvents(SensorCollection win);
+	public ArrayList<Event> getEvents(SensorRecord win);
 		
 
 }

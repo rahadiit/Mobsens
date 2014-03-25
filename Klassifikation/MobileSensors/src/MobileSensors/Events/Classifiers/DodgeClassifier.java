@@ -6,7 +6,7 @@ import MobileSensors.MobSens;
 import MobileSensors.Events.Event;
 import MobileSensors.Events.EventType;
 import MobileSensors.Events.ARFactories.DodgeARFactory;
-import MobileSensors.Sensors.SensorCollection;
+import MobileSensors.Sensors.SensorRecord;
 
 public class DodgeClassifier extends EventClassifier {
 
@@ -21,7 +21,7 @@ public class DodgeClassifier extends EventClassifier {
 	}
 	
 	@Override
-	public ArrayList<Event> classify(SensorCollection scWindow) {
+	public ArrayList<Event> classify(SensorRecord scWindow) {
 		
 		ArrayList<Event> events = new ArrayList<Event>();
 		

@@ -4,8 +4,8 @@ import java.util.Map;
 
 import MobileSensors.Events.Labels.DodgeLabel;
 import MobileSensors.Helpers.FeatureMathHelper;
-import MobileSensors.Sensors.SensorCollection;
-import MobileSensors.Sensors.Windows.AccelerometerWindow;
+import MobileSensors.Sensors.SensorRecord;
+import MobileSensors.Sensors.ColumnVectors.AccelerometerColumnVector;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
@@ -130,12 +130,11 @@ public class DodgeARFactory implements ARFactory<DodgeLabel> {
 	}
 
 	@Override
-	public Instances createTrainingSet(
-			Map<SensorCollection, DodgeLabel> sensorCollections) {
+	public Instances createTrainingSet(Map<SensorRecord, DodgeLabel> sensorCollections) {
 		
 		Instances insts = this.createTrainingSet();
 		
-		for (SensorCollection sc : sensorCollections.keySet()) {
+		for (SensorRecord sc : sensorCollections.keySet()) {
 			
 			insts.add(this.createFeatureVector(sc, sensorCollections.get(sc)));
 			
@@ -153,9 +152,9 @@ public class DodgeARFactory implements ARFactory<DodgeLabel> {
 	 * @return
 	 */
 	@Override
-	public Instance createFeatureVector(SensorCollection sc) {
+	public Instance createFeatureVector(SensorRecord sc) {
 		
-		AccelerometerWindow accWin = new AccelerometerWindow(sc.getAcceleration());
+		AccelerometerColumnVector accWin = new AccelerometerColumnVector(sc.getAcceleration());
 				
 		Instance inst = new Instance(this.dodgeFeatureVector.size());
 		
@@ -194,7 +193,7 @@ public class DodgeARFactory implements ARFactory<DodgeLabel> {
 	 * @return
 	 */
 	@Override
-	public Instance createFeatureVector(SensorCollection sc, DodgeLabel label) {
+	public Instance createFeatureVector(SensorRecord sc, DodgeLabel label) {
 		
 		Instance inst = this.createFeatureVector(sc);
 		

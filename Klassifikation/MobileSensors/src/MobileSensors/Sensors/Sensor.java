@@ -5,7 +5,7 @@ public abstract class Sensor {
 	private long time;
 	
 	public Sensor (long time) {
-		
+				
 		this.time = time;
 		
 	}
@@ -17,7 +17,6 @@ public abstract class Sensor {
 	public void setTime(long time) {
 		this.time = time;
 	}
-	
 	
 	
 }
