@@ -9,10 +9,22 @@ import MobileSensors.Events.Labels.EventLabel;
 import MobileSensors.Sensors.Accelerometer;
 import MobileSensors.Sensors.Location;
 import MobileSensors.Sensors.Sensor;
-import MobileSensors.Sensors.SensorCollection;
+import MobileSensors.Sensors.SensorRecord;
 
+/**
+ * 
+ * @author darjeeling
+ *
+ * @param <T>
+ */
 public abstract class EventTrainer<T extends EventLabel> {
 	
+	/**
+	 * 
+	 * @author darjeeling
+	 *
+	 * @param <S>
+	 */
 	private class WindowBuilder<S extends Sensor> {
 		
 		public ArrayList<ArrayList<S>> buildWindows (
@@ -46,35 +58,61 @@ public abstract class EventTrainer<T extends EventLabel> {
 		
 	}
 	
+	/**
+	 * 
+	 * @param scMap
+	 * @param arFactory
+	 * @param windowWidth
+	 * @param windowDelta
+	 * @return
+	 */
 	protected Instances buildWindows (
-			HashMap<T, ArrayList<SensorCollection>> scMap,
+			HashMap<SensorRecord, T> scMap,
 			ARFactory<T> arFactory,
 			int windowWidth,
 			int windowDelta) {
-				
-		for (T label : scMap.keySet()) {
+		
+		//============================================================================================================
+		// Variable Declarations:
+		
+		WindowBuilder<Accelerometer> accWindowBuilder;		// WindowBuilder for accelerometer sensor data
+		WindowBuilder<Location> locWindowBuilder;			// WindowBuilder for location sensor data
+		
+		ArrayList<ArrayList<Accelerometer>> accWindows;		// List of accelerometer windows
+		ArrayList<ArrayList<Location>> locWindows;			// List of location windows
+		
+		ArrayList<Accelerometer> accWindow;					// Accelerometer window
+		ArrayList<Location> locWindow;						// Location window
+		
+		T label;											
+		
+
+		//============================================================================================================
+		// Algorithm:
+		
+		accWindowBuilder = new WindowBuilder<Accelerometer>();
+		locWindowBuilder = new WindowBuilder<Location>();
+		
+		for (SensorRecord oldSc : scMap.keySet()) {
 			
-			ArrayList<SensorCollection> scs = scMap.get(label);
+			label = scMap.get(oldSc);
 			
-			for (SensorCollection oldSc : scs) {
+			accWindows = accWindowBuilder.buildWindows(oldSc.getAcceleration(), windowWidth, windowDelta);
+			locWindows = locWindowBuilder.buildWindows(oldSc.getLocation(), windowWidth, windowDelta);
+			
+			for (int i=0; i < Math.min(accWindows.size(), locWindows.size()); i++) {
 				
-				ArrayList<ArrayList<Accelerometer>> accWindows = (new WindowBuilder<Accelerometer>())
-					.buildWindows(oldSc.getAcceleration(), windowWidth, windowDelta);
-				ArrayList<ArrayList<Location>> locWindows = (new WindowBuilder<Location>())
-					.buildWindows(oldSc.getLocation(), windowWidth, windowDelta);
+				accWindow = i < accWindows.size() ? accWindows.get(i) : new ArrayList<Accelerometer>();
+				locWindow = i < locWindows.size() ? locWindows.get(i) : new ArrayList<Location>();
 				
-				SensorCollection newSc = new SensorCollection();
+				SensorRecord newSc = new SensorRecord();
 				
-				for (int i=0; i < Math.max(accWindows.size(), locWindows.size()); i++) {
-					
-					newSc.setAcceleration(i < accWindows.size() ? accWindows.get(i) : new ArrayList<Accelerometer>());
-					newSc.setLocation(i < locWindows.size() ? locWindows.get(i) : new ArrayList<Location>());
-					
-				}
-				
-				
+				newSc.setAcceleration(accWindow);
+				newSc.setLocation(locWindow);
 				
 			}
+			
+			
 			
 		}
 		

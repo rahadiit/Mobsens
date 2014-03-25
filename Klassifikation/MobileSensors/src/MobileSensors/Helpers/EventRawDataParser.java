@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import MobileSensors.Events.Labels.EventLabel;
-import MobileSensors.Sensors.SensorCollection;
+import MobileSensors.Sensors.SensorRecord;
 import MobileSensors.Sensors.CSVParsers.AccelerometerCSVParser;
 import MobileSensors.Sensors.CSVParsers.LocationCSVParser;
 
@@ -83,9 +83,9 @@ public class EventRawDataParser {
 		
 	}
 	
-	public HashMap<EventLabel, ArrayList<SensorCollection>> parse () {
+	public HashMap<SensorRecord, EventLabel> parse () {
 		
-		HashMap<EventLabel, ArrayList<SensorCollection>> result = new HashMap<EventLabel, ArrayList<SensorCollection>>();
+		HashMap<SensorRecord, EventLabel> result = new HashMap<SensorRecord, EventLabel>();
 		
 		for (EventLabel label : this.eventLabels) {
 			
@@ -94,8 +94,11 @@ public class EventRawDataParser {
 			
 			for (File labelDir : this.inputDir.listFiles(new LabelDirFilter(strLabels))) {
 				
-				
-				result.put(label, this.parseLabelDir(labelDir));
+				for (File recordDir : labelDir.listFiles(new RecordDirFilter())) {
+					
+					result.put(this.parseRecordDir(recordDir), label);
+					
+				}
 				
 			}
 			
@@ -105,24 +108,9 @@ public class EventRawDataParser {
 		
 	}
 	
-	private ArrayList<SensorCollection> parseLabelDir (File labelDir) {
+	private SensorRecord parseRecordDir (File recordDir) {
 		
-		ArrayList<SensorCollection> result = new ArrayList<SensorCollection>();
-		
-		for (File recordDir : labelDir.listFiles(new RecordDirFilter())) {
-			
-						
-			result.add(this.parseRecordDir(recordDir));
-			
-		}
-		
-		return result;
-		
-	}
-	
-	private SensorCollection parseRecordDir (File recordDir) {
-		
-		SensorCollection result = new SensorCollection();
+		SensorRecord result = new SensorRecord();
 		
 		try {
 			

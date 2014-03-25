@@ -3,7 +3,7 @@ package MobileSensors.Deprecated;
 import java.util.ArrayList;
 
 import MobileSensors.Sensors.Accelerometer;
-import MobileSensors.Sensors.SensorCollection;
+import MobileSensors.Sensors.SensorRecord;
 import MobileSensors.Deprecated.EventClassifier;
 import MobileSensors.Events.Event;
 import MobileSensors.Events.EventType;
@@ -83,7 +83,7 @@ public class DodgeClassifier implements EventClassifier{
 
 
 	@Override
-	public ArrayList<Event> getEvents(SensorCollection win) {
+	public ArrayList<Event> getEvents(SensorRecord win) {
 
 		ArrayList<Event> result = new ArrayList<>();
 		

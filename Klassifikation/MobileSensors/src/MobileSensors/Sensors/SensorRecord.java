@@ -10,12 +10,12 @@ import java.util.ArrayList;
  * @author henny, thomas, max
  * 
  */
-public class SensorCollection {
+public class SensorRecord {
 
 	private ArrayList<Location> location;
 	private ArrayList<Accelerometer> acceleration;
 	
-	public SensorCollection () {
+	public SensorRecord () {
 		
 		this.location = new ArrayList<>();
 		this.acceleration = new ArrayList<>();

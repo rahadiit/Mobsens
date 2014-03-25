@@ -14,7 +14,7 @@ import MobileSensors.Events.Labels.DodgeLabel;
 import MobileSensors.Events.Labels.EventLabel;
 import MobileSensors.Events.Trainers.DodgeTrainer;
 import MobileSensors.Helpers.EventRawDataParser;
-import MobileSensors.Sensors.SensorCollection;
+import MobileSensors.Sensors.SensorRecord;
 
 /**
  * 
@@ -61,9 +61,9 @@ public class MobSens {
 		
 		EventRawDataParser etdp = new EventRawDataParser(new File("./input"), labels);
 		
-		HashMap<EventLabel, ArrayList<SensorCollection>> data = etdp.parse();
+		HashMap<SensorRecord, EventLabel> data = etdp.parse();
 		
-		System.out.println(data);
+		System.out.println(data.size());
 		
 		
 		
@@ -93,7 +93,7 @@ public class MobSens {
 	 * @param sc
 	 * @return
 	 */
-	public ArrayList<Event> classifyEvents (SensorCollection sc) {
+	public ArrayList<Event> classifyEvents (SensorRecord sc) {
 		
 		ArrayList<Event> result = new ArrayList<Event>();
 		
@@ -117,20 +117,20 @@ public class MobSens {
 	 */
 	public int trainEvents () {
 		
-		DodgeTrainer dt = new DodgeTrainer();
-		
-				
-		try {
-			
-			dt.train();
-		
-		} catch (Exception e) {
-		
-			e.printStackTrace();
-			
-			return -1;
-		
-		}
+//		DodgeTrainer dt = new DodgeTrainer();
+//		
+//				
+//		try {
+//			
+//			dt.train();
+//		
+//		} catch (Exception e) {
+//		
+//			e.printStackTrace();
+//			
+//			return -1;
+//		
+//		}
 		
 		return 0;
 		

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import MobileSensors.Events.Event;
 import MobileSensors.Sensors.Location;
-import MobileSensors.Sensors.SensorCollection;
+import MobileSensors.Sensors.SensorRecord;
 
 /**
  * 
@@ -21,7 +21,7 @@ public class BrakingClassifier  {
 	 * @param win
 	 * @return
 	 */
-	public ArrayList<Event> getEvents(SensorCollection win) {
+	public ArrayList<Event> getEvents(SensorRecord win) {
 		
 		ArrayList<Event> events = new ArrayList<Event>();
 		ArrayList<Location> locations = win.getLocation();

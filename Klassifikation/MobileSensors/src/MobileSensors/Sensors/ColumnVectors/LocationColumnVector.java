@@ -1,10 +1,10 @@
-package MobileSensors.Sensors.Windows;
+package MobileSensors.Sensors.ColumnVectors;
 
 import java.util.ArrayList;
 
 import MobileSensors.Sensors.Location;
 
-public class LocationWindow extends SensorWindow<Location> {
+public class LocationColumnVector extends SensorColumnVector<Location> {
 
 	private double[] latitudes;
 	private double[] longitutdes;
@@ -13,7 +13,7 @@ public class LocationWindow extends SensorWindow<Location> {
 	private double[] bearings;
 	private double[] accuracies;
 	
-	public LocationWindow (ArrayList<Location> locs) {
+	public LocationColumnVector (ArrayList<Location> locs) {
 		
 		this.latitudes = new double[locs.size()];
 		this.longitutdes = new double[locs.size()];

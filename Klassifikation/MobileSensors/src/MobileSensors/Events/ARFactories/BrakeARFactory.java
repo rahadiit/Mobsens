@@ -8,9 +8,9 @@ import weka.core.Instance;
 import weka.core.Instances;
 import MobileSensors.Events.Labels.BrakeLabel;
 import MobileSensors.Helpers.FeatureMathHelper;
-import MobileSensors.Sensors.SensorCollection;
-import MobileSensors.Sensors.Windows.AccelerometerWindow;
-import MobileSensors.Sensors.Windows.LocationWindow;
+import MobileSensors.Sensors.SensorRecord;
+import MobileSensors.Sensors.ColumnVectors.AccelerometerColumnVector;
+import MobileSensors.Sensors.ColumnVectors.LocationColumnVector;
 
 public class BrakeARFactory implements ARFactory<BrakeLabel> {
 
@@ -135,12 +135,11 @@ public class BrakeARFactory implements ARFactory<BrakeLabel> {
 	}
 
 	@Override
-	public Instances createTrainingSet(
-			Map<SensorCollection, BrakeLabel> sensorCollections) {
+	public Instances createTrainingSet(Map<SensorRecord, BrakeLabel> sensorCollections) {
 
 		Instances insts = this.createTrainingSet();
 		
-		for (SensorCollection sc : sensorCollections.keySet()) {
+		for (SensorRecord sc : sensorCollections.keySet()) {
 			
 			insts.add(this.createFeatureVector(sc, sensorCollections.get(sc)));
 			
@@ -152,10 +151,10 @@ public class BrakeARFactory implements ARFactory<BrakeLabel> {
 	}
 
 	@Override
-	public Instance createFeatureVector(SensorCollection sc) {
+	public Instance createFeatureVector(SensorRecord sc) {
 		
-		AccelerometerWindow accWin = new AccelerometerWindow(sc.getAcceleration());
-		LocationWindow locWin = new LocationWindow(sc.getLocation());
+		AccelerometerColumnVector accWin = new AccelerometerColumnVector(sc.getAcceleration());
+		LocationColumnVector locWin = new LocationColumnVector(sc.getLocation());
 		
 		Instance inst = new Instance(this.brakeFeatureVector.size());
 		
@@ -191,7 +190,7 @@ public class BrakeARFactory implements ARFactory<BrakeLabel> {
 	}
 
 	@Override
-	public Instance createFeatureVector(SensorCollection sc, BrakeLabel label) {
+	public Instance createFeatureVector(SensorRecord sc, BrakeLabel label) {
 		
 		Instance inst = this.createFeatureVector(sc);
 		
