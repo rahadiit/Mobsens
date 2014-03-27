@@ -21,7 +21,7 @@ public class DodgeClassifier extends EventClassifier {
 	}
 	
 	@Override
-	public ArrayList<Event> classify(SensorRecord scWindow) {
+	public ArrayList<Event> classify (SensorRecord scWindow) {
 		
 		ArrayList<Event> events = new ArrayList<Event>();
 		
