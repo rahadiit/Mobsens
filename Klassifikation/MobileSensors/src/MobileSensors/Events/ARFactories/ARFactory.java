@@ -17,9 +17,9 @@ import weka.core.Instances;
  * 
  * @author henny, thomas, max
  *
- * @param <T> Subtype of EventLabel
+ * @param <L> Subtype of EventLabel
  */
-public interface ARFactory<T extends EventLabel> {
+public interface ARFactory<L extends EventLabel> {
 
 	/**
 	 * 
@@ -38,7 +38,7 @@ public interface ARFactory<T extends EventLabel> {
 	 * @param sensorCollections Map<SensorCollection, T>
 	 * @return
 	 */
-	public Instances createTrainingSet (Map<SensorRecord, T> sensorCollections);
+	public Instances createTrainingSet (Map<SensorRecord, L> sensorCollections);
 	
 	/**
 	 * 
@@ -57,6 +57,6 @@ public interface ARFactory<T extends EventLabel> {
 	 * @param label T 
 	 * @return weka.core.Instance
 	 */
-	public Instance createFeatureVector (SensorRecord sc, T label);
+	public Instance createFeatureVector (SensorRecord sc, L label);
 	
 }

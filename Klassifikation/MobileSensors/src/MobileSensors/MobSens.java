@@ -5,6 +5,7 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import MobileSensors.Events.Classifiers.DodgeClassifier;
@@ -65,6 +66,80 @@ public class MobSens {
 	 */
 	public static void main (String[] args) throws Exception {
 		
+				
+		MobSens m = new MobSens();
+		m.setBrakeModelFile(new File("./model/foo.model"));
+		m.setDodgeModelFile(new File("./model/bar.model"));
+		m.setKerbstoneModelFile(new File("./model/lala.model"));
+		
+		if (m.trainEvents() > -1) {
+			
+			System.out.println("Finished Training. Ready to Rumble!");
+			
+		}
+		else {
+			
+			System.out.println("Something went horribly wrong!");
+			
+		}
+		
+		
+	}
+	
+	private File brakeModelFile;
+	private File dodgeModelFile;
+	private File kerbstoneModelFile;
+	
+	public MobSens () {
+		
+		this.brakeModelFile = new File(MobSens.MODELFILE_Brake);
+		this.dodgeModelFile = new File(MobSens.MODELFILE_DODGE);
+		this.kerbstoneModelFile = new File(MobSens.MODELFILE_Kerbstone);
+		
+	}
+	
+	public void setBrakeModelFile(File brakeModelFile) {
+		this.brakeModelFile = brakeModelFile;
+	}
+
+	public void setDodgeModelFile(File dodgeModelFile) {
+		this.dodgeModelFile = dodgeModelFile;
+	}
+
+	public void setKerbstoneModelFile(File kerbstoneModelFile) {
+		this.kerbstoneModelFile = kerbstoneModelFile;
+	}
+	
+	
+	/**
+	 * 
+	 * @param sc
+	 * @return
+	 */
+	public ArrayList<Event> classifyEvents (SensorRecord sc) {
+		
+		ArrayList<Event> result = new ArrayList<Event>();
+		
+		try {
+				
+			result.addAll((new DodgeClassifier()).classify(sc));
+			//result.addAll((new BrakingClassifier()).classify(win));
+		
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			
+		}
+		
+		return result;
+		
+	}
+	
+	/**
+	 * Trains event classifiers
+	 */
+	public int trainEvents () {
+		
 		EventLabel[] labels = {
 				DodgeLabel.DODGE,
 				DodgeLabel.NODODGE,
@@ -106,79 +181,25 @@ public class MobSens {
 			}
 			
 		}
-//		
-//		DodgeTrainer dt = new DodgeTrainer(dodgeData);
-//		dt.train();
 		
-//		BrakeTrainer bt = new BrakeTrainer(brakeData);
-//		bt.train();
+//		DodgeTrainer dt = new DodgeTrainer(this.dodgeModelFile);
+//		BrakeTrainer bt = new BrakeTrainer(this.brakeModelFile, brakeData);
+//		KerbstoneTrainer kt = new KerbstoneTrainer(this.kerbstoneModelFile, kerbstoneData);
 		
-		KerbstoneTrainer kt = new KerbstoneTrainer(kerbstoneData);
-		kt.train();
-		
-//		MobSens m = new MobSens();
-//		
-//		
-//		
-//		if (m.trainEvents() > -1) {
-//			
-//			System.out.println("Finished Training. Ready to Rumble!");
-//			
-//		}
-//		else {
-//			
-//			System.out.println("Something went horribly wrong!");
-//			
-//		}
-		
-		
-	}
-	
-	
-	
-	/**
-	 * 
-	 * @param sc
-	 * @return
-	 */
-	public ArrayList<Event> classifyEvents (SensorRecord sc) {
-		
-		ArrayList<Event> result = new ArrayList<Event>();
 		
 		try {
-				
-			result.addAll((new DodgeClassifier()).classify(sc));
-			//result.addAll((new BrakingClassifier()).classify(win));
+
+//			bt.train();
+			(new DodgeTrainer(this.dodgeModelFile)).train(dodgeData);
+//			kt.train();
 		
 		} catch (Exception e) {
-			
+		
 			e.printStackTrace();
 			
+			return -1;
+		
 		}
-		
-		return result;
-		
-	}
-	
-	/**
-	 * Trains event classifiers
-	 */
-	public int trainEvents () {
-		
-//		DodgeTrainer dt = new DodgeTrainer();
-//		
-//				
-//		try {
-//			
-//			dt.train();
-//		
-//		} catch (Exception e) {
-//		
-//			e.printStackTrace();
-//			
-//			return -1;
-//		
-//		}
 		
 		return 0;
 		
