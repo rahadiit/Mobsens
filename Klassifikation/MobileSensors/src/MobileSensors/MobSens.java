@@ -145,9 +145,9 @@ public class MobSens {
 
 		try {
 
-//			(new BrakeTrainer(this.brakeModelFile)).train(brakeData);
+			(new BrakeTrainer(this.brakeModelFile)).train(brakeData);
 			(new DodgeTrainer(this.dodgeModelFile)).train(dodgeData);
-//			(new KerbstoneTrainer(this.kerbstoneModelFile)).train(kerbstoneData);
+			(new KerbstoneTrainer(this.kerbstoneModelFile)).train(kerbstoneData);
 			
 			System.out.println();
 			System.out.println("Finished Training. Ready to Rumble!");
