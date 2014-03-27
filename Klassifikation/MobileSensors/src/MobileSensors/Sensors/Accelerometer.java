@@ -53,10 +53,10 @@ public class Accelerometer extends Sensor {
 	
 	public String toString () {
 		
-		return this.getTime() +
+		return "acc("+ this.getTime() +
 				"," + this.x +
 				"," + this.y +
-				"," + this.z;
+				"," + this.z + ")";
 		
 	}
 	
