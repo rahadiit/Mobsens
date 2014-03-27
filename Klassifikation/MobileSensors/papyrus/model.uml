@@ -9,7 +9,10 @@
 RubyBridge</body>
     </ownedComment>
     <packagedElement xmi:type="uml:Class" xmi:id="_jad0EKDFEeOKRs9vJGaGCw" name="MobSens">
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_l1CZEKDFEeOKRs9vJGaGCw" name="getEvents"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_l1CZEKDFEeOKRs9vJGaGCw" name="classifyEvents" visibility="public">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_iIpQgLT1EeO54LVVyrP-wQ" name="sr" type="_bNElgLT1EeO54LVVyrP-wQ"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_PQDZ4LT1EeO54LVVyrP-wQ" name="trainEvents" visibility="public"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_aodBUKDEEeOKRs9vJGaGCw" name="Events">
       <packagedElement xmi:type="uml:Enumeration" xmi:id="_l6Y6gKDCEeOKRs9vJGaGCw" name="EventType">
@@ -56,11 +59,33 @@ RubyBridge</body>
         </ownedEnd>
       </packagedElement>
       <packagedElement xmi:type="uml:Package" xmi:id="_csa84K6pEeO0TPpHsF2Jlg" name="ARFactories">
-        <packagedElement xmi:type="uml:Interface" xmi:id="_7i7-EK6pEeO0TPpHsF2Jlg" name="ARFactory"/>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_7i7-EK6pEeO0TPpHsF2Jlg" name="ARFactory&lt;T>" visibility="package">
+          <ownedTemplateSignature xmi:type="uml:RedefinableTemplateSignature" xmi:id="_lhRBELUUEeO5DZlmNv3aEw" name="L extends EventLabel">
+            <parameter xmi:type="uml:ClassifierTemplateParameter" href="pathmap://UML_METAMODELS/Ecore.metamodel.uml#EEList-_ownedElement.0-_ownedParameter.0"/>
+          </ownedTemplateSignature>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="_q4N_ALUREeO5DZlmNv3aEw" name="createFeatureVector">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_S9aWQLUSEeO5DZlmNv3aEw" name="sr" type="_bNElgLT1EeO54LVVyrP-wQ"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="_VV5QkLUSEeO5DZlmNv3aEw" name="createFeatureVector" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_ZSWfELUSEeO5DZlmNv3aEw" name="sr" type="_bNElgLT1EeO54LVVyrP-wQ"/>
+          </ownedOperation>
+        </packagedElement>
       </packagedElement>
       <packagedElement xmi:type="uml:Package" xmi:id="_kG2uIK6pEeO0TPpHsF2Jlg" name="Trainers"/>
       <packagedElement xmi:type="uml:Package" xmi:id="_AEmLYK6qEeO0TPpHsF2Jlg" name="Classifiers"/>
-      <packagedElement xmi:type="uml:Package" xmi:id="_GlwyUK6qEeO0TPpHsF2Jlg" name="Labels"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_GlwyUK6qEeO0TPpHsF2Jlg" name="Labels">
+        <packagedElement xmi:type="uml:Interface" xmi:id="_ARFDsLT2EeO54LVVyrP-wQ" name="EventLabel"/>
+        <packagedElement xmi:type="uml:Enumeration" xmi:id="_CsU-ILT2EeO54LVVyrP-wQ" clientDependency="_oe-OgLT3EeO54LVVyrP-wQ" name="DodgeLabel">
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_J0CnsLT2EeO54LVVyrP-wQ" name="DODGE"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_NPCH4LT2EeO54LVVyrP-wQ" name="NODODGE"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Enumeration" xmi:id="_OjgngLT2EeO54LVVyrP-wQ" clientDependency="_o3dnALT3EeO54LVVyrP-wQ" name="BrakeLabel">
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_QXV8oLT2EeO54LVVyrP-wQ" name="BRAKE"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_S4cncLT2EeO54LVVyrP-wQ" name="NOBRAKE"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Realization" xmi:id="_oe-OgLT3EeO54LVVyrP-wQ" name="Realization1" client="_CsU-ILT2EeO54LVVyrP-wQ" supplier="_ARFDsLT2EeO54LVVyrP-wQ"/>
+        <packagedElement xmi:type="uml:Realization" xmi:id="_o3dnALT3EeO54LVVyrP-wQ" name="Realization2" client="_OjgngLT2EeO54LVVyrP-wQ" supplier="_ARFDsLT2EeO54LVVyrP-wQ"/>
+      </packagedElement>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_aW13cKDFEeOKRs9vJGaGCw" name="Sensors">
       <packagedElement xmi:type="uml:Class" xmi:id="_LSy-kKDHEeOKRs9vJGaGCw" name="Sensor"/>
@@ -68,14 +93,10 @@ RubyBridge</body>
       <packagedElement xmi:type="uml:Class" xmi:id="_RTvNUKDHEeOKRs9vJGaGCw" name="Location"/>
       <packagedElement xmi:type="uml:Package" xmi:id="_ZjGmEK6qEeO0TPpHsF2Jlg" name="CSVParsers"/>
       <packagedElement xmi:type="uml:Package" xmi:id="_cADwsK6qEeO0TPpHsF2Jlg" name="Windows"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_bNElgLT1EeO54LVVyrP-wQ" name="SensorRecord"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_9WmJcKDGEeOKRs9vJGaGCw" name="Helpers">
       <packagedElement xmi:type="uml:Class" xmi:id="_n7xxMKDHEeOKRs9vJGaGCw" name="FeatureMath"/>
     </packagedElement>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Package" xmi:id="_EHHbAKDHEeOKRs9vJGaGCw" name="MobileSensors.EventClassifiers">
-    <packagedElement xmi:type="uml:Interface" xmi:id="_YizcEKDHEeOKRs9vJGaGCw" name="EventClassifier"/>
-    <packagedElement xmi:type="uml:Class" xmi:id="_bEANgKDHEeOKRs9vJGaGCw" name="DodgeClassifier"/>
-    <packagedElement xmi:type="uml:Class" xmi:id="_dus5MKDHEeOKRs9vJGaGCw" name="BrakingClassifier"/>
   </packagedElement>
 </uml:Model>
