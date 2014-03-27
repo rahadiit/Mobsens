@@ -249,17 +249,20 @@ public abstract class EventTrainer<L extends EventLabel> {
 		
 	}
 	
-	public Classifier train (Map<SensorRecord, L> sensorCollections) throws Exception {
+	public void train (Map<SensorRecord, L> sensorCollections) throws Exception {
 		
-		Classifier dodgeJ48 = new J48();
+		System.out.println();
+		
+		this.log("Started training!");
 		
 		Instances trainingSet = this.buildTrainingSet(sensorCollections, this.windowWidth, this.windowDelta);
 		
 		this.buildClassifier(trainingSet);
 		this.crossValidateModel(trainingSet, this.validationFolds);
 		
-		return dodgeJ48;
+		this.log("Finished training!");
 		
+		System.out.println();
 		
 	}
 	

@@ -5,15 +5,15 @@ import java.util.ArrayList;
 
 import MobileSensors.Events.Event;
 import MobileSensors.Events.EventType;
-import MobileSensors.Events.ARFactories.DodgeARFactory;
-import MobileSensors.Events.Labels.DodgeLabel;
+import MobileSensors.Events.ARFactories.BrakeARFactory;
+import MobileSensors.Events.Labels.BrakeLabel;
 import MobileSensors.Sensors.SensorRecord;
 
-public class DodgeClassifier extends EventClassifier<DodgeLabel> {
+public class BrakeClassifier extends EventClassifier<BrakeLabel> {
 
-	public DodgeClassifier(File modelFile) throws Exception {
+	public BrakeClassifier(File modelFile) throws Exception {
 		
-		super(new DodgeARFactory(), modelFile);
+		super(new BrakeARFactory(), modelFile);
 
 	}
 

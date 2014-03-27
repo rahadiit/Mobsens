@@ -1,22 +1,13 @@
 package MobileSensors;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import MobileSensors.Events.Classifiers.DodgeClassifier;
 import MobileSensors.Events.Event;
-import MobileSensors.Events.Labels.BrakeLabel;
-import MobileSensors.Events.Labels.DodgeLabel;
-import MobileSensors.Events.Labels.EventLabel;
-import MobileSensors.Events.Labels.KerbstoneLabel;
-import MobileSensors.Events.Trainers.BrakeTrainer;
-import MobileSensors.Events.Trainers.DodgeTrainer;
-import MobileSensors.Events.Trainers.KerbstoneTrainer;
+import MobileSensors.Events.Labels.*;
+import MobileSensors.Events.Classifiers.*;
+import MobileSensors.Events.Trainers.*;
 import MobileSensors.Helpers.EventRawDataParser;
 import MobileSensors.Sensors.SensorRecord;
 
@@ -29,35 +20,11 @@ import MobileSensors.Sensors.SensorRecord;
  */
 public class MobSens {
 
-	public final static String INDIR = "./input";
+	public final static String DEFAULT_INPUT_DIR = "./input";
 	
-	public final static String OUTDIR = "./model/";
-	
-	public final static String EXTENSION_MODEL = ".model";
-	public final static String EXTENSION_ARFF  = ".arff";
-	public final static String EXTENSION_EVAL  = ".eval";
-	
-	public final static String FILENAME_DODGE   = "./Dodge";
-	public final static String MODELFILE_DODGE = MobSens.OUTDIR + MobSens.FILENAME_DODGE + MobSens.EXTENSION_MODEL;
-	public final static String ARFFFILE_DODGE  = MobSens.OUTDIR + MobSens.FILENAME_DODGE + MobSens.EXTENSION_ARFF;
-	public final static String EVALFILE_DODGE  = MobSens.OUTDIR + MobSens.FILENAME_DODGE + MobSens.EXTENSION_EVAL;
-	
-	public final static String FILENAME_Brake   = "./Brake";
-	public final static String MODELFILE_Brake = MobSens.OUTDIR + MobSens.FILENAME_Brake + MobSens.EXTENSION_MODEL;
-	public final static String ARFFFILE_Brake  = MobSens.OUTDIR + MobSens.FILENAME_Brake + MobSens.EXTENSION_ARFF;
-	public final static String EVALFILE_Brake  = MobSens.OUTDIR + MobSens.FILENAME_Brake + MobSens.EXTENSION_EVAL;
-	
-	public final static String FILENAME_Kerbstone   = "./Kerbstone";
-	public final static String MODELFILE_Kerbstone = MobSens.OUTDIR + MobSens.FILENAME_Kerbstone + MobSens.EXTENSION_MODEL;
-	public final static String ARFFFILE_Kerbstone  = MobSens.OUTDIR + MobSens.FILENAME_Kerbstone + MobSens.EXTENSION_ARFF;
-	public final static String EVALFILE_Kerbstone  = MobSens.OUTDIR + MobSens.FILENAME_Kerbstone + MobSens.EXTENSION_EVAL;
-	
-	private final static EventLabel[] allEventLabels = {
-		DodgeLabel.DODGE,
-		DodgeLabel.NODODGE,
-		BrakeLabel.BRAKE,
-		BrakeLabel.NOBRAKE
-		};
+	public final static String DEFAULT_MODELFILE_DODGE = "./model/Dodge.model";
+	public final static String DEFAULT_MODELFILE_BRAKE = "./model/Brake.model";
+	public final static String DEFAULT_MODELFILE_KERBSTONE = "./model/Kerbstone.model";
 	
 	/**
 	 * 
@@ -68,20 +35,7 @@ public class MobSens {
 		
 				
 		MobSens m = new MobSens();
-		m.setBrakeModelFile(new File("./model/foo.model"));
-		m.setDodgeModelFile(new File("./model/bar.model"));
-		m.setKerbstoneModelFile(new File("./model/lala.model"));
-		
-		if (m.trainEvents() > -1) {
-			
-			System.out.println("Finished Training. Ready to Rumble!");
-			
-		}
-		else {
-			
-			System.out.println("Something went horribly wrong!");
-			
-		}
+		m.trainEvents(new File(MobSens.DEFAULT_INPUT_DIR));
 		
 		
 	}
@@ -92,9 +46,9 @@ public class MobSens {
 	
 	public MobSens () {
 		
-		this.brakeModelFile = new File(MobSens.MODELFILE_Brake);
-		this.dodgeModelFile = new File(MobSens.MODELFILE_DODGE);
-		this.kerbstoneModelFile = new File(MobSens.MODELFILE_Kerbstone);
+		this.brakeModelFile = new File(MobSens.DEFAULT_MODELFILE_BRAKE);
+		this.dodgeModelFile = new File(MobSens.DEFAULT_MODELFILE_DODGE);
+		this.kerbstoneModelFile = new File(MobSens.DEFAULT_MODELFILE_KERBSTONE);
 		
 	}
 	
@@ -121,9 +75,10 @@ public class MobSens {
 		ArrayList<Event> result = new ArrayList<Event>();
 		
 		try {
-				
-			result.addAll((new DodgeClassifier()).classify(sc));
-			//result.addAll((new BrakingClassifier()).classify(win));
+			
+			result.addAll((new BrakeClassifier(this.brakeModelFile)).classifyEvents(sc));
+			result.addAll((new DodgeClassifier(this.dodgeModelFile)).classifyEvents(sc));
+			result.addAll((new KerbstoneClassifier(this.kerbstoneModelFile)).classifyEvents(sc));
 		
 		} catch (Exception e) {
 			
@@ -138,7 +93,12 @@ public class MobSens {
 	/**
 	 * Trains event classifiers
 	 */
-	public int trainEvents () {
+	public int trainEvents (File indir) {
+		
+
+		System.out.println("MobSens started event training. This may take some time... Go, grab some coffee!");
+		System.out.println();
+		
 		
 		EventLabel[] labels = {
 				DodgeLabel.DODGE,
@@ -149,7 +109,7 @@ public class MobSens {
 				KerbstoneLabel.NOKERBSTONE
 				};
 		
-		EventRawDataParser etdp = new EventRawDataParser(new File("./input"), labels);
+		EventRawDataParser etdp = new EventRawDataParser(indir, labels);
 		
 		HashMap<SensorRecord, EventLabel> data = etdp.parse();
 		
@@ -182,20 +142,25 @@ public class MobSens {
 			
 		}
 		
-//		DodgeTrainer dt = new DodgeTrainer(this.dodgeModelFile);
-//		BrakeTrainer bt = new BrakeTrainer(this.brakeModelFile, brakeData);
-//		KerbstoneTrainer kt = new KerbstoneTrainer(this.kerbstoneModelFile, kerbstoneData);
-		
-		
+
 		try {
 
-//			bt.train();
+//			(new BrakeTrainer(this.brakeModelFile)).train(brakeData);
 			(new DodgeTrainer(this.dodgeModelFile)).train(dodgeData);
-//			kt.train();
+//			(new KerbstoneTrainer(this.kerbstoneModelFile)).train(kerbstoneData);
+			
+			System.out.println();
+			System.out.println("Finished Training. Ready to Rumble!");
+			
 		
 		} catch (Exception e) {
-		
+			
+			System.out.println();
+			System.out.println("Something went horribly wrong!");
+			
 			e.printStackTrace();
+			
+			
 			
 			return -1;
 		
