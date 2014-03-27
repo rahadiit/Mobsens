@@ -1,10 +1,6 @@
 package MobileSensors.Deprecated;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-
-import MobileSensors.Events.Event;
 
 public class DetectDodge {
 
