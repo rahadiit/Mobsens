@@ -2,8 +2,6 @@ package MobileSensors.Deprecated;
 
 import java.util.ArrayList;
 
-import MobileSensors.Events.Event;
-
 public class DetectJerk  {
 
 	private ArrayList<Location> locations;

@@ -22,11 +22,10 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.i("MA","on create");
+		Log.i("MA", "on create");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		Bundle extra = getIntent().getExtras();
-		
 		startZip(extra.getString("data"));
 	}
 
@@ -43,26 +42,24 @@ public class MainActivity extends Activity {
 	 * @param view
 	 */
 	public void startZipWorker(View view) {
-
 		// generating test data
-		
 
-//		try {
-//			Log.i("MA","new Intent");
-//			Intent intent =new Intent(this, CompressService.class);
-//			//CompressService cs = new CompressService(data);
-//			//intent.putExtra("data", data);
-//			startService(intent);
-//			
-//			
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			Toast.makeText(
-//					MainActivity.this,
-//					"ee "+e.toString(),
-//					Toast.LENGTH_SHORT).show();
-//		}
+		// try {
+		// Log.i("MA","new Intent");
+		// Intent intent =new Intent(this, CompressService.class);
+		// //CompressService cs = new CompressService(data);
+		// //intent.putExtra("data", data);
+		// startService(intent);
+		//
+		//
+		//
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// Toast.makeText(
+		// MainActivity.this,
+		// "ee "+e.toString(),
+		// Toast.LENGTH_SHORT).show();
+		// }
 
 		//
 		//
@@ -71,10 +68,12 @@ public class MainActivity extends Activity {
 		// "Thread ID: "+(t.getId()+ " NAME: "+t.getName()+" is dead"),
 		// Toast.LENGTH_SHORT).show();
 	}
-	
-	public void startZip(String dataString){
-		
+
+	public void startZip(String dataString) {
+		Log.i("ZipTest", dataString);
+
 		int size = Integer.parseInt(dataString);
+		
 		Log.i("CS", "Started");
 
 		byte[] compressed_data;
@@ -88,15 +87,15 @@ public class MainActivity extends Activity {
 		try {
 			TestData td = new TestData();
 			byte[] data = td.get_bytes(size, 0.4);
-			
+
 			// bind output stream to compress stream
 			gos = new GZIPOutputStream(os);
 
 			// write data to compress stream
-			//gos.write(intent.getByteArrayExtra("data"));
+			// gos.write(intent.getByteArrayExtra("data"));
 			gos.write(data);
-			
-			Log.i("CS", data.length+" arrayLength");
+
+			Log.i("CS", data.length + " arrayLength");
 
 			// close streams
 			gos.close();
@@ -104,27 +103,29 @@ public class MainActivity extends Activity {
 
 			// get compressed data
 			compressed_data = os.toByteArray();
-			
+
 			// log size of compressed data
-			Log.i("CS","compressed data size "+
-					Integer.toString(compressed_data.length));
-			
+			Log.i("CS",
+					"compressed data size "
+							+ Integer.toString(compressed_data.length));
+
 			FileOutputStream fos = openFileOutput("test", Context.MODE_PRIVATE);
 			fos.write(os.toByteArray());
 			fos.close();
-			
-			 Toast.makeText(
-			 MainActivity.this,
-			 "compressed data size "+
-						Integer.toString(compressed_data.length),
-			 Toast.LENGTH_SHORT).show();
-			
-			
-			
+
+			Toast.makeText(
+					MainActivity.this,
+					"compressed data size "
+							+ Integer.toString(compressed_data.length),
+
+					Toast.LENGTH_SHORT).show();
+
 		} catch (IOException e) {
+			Log.i("CS", "exception");
 			e.printStackTrace();
+			
 		}
-		Log.i("CS", "thread dead");
+		Log.i("ziptest", "thread dead");
 		//
 		// // // log information about thread
 		// // Log.d("getId", Long.toString(t.getId()));
@@ -133,7 +134,29 @@ public class MainActivity extends Activity {
 		// if (stopSelfResult(startId)) {
 		// return 0;
 		// }
+
+		//Intent data = new Intent();
+		// Activity finished ok, return the data
+		
 		finish();
 	}
+	
 
 }
+
+/*
+*dead code
+*
+*
+	@Override
+	public void finish() {
+	  // Prepare data intent 
+	  Intent data = new Intent();
+	  data.putExtra("value",10000);
+	  // Activity finished ok, return the data
+	  setResult(RESULT_OK, data);
+	  Log.i("ZipTest", "result "+data.getIntExtra("value",-1));
+	  super.finish();
+	} 
+*/
+
