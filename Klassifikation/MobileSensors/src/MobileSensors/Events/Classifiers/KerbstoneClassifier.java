@@ -5,16 +5,17 @@ import java.util.ArrayList;
 
 import MobileSensors.Events.Event;
 import MobileSensors.Events.EventType;
-import MobileSensors.Events.ARFactories.DodgeARFactory;
-import MobileSensors.Events.Labels.DodgeLabel;
+import MobileSensors.Events.ARFactories.KerbstoneARFactory;
+import MobileSensors.Events.Labels.KerbstoneLabel;
 import MobileSensors.Sensors.SensorRecord;
 
-public class DodgeClassifier extends EventClassifier<DodgeLabel> {
+public class KerbstoneClassifier extends EventClassifier<KerbstoneLabel> {
 
-	public DodgeClassifier(File modelFile) throws Exception {
+
+
+	public KerbstoneClassifier(File modelFile) throws Exception {
 		
-		super(new DodgeARFactory(), modelFile);
-
+		super(new KerbstoneARFactory(), modelFile);
 	}
 
 	@Override
