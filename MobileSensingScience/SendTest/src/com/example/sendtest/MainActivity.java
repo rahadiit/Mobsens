@@ -2,6 +2,7 @@ package com.example.sendtest;
 
 import java.io.File;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,10 +33,11 @@ public class MainActivity extends Activity {
 
 	private void doIt() {
 
-		for (int i = 0; i < 40; i++) {
+		for (int i = 1; i < 4; i++) {
 			String filename = i + "000.gz";
 			Toast.makeText(MainActivity.this, "sending " + filename,
 					Toast.LENGTH_SHORT).show();
+			sendData(filename);
 			
 		}
 
@@ -53,17 +55,23 @@ public class MainActivity extends Activity {
 
 		if (file.exists()) {
 			FtpUrlUpload ftpUpload = new FtpUrlUpload();
-			ftpUpload.execute(file);
-
-			while (ftpUpload.getStatus() != Status.FINISHED) {
-				try {
-					Thread.sleep(10000);
-				} catch (InterruptedException e) {
-					Log.e("ftp",
-							"exception while sleeping. zzzz " + e.getMessage());
-				}
-				Log.i("ftp", "still not finished uploading " + file.getName());
+			try {
+				ftpUpload.execute(file).get();
+			} catch (InterruptedException e1) {
+				Log.w("ftp", e1.getLocalizedMessage());
+			} catch (ExecutionException e1) {
+				Log.w("ftp", e1.getLocalizedMessage());
 			}
+
+//			while (ftpUpload.getStatus() != Status.FINISHED) {
+//				try {
+//					Thread.sleep(10000);
+//				} catch (InterruptedException e) {
+//					Log.e("ftp",
+//							"exception while sleeping. zzzz " + e.getMessage());
+//				}
+//				Log.i("ftp", "still not finished uploading " + file.getName());
+//			}
 
 			Log.i("ftp",
 					"file uploaded" + new Date().getTime() + " "
