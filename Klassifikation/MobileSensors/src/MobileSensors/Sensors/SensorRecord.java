@@ -2,7 +2,6 @@ package MobileSensors.Sensors;
 
 import java.util.ArrayList;
 
-
 /**
  * 
  * Window Sensor Wrapper

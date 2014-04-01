@@ -24,10 +24,11 @@ public class MainActivity extends Activity {
 
 	public void process(View view) throws InterruptedException {
 		for (int i = 1; i < 40; i++) {
-
-			startNewActivity("com.example.ziptest", i + "000");
+			
+//			startNewActivity("com.example.ziptest", i + "000000");
+			startNewActivity("com.example.sendtest", i+".gz");
 			try {
-				int delay = Integer.parseInt(i + "000") + 5000;
+				int delay = Integer.parseInt(i + "00000") + 5000;
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -43,7 +44,6 @@ public class MainActivity extends Activity {
 		launchIntent.putExtra("data", data);
 		startActivityForResult(launchIntent, 0);
 	}
-
 }
 
 /*
