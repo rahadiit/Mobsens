@@ -3,7 +3,7 @@ package MobileSensors.Events.ARFactories;
 import java.util.Map;
 
 import MobileSensors.Events.Labels.*;
-import MobileSensors.Sensors.SensorCollection;
+import MobileSensors.Sensors.SensorRecord;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -17,9 +17,9 @@ import weka.core.Instances;
  * 
  * @author henny, thomas, max
  *
- * @param <T> Subtype of EventLabel
+ * @param <L> Subtype of EventLabel
  */
-public interface ARFactory<T extends EventLabel> {
+public interface ARFactory<L extends EventLabel> {
 
 	/**
 	 * 
@@ -38,7 +38,7 @@ public interface ARFactory<T extends EventLabel> {
 	 * @param sensorCollections Map<SensorCollection, T>
 	 * @return
 	 */
-	public Instances createTrainingSet (Map<SensorCollection, T> sensorCollections);
+	public Instances createTrainingSet (Map<SensorRecord, L> sensorCollections);
 	
 	/**
 	 * 
@@ -47,16 +47,16 @@ public interface ARFactory<T extends EventLabel> {
 	 * @param win SensorCollection
 	 * @return weka.core.Instance
 	 */
-	public Instance createFeatureVector (SensorCollection sc);
+	public Instance createFeatureVector (SensorRecord sc);
 	
 	/**
 	 * 
-	 * Creates a labeld feature vector of given sensor collection
+	 * Creates a labeled feature vector of given sensor collection
 	 * 
 	 * @param win SensorCollection
 	 * @param label T 
 	 * @return weka.core.Instance
 	 */
-	public Instance createFeatureVector (SensorCollection sc, T label);
+	public Instance createFeatureVector (SensorRecord sc, L label);
 	
 }

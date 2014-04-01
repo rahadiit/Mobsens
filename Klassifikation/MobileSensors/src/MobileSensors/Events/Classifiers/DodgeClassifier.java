@@ -1,41 +1,37 @@
 package MobileSensors.Events.Classifiers;
 
+import java.io.File;
 import java.util.ArrayList;
 
-import MobileSensors.MobSens;
 import MobileSensors.Events.Event;
 import MobileSensors.Events.EventType;
 import MobileSensors.Events.ARFactories.DodgeARFactory;
-import MobileSensors.Sensors.SensorCollection;
+import MobileSensors.Events.Labels.DodgeLabel;
+import MobileSensors.Sensors.SensorRecord;
 
-public class DodgeClassifier extends EventClassifier {
+public class DodgeClassifier extends EventClassifier<DodgeLabel> {
 
-	private DodgeARFactory dodgeFactory;
-	
-	public DodgeClassifier() throws Exception {
+	public DodgeClassifier(File modelFile) throws Exception {
 		
-		super(MobSens.MODELFILE_DODGE);
-		
-		this.dodgeFactory = new DodgeARFactory();
-		
+		super(new DodgeARFactory(), modelFile);
+
 	}
-	
+
 	@Override
-	public ArrayList<Event> classify(SensorCollection scWindow) {
+	public ArrayList<Event> classifyEvents (SensorRecord sr) {
 		
 		ArrayList<Event> events = new ArrayList<Event>();
 		
 		try {
 			
-			if (this.classifier.classifyInstance(
-					this.dodgeFactory.createFeatureVector(scWindow)) < 0.5) {
+			if (this.classify(sr) < 0.5) {
 				
 				events.add(new Event(0,0,EventType.DODGE));
 				
 			}
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		

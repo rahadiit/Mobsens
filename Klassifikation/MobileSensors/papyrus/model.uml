@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_cfY_sKDCEeOKRs9vJGaGCw" name="model">
+<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_cfY_sKDCEeOKRs9vJGaGCw" name="MobSensModel">
   <packageImport xmi:type="uml:PackageImport" xmi:id="_r2BWAKDDEeOKRs9vJGaGCw">
     <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
   </packageImport>
@@ -9,65 +9,118 @@
 RubyBridge</body>
     </ownedComment>
     <packagedElement xmi:type="uml:Class" xmi:id="_jad0EKDFEeOKRs9vJGaGCw" name="MobSens">
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_l1CZEKDFEeOKRs9vJGaGCw" name="getEvents"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_l1CZEKDFEeOKRs9vJGaGCw" name="classifyEvents" visibility="public">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_iIpQgLT1EeO54LVVyrP-wQ" name="sr" type="_bNElgLT1EeO54LVVyrP-wQ"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_PQDZ4LT1EeO54LVVyrP-wQ" name="trainEvents" visibility="public"/>
     </packagedElement>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Package" xmi:id="_aodBUKDEEeOKRs9vJGaGCw" name="MobileSensors.Events">
-    <packagedElement xmi:type="uml:Enumeration" xmi:id="_l6Y6gKDCEeOKRs9vJGaGCw" name="EventType">
-      <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_GgUD0KDDEeOKRs9vJGaGCw"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_aodBUKDEEeOKRs9vJGaGCw" name="Events">
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_l6Y6gKDCEeOKRs9vJGaGCw" name="EventType">
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_GgUD0KDDEeOKRs9vJGaGCw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_oTTSoKDCEeOKRs9vJGaGCw" name="Event">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_NYhRwKDDEeOKRs9vJGaGCw" name="startTime" visibility="private">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_N9r0UKDDEeOKRs9vJGaGCw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_N9xT4KDDEeOKRs9vJGaGCw" value="1"/>
+          <defaultValue xmi:type="uml:LiteralString" xmi:id="_N97E4KDDEeOKRs9vJGaGCw">
+            <value xsi:nil="true"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fzdjEKDDEeOKRs9vJGaGCw" name="endTime" visibility="private">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_xuTYAKDDEeOKRs9vJGaGCw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_xuUmIKDDEeOKRs9vJGaGCw" value="1"/>
+          <defaultValue xmi:type="uml:LiteralString" xmi:id="_xuY3kKDDEeOKRs9vJGaGCw">
+            <value xsi:nil="true"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_3lhqEKDDEeOKRs9vJGaGCw" name="eventType" visibility="private" type="_l6Y6gKDCEeOKRs9vJGaGCw" isUnique="false">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_55FoIKDDEeOKRs9vJGaGCw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_55TqkKDDEeOKRs9vJGaGCw" value="1"/>
+          <defaultValue xmi:type="uml:LiteralString" xmi:id="_55eCoKDDEeOKRs9vJGaGCw">
+            <value xsi:nil="true"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_roZUQKDEEeOKRs9vJGaGCw" name="eventType" type="_l6Y6gKDCEeOKRs9vJGaGCw" association="_roZ7UKDEEeOKRs9vJGaGCw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_roZUQaDEEeOKRs9vJGaGCw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_roZUQqDEEeOKRs9vJGaGCw" value="1"/>
+        </ownedAttribute>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_9ACyAKDDEeOKRs9vJGaGCw" name="getStartTime"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_9279wKDDEeOKRs9vJGaGCw" name="setStartTime"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_-tWBUKDDEeOKRs9vJGaGCw" name="getEndTime"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="__LGUUKDDEeOKRs9vJGaGCw" name="setEdnTime"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_BX90gKDEEeOKRs9vJGaGCw" name="toString"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_roZ7UKDEEeOKRs9vJGaGCw" name="event_eventType_1" memberEnd="_roZ7UaDEEeOKRs9vJGaGCw _roZUQKDEEeOKRs9vJGaGCw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_roZ7UaDEEeOKRs9vJGaGCw" name="event" type="_oTTSoKDCEeOKRs9vJGaGCw" association="_roZ7UKDEEeOKRs9vJGaGCw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_roZ7UqDEEeOKRs9vJGaGCw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_roZ7U6DEEeOKRs9vJGaGCw" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_csa84K6pEeO0TPpHsF2Jlg" name="ARFactories">
+        <packagedElement xmi:type="uml:Interface" xmi:id="_7i7-EK6pEeO0TPpHsF2Jlg" name="ARFactory&lt;L>">
+          <ownedTemplateSignature xmi:type="uml:RedefinableTemplateSignature" xmi:id="_nZt4sLaOEeOwTp7dTO7kjQ" name="L extends EventLabel" parameter="_sRTSsLaOEeOwTp7dTO7kjQ">
+            <ownedParameter xmi:type="uml:ClassifierTemplateParameter" xmi:id="_sRTSsLaOEeOwTp7dTO7kjQ" parameteredElement="_4Nap8LaPEeOwTp7dTO7kjQ"/>
+          </ownedTemplateSignature>
+          <nestedClassifier xmi:type="uml:Class" xmi:id="_sbCOwLaUEeOwTp7dTO7kjQ" name="Map&lt;SensorRecord, L>"/>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="_q4N_ALUREeO5DZlmNv3aEw" name="createFeatureVector">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_S9aWQLUSEeO5DZlmNv3aEw" name="sr" type="_bNElgLT1EeO54LVVyrP-wQ"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="_VV5QkLUSEeO5DZlmNv3aEw" name="createFeatureVector" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_ZSWfELUSEeO5DZlmNv3aEw" name="sr" type="_bNElgLT1EeO54LVVyrP-wQ"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_GuTOkLaSEeOwTp7dTO7kjQ" name="label" type="_4Nap8LaPEeOwTp7dTO7kjQ"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="_aiXkELaUEeOwTp7dTO7kjQ" name="createTrainingSet"/>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="_bKAL0LaUEeOwTp7dTO7kjQ" name="createTrainingSet">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_CLKTMLaVEeOwTp7dTO7kjQ" name="data" type="_sbCOwLaUEeOwTp7dTO7kjQ"/>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_yuvQMLaOEeOwTp7dTO7kjQ" name="ARFactory&lt;DodgeLabel>">
+          <templateBinding xmi:type="uml:TemplateBinding" xmi:id="_kpTKELaPEeOwTp7dTO7kjQ" signature="_nZt4sLaOEeOwTp7dTO7kjQ">
+            <parameterSubstitution xmi:type="uml:TemplateParameterSubstitution" xmi:id="__ppK8LaPEeOwTp7dTO7kjQ" actual="_CsU-ILT2EeO54LVVyrP-wQ" formal="_sRTSsLaOEeOwTp7dTO7kjQ"/>
+          </templateBinding>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_XVEzkLaSEeOwTp7dTO7kjQ" name="ARFactory&lt;BrakeLabel>"/>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_bTUx0LaSEeOwTp7dTO7kjQ" name="ARFactory&lt;KerbstoneLabel>"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_jehcMLaTEeOwTp7dTO7kjQ" clientDependency="_RDAtsLaUEeOwTp7dTO7kjQ" name="DodgeARFactory">
+          <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_RDAtsLaUEeOwTp7dTO7kjQ" name="Implements ARFactory&lt;DodgeLabel>" client="_jehcMLaTEeOwTp7dTO7kjQ" supplier="_yuvQMLaOEeOwTp7dTO7kjQ" contract="_yuvQMLaOEeOwTp7dTO7kjQ"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_4Nap8LaPEeOwTp7dTO7kjQ" clientDependency="_DYgCULaQEeOwTp7dTO7kjQ" name="L" templateParameter="_sRTSsLaOEeOwTp7dTO7kjQ">
+          <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_DYgCULaQEeOwTp7dTO7kjQ" name="InterfaceRealization1" client="_4Nap8LaPEeOwTp7dTO7kjQ" supplier="_ARFDsLT2EeO54LVVyrP-wQ" contract="_ARFDsLT2EeO54LVVyrP-wQ"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_ARFDsLT2EeO54LVVyrP-wQ" name="EventLabel"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_kG2uIK6pEeO0TPpHsF2Jlg" name="Trainers"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_AEmLYK6qEeO0TPpHsF2Jlg" name="Classifiers"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_GlwyUK6qEeO0TPpHsF2Jlg" name="Labels">
+        <packagedElement xmi:type="uml:Enumeration" xmi:id="_CsU-ILT2EeO54LVVyrP-wQ" clientDependency="_oe-OgLT3EeO54LVVyrP-wQ" name="DodgeLabel">
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_J0CnsLT2EeO54LVVyrP-wQ" name="DODGE"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_NPCH4LT2EeO54LVVyrP-wQ" name="NODODGE"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Enumeration" xmi:id="_OjgngLT2EeO54LVVyrP-wQ" clientDependency="_o3dnALT3EeO54LVVyrP-wQ" name="BrakeLabel">
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_QXV8oLT2EeO54LVVyrP-wQ" name="BRAKE"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_S4cncLT2EeO54LVVyrP-wQ" name="NOBRAKE"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Realization" xmi:id="_oe-OgLT3EeO54LVVyrP-wQ" name="" client="_CsU-ILT2EeO54LVVyrP-wQ" supplier="_ARFDsLT2EeO54LVVyrP-wQ"/>
+        <packagedElement xmi:type="uml:Realization" xmi:id="_o3dnALT3EeO54LVVyrP-wQ" name="" client="_OjgngLT2EeO54LVVyrP-wQ" supplier="_ARFDsLT2EeO54LVVyrP-wQ"/>
+        <packagedElement xmi:type="uml:Enumeration" xmi:id="_3HT5ULaWEeOwTp7dTO7kjQ" clientDependency="_Bp_08LaXEeOwTp7dTO7kjQ" name="KerbstoneLabel">
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_OIt_cLaXEeOwTp7dTO7kjQ" name="KERBSTONE"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_Q5uHcLaXEeOwTp7dTO7kjQ" name="NOKERBSTONE"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Realization" xmi:id="_Bp_08LaXEeOwTp7dTO7kjQ" name="" client="_3HT5ULaWEeOwTp7dTO7kjQ" supplier="_ARFDsLT2EeO54LVVyrP-wQ"/>
+      </packagedElement>
     </packagedElement>
-    <packagedElement xmi:type="uml:Class" xmi:id="_oTTSoKDCEeOKRs9vJGaGCw" name="Event">
-      <ownedAttribute xmi:type="uml:Property" xmi:id="_NYhRwKDDEeOKRs9vJGaGCw" name="startTime" visibility="private">
-        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_N9r0UKDDEeOKRs9vJGaGCw" value="1"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_N9xT4KDDEeOKRs9vJGaGCw" value="1"/>
-        <defaultValue xmi:type="uml:LiteralString" xmi:id="_N97E4KDDEeOKRs9vJGaGCw">
-          <value xsi:nil="true"/>
-        </defaultValue>
-      </ownedAttribute>
-      <ownedAttribute xmi:type="uml:Property" xmi:id="_fzdjEKDDEeOKRs9vJGaGCw" name="endTime" visibility="private">
-        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_xuTYAKDDEeOKRs9vJGaGCw" value="1"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_xuUmIKDDEeOKRs9vJGaGCw" value="1"/>
-        <defaultValue xmi:type="uml:LiteralString" xmi:id="_xuY3kKDDEeOKRs9vJGaGCw">
-          <value xsi:nil="true"/>
-        </defaultValue>
-      </ownedAttribute>
-      <ownedAttribute xmi:type="uml:Property" xmi:id="_3lhqEKDDEeOKRs9vJGaGCw" name="eventType" visibility="private" type="_l6Y6gKDCEeOKRs9vJGaGCw" isUnique="false">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_55FoIKDDEeOKRs9vJGaGCw" value="1"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_55TqkKDDEeOKRs9vJGaGCw" value="1"/>
-        <defaultValue xmi:type="uml:LiteralString" xmi:id="_55eCoKDDEeOKRs9vJGaGCw">
-          <value xsi:nil="true"/>
-        </defaultValue>
-      </ownedAttribute>
-      <ownedAttribute xmi:type="uml:Property" xmi:id="_roZUQKDEEeOKRs9vJGaGCw" name="eventType" type="_l6Y6gKDCEeOKRs9vJGaGCw" association="_roZ7UKDEEeOKRs9vJGaGCw">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_roZUQaDEEeOKRs9vJGaGCw" value="1"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_roZUQqDEEeOKRs9vJGaGCw" value="1"/>
-      </ownedAttribute>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_9ACyAKDDEeOKRs9vJGaGCw" name="getStartTime"/>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_9279wKDDEeOKRs9vJGaGCw" name="setStartTime"/>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_-tWBUKDDEeOKRs9vJGaGCw" name="getEndTime"/>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="__LGUUKDDEeOKRs9vJGaGCw" name="setEdnTime"/>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_BX90gKDEEeOKRs9vJGaGCw" name="toString"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_aW13cKDFEeOKRs9vJGaGCw" name="Sensors">
+      <packagedElement xmi:type="uml:Class" xmi:id="_LSy-kKDHEeOKRs9vJGaGCw" name="Sensor"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_N0oCIKDHEeOKRs9vJGaGCw" name="Accelerometer"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_RTvNUKDHEeOKRs9vJGaGCw" name="Location"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_ZjGmEK6qEeO0TPpHsF2Jlg" name="CSVParsers"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_cADwsK6qEeO0TPpHsF2Jlg" name="Windows"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_bNElgLT1EeO54LVVyrP-wQ" name="SensorRecord"/>
     </packagedElement>
-    <packagedElement xmi:type="uml:Association" xmi:id="_roZ7UKDEEeOKRs9vJGaGCw" name="event_eventType_1" memberEnd="_roZ7UaDEEeOKRs9vJGaGCw _roZUQKDEEeOKRs9vJGaGCw">
-      <ownedEnd xmi:type="uml:Property" xmi:id="_roZ7UaDEEeOKRs9vJGaGCw" name="event" type="_oTTSoKDCEeOKRs9vJGaGCw" association="_roZ7UKDEEeOKRs9vJGaGCw">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_roZ7UqDEEeOKRs9vJGaGCw" value="1"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_roZ7U6DEEeOKRs9vJGaGCw" value="1"/>
-      </ownedEnd>
+    <packagedElement xmi:type="uml:Package" xmi:id="_9WmJcKDGEeOKRs9vJGaGCw" name="Helpers">
+      <packagedElement xmi:type="uml:Class" xmi:id="_n7xxMKDHEeOKRs9vJGaGCw" name="FeatureMath"/>
     </packagedElement>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Package" xmi:id="_aW13cKDFEeOKRs9vJGaGCw" name="MobileSensors.Sensors">
-    <packagedElement xmi:type="uml:Class" xmi:id="_LSy-kKDHEeOKRs9vJGaGCw" name="Sensor"/>
-    <packagedElement xmi:type="uml:Class" xmi:id="_N0oCIKDHEeOKRs9vJGaGCw" name="Accelerometer"/>
-    <packagedElement xmi:type="uml:Class" xmi:id="_RTvNUKDHEeOKRs9vJGaGCw" name="Location"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Package" xmi:id="_9WmJcKDGEeOKRs9vJGaGCw" name="MobileSensors.Helpers">
-    <packagedElement xmi:type="uml:Class" xmi:id="_n7xxMKDHEeOKRs9vJGaGCw" name="FeatureMath"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Package" xmi:id="_EHHbAKDHEeOKRs9vJGaGCw" name="MobileSensors.EventClassifiers">
-    <packagedElement xmi:type="uml:Interface" xmi:id="_YizcEKDHEeOKRs9vJGaGCw" name="EventClassifier"/>
-    <packagedElement xmi:type="uml:Class" xmi:id="_bEANgKDHEeOKRs9vJGaGCw" name="DodgeClassifier"/>
-    <packagedElement xmi:type="uml:Class" xmi:id="_dus5MKDHEeOKRs9vJGaGCw" name="BrakingClassifier"/>
   </packagedElement>
 </uml:Model>

@@ -3,7 +3,6 @@ package MobileSensors.Deprecated;
 import java.util.ArrayList;
 
 import MobileSensors.Helpers.FeatureMathHelper;
-import MobileSensors.Sensors.Accelerometer;
 
 public class AccelerationFeatureVector {
 

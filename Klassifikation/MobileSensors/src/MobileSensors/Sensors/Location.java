@@ -2,6 +2,13 @@ package MobileSensors.Sensors;
 
 public class Location extends Sensor {
 
+	public final static int COLINDEX_LATITUDE = 0;
+	public final static int COLINDEX_LONGITUDE = 1;
+	public final static int COLINDEX_ALTIDUE = 2;
+	public final static int COLINDEX_SPEED = 3;
+	public final static int COLINDEX_BEARING = 4;
+	public final static int COLINDEX_ACCURANCY = 5;
+	
 	private double latitude;
 	private double longitude;
 	private double altitude;
@@ -11,7 +18,9 @@ public class Location extends Sensor {
 	
 	public Location(long time, double latitude, double longitude,
 			double altitude, double speed, double bearing, double accuracy) {
+		
 		super(time);
+		
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.altitude = altitude;
