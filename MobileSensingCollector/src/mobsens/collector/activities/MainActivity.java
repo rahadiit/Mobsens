@@ -203,8 +203,6 @@ public class MainActivity extends ConnectingActivity
 
 	private boolean isValidLogin()
 	{
-		if(true)return true;
-		
 		final SharedPreferences sp = getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
 
 		final String mail = sp.getString(PREFERENCE_EMAIL, "");
@@ -240,13 +238,17 @@ public class MainActivity extends ConnectingActivity
 		}
 		catch (JSONException e)
 		{
+			// Annehmen, das das Login gültig ist, wird dann am Schluss nicht
+			// hochgeladen
 			Logging.log(this, e);
-			return false;
+			return true;
 		}
 		catch (IOException e)
 		{
+			// Annehmen, das das Login gültig ist, wird dann am Schluss nicht
+			// hochgeladen
 			Logging.log(this, e);
-			return false;
+			return true;
 		}
 	}
 }
