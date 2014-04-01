@@ -26,7 +26,7 @@ public class FtpUrlUpload extends AsyncTask<File, Void, Void> {
 		ftpUrl = String.format(ftpUrl, user, pass, host, uploadPath);
 		Log.i("ftp", "Upload URL: " + ftpUrl +file.getName());
 		double fileKb=((double)file.length()/1024);
-		Log.i("ftp", "fielSize: " +fileKb +"kb");
+		Log.i("ftp", "fileSize: " +fileKb +"kb");
 		long start = new Date().getTime();
 		try {
 			FTPClient con = new FTPClient();
