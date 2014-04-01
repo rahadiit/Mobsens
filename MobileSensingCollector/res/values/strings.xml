@@ -27,5 +27,10 @@
     <string name="settings_save">Speichern</string>
     <string name="main_start">Start</string>
     <string name="map_stop">Stop</string>
+    <string name="rating_total_distance">Distanz</string>
+    <string name="rating_max_speed">Maximale Geschwindigkeit</string>
+    <string name="rating_time">Gesamtzeit</string>
+    <string name="rating_avg_speed">Durchschnittliche Geschwindigkeit</string>
+    <string name="rating_submit">Absenden</string>
 
 </resources>
