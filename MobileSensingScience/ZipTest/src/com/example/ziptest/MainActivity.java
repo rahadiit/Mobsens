@@ -1,22 +1,27 @@
 package com.example.ziptest;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
 import java.util.zip.GZIPOutputStream;
+import java.util.zip.InflaterInputStream;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.ziptest.data.TestData;
-import com.example.ziptest.worker.CompressService;
-import com.example.ziptest.worker.CompressWorker;
 
 public class MainActivity extends Activity {
 
@@ -70,10 +75,13 @@ public class MainActivity extends Activity {
 	}
 
 	public void startZip(String dataString) {
+
+		long start = new Date().getTime();
+		
+		Log.i("logging", "startingZip " + new Date().getTime());
 		Log.i("ZipTest", dataString);
 
 		int size = Integer.parseInt(dataString);
-		
 		Log.i("CS", "Started");
 
 		byte[] compressed_data;
@@ -109,9 +117,14 @@ public class MainActivity extends Activity {
 					"compressed data size "
 							+ Integer.toString(compressed_data.length));
 
-			FileOutputStream fos = openFileOutput("test", Context.MODE_PRIVATE);
-			fos.write(os.toByteArray());
-			fos.close();
+			writeFile(new ByteArrayInputStream(compressed_data), (size / 1000)
+					+ ".gz");
+			
+			//
+			// FileOutputStream fos = openFileOutput("test",
+			// Context.MODE_PRIVATE);
+			// fos.write(os.toByteArray());
+			// fos.close();
 
 			Toast.makeText(
 					MainActivity.this,
@@ -123,40 +136,57 @@ public class MainActivity extends Activity {
 		} catch (IOException e) {
 			Log.i("CS", "exception");
 			e.printStackTrace();
-			
-		}
-		Log.i("ziptest", "thread dead");
-		//
-		// // // log information about thread
-		// // Log.d("getId", Long.toString(t.getId()));
-		// // Log.d("getName", t.getName());
-		//
-		// if (stopSelfResult(startId)) {
-		// return 0;
-		// }
 
-		//Intent data = new Intent();
+		}
+		Log.i("ziptest", "finished in "+(new Date().getTime()-start)+"ms");
+
 		// Activity finished ok, return the data
-		
+		Log.i("logging", "finishZip " + new Date().getTime());
 		finish();
 	}
-	
+
+	public void writeFile(InputStream is, String fileName) {
+
+		File writeFile = new File(Environment.getExternalStorageDirectory()
+				.getAbsolutePath(), fileName);
+		
+		try {
+			BufferedOutputStream logOut = new BufferedOutputStream(
+					new FileOutputStream(writeFile));
+			byte[] buffer = new byte[20480];
+			for (int ln = is.read(buffer); ln != -1; ln = is.read(buffer)) {
+				logOut.write(buffer, 0, ln);
+			}
+			logOut.close();
+			is.close();
+
+		} catch (Exception e) {
+			Log.i("Zip WriteFile", e.toString());
+			// Toast.makeText(UMLogger.this,
+			// "Failed to write log to sdcard" + e.toString(),
+			// Toast.LENGTH_SHORT).show();
+		}
+	}
 
 }
 
 /*
-*dead code
-*
-*
-	@Override
-	public void finish() {
-	  // Prepare data intent 
-	  Intent data = new Intent();
-	  data.putExtra("value",10000);
-	  // Activity finished ok, return the data
-	  setResult(RESULT_OK, data);
-	  Log.i("ZipTest", "result "+data.getIntExtra("value",-1));
-	  super.finish();
-	} 
-*/
+ * dead code
+ * 
+ * @Override public void finish() { // Prepare data intent Intent data = new
+ * Intent(); data.putExtra("value",10000); // Activity finished ok, return the
+ * data setResult(RESULT_OK, data); Log.i("ZipTest",
+ * "result "+data.getIntExtra("value",-1)); super.finish(); }
+ */
+
+//
+// // // log information about thread
+// // Log.d("getId", Long.toString(t.getId()));
+// // Log.d("getName", t.getName());
+//
+// if (stopSelfResult(startId)) {
+// return 0;
+// }
+
+// Intent data = new Intent();
 
