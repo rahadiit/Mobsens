@@ -1,4 +1,4 @@
-package com.example.sendtest;
+	package com.example.sendtest;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,6 +30,7 @@ public class FtpUrlUpload extends AsyncTask<File, Void, Void> {
 		long start = new Date().getTime();
 		try {
 			FTPClient con = new FTPClient();
+			con.setBufferSize(0);
 			
 			con.connect("k-e-h.de");
 			if (con.login("web272f1", "Dzw8R1H3")){

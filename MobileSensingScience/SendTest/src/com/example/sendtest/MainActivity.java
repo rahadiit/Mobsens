@@ -32,14 +32,16 @@ public class MainActivity extends Activity {
 	}
 
 	private void doIt() {
+		
+		sendData("10000.gz");
 
-		for (int i = 1; i < 4; i++) {
-			String filename = i + "000.gz";
-			Toast.makeText(MainActivity.this, "sending " + filename,
-					Toast.LENGTH_SHORT).show();
-			sendData(filename);
-			
-		}
+//		for (int i = 1; i < 4; i++) {
+//			String filename = i + "000.gz";
+//			Toast.makeText(MainActivity.this, "sending " + filename,
+//					Toast.LENGTH_SHORT).show();
+//			sendData(filename);
+//
+//		}
 
 	}
 
@@ -49,32 +51,21 @@ public class MainActivity extends Activity {
 		File sdcard = Environment.getExternalStorageDirectory();
 		File file = new File(sdcard, filePath);
 
-		Log.i("ftp",
-				"startSending" + new Date().getTime() + " "
-						+ file.getAbsolutePath());
-
 		if (file.exists()) {
+			Log.i("ftpLog",
+					"startSending " + new Date().getTime() + " "
+							+ file.getAbsolutePath());
+			
 			FtpUrlUpload ftpUpload = new FtpUrlUpload();
+
 			try {
 				ftpUpload.execute(file).get();
-			} catch (InterruptedException e1) {
-				Log.w("ftp", e1.getLocalizedMessage());
-			} catch (ExecutionException e1) {
-				Log.w("ftp", e1.getLocalizedMessage());
+			} catch (Exception e1) {
+				Log.w("ftp", e1.toString());
 			}
 
-//			while (ftpUpload.getStatus() != Status.FINISHED) {
-//				try {
-//					Thread.sleep(10000);
-//				} catch (InterruptedException e) {
-//					Log.e("ftp",
-//							"exception while sleeping. zzzz " + e.getMessage());
-//				}
-//				Log.i("ftp", "still not finished uploading " + file.getName());
-//			}
-
-			Log.i("ftp",
-					"file uploaded" + new Date().getTime() + " "
+			Log.i("ftpLog",
+					"finishedSending " + new Date().getTime() + " "
 							+ file.getAbsolutePath());
 		}
 	}
