@@ -15,7 +15,10 @@ public enum EventType {
 	
 	DODGE,
 	
-	JERK;
+	JERK,
+	
+	KERBSTONE
+	;
 
 	
 	public String toString() {
