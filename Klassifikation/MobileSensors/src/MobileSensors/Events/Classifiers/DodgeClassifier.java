@@ -24,9 +24,9 @@ public class DodgeClassifier extends EventClassifier<DodgeLabel> {
 		
 		try {
 			
-			if (this.classify(sr) < 0.5) {
+			if (this.classify(sr) > 0.5) {
 				
-				events.add(new Event(0,0,EventType.DODGE));
+				events.add(new Event(sr.getAcceleration().get(0).getTime(),sr.getAcceleration().get(sr.getAcceleration().size()-1).getTime(),EventType.DODGE));
 				
 			}
 			
