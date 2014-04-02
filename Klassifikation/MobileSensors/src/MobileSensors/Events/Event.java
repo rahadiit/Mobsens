@@ -6,12 +6,12 @@ package MobileSensors.Events;
  * @author henny, thomas, max
  *
  */
-public class Event {
+public class Event{
 
 	private long startTime;
 	private long endTime;
 	private EventType eventType;
-
+	
 	/**
 	 * 
 	 * @param time
