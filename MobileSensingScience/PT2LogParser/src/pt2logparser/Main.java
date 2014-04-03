@@ -37,7 +37,8 @@ public class Main {
         try {
             // /Users/henny/Desktop/sdcard/logCat010414.txt
             // /Users/henny/Desktop/sdcard/PowerTrace1396358921109.log
-            if (false) {
+            boolean one=true;
+            if (one) {
                 List<String> lines = FileUtils.readLines(new File("/Users/henny/Desktop/sdcard/logCat010414.txt"));
                 LogCatParser logCatparser = new LogCatParser(lines);
 
@@ -46,11 +47,9 @@ public class Main {
                 });
             }
             
-            if(true){
+            if(!one){
                 List<String> lines = FileUtils.readLines(new File("/Users/henny/Desktop/sdcard/PowerTrace1396358921109.log"));
                 PT2LogParser pt2 = new PT2LogParser(lines);
-                
-                
                 
                 pt2.getEntries().stream().forEach((entry) -> {
                     entry.getAppComponents().stream().filter

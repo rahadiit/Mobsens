@@ -42,7 +42,6 @@ public class MainActivity extends Activity {
 //			sendData(filename);
 //
 //		}
-
 	}
 
 	private void sendData(String filePath) {
@@ -69,5 +68,4 @@ public class MainActivity extends Activity {
 							+ file.getAbsolutePath());
 		}
 	}
-
 }

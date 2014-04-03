@@ -7,10 +7,10 @@ package pt2logparser.parse;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 import pt2logparser.pt2data.AppComponent;
 import pt2logparser.pt2data.Component;
 import pt2logparser.pt2data.PT2LogEntry;
@@ -21,7 +21,7 @@ import pt2logparser.pt2data.PT2LogEntry;
  */
 public class PT2LogParser {
 
-    private Collection<PT2LogEntry> entries;
+    private ArrayList<PT2LogEntry> entries;
     private List<String> file;
 
     public PT2LogParser(List<String> file) {
@@ -34,7 +34,7 @@ public class PT2LogParser {
         return entries;
     }
 
-    public void setEntries(Collection<PT2LogEntry> entries) {
+    public void setEntries(ArrayList<PT2LogEntry> entries) {
         this.entries = entries;
     }
 
@@ -78,5 +78,15 @@ public class PT2LogParser {
                 i--;
             }
         }
+        Collections.sort((List<PT2LogEntry>) entries);
+    }
+    
+    public double getConsumption(long start, long end, String appname){
+        
+        for(int i=0;i<getEntries().size();i++){
+            PT2LogEntry le = entries.get(i);
+            
+        }
+        return 0;
     }
 }

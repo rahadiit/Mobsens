@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package pt2logparser.pt2data;
 
 import java.util.Set;
@@ -12,8 +11,8 @@ import java.util.Set;
  *
  * @author henny
  */
-public class PT2LogEntry {
-    
+public class PT2LogEntry implements Comparable<PT2LogEntry> {
+
     private long time;
     private Set<AppComponent> appComponents;
 
@@ -36,5 +35,21 @@ public class PT2LogEntry {
 
     public void setAppComponents(Set<AppComponent> appComponents) {
         this.appComponents = appComponents;
+    }
+
+    @Override
+    public int compareTo(PT2LogEntry o) {
+        if (o != null) {
+            if (this.getTime() < o.getTime()) {
+                return -1;
+            }
+            if (this.getTime() > o.getTime()) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } else {
+            throw new IllegalArgumentException("param is null");
+        }
     }
 }
