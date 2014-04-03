@@ -67,7 +67,6 @@ public class MobSens {
 	private File kerbstoneModelFile;
 	
 	public MobSens () {
-		
 		this.brakeModelFile = new File(MobSens.DEFAULT_MODELFILE_BRAKE);
 		this.dodgeModelFile = new File(MobSens.DEFAULT_MODELFILE_DODGE);
 		this.kerbstoneModelFile = new File(MobSens.DEFAULT_MODELFILE_KERBSTONE);
