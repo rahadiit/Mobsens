@@ -6,8 +6,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Random;
@@ -74,6 +76,7 @@ public abstract class EventTrainer<L extends EventLabel> {
 	private File modelFile;
 	private File arffFile;
 	private File evalFile;
+	private File clsfrFile;
 	
 	protected Map<SensorRecord, L> sensorCollections;
 	
@@ -92,6 +95,7 @@ public abstract class EventTrainer<L extends EventLabel> {
 		this.modelFile = modelFile;
 		this.arffFile = modelDir.resolve(FilenameUtils.getBaseName(modelFile.getName()) + ".arff").toFile();
 		this.evalFile = modelDir.resolve(FilenameUtils.getBaseName(modelFile.getName()) + ".eval").toFile();
+		this.clsfrFile = modelDir.resolve(FilenameUtils.getBaseName(modelFile.getName()) + ".txt").toFile();
 		
 		
 	}
@@ -99,6 +103,15 @@ public abstract class EventTrainer<L extends EventLabel> {
 	private void log (String msg) {
 		
 		System.out.println(this.getClass().getSimpleName() + " :: " + msg);
+		
+	}
+	
+	private String timeStr (long time) {
+		
+		
+		
+		return time + "ms";
+		
 		
 	}
 	
@@ -173,7 +186,7 @@ public abstract class EventTrainer<L extends EventLabel> {
 		
 		stop = new Date();
 		
-		this.log("Done after " + (stop.getTime() - start.getTime()) + "ms.");
+		this.log("Done after " + this.timeStr(stop.getTime() - start.getTime()) + ".");
 		
 		return trainingSet;
 		
@@ -186,17 +199,22 @@ public abstract class EventTrainer<L extends EventLabel> {
 		
 		start = new Date();
 		
-		this.log("Building new " + eventClassifier.getClass().getName() + " classifier.");
+		this.log("Building new " + this.eventClassifier.getClass().getName() + " classifier.");
 		
-		eventClassifier.buildClassifier(trainingSet);
+		this.eventClassifier.buildClassifier(trainingSet);
 		
 		this.log("Writing classifier to " + this.modelFile.getCanonicalPath());
 		
-		SerializationHelper.write(this.modelFile.getCanonicalPath(), eventClassifier);
+		SerializationHelper.write(this.modelFile.getCanonicalPath(), this.eventClassifier);
+		
+		BufferedWriter evalWriter = new BufferedWriter(new FileWriter(this.clsfrFile));
+		evalWriter.write(this.eventClassifier.toString());
+		evalWriter.flush();
+		evalWriter.close();
 		
 		stop = new Date();
-		
-		this.log("Done after " + (stop.getTime() - start.getTime()) + "ms.");
+
+		this.log("Done after " + this.timeStr(stop.getTime() - start.getTime()) + ".");
 		
 		
 	}
@@ -243,13 +261,24 @@ public abstract class EventTrainer<L extends EventLabel> {
 		evalWriter.close();
 		
 		stop = new Date();
-		
-		this.log("Done after " + (stop.getTime() - start.getTime()) + "ms.");
+
+		this.log("Done after " + this.timeStr(stop.getTime() - start.getTime()) + ".");
 		
 		
 	}
 	
 	public void train (Map<SensorRecord, L> sensorCollections) throws Exception {
+		
+		this.train(sensorCollections, false);
+		
+	}
+	
+	public void train (Map<SensorRecord, L> sensorCollections, boolean validate) throws Exception {
+		
+		Date start;
+		Date stop;
+		
+		start = new Date();
 		
 		System.out.println();
 		
@@ -258,11 +287,22 @@ public abstract class EventTrainer<L extends EventLabel> {
 		Instances trainingSet = this.buildTrainingSet(sensorCollections, this.windowWidth, this.windowDelta);
 		
 		this.buildClassifier(trainingSet);
-		this.crossValidateModel(trainingSet, this.validationFolds);
+		
+		if (validate) {
+			
+			this.crossValidateModel(trainingSet, this.validationFolds);
+			
+		}
+		
+		
 		
 		this.log("Finished training!");
 		
 		System.out.println();
+		
+		stop = new Date();
+
+		this.log("Done after " + this.timeStr(stop.getTime() - start.getTime()) + ".");
 		
 	}
 	
