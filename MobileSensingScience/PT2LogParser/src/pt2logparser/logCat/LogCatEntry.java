@@ -19,6 +19,11 @@ public class LogCatEntry implements Comparable<LogCatEntry> {
     private double lcdConsumption;
     private double wifiConsumption;
     private double threeGConsumption;
+    
+    private double cpuCurrentConsumption;
+    private double lcdCurrentConsumption;
+    private double wifiCurrentConsumption;
+    private double threeGCurrentConsumption;
 
     public LogCatEntry(AppEvent event, long time, String data) {
         this.event = event;
@@ -26,6 +31,39 @@ public class LogCatEntry implements Comparable<LogCatEntry> {
         this.data = data;
     }
 
+    public double getCpuCurrentConsumption() {
+        return cpuCurrentConsumption;
+    }
+
+    public void setCpuCurrentConsumption(double cpuCurrentConsumption) {
+        this.cpuCurrentConsumption = cpuCurrentConsumption;
+    }
+
+    public double getLcdCurrentConsumption() {
+        return lcdCurrentConsumption;
+    }
+
+    public void setLcdCurrentConsumption(double lcdCurrentConsumption) {
+        this.lcdCurrentConsumption = lcdCurrentConsumption;
+    }
+
+    public double getWifiCurrentConsumption() {
+        return wifiCurrentConsumption;
+    }
+
+    public void setWifiCurrentConsumption(double wifiCurrentConsumption) {
+        this.wifiCurrentConsumption = wifiCurrentConsumption;
+    }
+
+    public double getThreeGCurrentConsumption() {
+        return threeGCurrentConsumption;
+    }
+
+    public void setThreeGCurrentConsumption(double threeGCurrentConsumption) {
+        this.threeGCurrentConsumption = threeGCurrentConsumption;
+    }
+
+    
     public double getCpuConsumption() {
         return cpuConsumption;
     }
