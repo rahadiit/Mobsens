@@ -58,12 +58,9 @@ public class MobSens {
 	 */
 	public static void main (String[] args) throws Exception {
 		
-		DodgeClassifier dc = new DodgeClassifier(new File(MobSens.DEFAULT_MODELFILE_DODGE));
 		
-		dc.test();
-		
-//		MobSens m = new MobSens();
-//		m.trainEvents(new File(MobSens.DEFAULT_INPUT_DIR));
+		MobSens m = new MobSens();
+		m.trainEvents(new File(MobSens.DEFAULT_INPUT_DIR));
 		
 		
 	}

@@ -36,25 +36,53 @@ public abstract class EventTrainer<L extends EventLabel> {
 				int windowDelta) {
 			
 			ArrayList<ArrayList<S>> result = new ArrayList<ArrayList<S>>();
-			//+------+
-			// +------+
-			int windowCount = values.size() - windowWidth;
 			
-			for (int i=0; i < windowCount; i += windowDelta) {
+			windowWidth = windowWidth > 1 ? windowWidth : 1;
+			windowDelta = windowDelta > 1 ? windowDelta : 1;
+			
+			int i = 0;
+			
+			while (i < values.size() - windowWidth) {
 				
 				ArrayList<S> window = new ArrayList<S>();
 				
-				int windowSize = i + windowWidth - windowDelta;
+				int j = i;
 				
-				for (int j=i; j < windowSize; j++) {
+				while (j - i < windowWidth) {
 					
 					window.add(values.get(j));
+					
+					j++;
 					
 				}
 				
 				result.add(window);
 				
+				i += windowDelta;
+				
 			}
+			
+			
+			
+			
+			
+//			int windowCount = values.size() - windowWidth;
+//			
+//			for (int i=0; i < windowCount; i += windowDelta) {
+//				
+//				ArrayList<S> window = new ArrayList<S>();
+//				
+//				int windowSize = i + windowWidth - windowDelta;
+//				
+//				for (int j=i; j < windowSize; j++) {
+//					
+//					window.add(values.get(j));
+//					
+//				}
+//				
+//				result.add(window);
+//				
+//			}
 			
 			return result;
 			
