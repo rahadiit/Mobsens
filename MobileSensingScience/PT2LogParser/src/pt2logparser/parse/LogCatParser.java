@@ -55,11 +55,44 @@ public class LogCatParser {
         //1396359214995 /storage/emulated/0/10000.gz
         Scanner scan = new Scanner(relevant);
         long time = scan.nextLong();
-        String data = scan.next();
+        String[] data = scan.next().split("/");
+        String fileName = data[data.length - 1];
 
-        LogCatEntry lce = new LogCatEntry(app, time, data);
+        LogCatEntry lce = new LogCatEntry(app, time, fileName);
 
         return lce;
+    }
+
+    /**
+     * 
+     * @param appEvent something like the finished-Event of e.g. sending.  
+     * 
+     */
+    public void parseAppEvents(AppEvent appEvent) {
+
+        ArrayList<LogCatEntry> logCatArray = (ArrayList<LogCatEntry>) this.getEntries();
+        for (int i = 1; i < logCatArray.size(); i++) {
+            LogCatEntry current = logCatArray.get(i);
+            LogCatEntry currentPre = logCatArray.get(i - 1);
+
+            if (i % 2 == 1 && current.getEvent().equals(appEvent)) {
+                
+                current.setCpuCurrentConsumption(current.getCpuConsumption()-currentPre.getCpuConsumption());
+                current.setWifiCurrentConsumption(current.getWifiConsumption()-currentPre.getWifiConsumption());
+                current.setThreeGCurrentConsumption(current.getThreeGConsumption()-currentPre.getThreeGConsumption());
+                current.setLcdCurrentConsumption(current.getLcdConsumption()-currentPre.getLcdConsumption());
+                
+            } else {
+                
+                current.setCpuCurrentConsumption(0);
+                current.setWifiCurrentConsumption(0);
+                current.setThreeGCurrentConsumption(0);
+                current.setLcdCurrentConsumption(0);
+                
+            }
+
+        }
+
     }
 
     public void parseFile() {
