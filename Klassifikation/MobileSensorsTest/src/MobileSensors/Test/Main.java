@@ -1,5 +1,6 @@
 package MobileSensors.Test;
 
+import java.beans.EventSetDescriptor;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import MobileSensors.Deprecated.Annotation;
 import MobileSensors.Deprecated.Location;
 import MobileSensors.Deprecated.Timeable;
 import MobileSensors.Events.Event;
+import MobileSensors.Events.EventType;
 import MobileSensors.Sensors.SensorRecord;
 import MobileSensors.Test.Data.Recording;
 import MobileSensors.Test.Data.SensorE;
@@ -29,6 +31,7 @@ public class Main {
 	private static final String username = "mlukas@gmx.net";
 	private static final String password = "12345678";
 
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws IOException {
 
 		// Auf Server einloggen
@@ -45,7 +48,7 @@ public class Main {
 			Recording recording = recordings.get(i);
 
 			if (recording.getTitle() != null
-					&& recording.getTitle().contains("uni_auswe")) {
+					&& recording.getTitle().contains("uni_ausw")) {
 				count++;
 				System.out.println("starting "+count+". recording");
 				client = RESTful.login(URLS.LOGIN.getURL(), username, password);
@@ -68,9 +71,10 @@ public class Main {
 						annotationCSV, Annotation.class);
 				
 				ArrayList<ArrayList<Accelerometer>> windows = new ArrayList<>();
-				windows.addAll((Collection<? extends ArrayList<Accelerometer>>) Timeable.window(accelerometers, 5000));
+				windows.addAll((Collection<? extends ArrayList<Accelerometer>>) Timeable.window(accelerometers,5000));
 				
 				ArrayList<Event> events = new ArrayList<>();
+				
 				for(ArrayList<Accelerometer> window:windows){
 					
 					ArrayList<MobileSensors.Sensors.Accelerometer> newAccel = new ArrayList<>();
@@ -85,18 +89,41 @@ public class Main {
 					mS.setKerbstoneModelFile(new File("/Users/henny/Desktop/uni/fp/newestgit/MobSens/Klassifikation/MobileSensors/model/Kerbstone.model"));
 					
 					events.addAll(mS.classifyEvents(sR));
+					
 				}
 				
 				System.out.println("enjoy your events!");
 				
+				int countRightEvents = 0;
 				for(Event event:events){
-					System.out.println(event);
+					
+					for(Annotation anno:annotations){
+						
+						if(event.getStartTime()< anno.getTime() && event.getEndTime()> anno.getTime()){
+							if(anno.getTag().toLowerCase().startsWith("bremsen st") && event.getEventType().equals(EventType.BRAKING)){
+								countRightEvents++;
+								System.out.println("bremsen richtig erkannt");
+								
+							}
+							if(anno.getTag().toLowerCase().startsWith("ausweichmanöver start") && event.getEventType().equals(EventType.DODGE)){
+								countRightEvents++;
+								System.out.println("ausweichen richtig erkannt");
+								
+							}
+							if(anno.getTag().toLowerCase().startsWith("bord") && event.getEventType().equals(EventType.KERBSTONE)){
+								countRightEvents++;
+								System.out.println("kerbstone richtig erkannt");
+								
+							}
+						}
+					}
 				}
-				
+				System.out.println(countRightEvents+" richtig gefunden / "+events.size()+" events erkannt/ "+annotations.size()/2+" urspruenglich getaggt");
 				
 			}
 
 		}
+		
 		System.out.println(count + ". Recording(s) untersucht");
 
 		System.out.println("done");

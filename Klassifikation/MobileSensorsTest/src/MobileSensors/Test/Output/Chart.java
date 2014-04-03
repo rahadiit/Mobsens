@@ -26,6 +26,7 @@ import com.sun.jersey.api.client.Client;
 import MobileSensors.Deprecated.AcceleroCalc;
 import MobileSensors.Deprecated.AcceleroOption;
 import MobileSensors.Deprecated.Accelerometer;
+import MobileSensors.Deprecated.Annotation;
 import MobileSensors.Deprecated.Axis;
 import MobileSensors.Deprecated.DetectDodge;
 import MobileSensors.Deprecated.DetectJerk;
