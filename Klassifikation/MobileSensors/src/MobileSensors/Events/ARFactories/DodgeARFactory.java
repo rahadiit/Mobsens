@@ -143,6 +143,18 @@ public class DodgeARFactory implements ARFactory<DodgeLabel> {
 		return insts;
 	}
 	
+	/**
+	 * Creates new empty weka freature-vector for the dodge attribute relation
+	 * @return
+	 */
+	public Instance createFeatureVector () {
+		
+		Instance inst = new Instance(this.dodgeFeatureVector.size());
+		inst.setDataset(this.createTrainingSet());
+		
+		return inst;
+		
+	}
 	
 	
 	/**

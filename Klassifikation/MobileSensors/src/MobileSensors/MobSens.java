@@ -1,9 +1,12 @@
 package MobileSensors;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import weka.core.Instances;
 import MobileSensors.Events.Event;
 import MobileSensors.Events.Labels.*;
 import MobileSensors.Events.Classifiers.*;
@@ -55,9 +58,12 @@ public class MobSens {
 	 */
 	public static void main (String[] args) throws Exception {
 		
-				
-		MobSens m = new MobSens();
-		m.trainEvents(new File(MobSens.DEFAULT_INPUT_DIR));
+		DodgeClassifier dc = new DodgeClassifier(new File(MobSens.DEFAULT_MODELFILE_DODGE));
+		
+		dc.test();
+		
+//		MobSens m = new MobSens();
+//		m.trainEvents(new File(MobSens.DEFAULT_INPUT_DIR));
 		
 		
 	}
@@ -180,7 +186,7 @@ public class MobSens {
 
 		try {
 
-//			(new BrakeTrainer(this.brakeModelFile)).train(brakeData);
+			(new BrakeTrainer(this.brakeModelFile)).train(brakeData);
 			(new DodgeTrainer(this.dodgeModelFile)).train(dodgeData);
 			(new KerbstoneTrainer(this.kerbstoneModelFile)).train(kerbstoneData);
 			
