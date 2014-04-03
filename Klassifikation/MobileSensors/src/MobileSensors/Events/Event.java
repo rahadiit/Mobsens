@@ -33,7 +33,6 @@ public class Event{
 		
 	}
 	
-
 	public long getStartTime() {
 		return startTime;
 	}
@@ -71,9 +70,7 @@ public class Event{
 	
 	@Override
 	public String toString(){
-		
 		return this.startTime + " " + this.endTime + " " + this.eventType.toString();
-		
 	}
 
 }
