@@ -1,9 +1,12 @@
 package MobileSensors;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import weka.core.Instances;
 import MobileSensors.Events.Event;
 import MobileSensors.Events.Labels.*;
 import MobileSensors.Events.Classifiers.*;
@@ -15,13 +18,35 @@ import MobileSensors.Sensors.SensorRecord;
  * 
  * MobSens Facade
  * 
+ * MobSens is the facade class to the mobile sensing weka middleware.
+ * <br>
+ * Usage:
+ * <br>
+ * (1) Event classification:
+ * <pre>
+ * SensorRecord sr = ...
+ * MobSens mobs = new MobSens();
+ * mobs.setBrakeModelFile(fileToBrakeModel);
+ * mobs.setDodgeModelFile(fileToDodgeModel);
+ * mobs.setKerbstoneModelFile(fileToKerbstoneModel);
+ * ArrayList<Event> events = mobs.classifyEvents(sr);
+ * </pre>
+ * (2) Event training:
+ * <pre>
+ * File inp = new File(pathToInputDir);
+ * MobSens mobs = new MobSens();
+ * mobs.setBrakeModelFile(fileToBrakeModel);
+ * mobs.setDodgeModelFile(fileToDodgeModel);
+ * mobs.setKerbstoneModelFile(fileToKerbstoneModel);
+ * mobs.trainEvents(inp);
+ * </pre>
+ * 
  * @author henny, thomas, max
  * 
  */
 public class MobSens {
 
 	public final static String DEFAULT_INPUT_DIR = "./input";
-	
 	public final static String DEFAULT_MODELFILE_DODGE = "./model/Dodge.model";
 	public final static String DEFAULT_MODELFILE_BRAKE = "./model/Brake.model";
 	public final static String DEFAULT_MODELFILE_KERBSTONE = "./model/Kerbstone.model";
@@ -33,9 +58,12 @@ public class MobSens {
 	 */
 	public static void main (String[] args) throws Exception {
 		
-				
-		MobSens m = new MobSens();
-		m.trainEvents(new File(MobSens.DEFAULT_INPUT_DIR));
+		DodgeClassifier dc = new DodgeClassifier(new File(MobSens.DEFAULT_MODELFILE_DODGE));
+		
+		dc.test();
+		
+//		MobSens m = new MobSens();
+//		m.trainEvents(new File(MobSens.DEFAULT_INPUT_DIR));
 		
 		
 	}
@@ -90,9 +118,23 @@ public class MobSens {
 	}
 	
 	/**
-	 * Trains event classifiers
+	 * Trains events from data in a given input directory.
+	 * The directory outline has to be:
+	 * <br>
+	 * <br>
+	 * <pre>
+	 * [event] 
+	 * 	> record_[id]
+	 * 		> [sensor].csv
+	 * no[event]
+	 * 	> record_[id] 
+	 * 		> [sensor].csv	
+	 * </pre> 
+	 * 
+	 * @param inputDir File to data input directory
+	 * @return
 	 */
-	public int trainEvents (File indir) {
+	public int trainEvents (File inputDir) {
 		
 
 		System.out.println("MobSens started event training. This may take some time... Go, grab some coffee!");
@@ -108,7 +150,7 @@ public class MobSens {
 				KerbstoneLabel.NOKERBSTONE
 				};
 		
-		EventRawDataParser etdp = new EventRawDataParser(indir, labels);
+		EventRawDataParser etdp = new EventRawDataParser(inputDir, labels);
 		
 		HashMap<SensorRecord, EventLabel> data = etdp.parse();
 		
