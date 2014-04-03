@@ -16,11 +16,13 @@ public class AppComponent {
     private String appName;
     private Component component;
     private long time;
+    private double consumption;
 
-    public AppComponent(String appName, Component component, long time) {
+    public AppComponent(String appName, Component component, long time, double consumption) {
         this.appName = appName;
         this.component = component;
         this.time = time;
+        this.consumption = consumption;
     }
 
     public String getAppName() {
@@ -47,6 +49,14 @@ public class AppComponent {
         this.time = time;
     }
 
+    public double getConsumption() {
+        return consumption;
+    }
+
+    public void setConsumption(double consumption) {
+        this.consumption = consumption;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -75,6 +85,6 @@ public class AppComponent {
     
     @Override
     public String toString(){
-        return time+" "+component.toString()+" "+appName;
+        return time+" "+component.toString()+" "+appName+ " "+consumption;
     }
 }
