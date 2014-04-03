@@ -8,6 +8,7 @@ import MobileSensors.Events.ARFactories.ARFactory;
 import MobileSensors.Events.Labels.EventLabel;
 import MobileSensors.Sensors.SensorRecord;
 import weka.classifiers.Classifier;
+import weka.core.Instance;
 import weka.core.SerializationHelper;
 
 public abstract class EventClassifier<L extends EventLabel> {
@@ -24,14 +25,13 @@ public abstract class EventClassifier<L extends EventLabel> {
 		
 	}
 	
-	public double classify (SensorRecord sr) throws Exception {
+	public String classify (SensorRecord sr) throws Exception {
 		
-		return this.classifier.classifyInstance(this.arFactory.createFeatureVector(sr));
+		Instance fv = this.arFactory.createFeatureVector(sr);
+				
+		return fv.classAttribute().value((int) this.classifier.classifyInstance(fv));
 		
 	}
-	
-	
-	
-	
+		
 	
 }

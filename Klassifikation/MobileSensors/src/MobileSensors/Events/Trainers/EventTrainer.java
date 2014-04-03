@@ -6,19 +6,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Formatter;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Random;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.trees.J48;
 import weka.core.Instances;
 import weka.core.SerializationHelper;
 import MobileSensors.Events.ARFactories.ARFactory;
@@ -106,12 +104,9 @@ public abstract class EventTrainer<L extends EventLabel> {
 		
 	}
 	
-	private String timeStr (long time) {
+	private void logDuration (Date start, Date stop) {
 		
-		
-		
-		return time + "ms";
-		
+		this.log("Done after " + DurationFormatUtils.formatDuration(stop.getTime() - start.getTime(), "HH:mm:ss"));
 		
 	}
 	
@@ -186,7 +181,7 @@ public abstract class EventTrainer<L extends EventLabel> {
 		
 		stop = new Date();
 		
-		this.log("Done after " + this.timeStr(stop.getTime() - start.getTime()) + ".");
+		this.logDuration(start, stop);
 		
 		return trainingSet;
 		
@@ -214,8 +209,8 @@ public abstract class EventTrainer<L extends EventLabel> {
 		
 		stop = new Date();
 
-		this.log("Done after " + this.timeStr(stop.getTime() - start.getTime()) + ".");
-		
+
+		this.logDuration(start, stop);
 		
 	}
 	
@@ -262,8 +257,8 @@ public abstract class EventTrainer<L extends EventLabel> {
 		
 		stop = new Date();
 
-		this.log("Done after " + this.timeStr(stop.getTime() - start.getTime()) + ".");
-		
+
+		this.logDuration(start, stop);
 		
 	}
 	
@@ -294,16 +289,13 @@ public abstract class EventTrainer<L extends EventLabel> {
 			
 		}
 		
-		
-		
 		this.log("Finished training!");
 		
 		System.out.println();
 		
 		stop = new Date();
-
-		this.log("Done after " + this.timeStr(stop.getTime() - start.getTime()) + ".");
 		
+		this.logDuration(start, stop);
 	}
 	
 }

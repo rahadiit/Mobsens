@@ -150,6 +150,15 @@ public class BrakeARFactory implements ARFactory<BrakeLabel> {
 		
 	}
 
+	public Instance createFeatureVector () {
+		
+		Instance inst = new Instance(this.brakeFeatureVector.size());
+		inst.setDataset(this.createTrainingSet());
+		
+		return inst;
+		
+	}
+	
 	@Override
 	public Instance createFeatureVector(SensorRecord sc) {
 		
