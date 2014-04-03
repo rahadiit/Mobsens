@@ -14,11 +14,48 @@ public class LogCatEntry implements Comparable<LogCatEntry> {
     private AppEvent event;
     private long time;
     private String data;
+    
+    private double cpuConsumption;
+    private double lcdConsumption;
+    private double wifiConsumption;
+    private double threeGConsumption;
 
     public LogCatEntry(AppEvent event, long time, String data) {
         this.event = event;
         this.time = time;
         this.data = data;
+    }
+
+    public double getCpuConsumption() {
+        return cpuConsumption;
+    }
+
+    public void setCpuConsumption(double cpuConsumption) {
+        this.cpuConsumption = cpuConsumption;
+    }
+
+    public double getLcdConsumption() {
+        return lcdConsumption;
+    }
+
+    public void setLcdConsumption(double lcdConsumption) {
+        this.lcdConsumption = lcdConsumption;
+    }
+
+    public double getWifiConsumption() {
+        return wifiConsumption;
+    }
+
+    public void setWifiConsumption(double wifiConsumption) {
+        this.wifiConsumption = wifiConsumption;
+    }
+
+    public double getThreeGConsumption() {
+        return threeGConsumption;
+    }
+
+    public void setThreeGConsumption(double threeGConsumption) {
+        this.threeGConsumption = threeGConsumption;
     }
 
     public AppEvent getEvent() {

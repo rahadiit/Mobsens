@@ -36,6 +36,15 @@ public class PT2LogEntry implements Comparable<PT2LogEntry> {
     public void setAppComponents(Set<AppComponent> appComponents) {
         this.appComponents = appComponents;
     }
+    
+    public double getConsumptionOfApp(String appName, Component component){
+        for(AppComponent comp:appComponents){
+            if(comp.getComponent().equals(component) && comp.getAppName().toLowerCase().startsWith(appName.toLowerCase())){
+                return comp.getConsumption();
+            }
+        }
+        return -1;
+    }
 
     @Override
     public int compareTo(PT2LogEntry o) {

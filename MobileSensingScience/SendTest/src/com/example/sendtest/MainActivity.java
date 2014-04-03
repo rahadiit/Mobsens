@@ -33,15 +33,14 @@ public class MainActivity extends Activity {
 
 	private void doIt() {
 		
-		sendData("10000.gz");
 
-//		for (int i = 1; i < 4; i++) {
-//			String filename = i + "000.gz";
-//			Toast.makeText(MainActivity.this, "sending " + filename,
-//					Toast.LENGTH_SHORT).show();
-//			sendData(filename);
-//
-//		}
+		for (int i = 1; i < 10; i++) {
+			String filename = i + "000.gz";
+			Toast.makeText(MainActivity.this, "sending " + filename,
+					Toast.LENGTH_SHORT).show();
+			sendData(filename);
+
+		}
 	}
 
 	private void sendData(String filePath) {
