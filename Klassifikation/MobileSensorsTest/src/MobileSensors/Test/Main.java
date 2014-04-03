@@ -118,14 +118,7 @@ public class Main {
 						}
 					}
 				}
-				System.out.println(countRightEvents+" / "+events.size()+"  richtig erkannt");
-				
-				
-				System.out.println(annotations.size()/2+". vorgaenge ");
-				
-				for(Annotation anno:annotations){
-					System.out.println(anno.getTag());
-				}
+				System.out.println(countRightEvents+" richtig gefunden / "+events.size()+" events erkannt/ "+annotations.size()/2+" urspruenglich getaggt");
 				
 			}
 
