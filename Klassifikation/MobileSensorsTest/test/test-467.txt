@@ -1,0 +1,85 @@
+Test-467
+WindowWidth: 2000ms
+
+uni_bremsen
+Mon Mar 24 13:46:00 CET 2014
+	ann(Mon Mar 24 13:46:07 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:46:09 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:46:18 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:46:20 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:46:29 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:46:31 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:46:44 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:46:46 CET 2014, Bremsen Ende)
+	event(braking, Mon Mar 24 13:46:07 CET 2014, Mon Mar 24 13:46:09 CET 2014, -60)
+	event(dodge, Mon Mar 24 13:46:23 CET 2014, Mon Mar 24 13:46:25 CET 2014, -60)
+	event(dodge, Mon Mar 24 13:46:43 CET 2014, Mon Mar 24 13:46:45 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:46:55 CET 2014, Mon Mar 24 13:46:57 CET 2014, -60)
+	Logged Events: 4
+	Found Events: 4
+Mon Mar 24 13:47:00 CET 2014
+	ann(Mon Mar 24 13:47:00 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:47:01 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:47:11 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:47:13 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:47:21 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:47:23 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:47:33 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:47:35 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:47:41 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:47:44 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:47:57 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:47:59 CET 2014, Bremsen Ende)
+	event(braking, Mon Mar 24 13:47:11 CET 2014, Mon Mar 24 13:47:13 CET 2014, -60)
+	event(dodge, Mon Mar 24 13:47:16 CET 2014, Mon Mar 24 13:47:18 CET 2014, -60)
+	event(dodge, Mon Mar 24 13:47:20 CET 2014, Mon Mar 24 13:47:22 CET 2014, -60)
+	event(braking, Mon Mar 24 13:47:22 CET 2014, Mon Mar 24 13:47:24 CET 2014, -60)
+	event(braking, Mon Mar 24 13:47:42 CET 2014, Mon Mar 24 13:47:44 CET 2014, -60)
+	Logged Events: 6
+	Found Events: 5
+Mon Mar 24 13:48:00 CET 2014
+	ann(Mon Mar 24 13:48:08 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:48:10 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:48:30 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:48:33 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:48:45 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:48:46 CET 2014, Bremsen Ende)
+	event(braking, Mon Mar 24 13:48:08 CET 2014, Mon Mar 24 13:48:10 CET 2014, -60)
+	event(braking, Mon Mar 24 13:48:30 CET 2014, Mon Mar 24 13:48:32 CET 2014, -60)
+	event(dodge, Mon Mar 24 13:48:54 CET 2014, Mon Mar 24 13:48:56 CET 2014, -60)
+	Logged Events: 3
+	Found Events: 3
+Mon Mar 24 13:49:00 CET 2014
+	ann(Mon Mar 24 13:49:09 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:49:11 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:49:22 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:49:24 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:49:32 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:49:34 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:49:45 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:49:47 CET 2014, Bremsen Ende)
+	event(braking, Mon Mar 24 13:49:22 CET 2014, Mon Mar 24 13:49:24 CET 2014, -60)
+	event(braking, Mon Mar 24 13:49:44 CET 2014, Mon Mar 24 13:49:46 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:49:54 CET 2014, Mon Mar 24 13:49:56 CET 2014, -60)
+	Logged Events: 4
+	Found Events: 3
+Mon Mar 24 13:50:00 CET 2014
+	event(kerbstone, Mon Mar 24 13:50:02 CET 2014, Mon Mar 24 13:50:04 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:50:04 CET 2014, Mon Mar 24 13:50:06 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:50:06 CET 2014, Mon Mar 24 13:50:08 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:50:24 CET 2014, Mon Mar 24 13:50:26 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:50:35 CET 2014, Mon Mar 24 13:50:37 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:50:41 CET 2014, Mon Mar 24 13:50:43 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:50:43 CET 2014, Mon Mar 24 13:50:45 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:50:45 CET 2014, Mon Mar 24 13:50:47 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:50:47 CET 2014, Mon Mar 24 13:50:49 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:50:49 CET 2014, Mon Mar 24 13:50:51 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:50:51 CET 2014, Mon Mar 24 13:50:53 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:50:53 CET 2014, Mon Mar 24 13:50:55 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:50:55 CET 2014, Mon Mar 24 13:50:57 CET 2014, -60)
+	Logged Events: 0
+	Found Events: 13
+Mon Mar 24 13:51:00 CET 2014
+	event(braking, Mon Mar 24 13:51:05 CET 2014, Mon Mar 24 13:51:07 CET 2014, -60)
+	Logged Events: 0
+	Found Events: 1

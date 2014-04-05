@@ -1,0 +1,28 @@
+Test-466
+WindowWidth: 2000ms
+
+uni_bremsen
+Mon Mar 24 13:44:00 CET 2014
+	ann(Mon Mar 24 13:44:30 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:44:33 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:44:38 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:44:41 CET 2014, Bremsen Ende)
+	ann(Mon Mar 24 13:44:49 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:44:51 CET 2014, Bremsen Ende)
+	event(kerbstone, Mon Mar 24 13:44:01 CET 2014, Mon Mar 24 13:44:03 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:44:07 CET 2014, Mon Mar 24 13:44:09 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:44:09 CET 2014, Mon Mar 24 13:44:11 CET 2014, -60)
+	event(braking, Mon Mar 24 13:44:31 CET 2014, Mon Mar 24 13:44:33 CET 2014, -60)
+	event(dodge, Mon Mar 24 13:44:37 CET 2014, Mon Mar 24 13:44:39 CET 2014, -60)
+	event(braking, Mon Mar 24 13:44:39 CET 2014, Mon Mar 24 13:44:41 CET 2014, -60)
+	event(braking, Mon Mar 24 13:44:49 CET 2014, Mon Mar 24 13:44:51 CET 2014, -60)
+	event(kerbstone, Mon Mar 24 13:44:53 CET 2014, Mon Mar 24 13:44:55 CET 2014, -60)
+	event(dodge, Mon Mar 24 13:44:55 CET 2014, Mon Mar 24 13:44:57 CET 2014, -60)
+	Logged Events: 3
+	Found Events: 9
+Mon Mar 24 13:45:00 CET 2014
+	ann(Mon Mar 24 13:45:11 CET 2014, Bremsen Start)
+	ann(Mon Mar 24 13:45:13 CET 2014, Bremsen Ende)
+	event(braking, Mon Mar 24 13:45:15 CET 2014, Mon Mar 24 13:45:17 CET 2014, -60)
+	Logged Events: 1
+	Found Events: 1

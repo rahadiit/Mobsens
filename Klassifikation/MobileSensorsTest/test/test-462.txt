@@ -1,0 +1,15 @@
+Test-462
+WindowWidth: 2000ms
+
+uni_noevents
+Mon Mar 24 13:34:00 CET 2014
+	event(dodge, Mon Mar 24 13:34:42 CET 2014, Mon Mar 24 13:34:44 CET 2014, -60)
+	Logged Events: 0
+	Found Events: 1
+Mon Mar 24 13:35:00 CET 2014
+	Logged Events: 0
+	Found Events: 0
+Mon Mar 24 13:36:00 CET 2014
+	event(kerbstone, Mon Mar 24 13:36:11 CET 2014, Mon Mar 24 13:36:13 CET 2014, -60)
+	Logged Events: 0
+	Found Events: 1
