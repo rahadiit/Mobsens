@@ -8,6 +8,6 @@ import MobileSensors.Sensors.Sensor;
 
 public interface SensorCSVParser<T extends Sensor> {
 
-	public ArrayList<T> parse(Reader reader) throws IOException;
+	public ArrayList<T> parse (Reader reader) throws IOException;
 	
 }

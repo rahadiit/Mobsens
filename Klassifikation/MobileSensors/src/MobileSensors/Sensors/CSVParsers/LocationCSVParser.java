@@ -20,6 +20,7 @@ public class LocationCSVParser implements SensorCSVParser<Location> {
 	public final static String HEADER_BEARING = "bearing";
 	public final static String HEADER_ACCURANCY = "accurancy";
 	
+	
 	@Override
 	public ArrayList<Location> parse(Reader reader) throws IOException {
 		
@@ -55,6 +56,7 @@ public class LocationCSVParser implements SensorCSVParser<Location> {
 		}
 		
 		return result;
+		
 	}
 
 }
