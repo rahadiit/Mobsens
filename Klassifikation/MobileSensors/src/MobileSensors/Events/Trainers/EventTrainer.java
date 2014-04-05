@@ -19,15 +19,17 @@ import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.core.Instances;
 import weka.core.SerializationHelper;
+
 import MobileSensors.Events.ARFactories.ARFactory;
 import MobileSensors.Events.Labels.EventLabel;
 import MobileSensors.Sensors.Accelerometer;
 import MobileSensors.Sensors.Location;
-import MobileSensors.Sensors.Sensor;
 import MobileSensors.Sensors.SensorRecord;
+import MobileSensors.Helpers.DataWindowBuilder;
 
 public abstract class EventTrainer<L extends EventLabel> {
 	
+	/*
 	private class WindowBuilder<S extends Sensor> {
 		
 		public ArrayList<ArrayList<S>> buildWindows (
@@ -42,7 +44,7 @@ public abstract class EventTrainer<L extends EventLabel> {
 			
 			int i = 0;
 			
-			while (i < values.size() - windowWidth) {
+			while (i <= values.size() - windowWidth) {
 				
 				ArrayList<S> window = new ArrayList<S>();
 				
@@ -61,35 +63,13 @@ public abstract class EventTrainer<L extends EventLabel> {
 				i += windowDelta;
 				
 			}
-			
-			
-			
-			
-			
-//			int windowCount = values.size() - windowWidth;
-//			
-//			for (int i=0; i < windowCount; i += windowDelta) {
-//				
-//				ArrayList<S> window = new ArrayList<S>();
-//				
-//				int windowSize = i + windowWidth - windowDelta;
-//				
-//				for (int j=i; j < windowSize; j++) {
-//					
-//					window.add(values.get(j));
-//					
-//				}
-//				
-//				result.add(window);
-//				
-//			}
-			
+
 			return result;
 			
 		}
 		
 	}
-	
+	*/
 
 	private ARFactory<L> arFactory;
 	private Classifier eventClassifier;
@@ -148,8 +128,8 @@ public abstract class EventTrainer<L extends EventLabel> {
 		//============================================================================================================
 		// Variable Declarations:
 		
-		WindowBuilder<Accelerometer> accWindowBuilder;		// WindowBuilder for accelerometer sensor data
-		WindowBuilder<Location> locWindowBuilder;			// WindowBuilder for location sensor data
+		DataWindowBuilder<Accelerometer> accWindowBuilder;		// WindowBuilder for accelerometer sensor data
+		DataWindowBuilder<Location> locWindowBuilder;			// WindowBuilder for location sensor data
 		
 		ArrayList<ArrayList<Accelerometer>> accWindows;		// List of accelerometer windows
 		ArrayList<ArrayList<Location>> locWindows;			// List of location windows
@@ -164,8 +144,8 @@ public abstract class EventTrainer<L extends EventLabel> {
 		//============================================================================================================
 		// Algorithm:
 		
-		accWindowBuilder = new WindowBuilder<Accelerometer>();
-		locWindowBuilder = new WindowBuilder<Location>();
+		accWindowBuilder = new DataWindowBuilder<Accelerometer>();
+		locWindowBuilder = new DataWindowBuilder<Location>();
 		
 		newSensorCollections = new HashMap<SensorRecord, L>();
 		

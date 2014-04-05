@@ -1,5 +1,7 @@
 package MobileSensors.Events;
 
+import java.util.Date;
+
 /**
  * Mobile Sensors Event Data Model
  * 
@@ -69,8 +71,15 @@ public class Event{
 	}
 	
 	@Override
-	public String toString(){
-		return this.startTime + " " + this.endTime + " " + this.eventType.toString();
+	public String toString() {
+		
+		Date start = new Date(this.startTime);
+		Date stop = new Date(this.endTime);
+		
+		
+		
+		return "event(" + this.eventType + ", " + start + ", " + stop + ", " +  start.getTimezoneOffset() + ")";
+	
 	}
 
 }
