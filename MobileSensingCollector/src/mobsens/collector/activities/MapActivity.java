@@ -65,6 +65,39 @@ public class MapActivity extends ConnectingActivity
 
 	private Date startTime;
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+
+		outState.putLong("lastTime", lastTime != null ? lastTime.longValue() : Long.MIN_VALUE);
+		outState.putDouble("lastLatitude", lastLatitude != null ? lastLatitude.doubleValue() : Double.NaN);
+		outState.putDouble("lastLongitude", lastLongitude != null ? lastLongitude.doubleValue() : Double.NaN);
+		outState.putDouble("totalDistance", totalDistance);
+		outState.putFloat("maxSpeed", maxSpeed != null ? maxSpeed.floatValue() : Float.NaN);
+		outState.putLong("startTime", startTime != null ? startTime.getTime() : Long.MIN_VALUE);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState)
+	{
+		long rawLastTime = savedInstanceState.getLong("lastTime", Long.MIN_VALUE);
+		double rawLastLatitude = savedInstanceState.getDouble("lastLatitude", Double.NaN);
+		double rawLastLongitude = savedInstanceState.getDouble("lastLongitude", Double.NaN);
+		double rawTotalDistance = savedInstanceState.getDouble("totalDistance", 0.0);
+		float rawMaxSpeed = savedInstanceState.getFloat("maxSpeed", Float.NaN);
+		long rawStartTime = savedInstanceState.getLong("startTime", Long.MIN_VALUE);
+
+		lastTime = rawLastTime != Long.MIN_VALUE ? rawLastTime : null;
+		lastLatitude = rawLastLatitude != Double.NaN ? rawLastLatitude : null;
+		lastLongitude = rawLastLongitude != Double.NaN ? rawLastLongitude : null;
+		totalDistance = rawTotalDistance;
+		maxSpeed = rawMaxSpeed != Float.NaN ? rawMaxSpeed : null;
+		startTime = rawStartTime != Long.MIN_VALUE ? new Date(rawStartTime) : null;
+
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+
 	public MapActivity()
 	{
 		super(Collector.class);
@@ -221,5 +254,10 @@ public class MapActivity extends ConnectingActivity
 	{
 		getMenuInflater().inflate(R.menu.map, menu);
 		return true;
+	}
+
+	@Override
+	public void onBackPressed()
+	{
 	}
 }
