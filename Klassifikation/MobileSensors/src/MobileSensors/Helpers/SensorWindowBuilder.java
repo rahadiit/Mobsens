@@ -63,6 +63,7 @@ public class SensorWindowBuilder<S extends Sensor> {
 		for (int i=1; i < 13; i++) {
 			
 			values.add(new Accelerometer(i,0,0,0));
+			values.add(new Accelerometer(i,0,0,0));
 			
 		}
 		
