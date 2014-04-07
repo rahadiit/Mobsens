@@ -151,15 +151,15 @@ public class PT2LogParser {
 
         for (int i = 1; i < getEntries().size(); i++) {
             PT2LogEntry le = entries.get(i);
-
+            PT2LogEntry pre = entries.get(i-1);
             if (startEntry == null) {
-                if (start <= le.getTime()) {
-                    startEntry = le;
+                if (start < le.getTime()) {
+                    startEntry = pre;
                 } else {
                     continue;
                 }
             } else if (endEntry == null) {
-                if (end <= le.getTime()) {
+                if (end < le.getTime()) {
                     endEntry = le;
                 }
 

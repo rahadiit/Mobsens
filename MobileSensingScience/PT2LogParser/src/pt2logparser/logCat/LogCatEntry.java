@@ -14,6 +14,7 @@ public class LogCatEntry implements Comparable<LogCatEntry> {
     private AppEvent event;
     private long time;
     private String data;
+    private long timeSpan;
     
     private double cpuConsumption;
     private double lcdConsumption;
@@ -31,6 +32,15 @@ public class LogCatEntry implements Comparable<LogCatEntry> {
         this.data = data;
     }
 
+    public long getTimeSpan() {
+        return timeSpan;
+    }
+
+    public void setTimeSpan(long timeSpan) {
+        this.timeSpan = timeSpan;
+    }
+
+    
     public double getCpuCurrentConsumption() {
         return cpuCurrentConsumption;
     }

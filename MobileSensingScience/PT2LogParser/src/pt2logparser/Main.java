@@ -49,19 +49,42 @@ public class Main {
             }
 
             if (!one) {
-                List<String> lines = FileUtils.readLines(new File("/Users/henny/Desktop/sdcard/PowerTrace1396526125766.log"));
+                List<String> lines = FileUtils.readLines(new File("/Users/henny/Desktop/sdcard/PowerTrace1396876751981.log"));
                 PT2LogParser pt2 = new PT2LogParser(lines);
 
-                List<String> lines2 = FileUtils.readLines(new File("/Users/henny/Desktop/sdcard/logCat030414.txt"));
+                List<String> lines2 = FileUtils.readLines(new File("/Users/henny/Desktop/sdcard/ZipTest16mb.log"));
                 LogCatParser logCatparser = new LogCatParser(lines2);
 
-                pt2.setLogCatParser(logCatparser, "sendTest");
-                logCatparser.parseAppEvents(AppEvent.FINISHED_SENDING);
+                System.out.println(logCatparser.getEntries().size());
+
+                pt2.setLogCatParser(logCatparser, "ziptest");
+                logCatparser.parseAppEvents(AppEvent.FINISHED_ZIP);
 
                 for (LogCatEntry lce : logCatparser.getEntries()) {
-                    if (lce.getEvent().equals(AppEvent.FINISHED_SENDING)) {
-                        System.out.println(lce.getEvent() + " lcd: " + lce.getLcdCurrentConsumption() + " cpu: " + lce.getCpuCurrentConsumption() + " wifi: " + lce.getWifiCurrentConsumption() + " " + lce.getData());
+                    if (lce.getEvent().equals(AppEvent.FINISHED_ZIP)) {
+                        try {
+                            //String d = lce.getData().replace(".data", " , ");
+                            //System.out.println(d.substring(0, d.length() - 5) + " , " + lce.getWifiCurrentConsumption() + " , " + lce.getCpuCurrentConsumption() + " , " + lce.getLcdCurrentConsumption());
+                            String line =lce.getData();
+                            String[] lineSplit=line.split("_");
+                            //fileSize _ entropy _ deflater _ zippedLength in kb
+                            System.out.println(lineSplit[0] + " , "+ lineSplit[1] + " , "+ lineSplit[2] + " , "+ lineSplit[3].replace("kb", "") + " , " + lce.getWifiCurrentConsumption() + " , " + lce.getCpuCurrentConsumption() + " , " + lce.getLcdCurrentConsumption() +" , "+lce.getTimeSpan());
+                        
+                        } catch (Exception e) {
+                            continue;
+                        }
                     }
+                    
+                    if (lce.getEvent().equals(AppEvent.FINISHED_SENDING)) {
+                        try {
+                            String d = lce.getData().replace(".data", " , ");
+                            System.out.println(d.substring(0, d.length() - 5) + " , " + lce.getThreeGCurrentConsumption() + " , " + lce.getCpuCurrentConsumption() + " , " + lce.getLcdCurrentConsumption());
+                            
+                        } catch (Exception e) {
+                            continue;
+                        }
+                    }
+                    
                 }
 
 //                pt2.getEntries().stream().forEach((entry) -> {
@@ -69,7 +92,7 @@ public class Main {
 //                                (appcomp -> appcomp.getAppName().toLowerCase().contains("sendtest")).
 //                            forEach(appComp -> System.out.println(appComp));
 //                });
-                System.out.println("consumption " + pt2.getConsumption(1396358547796L, 1396358876783L, "sendtest", Component.WIFI));
+                //System.out.println("consumption " + pt2.getConsumption(1396358547796L, 1396358876783L, "sendtest", Component.WIFI));
             }
 
         } catch (Exception e) {

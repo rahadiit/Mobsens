@@ -12,7 +12,7 @@ package pt2logparser.logCat;
  */
 public enum AppEvent {
     
-    START_SENDING, FINISHED_SENDING;
+    START_SENDING, FINISHED_SENDING, START_ZIP, FINISHED_ZIP;
     
     @Override 
     public String toString(){
@@ -21,6 +21,10 @@ public enum AppEvent {
                 return "startSending";
             case FINISHED_SENDING:
                 return "finishedSending";
+            case START_ZIP:
+                return "startZip";
+            case FINISHED_ZIP:
+                return "finishedZip";
             default:
                 return this.name();
         }

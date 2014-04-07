@@ -55,18 +55,26 @@ public class LogCatParser {
         //1396359214995 /storage/emulated/0/10000.gz
         Scanner scan = new Scanner(relevant);
         long time = scan.nextLong();
-        String[] data = scan.next().split("/");
-        String fileName = data[data.length - 1];
 
-        LogCatEntry lce = new LogCatEntry(app, time, fileName);
+        LogCatEntry lce = null;
 
+        if (app.equals(AppEvent.FINISHED_SENDING)) {
+            String[] data = scan.next().split("/");
+            String fileName = data[data.length - 2] + "/s";
+            lce = new LogCatEntry(app, time, fileName);
+        }
+        else{
+            String fileName = scan.next();
+            lce = new LogCatEntry(app, time, fileName);
+        }
+        
         return lce;
     }
 
     /**
-     * 
-     * @param appEvent something like the finished-Event of e.g. sending.  
-     * 
+     *
+     * @param appEvent something like the finished-Event of e.g. sending.
+     *
      */
     public void parseAppEvents(AppEvent appEvent) {
 
@@ -76,19 +84,20 @@ public class LogCatParser {
             LogCatEntry currentPre = logCatArray.get(i - 1);
 
             if (i % 2 == 1 && current.getEvent().equals(appEvent)) {
+
+                current.setCpuCurrentConsumption(current.getCpuConsumption() - currentPre.getCpuConsumption());
+                current.setWifiCurrentConsumption(current.getWifiConsumption() - currentPre.getWifiConsumption());
+                current.setThreeGCurrentConsumption(current.getThreeGConsumption() - currentPre.getThreeGConsumption());
+                current.setLcdCurrentConsumption(current.getLcdConsumption() - currentPre.getLcdConsumption());
                 
-                current.setCpuCurrentConsumption(current.getCpuConsumption()-currentPre.getCpuConsumption());
-                current.setWifiCurrentConsumption(current.getWifiConsumption()-currentPre.getWifiConsumption());
-                current.setThreeGCurrentConsumption(current.getThreeGConsumption()-currentPre.getThreeGConsumption());
-                current.setLcdCurrentConsumption(current.getLcdConsumption()-currentPre.getLcdConsumption());
-                
+                current.setTimeSpan(current.getTime()- currentPre.getTime());
             } else {
-                
+
                 current.setCpuCurrentConsumption(0);
                 current.setWifiCurrentConsumption(0);
                 current.setThreeGCurrentConsumption(0);
                 current.setLcdCurrentConsumption(0);
-                
+
             }
 
         }
