@@ -1,7 +1,6 @@
 package mobsens.collector;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
@@ -70,7 +69,7 @@ public class Uploader extends IntentService
 				Logging.log(this, "Uploader", handle, "Source not found");
 
 				// Wenn Datei nicht existiert, als Exception melden
-				IntentUploadResponse.sendBroadcast(this, handle, startTimeMarker, endTimeMarker, transmissionMarker, null, new FileNotFoundException(file + " not found"));
+				IntentUploadResponse.sendBroadcast(this, handle, startTimeMarker, endTimeMarker, transmissionMarker, null, file + " not found");
 			}
 			else
 			{
@@ -139,7 +138,7 @@ public class Uploader extends IntentService
 
 			Logging.log(this, e);
 
-			IntentUploadResponse.sendBroadcast(this, handle, startTimeMarker, endTimeMarker, transmissionMarker, null, e);
+			IntentUploadResponse.sendBroadcast(this, handle, startTimeMarker, endTimeMarker, transmissionMarker, null, e.getMessage());
 		}
 	}
 }

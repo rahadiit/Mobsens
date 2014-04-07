@@ -81,6 +81,7 @@ public class MainActivity extends ConnectingActivity
 	{
 		switch (item.getItemId())
 		{
+
 		case R.id.action_settings:
 			Intent intent = new Intent(this, LoginActivity.class);
 			startActivity(intent);

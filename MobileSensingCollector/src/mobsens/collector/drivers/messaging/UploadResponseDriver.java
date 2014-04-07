@@ -1,6 +1,5 @@
 package mobsens.collector.drivers.messaging;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import mobsens.collector.intents.IntentUploadResponse;
@@ -26,7 +25,7 @@ public abstract class UploadResponseDriver implements Driver
 				final long extra_endTime = intent.getLongExtra(IntentUploadResponse.EXTRA_END_TIME, Long.MIN_VALUE);
 				final long extra_transmitted = intent.getLongExtra(IntentUploadResponse.EXTRA_TRANSMITTED, Long.MIN_VALUE);
 				final String extra_response = intent.getStringExtra(IntentUploadResponse.EXTRA_RESPONSE);
-				final Serializable extra_exception = intent.getSerializableExtra(IntentUploadResponse.EXTRA_EXCEPTION);
+				final String extra_error = intent.getStringExtra(IntentUploadResponse.EXTRA_ERROR);
 
 				// Felder erstellen
 				final String handle = extra_handle;
@@ -34,14 +33,14 @@ public abstract class UploadResponseDriver implements Driver
 				final Date endTime = new Date(extra_endTime);
 				final long transmitted = extra_transmitted;
 				final String response = extra_response;
-				final Throwable exception = (Throwable) extra_exception;
+				final String error = (String) extra_error;
 
-				onUploadResponse(handle, startTime, endTime, transmitted, response, exception);
+				onUploadResponse(handle, startTime, endTime, transmitted, response, error);
 			}
 		}
 	};
 
-	protected abstract void onUploadResponse(String handle, Date startTime, Date endTime, long transmitted, String response, Throwable exception);
+	protected abstract void onUploadResponse(String handle, Date startTime, Date endTime, long transmitted, String response, String error);
 
 	public final ContextWrapper contextWrapper;
 

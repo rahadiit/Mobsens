@@ -22,6 +22,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import static mobsens.collector.config.Config.*;
@@ -198,4 +200,26 @@ public class MapActivity extends ConnectingActivity
 		finish();
 	}
 
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+
+		case R.id.action_tag:
+			Intent intent = new Intent(this, FasttagActivity.class);
+			startActivity(intent);
+			return true;
+
+		default:
+			return super.onMenuItemSelected(featureId, item);
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		getMenuInflater().inflate(R.menu.map, menu);
+		return true;
+	}
 }

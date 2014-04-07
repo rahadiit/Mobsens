@@ -39,6 +39,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="mobsens.collector.activities.FasttagActivity"
+			android:launchMode="singleTask" >
+            
+        </activity>
+        <activity
             android:name="mobsens.collector.activities.LoginActivity"
 			android:launchMode="singleTask" >
             

@@ -19,9 +19,9 @@ public class IntentUploadResponse
 
 	public static final String EXTRA_RESPONSE = "response";
 
-	public static final String EXTRA_EXCEPTION = "exception";
+	public static final String EXTRA_ERROR = "error";
 
-	public static void sendBroadcast(ContextWrapper contextWrapper, String handle, Date startTime, Date endTime, long transmitted, String response, Throwable exception)
+	public static void sendBroadcast(ContextWrapper contextWrapper, String handle, Date startTime, Date endTime, long transmitted, String response, String error)
 	{
 		final Intent intent = new Intent(ACTION);
 
@@ -30,7 +30,7 @@ public class IntentUploadResponse
 		intent.putExtra(EXTRA_END_TIME, endTime.getTime());
 		intent.putExtra(EXTRA_TRANSMITTED, transmitted);
 		intent.putExtra(EXTRA_RESPONSE, response);
-		intent.putExtra(EXTRA_EXCEPTION, exception);
+		intent.putExtra(EXTRA_ERROR, error);
 
 		contextWrapper.sendBroadcast(intent);
 	}
