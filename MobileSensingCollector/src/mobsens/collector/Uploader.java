@@ -1,9 +1,12 @@
 package mobsens.collector;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.zip.GZIPOutputStream;
 
 import mobsens.collector.intents.IntentUpload;
 import mobsens.collector.intents.IntentUploadResponse;
@@ -97,15 +100,43 @@ public class Uploader extends IntentService
 					throw new RuntimeException(e);
 				}
 
+				// GZIP-Datei erstellen
+				final File zipped = File.createTempFile("zipped", ".gz", file.getParentFile());
+				
+				// Eingabedatei lesen
+				FileInputStream fis = new FileInputStream(file);
+
+				// Ausgabedatei schreiben
+				FileOutputStream fos = new FileOutputStream(zipped);
+				GZIPOutputStream gzos = new GZIPOutputStream(fos);
+
+				// Lesebuffer erstellen
+				int bufferLength = 2048;
+				byte[] buffer = new byte[bufferLength];
+
+				// GZIP der Eingabe
+				int bufferFill;
+				while ((bufferFill = fis.read(buffer, 0, bufferLength)) > 0)
+				{
+					gzos.write(buffer, 0, bufferFill);
+				}
+
+				// Streams schließen
+				gzos.close();
+				fos.close();
+
+				fis.close();
+
 				// Post erstellen und konfigurieren
 				final HttpPost httpPost = new HttpPost(destination);
 				httpPost.setHeader("Accept", acceptType);
 				httpPost.setHeader("Expect", "100-continue");
 
 				// Zu sendendes Entity erstellen und konfigurieren
-				final FileEntity requestEntity = new FileEntity(file, contentType);
+				final FileEntity requestEntity = new FileEntity(zipped, contentType);
 
 				// MIME-Type für Upload
+				requestEntity.setContentEncoding("gzip");
 				requestEntity.setContentType("application/text");
 
 				// POST mit Entity befüllen
@@ -116,6 +147,9 @@ public class Uploader extends IntentService
 
 				// Rückgabe lesen
 				final String responseString = EntityUtils.toString(response.getEntity());
+				
+				// Zwischendatei löschen
+				zipped.delete();
 
 				// Endzeit und gesendete Größe markieren
 				final Date endTimeMarker = new Date();
