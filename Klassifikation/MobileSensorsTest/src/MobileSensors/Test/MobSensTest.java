@@ -49,7 +49,7 @@ public class MobSensTest {
 
 			Recording recording = recordings.get(i);
 
-			if (445 <= recording.getId() && recording.getId() <= 472) {
+			if (536 <= recording.getId() && recording.getId() <= 538) {
 				
 				System.out.println("TESTING RECORD " + recording.getId());
 
@@ -63,7 +63,7 @@ public class MobSensTest {
 				
 				ArrayList<Accelerometer> values = (new AccelerometerCSVParser()).parse(new StringReader(accCSV));
 				
-				ArrayList<ArrayList<Accelerometer>> windows = (new SensorWindowBuilder<Accelerometer>()).buildWindows(values, 2 * 1000);
+				ArrayList<ArrayList<Accelerometer>> windows = (new SensorWindowBuilder<Accelerometer>()).buildWindows(values, 1100);
 				
 				ArrayList<Event> events = new ArrayList<Event>();
 				
@@ -86,11 +86,13 @@ public class MobSensTest {
 				bw.write("WindowWidth: " + MobSensTest.windowWidth + "ms");
 				bw.newLine();
 				bw.newLine();
-				bw.write(recording.getTitle());
+				bw.write(recording.getTitle()!=null?recording.getTitle():"");
 				bw.newLine();
 				bw.write(evaluation);
 				bw.flush();
 				bw.close();
+				
+				System.out.println("TESTING RECORD FINISHED" + recording.getId());
 				
 			}
 		}
