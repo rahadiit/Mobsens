@@ -51,7 +51,11 @@ public class MobSensTest {
 		
 			Recording recording = recordings.get(i);
 
+<<<<<<< HEAD
 			if (545 <= recording.getId() && recording.getId() <= 547) {
+=======
+			if (536 <= recording.getId() && recording.getId() <= 538) {
+>>>>>>> 6c929848ba597191baa7bb3fc70e90fdfadf9e20
 				
 				System.out.println("TESTING RECORD " + recording.getId());
 
@@ -65,6 +69,7 @@ public class MobSensTest {
 				
 				ArrayList<Accelerometer> values = (new AccelerometerCSVParser()).parse(new StringReader(accCSV));
 				
+<<<<<<< HEAD
 		
 				System.out.println("TESTING RECORD " + recording.getId());
 		
@@ -73,6 +78,9 @@ public class MobSensTest {
 //				ArrayList<Accelerometer> values = (new AccelerometerCSVParser()).parse(new FileReader(new File("../MobileSensors/test/accelerometers_test.csv")));
 //		
 				ArrayList<ArrayList<Accelerometer>> windows = (new SensorWindowBuilder<Accelerometer>()).buildWindows(values, MobSensTest.windowWidth);
+=======
+				ArrayList<ArrayList<Accelerometer>> windows = (new SensorWindowBuilder<Accelerometer>()).buildWindows(values, 1100);
+>>>>>>> 6c929848ba597191baa7bb3fc70e90fdfadf9e20
 				
 				ArrayList<Event> events = new ArrayList<Event>();
 				
@@ -95,11 +103,13 @@ public class MobSensTest {
 				bw.write("WindowWidth: " + MobSensTest.windowWidth + "ms");
 				bw.newLine();
 				bw.newLine();
-				bw.write(recording.getTitle());
+				bw.write(recording.getTitle()!=null?recording.getTitle():"");
 				bw.newLine();
 				bw.write(evaluation);
 				bw.flush();
 				bw.close();
+				
+				System.out.println("TESTING RECORD FINISHED" + recording.getId());
 				
 			}
 		}
