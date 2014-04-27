@@ -4,16 +4,6 @@
     <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
   </packageImport>
   <packagedElement xmi:type="uml:Package" xmi:id="_ffqycKDFEeOKRs9vJGaGCw" name="MobileSensors">
-    <ownedComment xmi:type="uml:Comment" xmi:id="_rdKpwKDGEeOKRs9vJGaGCw">
-      <body>Facade for 
-RubyBridge</body>
-    </ownedComment>
-    <packagedElement xmi:type="uml:Class" xmi:id="_jad0EKDFEeOKRs9vJGaGCw" name="MobSens">
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_l1CZEKDFEeOKRs9vJGaGCw" name="classifyEvents" visibility="public">
-        <ownedParameter xmi:type="uml:Parameter" xmi:id="_iIpQgLT1EeO54LVVyrP-wQ" name="sr" type="_bNElgLT1EeO54LVVyrP-wQ"/>
-      </ownedOperation>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_PQDZ4LT1EeO54LVVyrP-wQ" name="trainEvents" visibility="public"/>
-    </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_aodBUKDEEeOKRs9vJGaGCw" name="Events">
       <packagedElement xmi:type="uml:Enumeration" xmi:id="_l6Y6gKDCEeOKRs9vJGaGCw" name="EventType">
         <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_GgUD0KDDEeOKRs9vJGaGCw"/>
@@ -91,8 +81,12 @@ RubyBridge</body>
         </packagedElement>
         <packagedElement xmi:type="uml:Interface" xmi:id="_ARFDsLT2EeO54LVVyrP-wQ" name="EventLabel"/>
       </packagedElement>
-      <packagedElement xmi:type="uml:Package" xmi:id="_kG2uIK6pEeO0TPpHsF2Jlg" name="Trainers"/>
-      <packagedElement xmi:type="uml:Package" xmi:id="_AEmLYK6qEeO0TPpHsF2Jlg" name="Classifiers"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_kG2uIK6pEeO0TPpHsF2Jlg" name="Trainers">
+        <packagedElement xmi:type="uml:Class" xmi:id="_vp8WQM33EeO5H6DuQhLAqw" name="DodgeTrainer"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_AEmLYK6qEeO0TPpHsF2Jlg" name="Classifiers">
+        <packagedElement xmi:type="uml:Class" xmi:id="_zWDboM33EeO5H6DuQhLAqw" name="BrakeClassifier"/>
+      </packagedElement>
       <packagedElement xmi:type="uml:Package" xmi:id="_GlwyUK6qEeO0TPpHsF2Jlg" name="Labels">
         <packagedElement xmi:type="uml:Enumeration" xmi:id="_CsU-ILT2EeO54LVVyrP-wQ" clientDependency="_oe-OgLT3EeO54LVVyrP-wQ" name="DodgeLabel">
           <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_J0CnsLT2EeO54LVVyrP-wQ" name="DODGE"/>
@@ -121,6 +115,79 @@ RubyBridge</body>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_9WmJcKDGEeOKRs9vJGaGCw" name="Helpers">
       <packagedElement xmi:type="uml:Class" xmi:id="_n7xxMKDHEeOKRs9vJGaGCw" name="FeatureMath"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_jad0EKDFEeOKRs9vJGaGCw" clientDependency="_53XzkM33EeO5H6DuQhLAqw _8VXgAM33EeO5H6DuQhLAqw" name="MobSens">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_Tv5YYMrlEeOJAJwrVXBHtQ" name="dodgeModelFile" visibility="private" type="_bDVw0MrlEeOJAJwrVXBHtQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_WoCqMMrlEeOJAJwrVXBHtQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_WoD4UMrlEeOJAJwrVXBHtQ" value="1"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_WoEfYMrlEeOJAJwrVXBHtQ">
+          <value xsi:nil="true"/>
+        </defaultValue>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_gxfmcMrlEeOJAJwrVXBHtQ" name="brakeModelFile" visibility="private" type="_bDVw0MrlEeOJAJwrVXBHtQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_jRihUMrlEeOJAJwrVXBHtQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_jRkWgMrlEeOJAJwrVXBHtQ" value="1"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_jRlkoMrlEeOJAJwrVXBHtQ">
+          <value xsi:nil="true"/>
+        </defaultValue>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_kySiYMrlEeOJAJwrVXBHtQ" name="kerbstoneModelFile" visibility="private" type="_bDVw0MrlEeOJAJwrVXBHtQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_nGGYEMrlEeOJAJwrVXBHtQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_nGG_IMrlEeOJAJwrVXBHtQ" value="1"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_nGI0UMrlEeOJAJwrVXBHtQ">
+          <value xsi:nil="true"/>
+        </defaultValue>
+      </ownedAttribute>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_l1CZEKDFEeOKRs9vJGaGCw" name="classifyEvents" visibility="public">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_iIpQgLT1EeO54LVVyrP-wQ" name="sr" type="_bNElgLT1EeO54LVVyrP-wQ"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_PQDZ4LT1EeO54LVVyrP-wQ" name="trainEvents" visibility="public">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_rryJwMrlEeOJAJwrVXBHtQ" name="inputDir" type="_bDVw0MrlEeOJAJwrVXBHtQ"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_KMRGAMrlEeOJAJwrVXBHtQ" name="setDodgeModelFile">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_wmhlcMrlEeOJAJwrVXBHtQ" name="file" type="_bDVw0MrlEeOJAJwrVXBHtQ"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_N9CB4MrlEeOJAJwrVXBHtQ" name="setBrakeModelFile">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_076RUMrlEeOJAJwrVXBHtQ" name="file" type="_bDVw0MrlEeOJAJwrVXBHtQ"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_PByDcMrlEeOJAJwrVXBHtQ" name="setKerbstoneModelFile">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_3GpqkMrlEeOJAJwrVXBHtQ" name="file" type="_bDVw0MrlEeOJAJwrVXBHtQ"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_53XzkM33EeO5H6DuQhLAqw" name="train()" client="_jad0EKDFEeOKRs9vJGaGCw" supplier="_vp8WQM33EeO5H6DuQhLAqw"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_8VXgAM33EeO5H6DuQhLAqw" name="classify()" client="_jad0EKDFEeOKRs9vJGaGCw" supplier="_zWDboM33EeO5H6DuQhLAqw"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_7Cxh4MrlEeOJAJwrVXBHtQ" clientDependency="_BHXhkMrmEeOJAJwrVXBHtQ" name="Client2"/>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_BHXhkMrmEeOJAJwrVXBHtQ" name="classifyEvents()" client="_7Cxh4MrlEeOJAJwrVXBHtQ" supplier="_jad0EKDFEeOKRs9vJGaGCw"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_RZ-QUM36EeO5H6DuQhLAqw" clientDependency="_ZhHWkM36EeO5H6DuQhLAqw" name="Client1"/>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_ZhHWkM36EeO5H6DuQhLAqw" name="trainEvents()" client="_RZ-QUM36EeO5H6DuQhLAqw" supplier="_jad0EKDFEeOKRs9vJGaGCw"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_wNulgM4HEeO5H6DuQhLAqw" name="Java">
+    <packagedElement xmi:type="uml:Class" xmi:id="_bDVw0MrlEeOJAJwrVXBHtQ" name="File"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_zF3QQM4HEeO5H6DuQhLAqw" name="Weka">
+    <packagedElement xmi:type="uml:Class" xmi:id="_07ofEM4HEeO5H6DuQhLAqw" name="FastVector"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_288PgM4HEeO5H6DuQhLAqw" name="Instance"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_4ZklkM4HEeO5H6DuQhLAqw" name="Instances"/>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_6OsUIM4HEeO5H6DuQhLAqw" name="Classifier"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_9HGngM4OEeO5H6DuQhLAqw" name="fastVector_instances_1" memberEnd="_9HGngc4OEeO5H6DuQhLAqw _9HGAcM4OEeO5H6DuQhLAqw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_9HGngc4OEeO5H6DuQhLAqw" name="AttributeRelation" type="_07ofEM4HEeO5H6DuQhLAqw" aggregation="composite" association="_9HGngM4OEeO5H6DuQhLAqw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_9HGngs4OEeO5H6DuQhLAqw" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_9HGng84OEeO5H6DuQhLAqw" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_9HGAcM4OEeO5H6DuQhLAqw" name="TrainingSet" type="_4ZklkM4HEeO5H6DuQhLAqw" association="_9HGngM4OEeO5H6DuQhLAqw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_9HGAcc4OEeO5H6DuQhLAqw" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_9HGAcs4OEeO5H6DuQhLAqw" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_KOhJsM4PEeO5H6DuQhLAqw" name="instance_instances_1" memberEnd="_KOhJsc4PEeO5H6DuQhLAqw _KOgioM4PEeO5H6DuQhLAqw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_KOhJsc4PEeO5H6DuQhLAqw" name="FeatureVector" type="_288PgM4HEeO5H6DuQhLAqw" association="_KOhJsM4PEeO5H6DuQhLAqw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KOhJss4PEeO5H6DuQhLAqw"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KOhJs84PEeO5H6DuQhLAqw" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_KOgioM4PEeO5H6DuQhLAqw" name="TrainingSet" type="_4ZklkM4HEeO5H6DuQhLAqw" association="_KOhJsM4PEeO5H6DuQhLAqw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KOgioc4PEeO5H6DuQhLAqw" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KOgios4PEeO5H6DuQhLAqw" value="1"/>
+      </ownedEnd>
     </packagedElement>
   </packagedElement>
 </uml:Model>
