@@ -31,7 +31,7 @@ public class MobSensTest {
 	private static final String username = "mlukas@gmx.net";
 	private static final String password = "12345678";
 	
-	private static final long windowWidth = 2000;
+	private static final long windowWidth = 3000;
 	
 	public static void main (String[] args) throws Exception {
 		
@@ -47,9 +47,11 @@ public class MobSensTest {
 
 		for (int i = 0; i < recordings.size(); i++) {
 
+		
+		
 			Recording recording = recordings.get(i);
 
-			if (445 <= recording.getId() && recording.getId() <= 472) {
+			if (545 <= recording.getId() && recording.getId() <= 547) {
 				
 				System.out.println("TESTING RECORD " + recording.getId());
 
@@ -63,7 +65,14 @@ public class MobSensTest {
 				
 				ArrayList<Accelerometer> values = (new AccelerometerCSVParser()).parse(new StringReader(accCSV));
 				
-				ArrayList<ArrayList<Accelerometer>> windows = (new SensorWindowBuilder<Accelerometer>()).buildWindows(values, 2 * 1000);
+		
+				System.out.println("TESTING RECORD " + recording.getId());
+		
+//				ArrayList<Annotation> anns = (new AnnotationCSVParser()).parse(new FileReader(new File("../MobileSensors/test/annotations.csv")));
+//				
+//				ArrayList<Accelerometer> values = (new AccelerometerCSVParser()).parse(new FileReader(new File("../MobileSensors/test/accelerometers_test.csv")));
+//		
+				ArrayList<ArrayList<Accelerometer>> windows = (new SensorWindowBuilder<Accelerometer>()).buildWindows(values, MobSensTest.windowWidth);
 				
 				ArrayList<Event> events = new ArrayList<Event>();
 				
@@ -80,8 +89,8 @@ public class MobSensTest {
 				
 				String evaluation = eval(anns, events);
 				
-				BufferedWriter bw = new BufferedWriter(new FileWriter(new File("./test/test-" +  recording.getId() + ".txt")));
-				bw.write("Test-" + recording.getId());
+				BufferedWriter bw = new BufferedWriter(new FileWriter(new File("./test/test-"+ recording.getId()+".txt")));
+				bw.write("Test-" + + recording.getId());
 				bw.newLine();
 				bw.write("WindowWidth: " + MobSensTest.windowWidth + "ms");
 				bw.newLine();
