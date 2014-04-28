@@ -82,10 +82,16 @@
         <packagedElement xmi:type="uml:Interface" xmi:id="_ARFDsLT2EeO54LVVyrP-wQ" name="EventLabel"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Package" xmi:id="_kG2uIK6pEeO0TPpHsF2Jlg" name="Trainers">
-        <packagedElement xmi:type="uml:Class" xmi:id="_vp8WQM33EeO5H6DuQhLAqw" name="DodgeTrainer"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_vp8WQM33EeO5H6DuQhLAqw" name="DodgeTrainer">
+          <generalization xmi:type="uml:Generalization" xmi:id="_j6y6YM6uEeOBz6yCzkv7_w" general="_N_jyIM6uEeOBz6yCzkv7_w"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_N_jyIM6uEeOBz6yCzkv7_w" name="EventTrainer" isAbstract="true"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Package" xmi:id="_AEmLYK6qEeO0TPpHsF2Jlg" name="Classifiers">
-        <packagedElement xmi:type="uml:Class" xmi:id="_zWDboM33EeO5H6DuQhLAqw" name="BrakeClassifier"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_zWDboM33EeO5H6DuQhLAqw" name="BrakeClassifier">
+          <generalization xmi:type="uml:Generalization" xmi:id="_kbP8EM6uEeOBz6yCzkv7_w" general="_VVNKAM6uEeOBz6yCzkv7_w"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_VVNKAM6uEeOBz6yCzkv7_w" name="EventClassifier" isAbstract="true"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Package" xmi:id="_GlwyUK6qEeO0TPpHsF2Jlg" name="Labels">
         <packagedElement xmi:type="uml:Enumeration" xmi:id="_CsU-ILT2EeO54LVVyrP-wQ" clientDependency="_oe-OgLT3EeO54LVVyrP-wQ" name="DodgeLabel">
