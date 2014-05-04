@@ -107,7 +107,15 @@ public class CSVFiles {
 					directory.mkdirs();
 				}
 				
-				File file = new File(directory.getAbsolutePath().toString()+"/accelerometer.csv");
+				String filename="output.csv";
+				if (type == Accelerometer.class){
+					filename="accelerometer.csv";}
+				else if(type == Location.class){
+					filename="locaiton.csv";
+				}
+				
+				
+				File file = new File(directory.getAbsolutePath().toString()+"/"+filename);
 				
 				if (!file.exists()) {
 
