@@ -1,0 +1,87 @@
+package com.example.sendtest;
+
+import java.io.File;
+import java.util.Date;
+import java.util.concurrent.ExecutionException;
+
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.AsyncTask.Status;
+import android.app.Activity;
+import android.util.Log;
+import android.view.Menu;
+import android.widget.Toast;
+
+public class MainActivity extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		// Bundle extra = getIntent().getExtras();
+		// sendData(extra.getString("data"));
+		doIt();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	private void doIt() {
+		
+<<<<<<< HEAD
+
+		for (int i = 1; i < 10; i++) {
+			String filename = i + "000.gz";
+			Toast.makeText(MainActivity.this, "sending " + filename,
+					Toast.LENGTH_SHORT).show();
+			sendData(filename);
+
+		}
+=======
+		sendData("10000.gz");
+
+//		for (int i = 1; i < 4; i++) {
+//			String filename = i + "000.gz";
+//			Toast.makeText(MainActivity.this, "sending " + filename,
+//					Toast.LENGTH_SHORT).show();
+//			sendData(filename);
+//
+//		}
+
+>>>>>>> 9236f9aeb12d23f8ef69f38253c5ee8307eaa162
+	}
+
+	private void sendData(String filePath) {
+
+		// web272f1:Dzw8R1H3
+		File sdcard = Environment.getExternalStorageDirectory();
+		File file = new File(sdcard, filePath);
+
+		if (file.exists()) {
+			Log.i("ftpLog",
+					"startSending " + new Date().getTime() + " "
+							+ file.getAbsolutePath());
+			
+			FtpUrlUpload ftpUpload = new FtpUrlUpload();
+
+			try {
+				ftpUpload.execute(file).get();
+			} catch (Exception e1) {
+				Log.w("ftp", e1.toString());
+			}
+
+			Log.i("ftpLog",
+					"finishedSending " + new Date().getTime() + " "
+							+ file.getAbsolutePath());
+		}
+	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9236f9aeb12d23f8ef69f38253c5ee8307eaa162
+}

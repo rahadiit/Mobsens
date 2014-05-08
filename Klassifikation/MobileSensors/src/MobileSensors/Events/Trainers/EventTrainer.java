@@ -13,21 +13,23 @@ import java.util.HashMap;
 import java.util.Random;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.trees.J48;
 import weka.core.Instances;
 import weka.core.SerializationHelper;
+
 import MobileSensors.Events.ARFactories.ARFactory;
 import MobileSensors.Events.Labels.EventLabel;
 import MobileSensors.Sensors.Accelerometer;
 import MobileSensors.Sensors.Location;
-import MobileSensors.Sensors.Sensor;
 import MobileSensors.Sensors.SensorRecord;
+import MobileSensors.Helpers.DataWindowBuilder;
 
 public abstract class EventTrainer<L extends EventLabel> {
 	
+	/*
 	private class WindowBuilder<S extends Sensor> {
 		
 		public ArrayList<ArrayList<S>> buildWindows (
@@ -36,32 +38,38 @@ public abstract class EventTrainer<L extends EventLabel> {
 				int windowDelta) {
 			
 			ArrayList<ArrayList<S>> result = new ArrayList<ArrayList<S>>();
-			//+------+
-			// +------+
-			int windowCount = values.size() - windowWidth;
 			
-			for (int i=0; i < windowCount; i += windowDelta) {
+			windowWidth = windowWidth > 1 ? windowWidth : 1;
+			windowDelta = windowDelta > 1 ? windowDelta : 1;
+			
+			int i = 0;
+			
+			while (i <= values.size() - windowWidth) {
 				
 				ArrayList<S> window = new ArrayList<S>();
 				
-				int windowSize = i + windowWidth - windowDelta;
+				int j = i;
 				
-				for (int j=i; j < windowSize; j++) {
+				while (j - i < windowWidth) {
 					
 					window.add(values.get(j));
+					
+					j++;
 					
 				}
 				
 				result.add(window);
 				
+				i += windowDelta;
+				
 			}
-			
+
 			return result;
 			
 		}
 		
 	}
-	
+	*/
 
 	private ARFactory<L> arFactory;
 	private Classifier eventClassifier;
@@ -74,6 +82,7 @@ public abstract class EventTrainer<L extends EventLabel> {
 	private File modelFile;
 	private File arffFile;
 	private File evalFile;
+	private File clsfrFile;
 	
 	protected Map<SensorRecord, L> sensorCollections;
 	
@@ -92,6 +101,7 @@ public abstract class EventTrainer<L extends EventLabel> {
 		this.modelFile = modelFile;
 		this.arffFile = modelDir.resolve(FilenameUtils.getBaseName(modelFile.getName()) + ".arff").toFile();
 		this.evalFile = modelDir.resolve(FilenameUtils.getBaseName(modelFile.getName()) + ".eval").toFile();
+		this.clsfrFile = modelDir.resolve(FilenameUtils.getBaseName(modelFile.getName()) + ".txt").toFile();
 		
 		
 	}
@@ -99,6 +109,12 @@ public abstract class EventTrainer<L extends EventLabel> {
 	private void log (String msg) {
 		
 		System.out.println(this.getClass().getSimpleName() + " :: " + msg);
+		
+	}
+	
+	private void logDuration (Date start, Date stop) {
+		
+		this.log("Done after " + DurationFormatUtils.formatDuration(stop.getTime() - start.getTime(), "HH:mm:ss"));
 		
 	}
 	
@@ -112,8 +128,8 @@ public abstract class EventTrainer<L extends EventLabel> {
 		//============================================================================================================
 		// Variable Declarations:
 		
-		WindowBuilder<Accelerometer> accWindowBuilder;		// WindowBuilder for accelerometer sensor data
-		WindowBuilder<Location> locWindowBuilder;			// WindowBuilder for location sensor data
+		DataWindowBuilder<Accelerometer> accWindowBuilder;		// WindowBuilder for accelerometer sensor data
+		DataWindowBuilder<Location> locWindowBuilder;			// WindowBuilder for location sensor data
 		
 		ArrayList<ArrayList<Accelerometer>> accWindows;		// List of accelerometer windows
 		ArrayList<ArrayList<Location>> locWindows;			// List of location windows
@@ -128,8 +144,8 @@ public abstract class EventTrainer<L extends EventLabel> {
 		//============================================================================================================
 		// Algorithm:
 		
-		accWindowBuilder = new WindowBuilder<Accelerometer>();
-		locWindowBuilder = new WindowBuilder<Location>();
+		accWindowBuilder = new DataWindowBuilder<Accelerometer>();
+		locWindowBuilder = new DataWindowBuilder<Location>();
 		
 		newSensorCollections = new HashMap<SensorRecord, L>();
 		
@@ -173,7 +189,7 @@ public abstract class EventTrainer<L extends EventLabel> {
 		
 		stop = new Date();
 		
-		this.log("Done after " + (stop.getTime() - start.getTime()) + "ms.");
+		this.logDuration(start, stop);
 		
 		return trainingSet;
 		
@@ -186,18 +202,23 @@ public abstract class EventTrainer<L extends EventLabel> {
 		
 		start = new Date();
 		
-		this.log("Building new " + eventClassifier.getClass().getName() + " classifier.");
+		this.log("Building new " + this.eventClassifier.getClass().getName() + " classifier.");
 		
-		eventClassifier.buildClassifier(trainingSet);
+		this.eventClassifier.buildClassifier(trainingSet);
 		
 		this.log("Writing classifier to " + this.modelFile.getCanonicalPath());
 		
-		SerializationHelper.write(this.modelFile.getCanonicalPath(), eventClassifier);
+		SerializationHelper.write(this.modelFile.getCanonicalPath(), this.eventClassifier);
+		
+		BufferedWriter evalWriter = new BufferedWriter(new FileWriter(this.clsfrFile));
+		evalWriter.write(this.eventClassifier.toString());
+		evalWriter.flush();
+		evalWriter.close();
 		
 		stop = new Date();
-		
-		this.log("Done after " + (stop.getTime() - start.getTime()) + "ms.");
-		
+
+
+		this.logDuration(start, stop);
 		
 	}
 	
@@ -243,13 +264,24 @@ public abstract class EventTrainer<L extends EventLabel> {
 		evalWriter.close();
 		
 		stop = new Date();
-		
-		this.log("Done after " + (stop.getTime() - start.getTime()) + "ms.");
-		
+
+
+		this.logDuration(start, stop);
 		
 	}
 	
 	public void train (Map<SensorRecord, L> sensorCollections) throws Exception {
+		
+		this.train(sensorCollections, false);
+		
+	}
+	
+	public void train (Map<SensorRecord, L> sensorCollections, boolean validate) throws Exception {
+		
+		Date start;
+		Date stop;
+		
+		start = new Date();
 		
 		System.out.println();
 		
@@ -258,12 +290,20 @@ public abstract class EventTrainer<L extends EventLabel> {
 		Instances trainingSet = this.buildTrainingSet(sensorCollections, this.windowWidth, this.windowDelta);
 		
 		this.buildClassifier(trainingSet);
-		this.crossValidateModel(trainingSet, this.validationFolds);
+		
+		if (validate) {
+			
+			this.crossValidateModel(trainingSet, this.validationFolds);
+			
+		}
 		
 		this.log("Finished training!");
 		
 		System.out.println();
 		
+		stop = new Date();
+		
+		this.logDuration(start, stop);
 	}
 	
 }

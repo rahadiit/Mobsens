@@ -24,9 +24,12 @@ public class BrakeClassifier extends EventClassifier<BrakeLabel> {
 		
 		try {
 			
-			if (this.classify(sr) < 0.5) {
+			if (BrakeLabel.BRAKE.toString().equals(this.classify(sr))) {
 				
-				events.add(new Event(0,0,EventType.DODGE));
+				long startTime = sr.getAcceleration().get(0).getTime();
+				long endTime = sr.getAcceleration().get(sr.getAcceleration().size()-1).getTime();
+				
+				events.add(new Event(startTime,endTime,EventType.BRAKING));
 				
 			}
 			

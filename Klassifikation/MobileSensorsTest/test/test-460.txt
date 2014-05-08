@@ -1,0 +1,8 @@
+Test-460
+WindowWidth: 2000ms
+
+uni_noevents
+Mon Mar 24 13:30:00 CET 2014
+	event(kerbstone, Mon Mar 24 13:30:21 CET 2014, Mon Mar 24 13:30:23 CET 2014, -60)
+	Logged Events: 0
+	Found Events: 1

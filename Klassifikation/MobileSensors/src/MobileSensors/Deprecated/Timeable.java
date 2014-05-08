@@ -58,6 +58,28 @@ public abstract class Timeable {
 
 	}
 	
+	public static <T extends Timeable> Collection<Collection<T>> window(long span, long shift,
+			Collection<T> list ) {
+		Collection<Collection<T>> result = new ArrayList<>();
+
+		if (!list.isEmpty()) {
+			ArrayList<T> alist = new ArrayList<>(list);
+
+			long timeFrom = alist.get(0).getTime();
+			Collection<T> window;
+			do {
+				window = window(list, timeFrom, timeFrom + span);
+				if (!window.isEmpty())
+					result.add(window);
+				timeFrom += shift;
+
+			} while (!window.isEmpty());
+		}
+		return result;
+
+	}
+	
+	
 	public static <T extends Timeable> Collection<T> window(
 			Collection<T> list, int startIndex, int endIndex) {
 		Collection<T> result = new ArrayList<>();
@@ -68,15 +90,10 @@ public abstract class Timeable {
 			for(int i=startIndex; i<endIndex; i++){
 				result.add(alist.get(i));
 			}
-			
 		}
 		
 		return result;
-	
 	}
-	
-	
-	
 
 	/**
 	 * 

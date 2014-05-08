@@ -1,0 +1,302 @@
+package MobileSensors.Test;
+
+import java.io.File;
+import java.io.IOException;
+<<<<<<< HEAD
+=======
+import java.net.ConnectException;
+>>>>>>> 9236f9aeb12d23f8ef69f38253c5ee8307eaa162
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.apache.commons.io.FileUtils;
+import org.codehaus.jackson.jaxrs.Annotations;
+
+import com.sun.jersey.api.client.Client;
+
+import MobileSensors.MobSens;
+<<<<<<< HEAD
+import MobileSensors.Deprecated.Accelerometer;
+import MobileSensors.Deprecated.Annotation;
+import MobileSensors.Deprecated.Location;
+import MobileSensors.Deprecated.Timeable;
+import MobileSensors.Events.Event;
+import MobileSensors.Sensors.SensorRecord;
+=======
+import MobileSensors.Deprecated.AcceleroCalc;
+import MobileSensors.Deprecated.Accelerometer;
+import MobileSensors.Events.Event;
+import MobileSensors.Sensors.SensorCollection;
+import MobileSensors.Storage.Sensors.Annotation;
+>>>>>>> 9236f9aeb12d23f8ef69f38253c5ee8307eaa162
+import MobileSensors.Test.Data.Recording;
+import MobileSensors.Test.Data.SensorE;
+import MobileSensors.Test.Data.URLS;
+import MobileSensors.Test.Input.CSV;
+import MobileSensors.Test.Input.RESTful;
+<<<<<<< HEAD
+import MobileSensors.Test.Output.CSVFiles;
+=======
+import MobileSensors.Test.Output.Chart;
+import MobileSensors.Test.Output.WekaFile;
+>>>>>>> 9236f9aeb12d23f8ef69f38253c5ee8307eaa162
+
+public class Main {
+
+	private static final String username = "mlukas@gmx.net";
+	private static final String password = "12345678";
+
+	public static void main(String[] args) throws IOException {
+
+		// Auf Server einloggen
+		Client client = RESTful.login(URLS.LOGIN.getURL(), username, password);
+<<<<<<< HEAD
+
+		// JsonInput.parseJson(JsonInput.getJsonFromId(client, 389));
+
+		ArrayList<Recording> recordings = RESTful.recordingOutput(client,
+				URLS.LIST_RECORDINGS.getURL()); // + "?page=" + j
+		int count = 0;
+
+		for (int i = 0; i < recordings.size(); i++) {
+
+			Recording recording = recordings.get(i);
+
+			if (recording.getTitle() != null
+					&& recording.getTitle().contains("uni_auswe")) {
+				count++;
+				System.out.println("starting "+count+". recording");
+				client = RESTful.login(URLS.LOGIN.getURL(), username, password);
+
+				String acceleroCSV = RESTful.getCSV(client, recording.getId(),
+						URLS.CSV.getURL(), SensorE.ACCELEROMETERS);
+
+				String annotationCSV = RESTful.getCSV(client,
+						recording.getId(), URLS.CSV.getURL(),
+						SensorE.ANNOTATIONS);
+
+				String locationCSV = RESTful.getCSV(client, recording.getId(),
+						URLS.CSV.getURL(), SensorE.LOCATIONS);
+
+				ArrayList<Location> locations = CSV.csvToSensor(locationCSV,
+						Location.class);
+				ArrayList<Accelerometer> accelerometers = CSV.csvToSensor(
+						acceleroCSV, Accelerometer.class);
+				ArrayList<Annotation> annotations = CSV.csvToSensor(
+						annotationCSV, Annotation.class);
+				
+				ArrayList<ArrayList<Accelerometer>> windows = new ArrayList<>();
+				windows.addAll((Collection<? extends ArrayList<Accelerometer>>) Timeable.window(accelerometers, 5000));
+				
+				ArrayList<Event> events = new ArrayList<>();
+				for(ArrayList<Accelerometer> window:windows){
+					
+					ArrayList<MobileSensors.Sensors.Accelerometer> newAccel = new ArrayList<>();
+					for(Accelerometer item:window){
+						newAccel.add(new MobileSensors.Sensors.Accelerometer(item.getTime(), item.getX(), item.getY(), item.getZ()));
+					}
+					SensorRecord sR = new SensorRecord();
+					sR.setAcceleration(newAccel);
+					MobSens mS = new MobSens();
+					mS.setBrakeModelFile(new File("/Users/henny/Desktop/uni/fp/newestgit/MobSens/Klassifikation/MobileSensors/model/Brake.model"));
+					mS.setDodgeModelFile(new File("/Users/henny/Desktop/uni/fp/newestgit/MobSens/Klassifikation/MobileSensors/model/Dodge.model"));
+					mS.setKerbstoneModelFile(new File("/Users/henny/Desktop/uni/fp/newestgit/MobSens/Klassifikation/MobileSensors/model/Kerbstone.model"));
+					
+					events.addAll(mS.classifyEvents(sR));
+				}
+				
+				System.out.println("enjoy your events!");
+				
+				for(Event event:events){
+					System.out.println(event);
+				}
+				
+				
+			}
+
+		}
+		System.out.println(count + ". Recording(s) untersucht");
+
+		System.out.println("done");
+	}
+}
+
+/*
+ * alter Code
+ * 
+ * accelerometer = CSV.csvToSensor(acceleroCSV, Accelerometer.class);
+ * 
+ * AcceleroCalc.accelerometerCalc(accelerometer, true);
+ * 
+ * // Chart.drawChart(recordings.get(i), accelerometer, // new
+ * ArrayList<Annotation>(), // new ArrayList<Event>(), 2, 0, //
+ * Accelerometer.class);
+ * 
+ * accelerometer = CSV.csvToSensor(acceleroCSV, Accelerometer.class);
+ * 
+ * AcceleroCalc.accelerometerCalc(accelerometer, true);
+ * 
+ * Collection<Collection<Accelerometer>> accelWindows = Accelerometer
+ * .window(accelerometer, 3000);
+ * 
+ * MobSens c = new MobSens();
+ * 
+ * ArrayList<Event> events = new ArrayList<>(); for (Collection<Accelerometer>
+ * accel : accelWindows) {
+ * 
+ * Window window = new Window();
+ * window.setAcceleration((ArrayList<Accelerometer>) accel);
+ * 
+ * events.addAll(c.getEvents(window));
+ * 
+ * }
+ * 
+ * System.out.println("Anzahl dodges: " + events.size()); for (Event ev :
+ * events) { System.out.println(ev.toString()); }
+ * 
+ * }
+ * 
+ * // WekaFile.writeFile(accelerometer, 1000, "Weka.csv");
+ * 
+ * // Chart.drawChart(recordings.get(i), accelerometer, // new
+ * ArrayList<Annotation>(), new ArrayList<Event>(), 2, // 0, //
+ * Accelerometer.class);
+ * 
+ * if (schleifeausfuehren) { // Alle Charts aus dem Bremsvorgang-Test for (int i
+ * = 0; i < recordings.size(); i++) {
+ * 
+ * try { acceleroCSV = RESTful.getCSV(client, recordings.get(i) .getId(),
+ * URLS.CSV.getURL(), SensorE.ACCELEROMETERS);
+ * 
+ * } catch (Exception e) { client = RESTful.login(URLS.LOGIN.getURL(), username,
+ * password); i--; continue; } } }
+ * 
+ * 
+ * // String acceleroCSV = FileUtils.readFileToString(new File( //
+ * "/Users/henny/Desktop/uni/fp/data1/dodge/dodge_2.csv")); // String
+ * annotationCSV = ""; // ArrayList<Accelerometer> accelerometer =
+ * CSV.csvToSensor(acceleroCSV, // Accelerometer.class); // //
+ * Chart.drawChart(new Recording(0, "0"), accelerometer, // new
+ * ArrayList<Annotation>(), new ArrayList<Event>(), 2, 0, //
+ * Accelerometer.class);
+ * 
+ * 
+ * 
+ * ArrayList<Recording> recordings = RESTful.recordingOutput(client,
+ * URLS.LIST_RECORDINGS.getURL()); // + "?page=" + j
+ */
+
+// dodge/record_id/accelerometer.csv
+// File file = new File("/Users/henny/weka/noevent");
+// if (!file.exists()) {
+// file.mkdirs();
+// }
+// CSVFiles.writeToFile(accelerometers, file, Accelerometer.class);
+// CSVFiles.writeToFile(locations, new
+// File("/Users/henny/weka/noevent/location"), Location.class);
+
+// CSVFiles.splitAndWriteArrayList(
+// accelerometers,
+// annotations,
+// file,
+// Accelerometer.class);
+
+// CSVFiles.splitAndWriteArrayList(
+// locations,
+// annotations,
+// new File("/Users/henny/weka/braking/brake/location"),
+// Location.class);
+
+// CSVFiles.splitAndWriteArrayList(accelerometers, annotations, new
+// File(
+// "/Users/henny/braking/nobrake/accelerometer"), new File(
+// "/Users/henny/braking/brake/accelerometer"),
+// Accelerometer.class);
+=======
+		ArrayList<Recording> recordings = RESTful.recordingOutput(client,
+				URLS.LIST_RECORDINGS.getURL()); // + "?page=" + j
+
+		String acceleroCSV = FileUtils.readFileToString(new File(
+				"/Users/henny/Desktop/uni/fp/data1/dodge/dodge_2.csv"));
+		ArrayList<Accelerometer> accelerometer = CSV.csvToSensor(acceleroCSV,
+				Accelerometer.class);
+		//
+		// Chart.drawChart(new Recording(0, "0"), accelerometer,
+		// new ArrayList<Annotation>(), new ArrayList<Event>(), 2, 0,
+		// Accelerometer.class);
+
+		boolean schleifeausfuehren = true;
+		if (schleifeausfuehren) {
+			// Alle Charts aus dem Bremsvorgang-Test
+			for (int i = 0; i < recordings.size(); i++) {
+				int id = recordings.get(i).getId();
+
+				try {
+					acceleroCSV = RESTful
+							.getCSV(client, recordings.get(i).getId(),
+									URLS.CSV.getURL(), SensorE.ACCELEROMETERS);
+				} catch (ConnectException e) {
+					client = RESTful.login(URLS.LOGIN.getURL(), username,
+							password);
+					i--;
+					continue;
+				}
+				int devID = recordings.get(i).getDevice_id();
+				if (devID == 12 || devID == 13) {
+
+					// if
+					// (recordings.get(i).getTitle().toLowerCase().contains("auswei"))
+					// {
+					if (acceleroCSV != null) {
+
+						accelerometer = CSV.csvToSensor(acceleroCSV,
+								Accelerometer.class);
+
+						AcceleroCalc.accelerometerCalc(accelerometer, true);
+
+						// Chart.drawChart(recordings.get(i), accelerometer,
+						// new ArrayList<Annotation>(),
+						// new ArrayList<Event>(), 2, 0,
+						// Accelerometer.class);
+
+						accelerometer = CSV.csvToSensor(acceleroCSV,
+								Accelerometer.class);
+
+						AcceleroCalc.accelerometerCalc(accelerometer, true);
+
+						Collection<Collection<Accelerometer>> accelWindows = Accelerometer
+								.window(accelerometer, 3000);
+
+						MobSens c = new MobSens();
+
+						ArrayList<Event> events = new ArrayList<>();
+						for (Collection<Accelerometer> accel : accelWindows) {
+
+							SensorCollection window = new SensorCollection();
+							window.setAcceleration((ArrayList<MobileSensors.Sensors.Accelerometer>) accel);
+
+							events.addAll(c.getEvents(window));
+
+						}
+						
+						System.out.println("Anzahl dodges: " + events.size());
+						for (Event ev : events) {
+							System.out.println(ev.toString());
+						}
+
+					}
+
+					// WekaFile.writeFile(accelerometer, 1000, "Weka.csv");
+
+					// Chart.drawChart(recordings.get(i), accelerometer,
+					// new ArrayList<Annotation>(), new ArrayList<Event>(), 2,
+					// 0,
+					// Accelerometer.class);
+
+				}
+			}
+		}
+		System.out.println("done");
+	}
+}
+>>>>>>> 9236f9aeb12d23f8ef69f38253c5ee8307eaa162

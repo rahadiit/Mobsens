@@ -23,25 +23,39 @@ public class MainActivity extends Activity {
 	}
 
 	public void process(View view) throws InterruptedException {
-		for (int i = 1; i < 40; i++) {
-			
-//			startNewActivity("com.example.ziptest", i + "000000");
-			startNewActivity("com.example.sendtest", i+".gz");
-			try {
-				int delay = Integer.parseInt(i + "00000") + 5000;
-				Thread.sleep(delay);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+		double[] entr = new double[9];
+
+		for (int j = 0; j <= 8; j++) {
+			for (int i = 4; i <= 16; i = i * 2) {
+				int fileSize = i * 1024 * 1024;
+				startNewActivity("com.example.ziptest", fileSize + "", j + "");
+				Thread.sleep((fileSize / 1024) * 10 + 10000);
 			}
 		}
+
+		// for (int i = 40; i >= 5; i/=2) {
+		//
+		// int fileSize = i*1024*1024;
+		//
+		// startNewActivity("com.example.ziptest", fileSize+"");
+		// //startNewActivity("com.example.sendtest", i+".gz");
+		// try {
+		// int delay =(i/100) + 5000;
+		// Thread.sleep(delay);
+		// } catch (InterruptedException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
 	}
 
-	public void startNewActivity(String packageName, String data) {
+	public void startNewActivity(String packageName, String data, String entropy) {
 		Intent launchIntent = getPackageManager().getLaunchIntentForPackage(
 				packageName);
 
 		launchIntent.putExtra("data", data);
+		launchIntent.putExtra("entropy", entropy);
 		startActivityForResult(launchIntent, 0);
 	}
 }

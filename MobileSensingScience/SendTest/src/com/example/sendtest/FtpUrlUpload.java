@@ -1,4 +1,4 @@
-package com.example.sendtest;
+	package com.example.sendtest;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,6 +21,10 @@ public class FtpUrlUpload extends AsyncTask<File, Void, Void> {
 		String host = "k-e-h.de";
 		String user = "web272f1";
 		String pass = "Dzw8R1H3";
+//		String host = "192.168.2.106";
+//		String user = "MobileSensing";
+//		String pass = "MS2014";
+		
 		String uploadPath = "";
 
 		ftpUrl = String.format(ftpUrl, user, pass, host, uploadPath);
@@ -30,9 +34,10 @@ public class FtpUrlUpload extends AsyncTask<File, Void, Void> {
 		long start = new Date().getTime();
 		try {
 			FTPClient con = new FTPClient();
+			con.setBufferSize(1048576);
 			
-			con.connect("k-e-h.de");
-			if (con.login("web272f1", "Dzw8R1H3")){
+			con.connect(host);
+			if (con.login(user, pass)){
 				FileInputStream inputStream = new FileInputStream(file);
 				boolean result = con.storeFile(file.getName(),inputStream);
 				inputStream.close();
@@ -71,7 +76,7 @@ public class FtpUrlUpload extends AsyncTask<File, Void, Void> {
 //
 //			Log.i("ftp", "File uploaded");
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			Log.i("http ", ex.getMessage());
 		}
 	}
 

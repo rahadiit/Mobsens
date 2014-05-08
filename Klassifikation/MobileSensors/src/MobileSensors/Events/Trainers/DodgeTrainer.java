@@ -15,7 +15,7 @@ public class DodgeTrainer extends EventTrainer<DodgeLabel> {
 	/**
 	 * Number of items in a window used to create a feature vector
 	 */
-	private final static int WINDOW_WIDTH = 100;
+	private final static int WINDOW_WIDTH = 300;
 	
 	/**
 	 * 

@@ -1,0 +1,29 @@
+package MobileSensors.Test.Data;
+
+
+public enum URLS {
+<<<<<<< HEAD
+	LIST_RECORDINGS, CSV, LOGIN, RECORDINGS;
+=======
+	LIST_RECORDINGS, CSV, LOGIN;
+>>>>>>> 9236f9aeb12d23f8ef69f38253c5ee8307eaa162
+
+	public String getURL() {
+		switch (this) {
+		case LIST_RECORDINGS:
+			return "http://mobilesensing.west.uni-koblenz.de/recordings.json";
+		case CSV:
+			return "http://mobilesensing.west.uni-koblenz.de/recording/";
+		case LOGIN:
+			return "http://mobilesensing.west.uni-koblenz.de/users/sign_in.json";
+<<<<<<< HEAD
+		case RECORDINGS:
+			return "http://mobilesensing.west.uni-koblenz.de/recordings/";
+=======
+
+>>>>>>> 9236f9aeb12d23f8ef69f38253c5ee8307eaa162
+		default:
+			return "";
+		}
+	}
+}

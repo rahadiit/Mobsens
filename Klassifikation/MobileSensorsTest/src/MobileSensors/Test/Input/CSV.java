@@ -12,8 +12,8 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import MobileSensors.Deprecated.Accelerometer;
-import MobileSensors.Deprecated.Location;
 import MobileSensors.Deprecated.Annotation;
+import MobileSensors.Deprecated.Location;
 import MobileSensors.Deprecated.Sensor;
 
 
